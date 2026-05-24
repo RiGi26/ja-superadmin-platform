@@ -19,8 +19,8 @@ export default async function NewTenantPage() {
   return (
     <div className="max-w-2xl">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-zinc-100">Buat Tenant Baru</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">
+        <h1 className="text-xl font-semibold text-foreground">Buat Tenant Baru</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">
           Tenant baru akan langsung mendapat trial 14 hari dan welcome email.
         </p>
       </div>

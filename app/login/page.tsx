@@ -6,24 +6,25 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Loader2, ShieldCheck, AlertCircle } from 'lucide-react'
+import { Loader2, ShieldCheck } from 'lucide-react'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
   const [loading,  setLoading]  = useState(false)
-  const [error,    setError]    = useState('')
+  const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError('')
     setLoading(true)
 
     const supabase = createClient()
     const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
     if (authError) {
-      setError('Email atau password salah.')
+      toast.error('Email atau password salah.')
       setLoading(false)
       return
     }
@@ -37,50 +38,44 @@ export default function LoginPage() {
 
         if (!isSuperadmin) {
           await supabase.auth.signOut()
-          setError('Akses ditolak. Akun ini bukan superadmin.')
+          toast.error('Akses ditolak. Akun ini bukan superadmin.')
           setLoading(false)
           return
         }
       } catch {
         await supabase.auth.signOut()
-        setError('Gagal memverifikasi akses. Coba lagi.')
+        toast.error('Gagal memverifikasi akses. Coba lagi.')
         setLoading(false)
         return
       }
     }
 
-    window.location.href = '/dashboard'
+    toast.success('Login berhasil')
+    router.push('/dashboard')
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center mb-4">
-            <ShieldCheck size={24} className="text-zinc-100" />
+          <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mb-4">
+            <ShieldCheck size={24} className="text-foreground" />
           </div>
-          <h1 className="text-xl font-semibold text-zinc-100">JapanarEna Superadmin</h1>
-          <p className="text-sm text-zinc-500 mt-1">Internal access only</p>
+          <h1 className="text-xl font-semibold text-foreground">JapanarEna Superadmin</h1>
+          <p className="text-sm text-muted-foreground mt-1">Internal access only</p>
         </div>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-card border-border">
           <CardHeader className="pb-4">
-            <CardTitle className="text-zinc-100 text-base">Masuk</CardTitle>
-            <CardDescription className="text-zinc-500">
+            <CardTitle className="text-foreground text-base">Masuk</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Hanya untuk superadmin@japanarenacorp.com
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && (
-              <div className="flex items-start gap-2 bg-red-950/50 border border-red-900 rounded-lg p-3 mb-4">
-                <AlertCircle size={15} className="text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-300">{error}</p>
-              </div>
-            )}
-
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-1.5">
-                <Label htmlFor="email" className="text-zinc-400 text-xs uppercase tracking-wider">
+                <Label htmlFor="email" className="text-muted-foreground text-xs uppercase tracking-wider">
                   Email
                 </Label>
                 <Input
@@ -91,12 +86,12 @@ export default function LoginPage() {
                   required
                   autoComplete="email"
                   placeholder="superadmin@japanarenacorp.com"
-                  className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder-zinc-600 focus:border-zinc-500"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="password" className="text-zinc-400 text-xs uppercase tracking-wider">
+                <Label htmlFor="password" className="text-muted-foreground text-xs uppercase tracking-wider">
                   Password
                 </Label>
                 <Input
@@ -107,14 +102,14 @@ export default function LoginPage() {
                   required
                   autoComplete="current-password"
                   placeholder="••••••••••••"
-                  className="bg-zinc-800 border-zinc-700 text-zinc-100 placeholder-zinc-600 focus:border-zinc-500"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                 />
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-zinc-100 text-zinc-900 hover:bg-zinc-200 font-semibold"
+                className="w-full font-semibold"
               >
                 {loading ? (
                   <span className="flex items-center gap-2">
@@ -128,7 +123,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-zinc-700 mt-6">
+        <p className="text-center text-xs text-muted-foreground mt-6">
           JapanarEna Corp · Internal Tool
         </p>
       </div>

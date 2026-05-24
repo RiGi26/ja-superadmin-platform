@@ -10,7 +10,7 @@ const STATUS_BADGE: Record<string, string> = {
   new      : 'bg-blue-950 text-blue-300 border-blue-800',
   contacted: 'bg-yellow-950 text-yellow-300 border-yellow-800',
   converted: 'bg-green-950 text-green-300 border-green-800',
-  rejected : 'bg-zinc-800 text-zinc-500 border-zinc-700',
+  rejected : 'bg-muted text-muted-foreground border-border',
 }
 const STATUS_LABEL: Record<string, string> = {
   new: 'Baru', contacted: 'Dihubungi', converted: 'Converted', rejected: 'Ditolak',
@@ -38,8 +38,8 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-xl font-semibold text-zinc-100">Leads</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">{(leads ?? []).length} leads</p>
+        <h1 className="text-xl font-semibold text-foreground">Leads</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">{(leads ?? []).length} leads</p>
       </div>
 
       {/* Filter tabs */}
@@ -48,18 +48,18 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           <a key={s} href={s ? `?status=${s}` : '/dashboard/leads'}
             className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
               statusFilter === s
-                ? 'bg-zinc-100 text-zinc-900 border-zinc-100 font-medium'
-                : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700'
+                ? 'bg-primary text-primary-foreground border-primary font-medium'
+                : 'bg-card border-border text-muted-foreground hover:border-muted-foreground'
             }`}>
             {s ? STATUS_LABEL[s] : 'Semua'}
           </a>
         ))}
       </div>
 
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="bg-card border border-border rounded-xl overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-xs text-zinc-500 uppercase tracking-wider">
+            <tr className="border-b border-border text-xs text-muted-foreground uppercase tracking-wider">
               <th className="px-4 py-3 text-left font-medium">Nama / Bisnis</th>
               <th className="px-4 py-3 text-left font-medium">Platform Minat</th>
               <th className="px-4 py-3 text-left font-medium">Status</th>
@@ -69,18 +69,18 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           </thead>
           <tbody>
             {(leads ?? []).map((lead: Lead) => (
-              <tr key={lead.id} className="border-b border-zinc-800/60 last:border-0 hover:bg-zinc-800/30 transition-colors">
+              <tr key={lead.id} className="border-b border-border/60 last:border-0 hover:bg-muted/50 transition-colors">
                 <td className="px-4 py-3">
-                  <p className="font-medium text-zinc-100">{lead.name}</p>
-                  <p className="text-xs text-zinc-600">{lead.email}</p>
+                  <p className="font-medium text-foreground">{lead.name}</p>
+                  <p className="text-xs text-muted-foreground">{lead.email}</p>
                   {lead.business_name && (
-                    <p className="text-xs text-zinc-500 mt-0.5">{lead.business_name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{lead.business_name}</p>
                   )}
                 </td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1">
                     {(lead.platforms ?? []).map(p => (
-                      <Badge key={p} variant="outline" className="text-[10px] border-zinc-700 text-zinc-500">
+                      <Badge key={p} variant="outline" className="text-[10px] border-border text-muted-foreground">
                         {PLATFORM_LABEL[p] ?? p}
                       </Badge>
                     ))}
@@ -91,7 +91,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     {STATUS_LABEL[lead.status]}
                   </Badge>
                 </td>
-                <td className="px-4 py-3 text-xs text-zinc-500">
+                <td className="px-4 py-3 text-xs text-muted-foreground">
                   {format(new Date(lead.created_at), 'd MMM yyyy', { locale: localeId })}
                 </td>
                 <td className="px-4 py-3">
@@ -109,7 +109,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                     {lead.status !== 'converted' && (
                       <Link
                         href={`/dashboard/tenants/new?lead_id=${lead.id}&name=${encodeURIComponent(lead.business_name ?? lead.name)}&email=${encodeURIComponent(lead.email)}`}
-                        className="text-xs text-zinc-400 hover:text-zinc-200 flex items-center gap-1 transition-colors"
+                        className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
                       >
                         <PlusCircle size={12} /> Convert
                       </Link>
@@ -121,7 +121,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           </tbody>
         </table>
         {(leads ?? []).length === 0 && (
-          <div className="text-center py-12 text-zinc-600 text-sm">Belum ada leads.</div>
+          <div className="text-center py-12 text-muted-foreground text-sm">Belum ada leads.</div>
         )}
       </div>
     </div>

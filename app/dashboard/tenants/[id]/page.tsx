@@ -14,8 +14,8 @@ const STATUS_BADGE: Record<string, string> = {
   active   : 'bg-green-950 text-green-300 border-green-800',
   trial    : 'bg-yellow-950 text-yellow-300 border-yellow-800',
   past_due : 'bg-red-950 text-red-300 border-red-800',
-  suspended: 'bg-zinc-800 text-zinc-400 border-zinc-700',
-  cancelled: 'bg-zinc-800 text-zinc-500 border-zinc-700',
+  suspended: 'bg-muted text-muted-foreground border-border',
+  cancelled: 'bg-muted text-muted-foreground border-border',
 }
 const STATUS_LABEL: Record<string, string> = {
   active: 'Aktif', trial: 'Trial', past_due: 'Menunggak',
@@ -105,8 +105,9 @@ export default async function TenantDetailPage({
   }
 
   const trialEndsAt = tenant.trial_ends_at as string | null
+  const now = new Date()
   const daysLeft = trialEndsAt
-    ? Math.ceil((new Date(trialEndsAt).getTime() - Date.now()) / 86_400_000)
+    ? Math.ceil((new Date(trialEndsAt).getTime() - now.getTime()) / 86_400_000)
     : null
 
   return (
@@ -115,16 +116,16 @@ export default async function TenantDetailPage({
       <div>
         <Link
           href="/dashboard/tenants"
-          className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-4"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
         >
           <ArrowLeft size={14} /> Kembali ke daftar tenant
         </Link>
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold text-zinc-100">{tenant.name}</h1>
-            <p className="text-sm text-zinc-500 mt-0.5 font-mono">{tenant.slug}.japanarenacorp.com</p>
+            <h1 className="text-xl font-semibold text-foreground">{tenant.name}</h1>
+            <p className="text-sm text-muted-foreground mt-0.5 font-mono">{tenant.slug}.japanarenacorp.com</p>
           </div>
-          <Badge className={`text-xs border flex-shrink-0 ${STATUS_BADGE[tenant.status] ?? 'bg-zinc-800 text-zinc-400'}`}>
+          <Badge className={`text-xs border flex-shrink-0 ${STATUS_BADGE[tenant.status] ?? 'bg-muted text-muted-foreground'}`}>
             {STATUS_LABEL[tenant.status] ?? tenant.status}
           </Badge>
         </div>
@@ -132,8 +133,8 @@ export default async function TenantDetailPage({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Info Tenant */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
-          <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium">
             <Building2 size={14} /> Informasi Tenant
           </div>
           <div className="space-y-3 text-sm">
@@ -154,8 +155,8 @@ export default async function TenantDetailPage({
         </div>
 
         {/* Info Owner */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
-          <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium">
             <User size={14} /> Owner
           </div>
           {owner ? (
@@ -165,13 +166,13 @@ export default async function TenantDetailPage({
               <Row label="WA"    value={owner.phone ?? '-'} mono />
             </div>
           ) : (
-            <p className="text-sm text-zinc-600">Data owner tidak ditemukan.</p>
+            <p className="text-sm text-muted-foreground">Data owner tidak ditemukan.</p>
           )}
         </div>
 
         {/* Subscription */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
-          <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium">
             <CreditCard size={14} /> Subscription
           </div>
           {subscription ? (
@@ -182,27 +183,27 @@ export default async function TenantDetailPage({
               <Row label="Mulai"  value={format(new Date(subscription.current_period_start), 'd MMM yyyy', { locale: localeId })} />
             </div>
           ) : (
-            <p className="text-sm text-zinc-600">Belum ada subscription.</p>
+            <p className="text-sm text-muted-foreground">Belum ada subscription.</p>
           )}
         </div>
 
         {/* Members */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
-          <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
+        <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+          <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium">
             <Users size={14} /> Members ({(members ?? []).length})
           </div>
           <div className="space-y-0">
             {(members ?? []).length === 0 ? (
-              <p className="text-sm text-zinc-600">Tidak ada members.</p>
+              <p className="text-sm text-muted-foreground">Tidak ada members.</p>
             ) : (members ?? []).map((m: Record<string, unknown>) => {
               const u = memberUsers[m.user_id as string]
               return (
-                <div key={m.user_id as string} className="flex items-center justify-between py-2 border-b border-zinc-800/60 last:border-0">
+                <div key={m.user_id as string} className="flex items-center justify-between py-2 border-b border-border/60 last:border-0">
                   <div>
-                    <p className="text-sm text-zinc-200">{u?.full_name ?? '-'}</p>
-                    <p className="text-xs text-zinc-600 font-mono">{u?.email ?? '-'}</p>
+                    <p className="text-sm text-foreground">{u?.full_name ?? '-'}</p>
+                    <p className="text-xs text-muted-foreground font-mono">{u?.email ?? '-'}</p>
                   </div>
-                  <span className="text-xs text-zinc-500 capitalize">{m.role as string}</span>
+                  <span className="text-xs text-muted-foreground capitalize">{m.role as string}</span>
                 </div>
               )
             })}
@@ -211,20 +212,20 @@ export default async function TenantDetailPage({
       </div>
 
       {/* Event Log */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 space-y-4">
-        <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
+      <div className="bg-card border border-border rounded-xl p-5 space-y-4">
+        <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium">
           <Clock size={14} /> Riwayat Aktivitas
         </div>
         {(events ?? []).length === 0 ? (
-          <p className="text-sm text-zinc-600">Belum ada aktivitas.</p>
+          <p className="text-sm text-muted-foreground">Belum ada aktivitas.</p>
         ) : (
           <div>
             {(events ?? []).map((ev: Record<string, unknown>) => (
-              <div key={ev.id as string} className="flex items-start gap-3 py-3 border-b border-zinc-800/50 last:border-0">
-                <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-2 flex-shrink-0" />
+              <div key={ev.id as string} className="flex items-start gap-3 py-3 border-b border-border/50 last:border-0">
+                <div className="w-1.5 h-1.5 rounded-full bg-muted-foreground mt-2 flex-shrink-0" />
                 <div>
-                  <p className="text-sm text-zinc-300">{EVENT_LABEL[ev.event_type as string] ?? ev.event_type as string}</p>
-                  <p className="text-xs text-zinc-600 mt-0.5">
+                  <p className="text-sm text-foreground">{EVENT_LABEL[ev.event_type as string] ?? ev.event_type as string}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">
                     {format(new Date(ev.created_at as string), 'd MMM yyyy, HH:mm', { locale: localeId })}
                   </p>
                 </div>
@@ -244,8 +245,8 @@ function Row({
 }) {
   return (
     <div className="flex justify-between items-start gap-4">
-      <span className="text-zinc-500 flex-shrink-0">{label}</span>
-      <span className={`text-right break-all ${capitalize ? 'capitalize' : ''} ${mono ? 'font-mono text-xs' : ''} ${highlight ? 'text-red-400' : 'text-zinc-200'}`}>
+      <span className="text-muted-foreground flex-shrink-0">{label}</span>
+      <span className={`text-right break-all ${capitalize ? 'capitalize' : ''} ${mono ? 'font-mono text-xs' : ''} ${highlight ? 'text-red-400' : 'text-foreground'}`}>
         {value}
       </span>
     </div>
