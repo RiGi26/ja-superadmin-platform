@@ -22,15 +22,15 @@ const STATUS_LABEL: Record<string, string> = {
   suspended: 'Ditangguhkan', cancelled: 'Dibatalkan',
 }
 const EVENT_LABEL: Record<string, string> = {
-  trial_started   : 'Trial dimulai',
-  trial_extended  : 'Trial diperpanjang',
+  trial_started        : 'Trial dimulai',
+  trial_extended       : 'Trial diperpanjang',
   subscription_activated: 'Subscription aktif',
   subscription_cancelled: 'Subscription dibatalkan',
-  payment_received: 'Pembayaran diterima',
-  payment_failed  : 'Pembayaran gagal',
-  plan_changed    : 'Plan diubah',
-  suspended       : 'Ditangguhkan',
-  reactivated     : 'Diaktifkan kembali',
+  payment_received     : 'Pembayaran diterima',
+  payment_failed       : 'Pembayaran gagal',
+  plan_changed         : 'Plan diubah',
+  suspended            : 'Ditangguhkan',
+  reactivated          : 'Diaktifkan kembali',
 }
 
 export default async function TenantDetailPage({
@@ -41,40 +41,70 @@ export default async function TenantDetailPage({
   const { id } = await params
   const db = createAdminClient()
 
+  // Query tenant dulu — jika tidak ada, 404
+  const { data: tenant } = await db
+    .from('tenants')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (!tenant) notFound()
+
+  // Query sisanya paralel, semua pakai maybeSingle() / tanpa single()
   const [
-    { data: tenant },
+    { data: owner },
     { data: subscription },
     { data: members },
     { data: events },
   ] = await Promise.all([
-    db.from('tenants')
-      .select('*, users!tenants_owner_user_id_fkey(full_name, email, phone)')
-      .eq('id', id)
-      .single(),
+    db.from('users')
+      .select('full_name, email, phone')
+      .eq('id', tenant.owner_user_id)
+      .maybeSingle(),
     db.from('tenant_subscriptions')
-      .select('*, subscription_plans(tier_display_name, price_monthly)')
+      .select('status, current_period_start, plan_id')
       .eq('tenant_id', id)
       .order('created_at', { ascending: false })
       .limit(1)
-      .single(),
+      .maybeSingle(),
     db.from('tenant_members')
-      .select('*, users(full_name, email, role)')
+      .select('user_id, role, joined_at')
       .eq('tenant_id', id)
       .order('joined_at', { ascending: false }),
     db.from('subscription_events')
-      .select('*')
+      .select('id, event_type, created_at')
       .eq('tenant_id', id)
       .order('created_at', { ascending: false })
       .limit(20),
   ])
 
-  if (!tenant) notFound()
+  // Query plan terpisah jika ada subscription
+  let plan: { tier_display_name: string; price_monthly: number } | null = null
+  if (subscription?.plan_id) {
+    const { data } = await db
+      .from('subscription_plans')
+      .select('tier_display_name, price_monthly')
+      .eq('id', subscription.plan_id)
+      .maybeSingle()
+    plan = data
+  }
 
-  const owner = (tenant as Record<string, unknown>).users as { full_name: string; email: string; phone?: string } | null
-  const sub   = subscription as Record<string, unknown> | null
-  const plan  = sub?.subscription_plans as { tier_display_name: string; price_monthly: number } | null
+  // Ambil nama semua member
+  const memberUserIds = (members ?? []).map((m: Record<string, unknown>) => m.user_id as string)
+  let memberUsers: Record<string, { full_name: string; email: string }> = {}
+  if (memberUserIds.length > 0) {
+    const { data: mu } = await db
+      .from('users')
+      .select('id, full_name, email')
+      .in('id', memberUserIds)
+    if (mu) {
+      memberUsers = Object.fromEntries(
+        (mu as { id: string; full_name: string; email: string }[]).map(u => [u.id, u])
+      )
+    }
+  }
 
-  const trialEndsAt = (tenant as Record<string, unknown>).trial_ends_at as string | null
+  const trialEndsAt = tenant.trial_ends_at as string | null
   const daysLeft = trialEndsAt
     ? Math.ceil((new Date(trialEndsAt).getTime() - Date.now()) / 86_400_000)
     : null
@@ -89,13 +119,13 @@ export default async function TenantDetailPage({
         >
           <ArrowLeft size={14} /> Kembali ke daftar tenant
         </Link>
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold text-zinc-100">{(tenant as Record<string, unknown>).name as string}</h1>
-            <p className="text-sm text-zinc-500 mt-0.5 font-mono">{(tenant as Record<string, unknown>).slug as string}.japanarenacorp.com</p>
+            <h1 className="text-xl font-semibold text-zinc-100">{tenant.name}</h1>
+            <p className="text-sm text-zinc-500 mt-0.5 font-mono">{tenant.slug}.japanarenacorp.com</p>
           </div>
-          <Badge className={`text-xs border ${STATUS_BADGE[(tenant as Record<string, unknown>).status as string] ?? 'bg-zinc-800 text-zinc-400'}`}>
-            {STATUS_LABEL[(tenant as Record<string, unknown>).status as string] ?? (tenant as Record<string, unknown>).status as string}
+          <Badge className={`text-xs border flex-shrink-0 ${STATUS_BADGE[tenant.status] ?? 'bg-zinc-800 text-zinc-400'}`}>
+            {STATUS_LABEL[tenant.status] ?? tenant.status}
           </Badge>
         </div>
       </div>
@@ -107,9 +137,9 @@ export default async function TenantDetailPage({
             <Building2 size={14} /> Informasi Tenant
           </div>
           <div className="space-y-3 text-sm">
-            <Row label="Platform" value={PLATFORM_LABEL[(tenant as Record<string, unknown>).platform as string] ?? (tenant as Record<string, unknown>).platform as string} />
-            <Row label="Plan"     value={(tenant as Record<string, unknown>).plan_tier as string ?? '-'} capitalize />
-            <Row label="Dibuat"   value={format(new Date((tenant as Record<string, unknown>).created_at as string), 'd MMM yyyy', { locale: localeId })} />
+            <Row label="Platform" value={PLATFORM_LABEL[tenant.platform] ?? tenant.platform} />
+            <Row label="Plan"     value={tenant.plan_tier ?? '-'} capitalize />
+            <Row label="Dibuat"   value={format(new Date(tenant.created_at), 'd MMM yyyy', { locale: localeId })} />
             {trialEndsAt && (
               <Row
                 label="Trial berakhir"
@@ -117,8 +147,8 @@ export default async function TenantDetailPage({
                 highlight={daysLeft !== null && daysLeft <= 3}
               />
             )}
-            {!!(tenant as Record<string, unknown>).linked_tenant_id && (
-              <Row label="Linked Tenant ID" value={(tenant as Record<string, unknown>).linked_tenant_id as string} mono />
+            {!!tenant.linked_tenant_id && (
+              <Row label="Linked Tenant" value={tenant.linked_tenant_id} mono />
             )}
           </div>
         </div>
@@ -130,9 +160,9 @@ export default async function TenantDetailPage({
           </div>
           {owner ? (
             <div className="space-y-3 text-sm">
-              <Row label="Nama"   value={owner.full_name} />
-              <Row label="Email"  value={owner.email} mono />
-              <Row label="WA"     value={owner.phone ?? '-'} mono />
+              <Row label="Nama"  value={owner.full_name} />
+              <Row label="Email" value={owner.email} mono />
+              <Row label="WA"    value={owner.phone ?? '-'} mono />
             </div>
           ) : (
             <p className="text-sm text-zinc-600">Data owner tidak ditemukan.</p>
@@ -144,12 +174,12 @@ export default async function TenantDetailPage({
           <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
             <CreditCard size={14} /> Subscription
           </div>
-          {sub ? (
+          {subscription ? (
             <div className="space-y-3 text-sm">
               <Row label="Plan"   value={plan?.tier_display_name ?? '-'} />
               <Row label="Harga"  value={plan ? `Rp ${plan.price_monthly.toLocaleString('id-ID')}/bln` : '-'} />
-              <Row label="Status" value={STATUS_LABEL[sub.status as string] ?? sub.status as string} />
-              <Row label="Mulai"  value={format(new Date(sub.current_period_start as string), 'd MMM yyyy', { locale: localeId })} />
+              <Row label="Status" value={STATUS_LABEL[subscription.status] ?? subscription.status} />
+              <Row label="Mulai"  value={format(new Date(subscription.current_period_start), 'd MMM yyyy', { locale: localeId })} />
             </div>
           ) : (
             <p className="text-sm text-zinc-600">Belum ada subscription.</p>
@@ -161,13 +191,13 @@ export default async function TenantDetailPage({
           <div className="flex items-center gap-2 text-zinc-400 text-sm font-medium">
             <Users size={14} /> Members ({(members ?? []).length})
           </div>
-          <div className="space-y-2">
+          <div className="space-y-0">
             {(members ?? []).length === 0 ? (
               <p className="text-sm text-zinc-600">Tidak ada members.</p>
             ) : (members ?? []).map((m: Record<string, unknown>) => {
-              const u = m.users as { full_name: string; email: string } | null
+              const u = memberUsers[m.user_id as string]
               return (
-                <div key={m.user_id as string} className="flex items-center justify-between py-1.5 border-b border-zinc-800/60 last:border-0">
+                <div key={m.user_id as string} className="flex items-center justify-between py-2 border-b border-zinc-800/60 last:border-0">
                   <div>
                     <p className="text-sm text-zinc-200">{u?.full_name ?? '-'}</p>
                     <p className="text-xs text-zinc-600 font-mono">{u?.email ?? '-'}</p>
@@ -188,11 +218,11 @@ export default async function TenantDetailPage({
         {(events ?? []).length === 0 ? (
           <p className="text-sm text-zinc-600">Belum ada aktivitas.</p>
         ) : (
-          <div className="space-y-0">
+          <div>
             {(events ?? []).map((ev: Record<string, unknown>) => (
               <div key={ev.id as string} className="flex items-start gap-3 py-3 border-b border-zinc-800/50 last:border-0">
                 <div className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-2 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
+                <div>
                   <p className="text-sm text-zinc-300">{EVENT_LABEL[ev.event_type as string] ?? ev.event_type as string}</p>
                   <p className="text-xs text-zinc-600 mt-0.5">
                     {format(new Date(ev.created_at as string), 'd MMM yyyy, HH:mm', { locale: localeId })}
@@ -215,7 +245,7 @@ function Row({
   return (
     <div className="flex justify-between items-start gap-4">
       <span className="text-zinc-500 flex-shrink-0">{label}</span>
-      <span className={`text-right ${capitalize ? 'capitalize' : ''} ${mono ? 'font-mono text-xs' : ''} ${highlight ? 'text-red-400' : 'text-zinc-200'}`}>
+      <span className={`text-right break-all ${capitalize ? 'capitalize' : ''} ${mono ? 'font-mono text-xs' : ''} ${highlight ? 'text-red-400' : 'text-zinc-200'}`}>
         {value}
       </span>
     </div>
