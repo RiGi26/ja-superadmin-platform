@@ -4,15 +4,6 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Resend } from 'resend'
 import { addDays } from 'date-fns'
 
-function generatePassword(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'
-  const specials = '!@#$'
-  let pwd = ''
-  for (let i = 0; i < 10; i++) pwd += chars[Math.floor(Math.random() * chars.length)]
-  pwd += specials[Math.floor(Math.random() * specials.length)]
-  pwd += Math.floor(Math.random() * 10)
-  return pwd
-}
 
 const PLATFORM_LABEL: Record<string, string> = {
   lms: 'Japan Arena LMS', clinic: 'Japan Arena Clinic',
@@ -74,7 +65,7 @@ export async function POST(request: Request) {
     .eq('id', plan_id).single()
   if (!plan) return NextResponse.json({ error: 'Plan tidak ditemukan.' }, { status: 404 })
 
-  const temporaryPassword = generatePassword()
+  const temporaryPassword = owner_phone || 'JapanarEna2024!'
   const trialEndsAt = addDays(new Date(), 14).toISOString()
   const now = new Date().toISOString()
 
@@ -178,8 +169,8 @@ export async function POST(request: Request) {
         </div>
       `,
     })
-  } catch {
-    // Email gagal tidak block tenant creation
+  } catch (emailErr) {
+    console.warn('[Resend] Welcome email gagal terkirim ke', owner_email, ':', emailErr)
   }
 
   return NextResponse.json({

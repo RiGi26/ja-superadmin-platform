@@ -21,6 +21,10 @@ const PLATFORM_OPTIONS = [
   { value: 'jastip',   label: 'Japan Arena Jastip' },
 ]
 
+const PLATFORM_SHORT: Record<string, string> = {
+  lms: 'LMS', clinic: 'Clinic', pharmacy: 'Pharmacy', jastip: 'Jastip',
+}
+
 function slugify(str: string) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }
@@ -235,7 +239,7 @@ export function CreateTenantForm({ plans, linkableTenants }: Props) {
               <SelectContent className="bg-zinc-800 border-zinc-700 text-zinc-200">
                 {filteredPlans.map(p => (
                   <SelectItem key={p.id} value={p.id}>
-                    {p.tier_display_name} — Rp {p.price_monthly.toLocaleString('id-ID')}/bln
+                    {p.tier_display_name} - {PLATFORM_SHORT[p.platform] ?? p.platform} (Trial 14 hari)
                   </SelectItem>
                 ))}
               </SelectContent>
