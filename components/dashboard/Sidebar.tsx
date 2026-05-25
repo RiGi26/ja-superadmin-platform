@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Building2, PlusCircle, Users,
-  CreditCard, ScrollText, Settings,
+  CreditCard, ScrollText, Settings, Globe
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const NAV = [
   { label: 'Dashboard',       href: '/dashboard',                  icon: LayoutDashboard },
+  { label: 'Website Orders',  href: '/dashboard/website-orders',   icon: Globe },
   { label: 'Semua Tenant',    href: '/dashboard/tenants',          icon: Building2 },
   { label: 'Buat Tenant',     href: '/dashboard/tenants/new',      icon: PlusCircle },
   { label: 'Leads',           href: '/dashboard/leads',            icon: Users },
