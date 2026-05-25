@@ -79,7 +79,8 @@ export default async function TenantsPage({
       <div className="flex gap-3 flex-wrap">
         <TenantSearchInput
           defaultValue={q}
-          buildUrl={(val) => buildUrl({ q: val, page: '1' })}
+          platform={platform}
+          status={status}
         />
         {['', 'lms', 'clinic', 'pharmacy', 'jastip'].map(p => (
           <a key={p} href={buildUrl({ platform: p, page: '1' })}

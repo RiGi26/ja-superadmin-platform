@@ -1,9 +1,19 @@
 'use client'
 
-export function TenantSearchInput({ defaultValue, buildUrl }: {
+export function TenantSearchInput({ defaultValue, platform, status }: {
   defaultValue: string
-  buildUrl: (q: string) => string
+  platform: string
+  status: string
 }) {
+  function buildUrl(q: string) {
+    const params = { platform, status, q, page: '1' }
+    const qs = Object.entries(params)
+      .filter(([, v]) => v)
+      .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+      .join('&')
+    return `/dashboard/tenants${qs ? `?${qs}` : ''}`
+  }
+
   return (
     <input
       type="text"
