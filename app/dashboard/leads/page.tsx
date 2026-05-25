@@ -2,7 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
-import { MessageCircle, PlusCircle } from 'lucide-react'
+import { MessageCircle, PlusCircle, Users } from 'lucide-react'
 import Link from 'next/link'
 import type { Lead } from '@/types/lead'
 
@@ -121,7 +121,13 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           </tbody>
         </table>
         {(leads ?? []).length === 0 && (
-          <div className="text-center py-12 text-muted-foreground text-sm">Belum ada leads.</div>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Users size={28} className="text-muted-foreground/50" />
+            </div>
+            <p className="text-base font-medium text-foreground">Tidak ada data ditemukan</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-sm">Belum ada data leads yang tersedia saat ini.</p>
+          </div>
         )}
       </div>
     </div>

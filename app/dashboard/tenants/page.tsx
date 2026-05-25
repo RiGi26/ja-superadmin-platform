@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, FolderX } from 'lucide-react'
 import { TenantSearchInput } from '@/components/dashboard/TenantSearchInput'
 
 const PLATFORM_BADGE: Record<string, string> = {
@@ -149,7 +149,13 @@ export default async function TenantsPage({
           </tbody>
         </table>
         {(tenants ?? []).length === 0 && (
-          <div className="text-center py-12 text-muted-foreground text-sm">Tidak ada tenant ditemukan.</div>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+              <FolderX size={28} className="text-muted-foreground/50" />
+            </div>
+            <p className="text-base font-medium text-foreground">Tidak ada tenant ditemukan</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-sm">Coba sesuaikan filter pencarian Anda atau buat tenant baru.</p>
+          </div>
         )}
       </div>
 

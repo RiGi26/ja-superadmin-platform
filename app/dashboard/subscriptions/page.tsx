@@ -2,6 +2,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Badge } from '@/components/ui/badge'
 import { format, differenceInDays } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
+import { CreditCard } from 'lucide-react'
 
 const STATUS_BADGE: Record<string, string> = {
   active  : 'bg-green-950 text-green-300 border-green-800',
@@ -110,7 +111,13 @@ export default async function SubscriptionsPage({
           </tbody>
         </table>
         {(subscriptions ?? []).length === 0 && (
-          <div className="text-center py-12 text-muted-foreground text-sm">Tidak ada data.</div>
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+              <CreditCard size={28} className="text-muted-foreground/50" />
+            </div>
+            <p className="text-base font-medium text-foreground">Tidak ada data ditemukan</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-sm">Belum ada data subscription yang tersedia saat ini.</p>
+          </div>
         )}
       </div>
     </div>

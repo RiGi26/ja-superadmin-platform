@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Building2, TrendingUp, CalendarClock, AlertTriangle } from 'lucide-react'
+import { Building2, TrendingUp, CalendarClock, AlertTriangle, Activity, ArrowUpRight } from 'lucide-react'
 import { format, startOfMonth, addDays } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
 
@@ -54,18 +54,26 @@ export default async function DashboardPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Tenant Aktif',        value: active,        icon: Building2,     color: 'text-green-500 dark:text-green-400' },
-          { label: 'Sedang Trial',         value: trial,         icon: TrendingUp,    color: 'text-blue-500 dark:text-blue-400' },
-          { label: 'Baru Bulan Ini',       value: newThisMonth,  icon: CalendarClock, color: 'text-purple-500 dark:text-purple-400' },
-          { label: 'Segera Expire (7hr)',  value: (expiringSoon ?? []).length, icon: AlertTriangle, color: 'text-yellow-500 dark:text-yellow-400' },
-        ].map(({ label, value, icon: Icon, color }) => (
-          <Card key={label} className="bg-card border-border">
+          { label: 'Tenant Aktif',        value: active,        icon: Building2,     color: 'text-green-500 dark:text-green-400', trend: newThisMonth > 0 ? `+${newThisMonth} bulan ini` : null },
+          { label: 'Sedang Trial',         value: trial,         icon: TrendingUp,    color: 'text-blue-500 dark:text-blue-400', trend: null },
+          { label: 'Baru Bulan Ini',       value: newThisMonth,  icon: CalendarClock, color: 'text-purple-500 dark:text-purple-400', trend: 'Growing' },
+          { label: 'Segera Expire (7hr)',  value: (expiringSoon ?? []).length, icon: AlertTriangle, color: 'text-yellow-500 dark:text-yellow-400', trend: 'Perlu dicek' },
+        ].map(({ label, value, icon: Icon, color, trend }) => (
+          <Card key={label} className="bg-card border-border transition-all duration-200 hover:border-muted-foreground/30 hover:shadow-sm">
             <CardContent className="pt-5">
               <div className="flex items-center justify-between mb-3">
                 <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">{label}</p>
                 <Icon size={15} className={color} />
               </div>
-              <p className="text-3xl font-bold text-foreground">{value}</p>
+              <div className="flex items-baseline gap-2">
+                <p className="text-3xl font-bold text-foreground">{value}</p>
+                {trend && (
+                  <Badge variant="outline" className="h-5 px-1.5 text-[10px] font-medium bg-muted/50 border-border text-muted-foreground flex items-center gap-0.5">
+                    {trend.startsWith('+') && <ArrowUpRight size={10} className="text-green-500" />}
+                    {trend}
+                  </Badge>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -109,7 +117,13 @@ export default async function DashboardPage() {
         </CardHeader>
         <CardContent>
           {(recentEvents ?? []).length === 0 ? (
-            <p className="text-sm text-muted-foreground">Belum ada aktivitas.</p>
+            <div className="flex flex-col items-center justify-center py-10 text-center">
+              <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+                <Activity size={24} className="text-muted-foreground/50" />
+              </div>
+              <p className="text-sm font-medium text-foreground">Belum ada aktivitas</p>
+              <p className="text-xs text-muted-foreground mt-1 max-w-xs">Data aktivitas tenant (seperti registrasi atau update status) akan muncul di sini.</p>
+            </div>
           ) : (
             <div className="space-y-3">
               {(recentEvents ?? []).map((ev: Record<string, unknown>) => {

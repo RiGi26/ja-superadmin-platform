@@ -1,6 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { format } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
+import { Activity } from 'lucide-react'
 
 export default async function AuditPage() {
   const db = createAdminClient()
@@ -43,6 +44,15 @@ export default async function AuditPage() {
             })}
           </tbody>
         </table>
+        {(events ?? []).length === 0 && (
+          <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Activity size={28} className="text-muted-foreground/50" />
+            </div>
+            <p className="text-base font-medium text-foreground">Tidak ada data ditemukan</p>
+            <p className="text-sm text-muted-foreground mt-1 max-w-sm">Belum ada audit log yang tercatat saat ini.</p>
+          </div>
+        )}
       </div>
     </div>
   )
