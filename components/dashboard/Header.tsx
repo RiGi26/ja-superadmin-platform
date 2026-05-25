@@ -46,7 +46,7 @@ export function Header({ email }: { email: string }) {
           <SheetContent side="left" className="w-64 p-0 bg-card border-r border-border">
             <SheetTitle className="sr-only">Menu</SheetTitle>
             <div className="px-5 py-5 border-b border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanarEna</p>
+              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanArena Corp</p>
               <p className="text-sm font-semibold text-foreground mt-0.5">Superadmin</p>
             </div>
             <nav className="px-3 py-4 space-y-0.5">
