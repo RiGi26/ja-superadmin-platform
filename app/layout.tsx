@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'JapanarEna Superadmin',
-  description: 'Internal superadmin dashboard — JapanarEna Corp',
+  title: 'JapanArena Corp Superadmin',
+  description: 'Internal superadmin dashboard — JapanArena Corp',
 };
 
 export default function RootLayout({

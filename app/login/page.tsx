@@ -61,7 +61,7 @@ export default function LoginPage() {
           <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mb-4">
             <ShieldCheck size={24} className="text-foreground" />
           </div>
-          <h1 className="text-xl font-semibold text-foreground">JapanarEna Superadmin</h1>
+          <h1 className="text-xl font-semibold text-foreground">JapanArena Corp Superadmin</h1>
           <p className="text-sm text-muted-foreground mt-1">Internal access only</p>
         </div>
 
@@ -124,7 +124,7 @@ export default function LoginPage() {
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          JapanarEna Corp · Internal Tool
+          JapanArena Corp · Internal Tool
         </p>
       </div>
     </div>

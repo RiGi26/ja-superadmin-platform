@@ -24,7 +24,7 @@ export function Sidebar() {
   return (
     <aside className="w-60 flex-shrink-0 bg-card border-r border-border hidden md:flex flex-col">
       <div className="px-5 py-5 border-b border-border">
-        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanarEna</p>
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanArena Corp</p>
         <p className="text-sm font-semibold text-foreground mt-0.5">Superadmin</p>
       </div>
 
@@ -51,7 +51,7 @@ export function Sidebar() {
 
       <div className="px-4 py-3 border-t border-border">
         <p className="text-[10px] text-muted-foreground/70 uppercase tracking-widest font-bold">
-          JapanarEna Corp · Internal
+          JapanArena Corp · Internal
         </p>
       </div>
     </aside>

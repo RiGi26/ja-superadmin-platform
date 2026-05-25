@@ -1,7 +1,7 @@
 @AGENTS.md
 
 # Claude Code — Developer Reference
-## ja-superadmin-platform | JapanarEna Corp
+## ja-superadmin-platform | JapanArena Corp
 
 ---
 
@@ -236,5 +236,5 @@ Cek ini saat bug hanya muncul di production:
 
 ---
 
-*ja-superadmin-platform · JapanarEna Corp · Internal Developer Reference*
+*ja-superadmin-platform · JapanArena Corp · Internal Developer Reference*
 *Sprint 2 — Superadmin Dashboard*

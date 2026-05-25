@@ -48,7 +48,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-0.5">Overview semua platform JapanarEna Corp</p>
+        <p className="text-sm text-muted-foreground mt-0.5">Overview semua platform JapanArena Corp</p>
       </div>
 
       {/* Stats Cards */}
