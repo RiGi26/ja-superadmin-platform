@@ -67,7 +67,7 @@ export default function LoginPage() {
 
         <Card className="bg-card border-border">
           <CardHeader className="pb-4">
-            <CardTitle className="text-foreground text-base">Masuk</CardTitle>
+            <CardTitle className="text-foreground text-base">Login</CardTitle>
             <CardDescription className="text-muted-foreground">
               Hanya untuk superadmin@japanarenacorp.com
             </CardDescription>
@@ -116,7 +116,7 @@ export default function LoginPage() {
                     <Loader2 size={15} className="animate-spin" /> Memverifikasi...
                   </span>
                 ) : (
-                  'Masuk'
+                  'Login'
                 )}
               </Button>
             </form>
