@@ -57,10 +57,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-muted flex items-center justify-center mb-4">
-            <ShieldCheck size={24} className="text-foreground" />
-          </div>
+        <div className="flex flex-col items-center mb-8 text-center">
+          <img src="/logo-rocket.png" alt="Logo Webzoka" className="h-16 w-16 object-contain mb-4" />
           <h1 className="text-xl font-semibold text-foreground">JapanArena Corp Superadmin</h1>
           <p className="text-sm text-muted-foreground mt-1">Internal access only</p>
         </div>
