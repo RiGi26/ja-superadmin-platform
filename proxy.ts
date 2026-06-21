@@ -35,7 +35,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  // Cek superadmin via JWT claims, fallback ke email check (Fase 1)
+  // Cek superadmin via JWT claims, fallback ke email check
   const { data: sessionData } = await supabase.auth.getSession()
   let userRole: string | null = null
 
@@ -52,7 +52,7 @@ export async function proxy(request: NextRequest) {
 
   const isSuperadmin =
     userRole === 'superadmin' ||
-    user.email === process.env.SUPERADMIN_EMAIL
+    user.email?.toLowerCase() === process.env.SUPERADMIN_EMAIL?.toLowerCase()
 
   if (!isSuperadmin) {
     return NextResponse.redirect(new URL('/unauthorized', request.url))

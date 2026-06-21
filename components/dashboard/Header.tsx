@@ -45,9 +45,16 @@ export function Header({ email }: { email: string }) {
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0 bg-card border-r border-border">
             <SheetTitle className="sr-only">Menu</SheetTitle>
-            <div className="px-5 py-5 border-b border-border">
-              <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanArena Corp</p>
-              <p className="text-sm font-semibold text-foreground mt-0.5">Superadmin</p>
+            <div className="py-7 px-5 flex flex-col items-center justify-center text-center border-b border-border">
+              <img
+                src="/logo-rocket.png"
+                alt="Logo Webzoka"
+                className="h-10 w-auto object-contain mb-3"
+              />
+              <div>
+                <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanArena Corp</p>
+                <p className="text-sm font-semibold text-foreground mt-0.5">Superadmin</p>
+              </div>
             </div>
             <nav className="px-3 py-4 space-y-0.5">
               {NAV.map(({ label, href, icon: Icon }) => {
