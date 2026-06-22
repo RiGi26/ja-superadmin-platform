@@ -24,16 +24,12 @@ export function Sidebar() {
 
   return (
     <aside className="w-60 flex-shrink-0 bg-card border-r border-border hidden md:flex flex-col">
-      <div className="py-7 px-5 flex flex-col items-center justify-center text-center border-b border-border">
+      <div className="py-6 px-5 flex items-center justify-center border-b border-border">
         <img
-          src="/logo-rocket.png"
-          alt="Logo Webzoka"
-          className="h-10 w-auto object-contain mb-3"
+          src="/logo-wide-clean.png"
+          alt="Webzoka — Part of Japan Arena Corp"
+          className="w-[200px] max-w-[88%] max-h-[64px] object-contain"
         />
-        <div>
-          <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">JapanArena Corp</p>
-          <p className="text-sm font-semibold text-foreground mt-0.5">Superadmin</p>
-        </div>
       </div>
 
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
