@@ -18,7 +18,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith('/billing') ||
     pathname === '/api/billing/webhook' ||
     pathname === '/api/billing/confirm' ||
-    pathname === '/api/billing/checkout-self'
+    pathname === '/api/billing/checkout-self' ||
+    pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {
     return NextResponse.next()
   }
