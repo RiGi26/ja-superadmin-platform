@@ -81,6 +81,23 @@
   `/admin/billing` (LMS) → checkout pusat. Reconcile duplikasi: `/admin/billing` LMS sekarang baca `tenants`
   **lokal LMS**, bukan Core DB → samakan ke Core DB (atau via API status).
 
+### Phase 2 Slice C — Checkout self-service tenant (link bertoken HMAC) ✅ superadmin side
+
+**Status (superadmin):** dibangun di `feat/billing-phase2c-self-checkout`.
+- `lib/billing-link.ts` — `signBillingToken` / `verifyBillingToken` (HMAC-SHA256 stateless, fail-closed, timing-safe).
+- `POST /api/billing/checkout-self` — publik, token-auth (bukan superadmin); guard plan.platform === tenant.platform; reuse `createSubscriptionCheckout` Phase 1.
+- `/billing/langganan?token=...` — halaman tenant-facing: pilih paket platform + periode → Snap → redirect ke `/billing/selesai` (Slice B).
+- `.env.example` → `BILLING_LINK_SECRET`.
+
+**KONTRAK sisi MINT (TODO repo `ja-lms-platform`, sesi terpisah):**
+- Set env `BILLING_LINK_SECRET` **identik** dengan superadmin (+ tahu URL superadmin).
+- Tombol "Langganan/Bayar" di `/admin/billing` LMS → mint token → redirect ke
+  `${SUPERADMIN_URL}/billing/langganan?token=<token>`.
+- Token = `<base64url(payloadJson)>.<base64url(HMAC_SHA256(payloadB64, secret))>`,
+  `payloadJson = {"v":1,"t":"<tenant_id>","iat":<unix_s>,"exp":<unix_s>}`.
+  HMAC dihitung atas **string base64url payload** (bukan JSON re-serialize). TTL default 7 hari.
+- ⚠️ Prasyarat Phase 0: `tenant_id` di JWT app LMS = `tenants.id` di Core DB (identitas nyambung lintas-DB).
+
 ### Phase 3 — Renewal & enforcement
 - **Cron**: expiry → `past_due` (grace) → `suspended`; reminder bayar (WA/email) H-7/H-3/H-1.
 - **Middleware** tiap platform enforce status langganan dari Core DB (LMS sudah ada pola; pastikan sumbernya Core DB).
