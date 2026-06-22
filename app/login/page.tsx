@@ -30,13 +30,13 @@ export default function LoginPage() {
     }
 
     if (data.session) {
+      // Verifikasi superadmin di SERVER (sumber kebenaran tunggal: user_role JWT
+      // atau email ∈ SUPERADMIN_EMAIL/SUPERADMIN_EMAILS). Cookie sesi sudah ter-set
+      // oleh @supabase/ssr, jadi route server membacanya.
       try {
-        const payload = JSON.parse(atob(data.session.access_token.split('.')[1]))
-        const isSuperadmin =
-          payload?.user_role === 'superadmin' ||
-          email === process.env.NEXT_PUBLIC_SUPERADMIN_EMAIL
-
-        if (!isSuperadmin) {
+        const res = await fetch('/api/auth/superadmin', { cache: 'no-store' })
+        const { ok } = (await res.json().catch(() => ({ ok: false }))) as { ok?: boolean }
+        if (!ok) {
           await supabase.auth.signOut()
           toast.error('Akses ditolak. Akun ini bukan superadmin.')
           setLoading(false)
