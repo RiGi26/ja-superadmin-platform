@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { verifySuperadmin } from '@/lib/auth'
 import { Resend } from 'resend'
 import { addDays } from 'date-fns'
 
@@ -8,20 +8,6 @@ import { addDays } from 'date-fns'
 const PLATFORM_LABEL: Record<string, string> = {
   lms: 'Japan Arena LMS', clinic: 'Japan Arena Clinic',
   pharmacy: 'Japan Arena Pharmacy', jastip: 'Japan Arena Jastip',
-}
-
-async function verifySuperadmin(): Promise<boolean> {
-  try {
-    const supabase = await createClient()
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) return false
-    const payload = JSON.parse(atob(session.access_token.split('.')[1]))
-    const { data: { user } } = await supabase.auth.getUser()
-    return payload?.user_role === 'superadmin' ||
-      user?.email === process.env.SUPERADMIN_EMAIL
-  } catch {
-    return false
-  }
 }
 
 export async function POST(request: Request) {
