@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { verifySuperadmin } from '@/lib/auth'
 import { Sidebar } from '@/components/dashboard/Sidebar'
 import { Header } from '@/components/dashboard/Header'
 
@@ -7,6 +8,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  // Hanya superadmin yang boleh melihat dashboard (bukan sekadar user login).
+  // verifySuperadmin: JWT user_role==='superadmin' ATAU email ∈ SUPERADMIN_EMAIL(S).
+  if (!(await verifySuperadmin())) redirect('/unauthorized')
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
