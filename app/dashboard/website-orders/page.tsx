@@ -1,4 +1,4 @@
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createWebsiteBuilderClient } from '@/lib/supabase/websitebuilder'
 import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
 import { id as localeId } from 'date-fns/locale'
@@ -29,11 +29,12 @@ interface Order {
 }
 
 export default async function WebsiteOrdersPage() {
-  const db = createAdminClient()
-  const { data: orders } = await db
-    .from('orders')
-    .select('*')
-    .order('created_at', { ascending: false })
+  // Orders ada di project Website Builder (DB terpisah), bukan Core DB.
+  const db = createWebsiteBuilderClient()
+  const notConfigured = !db
+  const { data: orders } = db
+    ? await db.from('orders').select('*').order('created_at', { ascending: false })
+    : { data: null }
 
   return (
     <div className="space-y-6">
@@ -122,8 +123,19 @@ export default async function WebsiteOrdersPage() {
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
               <Globe size={32} className="text-muted-foreground/50" />
             </div>
-            <p className="text-base font-medium text-foreground">Tidak ada pesanan website</p>
-            <p className="text-sm text-muted-foreground mt-1">Data pesanan dari website builder akan muncul di sini.</p>
+            {notConfigured ? (
+              <>
+                <p className="text-base font-medium text-foreground">Koneksi Website Builder belum dikonfigurasi</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Set <code className="text-xs">WB_SUPABASE_URL</code> dan <code className="text-xs">WB_SUPABASE_SERVICE_ROLE_KEY</code> di environment.
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-base font-medium text-foreground">Tidak ada pesanan website</p>
+                <p className="text-sm text-muted-foreground mt-1">Data pesanan dari website builder akan muncul di sini.</p>
+              </>
+            )}
           </div>
         )}
       </div>
