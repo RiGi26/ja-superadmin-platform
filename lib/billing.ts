@@ -319,6 +319,161 @@ export async function markInvoicePaid(args: {
   return { firstTransition: true }
 }
 
+// ── Lifecycle manual (superadmin) ────────────────────────────────────────────
+
+export type LifecycleAction =
+  | 'activate' //     aktifkan manual (mis. bayar offline) — set periode baru dari sekarang
+  | 'extend' //       perpanjang 1 siklus di atas periode berjalan
+  | 'suspend' //      tangguhkan (akses dimatikan), periode dipertahankan
+  | 'reactivate' //   batalkan penangguhan
+  | 'cancel' //       batalkan langganan
+  | 'change_plan' //  ganti paket (tier) tanpa ubah periode/harga
+
+export type LifecycleResult =
+  | { ok: true; event: string }
+  | { ok: false; status: number; error: string }
+
+const EVENT_BY_ACTION: Record<LifecycleAction, string> = {
+  activate: 'subscription_activated',
+  extend: 'subscription_extended',
+  suspend: 'suspended',
+  reactivate: 'reactivated',
+  cancel: 'subscription_cancelled',
+  change_plan: 'plan_changed',
+}
+
+/**
+ * Terapkan aksi siklus-hidup langganan secara manual (tanpa Midtrans). Dipakai
+ * superadmin dari /dashboard/tenants/[id]. Menjaga konsistensi tenant_subscriptions
+ * + tenants.status + catat subscription_events (append-only). TIDAK menyentuh uang
+ * (pembayaran lewat jalur Snap di createSubscriptionCheckout/markInvoicePaid).
+ */
+export async function applyLifecycleAction(args: {
+  tenantId: string
+  action: LifecycleAction
+  period?: InvoicePeriod // wajib utk activate/extend
+  planId?: string //        wajib utk change_plan
+}): Promise<LifecycleResult> {
+  const db = createAdminClient()
+  const { tenantId, action } = args
+  const nowIso = new Date().toISOString()
+  const now = new Date(nowIso)
+
+  const { data: tenant } = await db
+    .from('tenants')
+    .select('id, status')
+    .eq('id', tenantId)
+    .maybeSingle()
+  if (!tenant) return { ok: false, status: 404, error: 'Tenant tidak ditemukan.' }
+
+  // Langganan terbaru (boleh belum ada).
+  const { data: sub } = await db
+    .from('tenant_subscriptions')
+    .select('id, plan_id, status, current_period_start, current_period_end')
+    .eq('tenant_id', tenantId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const subUpdate: Record<string, unknown> = { updated_at: nowIso }
+  const tenantUpdate: Record<string, unknown> = { updated_at: nowIso }
+  const payload: Record<string, unknown> = { manual: true }
+
+  switch (action) {
+    case 'activate':
+    case 'extend': {
+      const period = args.period
+      if (period !== 'monthly' && period !== 'yearly') {
+        return { ok: false, status: 400, error: "period harus 'monthly' atau 'yearly'." }
+      }
+      const prevEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
+      // activate = periode baru dari sekarang; extend = tumpuk di atas periode berjalan.
+      const base = action === 'extend' && prevEnd && prevEnd > now ? prevEnd : now
+      const newEnd = period === 'yearly' ? addYears(base, 1) : addMonths(base, 1)
+      subUpdate.status = 'active'
+      subUpdate.current_period_start =
+        action === 'activate' ? nowIso : sub?.current_period_start ?? nowIso
+      subUpdate.current_period_end = newEnd.toISOString()
+      subUpdate.grace_period_ends_at = null
+      subUpdate.cancelled_at = null
+      tenantUpdate.status = 'active'
+      tenantUpdate.suspended_at = null
+      tenantUpdate.cancelled_at = null
+      payload.period = period
+      payload.current_period_end = newEnd.toISOString()
+      break
+    }
+    case 'suspend': {
+      subUpdate.status = 'past_due'
+      tenantUpdate.status = 'suspended'
+      tenantUpdate.suspended_at = nowIso
+      break
+    }
+    case 'reactivate': {
+      subUpdate.status = 'active'
+      tenantUpdate.status = 'active'
+      tenantUpdate.suspended_at = null
+      tenantUpdate.cancelled_at = null
+      break
+    }
+    case 'cancel': {
+      subUpdate.status = 'cancelled'
+      subUpdate.cancelled_at = nowIso
+      tenantUpdate.status = 'cancelled'
+      tenantUpdate.cancelled_at = nowIso
+      break
+    }
+    case 'change_plan': {
+      const planId = args.planId
+      if (!planId) return { ok: false, status: 400, error: 'plan_id wajib untuk ganti paket.' }
+      const { data: plan } = await db
+        .from('subscription_plans')
+        .select('id, tier, is_active')
+        .eq('id', planId)
+        .maybeSingle()
+      if (!plan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+      if (!plan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
+      subUpdate.plan_id = planId
+      tenantUpdate.plan_tier = plan.tier
+      payload.plan_id = planId
+      payload.tier = plan.tier
+      break
+    }
+    default:
+      return { ok: false, status: 400, error: 'Aksi tidak dikenal.' }
+  }
+
+  // Terapkan ke langganan. Bila belum ada langganan: activate/extend membuatnya
+  // baru (agar periode benar-benar tersimpan); change_plan butuh langganan dulu.
+  if (sub) {
+    const { error: subErr } = await db
+      .from('tenant_subscriptions')
+      .update(subUpdate)
+      .eq('id', sub.id)
+    if (subErr) return { ok: false, status: 500, error: subErr.message }
+  } else if (action === 'activate' || action === 'extend') {
+    const { error: subErr } = await db
+      .from('tenant_subscriptions')
+      .insert({ tenant_id: tenantId, ...subUpdate })
+    if (subErr) return { ok: false, status: 500, error: subErr.message }
+  } else if (action === 'change_plan') {
+    return { ok: false, status: 400, error: 'Tenant belum punya langganan untuk diganti paketnya.' }
+  }
+
+  const { error: tenantErr } = await db.from('tenants').update(tenantUpdate).eq('id', tenantId)
+  if (tenantErr) return { ok: false, status: 500, error: tenantErr.message }
+
+  const event = EVENT_BY_ACTION[action]
+  const { error: evErr } = await db.from('subscription_events').insert({
+    tenant_id: tenantId,
+    event_type: event,
+    payload: { ...payload, subscription_id: sub?.id ?? null },
+  })
+  if (evErr) console.error('[billing] lifecycle event insert error:', evErr.message)
+
+  return { ok: true, event }
+}
+
 /**
  * Update status NON-paid (awaiting_payment/failed/expired) — forward-only:
  * tidak menurunkan invoice yang sudah 'paid'.
