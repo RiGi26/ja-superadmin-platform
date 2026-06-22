@@ -5,6 +5,7 @@ import { id as localeId } from 'date-fns/locale'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Building2, User, CreditCard, Clock, Users, AlertTriangle } from 'lucide-react'
+import { TenantLifecycleActions, type PlanOption } from '@/components/dashboard/TenantLifecycleActions'
 
 const PLATFORM_LABEL: Record<string, string> = {
   lms: 'Japan Arena LMS', clinic: 'Japan Arena Clinic',
@@ -25,6 +26,7 @@ const EVENT_LABEL: Record<string, string> = {
   trial_started         : 'Trial dimulai',
   trial_extended        : 'Trial diperpanjang',
   subscription_activated: 'Subscription aktif',
+  subscription_extended : 'Subscription diperpanjang',
   subscription_cancelled: 'Subscription dibatalkan',
   payment_received      : 'Pembayaran diterima',
   payment_failed        : 'Pembayaran gagal',
@@ -80,6 +82,7 @@ export default async function TenantDetailPage({
   let members    : Member[]                              = []
   let events     : Event[]                               = []
   let memberUsers: Record<string, { full_name: string; email: string }> = {}
+  let plansForPlatform: PlanOption[] = []
   let fetchError : string | null = null
 
   try {
@@ -127,6 +130,17 @@ export default async function TenantDetailPage({
         .eq('id', subscription.plan_id)
         .maybeSingle()
       plan = planData
+    }
+
+    // Paket aktif untuk platform tenant — opsi ganti-paket & link bayar.
+    if ((tenant as Tenant).platform) {
+      const { data: planRows } = await db
+        .from('subscription_plans')
+        .select('id, tier_display_name, price_monthly, price_yearly')
+        .eq('platform', (tenant as Tenant).platform!)
+        .eq('is_active', true)
+        .order('price_monthly', { ascending: true })
+      plansForPlatform = (planRows ?? []) as PlanOption[]
     }
 
     const memberUserIds = members.map(m => m.user_id).filter(Boolean)
@@ -264,6 +278,14 @@ export default async function TenantDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Kelola Langganan (aksi manual superadmin) */}
+      <TenantLifecycleActions
+        tenantId={t.id}
+        status={t.status}
+        currentPlanId={subscription?.plan_id ?? null}
+        plans={plansForPlatform}
+      />
 
       {/* Event Log */}
       <div className="bg-card border border-border rounded-xl p-5 space-y-4">
