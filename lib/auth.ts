@@ -5,18 +5,19 @@ import { createClient } from '@/lib/supabase/server'
 
 /**
  * Daftar email superadmin yang diizinkan (fallback sebelum JWT hook aktif).
- * Sumber: SUPERADMIN_EMAIL (tunggal, back-compat) + SUPERADMIN_EMAILS (daftar
- * dipisah koma untuk banyak admin). Case-insensitive, di-trim.
+ * Sumber: SUPERADMIN_EMAIL + SUPERADMIN_EMAILS. KEDUANYA boleh berisi banyak
+ * email dipisah koma (defensif: daftar di var tunggal pun tetap dipecah benar).
+ * Case-insensitive, di-trim, entri kosong diabaikan.
  */
 export function isSuperadminEmail(email: string | null | undefined): boolean {
   if (!email) return false
   const target = email.trim().toLowerCase()
   const allowed = [
-    process.env.SUPERADMIN_EMAIL,
+    ...(process.env.SUPERADMIN_EMAIL?.split(',') ?? []),
     ...(process.env.SUPERADMIN_EMAILS?.split(',') ?? []),
   ]
-    .map((e) => e?.trim().toLowerCase())
-    .filter((e): e is string => !!e)
+    .map((e) => e.trim().toLowerCase())
+    .filter((e) => !!e)
   return allowed.includes(target)
 }
 
