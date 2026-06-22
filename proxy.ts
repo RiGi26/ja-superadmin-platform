@@ -6,6 +6,23 @@ import { isSuperadminEmail } from '@/lib/superadmin'
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Permukaan billing PUBLIK (tenant-facing / token-auth / webhook) — TIDAK boleh
+  // di-gate ke login superadmin. Masing-masing punya otorisasinya sendiri:
+  //   - /billing/*                  halaman tenant (selesai, langganan)
+  //   - /api/billing/webhook        signature Midtrans
+  //   - /api/billing/confirm        dipanggil halaman publik (rate-limited)
+  //   - /api/billing/checkout-self  token HMAC bertanda tangan (Slice C)
+  // CATATAN: /api/billing/checkout & /lifecycle TETAP di-gate (dipakai dasbor
+  // superadmin yang sudah login; keduanya juga verifySuperadmin sendiri).
+  if (
+    pathname.startsWith('/billing') ||
+    pathname === '/api/billing/webhook' ||
+    pathname === '/api/billing/confirm' ||
+    pathname === '/api/billing/checkout-self'
+  ) {
+    return NextResponse.next()
+  }
+
   if (
     pathname.startsWith('/login') ||
     pathname.startsWith('/unauthorized') ||
