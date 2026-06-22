@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { isSuperadminEmail } from '@/lib/superadmin'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
@@ -50,9 +51,7 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  const isSuperadmin =
-    userRole === 'superadmin' ||
-    user.email?.toLowerCase() === process.env.SUPERADMIN_EMAIL?.toLowerCase()
+  const isSuperadmin = userRole === 'superadmin' || isSuperadminEmail(user.email)
 
   if (!isSuperadmin) {
     return NextResponse.redirect(new URL('/unauthorized', request.url))
