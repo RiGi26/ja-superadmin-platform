@@ -98,6 +98,41 @@
   HMAC dihitung atas **string base64url payload** (bukan JSON re-serialize). TTL default 7 hari.
 - ⚠️ Prasyarat Phase 0: `tenant_id` di JWT app LMS = `tenants.id` di Core DB (identitas nyambung lintas-DB).
 
+## Plan Lanjutan (pasca Slice C) — keputusan owner 2026-06-22
+
+**🔑 Keputusan arsitektur TERKUNCI: Core DB = SSOT status langganan.** Middleware/gate LMS membaca
+status langganan dari **Core DB** (cross-DB read), bukan dari `tenant_subscriptions` DB LMS (yang jadi
+USANG untuk enforcement). Owner menerima trade-off latensi/kopling. **Mitigasi wajib:** cache hasil
+(mis. cookie status ber-TTL 5–10 mnt atau klaim sesi) supaya tak hit Core DB tiap request di hot path
+`/admin` & `/portal`.
+
+**Dua gap yang ditemukan (UAT 2026-06-22):**
+1. Enforcement vs billing beda DB → tenant bayar (Core) tapi gate LMS (baca DB LMS) tetap blokir.
+2. Provisioning: `register/route.ts` LMS bikin tenant UUID acak di DB LMS saja → tak ada di Core DB.
+
+### Workstream A — Tutup loop UI self-service `[HIGH, mulai DULU]`
+- **A1** — Kecualikan `/admin/billing` dari gate langganan (`middleware.ts:192-196`, skip saat path
+  `/admin/billing`) → admin expired tetap bisa buka halaman bayar.
+- **A2** — CTA "Perpanjang / Bayar Sekarang" (→ `/api/billing/upgrade`) di `/expired`, `/suspended`,
+  `/cancelled`, dan `ExpiredBanner` — dampingi tombol WhatsApp lama.
+
+### Workstream B — Enforcement baca Core DB (SSOT) `[HIGH]`
+- **B1** — `middleware.ts` `checkSubscriptionStatus` baca `tenant_subscriptions` dari **Core DB**
+  (tambah `createCoreClient` di LMS, env Core DB service-role, pola sama `createWebsiteBuilderClient`
+  superadmin). + cache cookie ber-TTL untuk batasi cross-DB read.
+- **B2** — Pensiunkan ketergantungan DB-LMS `tenant_subscriptions` untuk enforcement (boleh disisakan
+  read-only sementara untuk transisi).
+
+### Workstream C — Provisioning sync ke Core DB `[MEDIUM]`
+- **C1** — `register/route.ts` LMS: selain tenant DB LMS, buat/mirror tenant ke **Core DB** (id SAMA)
+  agar billing + enforcement (SSOT) mengenalnya sejak awal trial.
+- **C2** — Backfill tenant LMS lama yang belum ada di Core DB.
+
+### Workstream D — Phase 3: renewal & reminder `[MEDIUM, setelah B]`
+- Lihat bagian "Phase 3" di bawah. Setelah B (SSOT Core), enforcement otomatis ikut status terbaru.
+
+**Urutan eksekusi: A → B → C → D.**
+
 ### Phase 3 — Renewal & enforcement
 - **Cron**: expiry → `past_due` (grace) → `suspended`; reminder bayar (WA/email) H-7/H-3/H-1.
 - **Middleware** tiap platform enforce status langganan dari Core DB (LMS sudah ada pola; pastikan sumbernya Core DB).
