@@ -2,24 +2,10 @@
 // Dipakai oleh route sensitif (billing, tenant). Pola sama dengan inline
 // verifySuperadmin di app/api/admin/tenants/route.ts — disatukan agar konsisten.
 import { createClient } from '@/lib/supabase/server'
+import { isSuperadminEmail } from '@/lib/superadmin'
 
-/**
- * Daftar email superadmin yang diizinkan (fallback sebelum JWT hook aktif).
- * Sumber: SUPERADMIN_EMAIL + SUPERADMIN_EMAILS. KEDUANYA boleh berisi banyak
- * email dipisah koma (defensif: daftar di var tunggal pun tetap dipecah benar).
- * Case-insensitive, di-trim, entri kosong diabaikan.
- */
-export function isSuperadminEmail(email: string | null | undefined): boolean {
-  if (!email) return false
-  const target = email.trim().toLowerCase()
-  const allowed = [
-    ...(process.env.SUPERADMIN_EMAIL?.split(',') ?? []),
-    ...(process.env.SUPERADMIN_EMAILS?.split(',') ?? []),
-  ]
-    .map((e) => e.trim().toLowerCase())
-    .filter((e) => !!e)
-  return allowed.includes(target)
-}
+// Re-export agar pemanggil lama (route/login) tetap impor dari '@/lib/auth'.
+export { isSuperadminEmail }
 
 /**
  * true bila pemanggil adalah superadmin: JWT claim user_role === 'superadmin'
