@@ -55,7 +55,7 @@ export function Sidebar() {
 
       <div className="px-4 py-3 border-t border-border">
         <p className="text-[10px] text-muted-foreground/70 uppercase tracking-widest font-bold">
-          JapanArena Corp · Internal
+          Webzoka · Internal
         </p>
       </div>
     </aside>

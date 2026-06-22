@@ -12,8 +12,8 @@ Platform  : ja-superadmin-platform (internal tool)
 Stack     : Next.js 16 (App Router) · TypeScript · Supabase · Tailwind · Shadcn/UI
 Database  : PostgreSQL via Supabase — SHARED project dengan ja-lms-platform
 Auth      : Supabase Auth + Custom JWT Claims (user_role = 'superadmin')
-Akses     : HANYA superadmin@japanarenacorp.com
-Deploy    : Vercel → admin.japanarenacorp.com (target)
+Akses     : HANYA superadmin@webzoka.com
+Deploy    : Vercel → superadmin.webzoka.com (target)
 Email     : Resend (welcome email saat create tenant)
 ```
 
@@ -193,11 +193,11 @@ SUPABASE_SERVICE_ROLE_KEY=       # SERVER ONLY — tanpa NEXT_PUBLIC_
 
 # App
 NEXT_PUBLIC_APP_URL=
-SUPERADMIN_EMAIL=superadmin@japanarenacorp.com
+SUPERADMIN_EMAIL=superadmin@webzoka.com
 
 # Resend
 RESEND_API_KEY=                  # SERVER ONLY
-RESEND_FROM_EMAIL=noreply@japanarenacorp.com
+RESEND_FROM_EMAIL=noreply@webzoka.com
 ```
 
 Cek ini saat bug hanya muncul di production:
