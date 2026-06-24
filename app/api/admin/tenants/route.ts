@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     .eq('id', plan_id).single()
   if (!plan) return NextResponse.json({ error: 'Plan tidak ditemukan.' }, { status: 404 })
 
-  const temporaryPassword = owner_phone || 'JapanarEna2024!'
+  const temporaryPassword = owner_phone || 'Webzoka2024!'
   const trialEndsAt = addDays(new Date(), 14).toISOString()
   const now = new Date().toISOString()
 
@@ -134,7 +134,7 @@ export async function POST(request: Request) {
 
   try {
     await resend.emails.send({
-      from   : process.env.RESEND_FROM_EMAIL ?? 'noreply@japanarenacorp.com',
+      from   : process.env.RESEND_FROM_EMAIL ?? 'noreply@webzoka.com',
       to     : owner_email,
       subject: `Selamat datang di ${platformLabel} — ${name}`,
       html   : `
@@ -151,7 +151,7 @@ export async function POST(request: Request) {
           </div>
           <p style="font-size: 13px; color: #777;">Silakan login dan ganti password setelah masuk pertama kali.</p>
           <p style="font-size: 13px; color: #777;">Butuh bantuan? Hubungi kami via WhatsApp.</p>
-          <p style="margin-top: 24px; font-size: 12px; color: #aaa;">Tim JapanarEna Corp</p>
+          <p style="margin-top: 24px; font-size: 12px; color: #aaa;">Tim Webzoka</p>
         </div>
       `,
     })

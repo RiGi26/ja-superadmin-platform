@@ -180,7 +180,7 @@ export default async function TenantDetailPage({
         <div className="flex items-start justify-between gap-4">
           <div>
             <h1 className="text-xl font-semibold text-foreground">{t.name}</h1>
-            <p className="text-sm text-muted-foreground mt-0.5 font-mono">{t.slug}.japanarenacorp.com</p>
+            <p className="text-sm text-muted-foreground mt-0.5 font-mono">{t.slug}.webzoka.com</p>
           </div>
           <Badge className={`text-xs border flex-shrink-0 ${STATUS_BADGE[t.status] ?? 'bg-muted text-muted-foreground'}`}>
             {STATUS_LABEL[t.status] ?? t.status}
