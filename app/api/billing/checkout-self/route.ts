@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyBillingToken } from '@/lib/billing-link'
-import { createSubscriptionCheckout } from '@/lib/billing'
+import { selfServiceChange } from '@/lib/billing'
 import { rateLimit, clientIp, tooManyRequests } from '@/lib/rate-limit'
 import type { InvoicePeriod } from '@/types/billing'
 
@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Paket tidak tersedia untuk akun ini.' }, { status: 403 })
   }
 
-  const result = await createSubscriptionCheckout({
+  const result = await selfServiceChange({
     tenantId: verified.tenantId,
     planId: plan_id,
     period: period as InvoicePeriod,
@@ -65,7 +65,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: result.error }, { status: result.status })
   }
 
+  // Downgrade dijadwalkan (tanpa bayar).
+  if (result.kind === 'scheduled') {
+    return NextResponse.json({
+      kind: 'scheduled',
+      scheduled_tier: result.scheduledTier,
+      effective_at: result.effectiveAt,
+    })
+  }
+  // Upgrade pro-rata Rp0 → langsung berlaku (tanpa bayar).
+  if (result.kind === 'applied') {
+    return NextResponse.json({ kind: 'applied', tier: result.tier })
+  }
+  // Checkout (renew / upgrade pro-rata berbayar) → redirect ke Snap.
   return NextResponse.json({
+    kind: 'checkout',
+    change_type: result.changeType,
     invoice_id: result.invoiceId,
     redirect_url: result.redirectUrl,
     amount: result.amount,
