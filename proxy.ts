@@ -20,6 +20,7 @@ export async function proxy(request: NextRequest) {
     pathname === '/api/billing/webhook' ||
     pathname === '/api/billing/confirm' ||
     pathname === '/api/billing/checkout-self' ||
+    pathname === '/api/billing/cancel-schedule' || // token HMAC (batal downgrade terjadwal)
     pathname === '/api/tenants/provision' || // HMAC self-auth (provisioning lintas-repo)
     pathname.startsWith('/api/public') || // read-only public data (e.g. plan prices)
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET

@@ -79,14 +79,14 @@ export default async function LanggananPage({
     tenant.platform
       ? db
           .from('subscription_plans')
-          .select('id, tier_display_name, price_monthly, price_yearly')
+          .select('id, tier, tier_display_name, price_monthly, price_yearly')
           .eq('platform', tenant.platform)
           .eq('is_active', true)
           .order('price_monthly', { ascending: true })
       : Promise.resolve({ data: [] as CheckoutPlan[] }),
     db
       .from('tenant_subscriptions')
-      .select('plan_id, status, current_period_end')
+      .select('plan_id, status, current_period_start, current_period_end, scheduled_plan_id')
       .eq('tenant_id', tenant.id)
       .order('created_at', { ascending: false })
       .limit(1)
@@ -94,6 +94,18 @@ export default async function LanggananPage({
   ])
 
   const plans = (planRows ?? []) as CheckoutPlan[]
+
+  // Tier paket berjalan (utk bedakan upgrade/downgrade) — paket berjalan bisa saja
+  // tak ada di daftar aktif, jadi query terpisah.
+  let currentTier: string | null = null
+  if (sub?.plan_id) {
+    const { data: cp } = await db
+      .from('subscription_plans')
+      .select('tier')
+      .eq('id', sub.plan_id)
+      .maybeSingle()
+    currentTier = cp?.tier ?? null
+  }
 
   if (plans.length === 0) {
     return (
@@ -112,8 +124,11 @@ export default async function LanggananPage({
         platformLabel={tenant.platform ? PLATFORM_LABEL[tenant.platform] ?? tenant.platform : ''}
         plans={plans}
         currentPlanId={sub?.plan_id ?? null}
+        currentTier={currentTier}
         subscriptionStatus={sub?.status ?? null}
+        currentPeriodStart={sub?.current_period_start ?? null}
         currentPeriodEnd={sub?.current_period_end ?? null}
+        scheduledPlanId={sub?.scheduled_plan_id ?? null}
       />
     </main>
   )

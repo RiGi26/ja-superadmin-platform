@@ -17,6 +17,15 @@ import { getPlatformMidtrans } from '@/lib/midtrans'
 import { syncStockTenant } from '@/lib/stock-sync'
 import type { InvoicePeriod } from '@/types/billing'
 
+// Peringkat tier (lintas-platform, by enum subscription_plans.tier). Dipakai
+// untuk membedakan upgrade (naik) vs downgrade (turun). Display name beda
+// per-platform (stock pro=Growth, enterprise=Pro) tapi enum-nya konsisten.
+const TIER_RANK: Record<string, number> = { starter: 1, pro: 2, enterprise: 3 }
+function tierRank(tier?: string | null): number {
+  return TIER_RANK[tier ?? ''] ?? 0
+}
+const DAY_MS = 86_400_000
+
 // ── createSubscriptionCheckout ───────────────────────────────────────────────
 
 export type CreateCheckoutResult =
@@ -34,9 +43,15 @@ export async function createSubscriptionCheckout(args: {
   tenantId: string
   planId: string
   period: InvoicePeriod
+  // 'renew' (default) = aktivasi/perpanjangan penuh → markInvoicePaid +1 periode.
+  // 'upgrade' = upgrade pro-rata di tengah periode → set tier, periode TAK ditambah.
+  changeType?: 'renew' | 'upgrade'
+  // Nominal pro-rata dihitung pemanggil (selfServiceChange); bila ada, dipakai
+  // sebagai harga invoice menggantikan harga penuh paket.
+  amountOverride?: number
 }): Promise<CreateCheckoutResult> {
   const db = createAdminClient()
-  const { tenantId, planId, period } = args
+  const { tenantId, planId, period, changeType = 'renew', amountOverride } = args
 
   // 1. Tenant harus ada.
   const { data: tenant } = await db
@@ -55,13 +70,21 @@ export async function createSubscriptionCheckout(args: {
   if (!plan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
   if (!plan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
 
-  const rawAmount = period === 'yearly' ? plan.price_yearly : plan.price_monthly
+  const rawAmount =
+    typeof amountOverride === 'number'
+      ? amountOverride
+      : period === 'yearly'
+        ? plan.price_yearly
+        : plan.price_monthly
   const amount = Math.round(Number(rawAmount))
   if (!Number.isFinite(amount) || amount <= 0) {
     return {
       ok: false,
       status: 400,
-      error: `Harga paket "${plan.name}" untuk periode ${period} belum diset.`,
+      error:
+        typeof amountOverride === 'number'
+          ? 'Nominal pro-rata tidak valid.'
+          : `Harga paket "${plan.name}" untuk periode ${period} belum diset.`,
     }
   }
 
@@ -95,6 +118,7 @@ export async function createSubscriptionCheckout(args: {
     .eq('subscription_id', subscriptionId)
     .eq('plan_id', planId)
     .eq('period', period)
+    .eq('change_type', changeType)
     .in('status', ['unpaid', 'awaiting_payment'])
     .maybeSingle()
   if (live?.redirect_url) {
@@ -114,6 +138,7 @@ export async function createSubscriptionCheckout(args: {
       amount,
       status: 'unpaid',
       midtrans_mode: mode,
+      change_type: changeType,
     })
     .select('id')
     .single()
@@ -126,6 +151,7 @@ export async function createSubscriptionCheckout(args: {
         .eq('subscription_id', subscriptionId)
         .eq('plan_id', planId)
         .eq('period', period)
+        .eq('change_type', changeType)
         .in('status', ['unpaid', 'awaiting_payment'])
         .maybeSingle()
       if (existing?.redirect_url) {
@@ -203,6 +229,191 @@ export async function createSubscriptionCheckout(args: {
   return { ok: true, invoiceId: inv.id, redirectUrl: snapData.redirect_url, amount, reused: false }
 }
 
+// ── Self-service change: renew / upgrade(pro-rata) / downgrade(scheduled) ─────
+
+export type SelfChangeResult =
+  | {
+      ok: true
+      kind: 'checkout'
+      changeType: 'renew' | 'upgrade'
+      invoiceId: string
+      redirectUrl: string
+      amount: number
+      reused: boolean
+    }
+  | { ok: true; kind: 'scheduled'; scheduledTier: string; effectiveAt: string | null }
+  | { ok: true; kind: 'applied'; tier: string } // upgrade pro-rata Rp0 → langsung berlaku
+  | { ok: false; status: number; error: string }
+
+/**
+ * Orkestrasi perubahan paket self-service berdasarkan paket berjalan vs dipilih:
+ *   - tak ada periode aktif / tier sama → RENEW (checkout penuh, +1 periode).
+ *   - tier NAIK (periode masih jalan)   → UPGRADE pro-rata (bayar selisih; tier
+ *       berlaku seketika; periode TAK ditambah). Selisih ≤ 0 → langsung berlaku.
+ *   - tier TURUN (periode masih jalan)  → DOWNGRADE dijadwalkan ke perpanjangan
+ *       berikutnya (tanpa bayar; fitur tetap sampai periode habis).
+ * Harga pro-rata dihitung server (otoritatif).
+ */
+export async function selfServiceChange(args: {
+  tenantId: string
+  planId: string
+  period: InvoicePeriod
+}): Promise<SelfChangeResult> {
+  const db = createAdminClient()
+  const { tenantId, planId, period } = args
+
+  const { data: selPlan } = await db
+    .from('subscription_plans')
+    .select('id, tier, price_monthly, price_yearly, is_active')
+    .eq('id', planId)
+    .maybeSingle()
+  if (!selPlan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+  if (!selPlan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
+
+  const { data: sub } = await db
+    .from('tenant_subscriptions')
+    .select('id, plan_id, status, current_period_start, current_period_end')
+    .eq('tenant_id', tenantId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  const now = new Date()
+  const periodEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
+  const isActiveRunning = !!sub && sub.status === 'active' && periodEnd != null && periodEnd > now
+
+  function asCheckout(
+    res: CreateCheckoutResult,
+    changeType: 'renew' | 'upgrade',
+  ): SelfChangeResult {
+    if (!res.ok) return res
+    return {
+      ok: true,
+      kind: 'checkout',
+      changeType,
+      invoiceId: res.invoiceId,
+      redirectUrl: res.redirectUrl,
+      amount: res.amount,
+      reused: res.reused,
+    }
+  }
+
+  // Tanpa periode aktif berjalan (baru/trial/expired/suspended) → aktivasi/perpanjangan penuh.
+  if (!isActiveRunning || !sub) {
+    return asCheckout(
+      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew' }),
+      'renew',
+    )
+  }
+
+  // Tier paket berjalan.
+  let curPlan: { tier: string; price_monthly: number | null; price_yearly: number | null } | null =
+    null
+  if (sub.plan_id) {
+    const { data } = await db
+      .from('subscription_plans')
+      .select('tier, price_monthly, price_yearly')
+      .eq('id', sub.plan_id)
+      .maybeSingle()
+    curPlan = data ?? null
+  }
+  const curRank = tierRank(curPlan?.tier)
+  const newRank = tierRank(selPlan.tier)
+
+  // Tier sama → perpanjang penuh (+1 periode).
+  if (newRank === curRank) {
+    return asCheckout(
+      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew' }),
+      'renew',
+    )
+  }
+
+  // DOWNGRADE → jadwalkan ke perpanjangan berikutnya (tanpa bayar).
+  if (newRank < curRank) {
+    const nowIso = now.toISOString()
+    const { error } = await db
+      .from('tenant_subscriptions')
+      .update({ scheduled_plan_id: planId, scheduled_plan_set_at: nowIso, updated_at: nowIso })
+      .eq('id', sub.id)
+    if (error) return { ok: false, status: 500, error: error.message }
+    await db.from('subscription_events').insert({
+      tenant_id: tenantId,
+      event_type: 'plan_change_scheduled',
+      payload: { scheduled_plan_id: planId, effective_at: sub.current_period_end, from_plan_id: sub.plan_id },
+    })
+    return { ok: true, kind: 'scheduled', scheduledTier: selPlan.tier, effectiveAt: sub.current_period_end }
+  }
+
+  // UPGRADE → pro-rata sisa periode; tier berlaku seketika, periode tak ditambah.
+  const startMs = sub.current_period_start ? Date.parse(sub.current_period_start) : NaN
+  const endMs = periodEnd.getTime()
+  const totalMs = Number.isFinite(startMs) && endMs > startMs ? endMs - startMs : null
+  const isYearly = totalMs != null ? totalMs > 60 * DAY_MS : period === 'yearly'
+  const remMs = Math.max(0, endMs - now.getTime())
+  const frac = totalMs != null ? Math.max(0, Math.min(1, remMs / totalMs)) : 0
+  const oldPrice = Number((isYearly ? curPlan?.price_yearly : curPlan?.price_monthly) ?? 0)
+  const newPrice = Number((isYearly ? selPlan.price_yearly : selPlan.price_monthly) ?? 0)
+  const prorated = Math.max(0, Math.round((newPrice - oldPrice) * frac))
+  const upgPeriod: InvoicePeriod = isYearly ? 'yearly' : 'monthly'
+
+  // Selisih ≤ 0 (mis. harga sama) → langsung berlaku tanpa bayar.
+  if (prorated <= 0) {
+    const nowIso = now.toISOString()
+    await db
+      .from('tenant_subscriptions')
+      .update({ plan_id: planId, scheduled_plan_id: null, scheduled_plan_set_at: null, updated_at: nowIso })
+      .eq('id', sub.id)
+    await db.from('tenants').update({ plan_tier: selPlan.tier, updated_at: nowIso }).eq('id', tenantId)
+    await db.from('subscription_events').insert({
+      tenant_id: tenantId,
+      event_type: 'plan_changed',
+      payload: { plan_id: planId, tier: selPlan.tier, prorated: 0 },
+    })
+    try {
+      after(() => syncStockTenant(tenantId, 'plan_changed'))
+    } catch {
+      /* di luar request scope — reconcile menambal */
+    }
+    return { ok: true, kind: 'applied', tier: selPlan.tier }
+  }
+
+  return asCheckout(
+    await createSubscriptionCheckout({
+      tenantId,
+      planId,
+      period: upgPeriod,
+      changeType: 'upgrade',
+      amountOverride: prorated,
+    }),
+    'upgrade',
+  )
+}
+
+/** Batalkan downgrade terjadwal (tenant berubah pikiran). Idempoten. */
+export async function cancelScheduledChange(
+  tenantId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const db = createAdminClient()
+  const { data: sub } = await db
+    .from('tenant_subscriptions')
+    .select('id, scheduled_plan_id')
+    .eq('tenant_id', tenantId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (!sub?.scheduled_plan_id) return { ok: true } // tak ada yang dibatalkan
+  const nowIso = new Date().toISOString()
+  const { error } = await db
+    .from('tenant_subscriptions')
+    .update({ scheduled_plan_id: null, scheduled_plan_set_at: null, updated_at: nowIso })
+    .eq('id', sub.id)
+  if (error) return { ok: false, error: error.message }
+  await db
+    .from('subscription_events')
+    .insert({ tenant_id: tenantId, event_type: 'plan_change_cancelled', payload: { manual: true } })
+  return { ok: true }
+}
+
 // ── Webhook / confirm side ───────────────────────────────────────────────────
 
 /**
@@ -231,7 +442,7 @@ export async function markInvoicePaid(args: {
     })
     .eq('midtrans_order_id', args.midtransOrderId)
     .neq('status', 'paid')
-    .select('id, tenant_id, subscription_id, plan_id, period, amount')
+    .select('id, tenant_id, subscription_id, plan_id, period, amount, change_type')
     .maybeSingle()
 
   if (error) {
@@ -251,30 +462,38 @@ export async function markInvoicePaid(args: {
     planTier = plan?.tier ?? null
   }
 
-  // Perpanjang langganan: base = max(now, current_period_end).
+  // Perpanjang/aktivasi: +1 periode. Upgrade pro-rata: ganti tier saja, periode
+  // TIDAK ditambah (tenant cuma bayar selisih untuk sisa periode berjalan).
   if (inv.subscription_id) {
+    const isUpgrade = inv.change_type === 'upgrade'
     const { data: sub } = await db
       .from('tenant_subscriptions')
       .select('current_period_start, current_period_end')
       .eq('id', inv.subscription_id)
       .maybeSingle()
 
-    const now = new Date(nowIso)
-    const prevEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
-    const base = prevEnd && prevEnd > now ? prevEnd : now
-    const newEnd = inv.period === 'yearly' ? addYears(base, 1) : addMonths(base, 1)
+    const subUpdate: Record<string, unknown> = {
+      status: 'active',
+      plan_id: inv.plan_id,
+      grace_period_ends_at: null,
+      cancelled_at: null,
+      // Pembayaran apa pun membatalkan downgrade terjadwal (tenant pilih paket ini).
+      scheduled_plan_id: null,
+      scheduled_plan_set_at: null,
+      updated_at: nowIso,
+    }
+    if (!isUpgrade) {
+      const now = new Date(nowIso)
+      const prevEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
+      const base = prevEnd && prevEnd > now ? prevEnd : now
+      const newEnd = inv.period === 'yearly' ? addYears(base, 1) : addMonths(base, 1)
+      subUpdate.current_period_start = sub?.current_period_start ?? nowIso
+      subUpdate.current_period_end = newEnd.toISOString()
+    }
 
     const { error: subErr } = await db
       .from('tenant_subscriptions')
-      .update({
-        status: 'active',
-        plan_id: inv.plan_id,
-        current_period_start: sub?.current_period_start ?? nowIso,
-        current_period_end: newEnd.toISOString(),
-        grace_period_ends_at: null,
-        cancelled_at: null,
-        updated_at: nowIso,
-      })
+      .update(subUpdate)
       .eq('id', inv.subscription_id)
     if (subErr) console.error('[billing] update subscription error:', subErr.message)
   }
