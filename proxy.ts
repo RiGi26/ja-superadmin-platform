@@ -12,6 +12,7 @@ export async function proxy(request: NextRequest) {
   //   - /api/billing/webhook        signature Midtrans
   //   - /api/billing/confirm        dipanggil halaman publik (rate-limited)
   //   - /api/billing/checkout-self  token HMAC bertanda tangan (Slice C)
+  //   - /api/tenants/provision      HMAC BILLING_SYNC_SECRET (signup tenant Stock)
   // CATATAN: /api/billing/checkout & /lifecycle TETAP di-gate (dipakai dasbor
   // superadmin yang sudah login; keduanya juga verifySuperadmin sendiri).
   if (
@@ -19,6 +20,7 @@ export async function proxy(request: NextRequest) {
     pathname === '/api/billing/webhook' ||
     pathname === '/api/billing/confirm' ||
     pathname === '/api/billing/checkout-self' ||
+    pathname === '/api/tenants/provision' || // HMAC self-auth (provisioning lintas-repo)
     pathname.startsWith('/api/public') || // read-only public data (e.g. plan prices)
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {
