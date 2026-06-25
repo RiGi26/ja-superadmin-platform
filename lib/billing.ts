@@ -318,6 +318,15 @@ export async function markInvoicePaid(args: {
   ])
   if (evErr) console.error('[billing] subscription_events insert error:', evErr.message)
 
+  // Propagate to the Stock portal cache on activation. Lives here (not just in the
+  // webhook) so EVERY paid path triggers it — webhook AND /api/billing/confirm
+  // (the Snap finish-callback poll, which often wins the race). No-op for non-stock.
+  try {
+    after(() => syncStockTenant(inv.tenant_id, 'subscription_activated'))
+  } catch {
+    // after() outside a request scope — skip; reconcile/webhook covers it.
+  }
+
   return { firstTransition: true, tenantId: inv.tenant_id }
 }
 
