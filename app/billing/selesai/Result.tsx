@@ -75,7 +75,7 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
       <Shell
         icon={<CheckCircle2 className="size-12 text-green-500" />}
         title="Pembayaran berhasil"
-        desc="Langganan Anda sudah aktif. Terima kasih telah berlangganan Japan Arena."
+        desc="Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka."
       />
     )
   }

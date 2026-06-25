@@ -15,10 +15,12 @@ interface Props {
 }
 
 const PLATFORM_OPTIONS = [
-  { value: 'lms',      label: 'Japan Arena LMS' },
-  { value: 'clinic',   label: 'Japan Arena Clinic' },
-  { value: 'pharmacy', label: 'Japan Arena Pharmacy' },
-  { value: 'jastip',   label: 'Japan Arena Jastip' },
+  { value: 'lms',      label: 'Webzoka LMS' },
+  { value: 'clinic',   label: 'Webzoka Clinic' },
+  { value: 'pharmacy', label: 'Webzoka Pharmacy' },
+  { value: 'jastip',   label: 'Webzoka Jastip' },
+  { value: 'travel',   label: 'Webzoka Travel' },
+  { value: 'stock',    label: 'Portal Operasi (Stock)' },
 ]
 
 const PLATFORM_SHORT: Record<string, string> = {

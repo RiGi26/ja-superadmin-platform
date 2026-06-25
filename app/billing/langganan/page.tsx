@@ -11,10 +11,12 @@ import { ShieldX } from 'lucide-react'
  */
 
 const PLATFORM_LABEL: Record<string, string> = {
-  lms: 'Japan Arena LMS',
-  clinic: 'Japan Arena Clinic',
-  pharmacy: 'Japan Arena Pharmacy',
-  jastip: 'Japan Arena Jastip',
+  lms: 'Webzoka LMS',
+  clinic: 'Webzoka Clinic',
+  pharmacy: 'Webzoka Pharmacy',
+  jastip: 'Webzoka Jastip',
+  travel: 'Webzoka Travel',
+  stock: 'Portal Operasi (Stock)',
 }
 
 function Invalid({ title, desc }: { title: string; desc: string }) {
@@ -67,7 +69,7 @@ export default async function LanggananPage({
     return (
       <Invalid
         title="Akun tidak ditemukan"
-        desc="Data tenant untuk tautan ini tidak ditemukan. Hubungi tim Japan Arena."
+        desc="Data tenant untuk tautan ini tidak ditemukan. Hubungi tim Webzoka."
       />
     )
   }
@@ -97,7 +99,7 @@ export default async function LanggananPage({
     return (
       <Invalid
         title="Belum ada paket"
-        desc="Belum ada paket langganan yang tersedia untuk akun Anda. Hubungi tim Japan Arena untuk bantuan."
+        desc="Belum ada paket langganan yang tersedia untuk akun Anda. Hubungi tim Webzoka untuk bantuan."
       />
     )
   }

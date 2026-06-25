@@ -6,8 +6,9 @@ import { addDays } from 'date-fns'
 
 
 const PLATFORM_LABEL: Record<string, string> = {
-  lms: 'Japan Arena LMS', clinic: 'Japan Arena Clinic',
-  pharmacy: 'Japan Arena Pharmacy', jastip: 'Japan Arena Jastip',
+  lms: 'Webzoka LMS', clinic: 'Webzoka Clinic',
+  pharmacy: 'Webzoka Pharmacy', jastip: 'Webzoka Jastip',
+  travel: 'Webzoka Travel', stock: 'Portal Operasi (Stock)',
 }
 
 export async function POST(request: Request) {
@@ -151,7 +152,7 @@ export async function POST(request: Request) {
           </div>
           <p style="font-size: 13px; color: #777;">Silakan login dan ganti password setelah masuk pertama kali.</p>
           <p style="font-size: 13px; color: #777;">Butuh bantuan? Hubungi kami via WhatsApp.</p>
-          <p style="margin-top: 24px; font-size: 12px; color: #aaa;">Tim JapanarEna Corp</p>
+          <p style="margin-top: 24px; font-size: 12px; color: #aaa;">Tim Webzoka</p>
         </div>
       `,
     })

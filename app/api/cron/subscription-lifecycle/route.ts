@@ -163,10 +163,10 @@ async function sendReminderEmail(
       html: `
         <div style="font-family:sans-serif;max-width:520px;margin:0 auto;color:#1a1a1a;">
           <h2 style="color:#111;">Halo${name ? ` ${name}` : ''},</h2>
-          <p>Langganan Japan Arena untuk lembaga Anda akan <strong>berakhir pada ${endLabel}</strong>
+          <p>Langganan Webzoka untuk lembaga Anda akan <strong>berakhir pada ${endLabel}</strong>
              (${daysLeft} hari lagi). Perpanjang sekarang agar akses tidak terputus.</p>
           <div style="margin:22px 0;">${cta}</div>
-          <p style="font-size:12px;color:#aaa;margin-top:24px;">Tim Japan Arena</p>
+          <p style="font-size:12px;color:#aaa;margin-top:24px;">Tim Webzoka</p>
         </div>
       `,
     })

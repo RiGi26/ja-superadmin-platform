@@ -59,7 +59,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8 text-center">
           <img src="/logo-rocket.png" alt="Logo Webzoka" className="h-16 w-16 object-contain mb-4" />
-          <h1 className="text-xl font-semibold text-foreground">JapanArena Corp Superadmin</h1>
+          <h1 className="text-xl font-semibold text-foreground">Webzoka Superadmin</h1>
           <p className="text-sm text-muted-foreground mt-1">Internal access only</p>
         </div>
 
@@ -122,7 +122,7 @@ export default function LoginPage() {
         </Card>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          JapanArena Corp · Internal Tool
+          Webzoka · Internal Tool
         </p>
       </div>
     </div>
