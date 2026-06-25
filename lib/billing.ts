@@ -10,9 +10,11 @@
 // sini = langganan tenant (tenant bayar platform ke JapanArena).
 // ============================================================
 
+import { after } from 'next/server'
 import { addMonths, addYears } from 'date-fns'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getPlatformMidtrans } from '@/lib/midtrans'
+import { syncStockTenant } from '@/lib/stock-sync'
 import type { InvoicePeriod } from '@/types/billing'
 
 // ── createSubscriptionCheckout ───────────────────────────────────────────────
@@ -213,7 +215,7 @@ export async function markInvoicePaid(args: {
   midtransOrderId: string
   paymentType?: string | null
   raw?: unknown
-}): Promise<{ firstTransition: boolean }> {
+}): Promise<{ firstTransition: boolean; tenantId?: string }> {
   const db = createAdminClient()
   const nowIso = new Date().toISOString()
 
@@ -316,7 +318,7 @@ export async function markInvoicePaid(args: {
   ])
   if (evErr) console.error('[billing] subscription_events insert error:', evErr.message)
 
-  return { firstTransition: true }
+  return { firstTransition: true, tenantId: inv.tenant_id }
 }
 
 // ── Lifecycle manual (superadmin) ────────────────────────────────────────────
@@ -470,6 +472,13 @@ export async function applyLifecycleAction(args: {
     payload: { ...payload, subscription_id: sub?.id ?? null },
   })
   if (evErr) console.error('[billing] lifecycle event insert error:', evErr.message)
+
+  // Propagate to the Stock portal cache (no-op for non-stock tenants).
+  try {
+    after(() => syncStockTenant(tenantId, event))
+  } catch {
+    // after() outside a request scope (e.g. a script) — skip; reconcile covers it.
+  }
 
   return { ok: true, event }
 }
