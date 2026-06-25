@@ -1,8 +1,7 @@
-import { NextResponse, after } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyMidtransSignature, normalizeOrderMode } from '@/lib/midtrans'
 import { markInvoicePaid, markInvoiceStatus } from '@/lib/billing'
-import { syncStockTenant } from '@/lib/stock-sync'
 
 /**
  * POST /api/billing/webhook — notifikasi Midtrans untuk invoice langganan.
@@ -54,13 +53,9 @@ export async function POST(request: Request) {
     const isFailed = ['deny', 'cancel', 'expire'].includes(transaction_status)
 
     if (isPaid) {
-      const res = await markInvoicePaid({ midtransOrderId: order_id, paymentType: payment_type, raw: body })
-      // Mirror the new entitlement to the Stock portal (skips non-stock tenants),
-      // fire-and-forget so the webhook ACKs Midtrans fast. Reconcile = safety net.
-      if (res.firstTransition && res.tenantId) {
-        const tid = res.tenantId
-        after(() => syncStockTenant(tid, 'subscription_activated'))
-      }
+      // markInvoicePaid triggers the Stock entitlement sync on first transition
+      // (centralized there so the confirm-poll path also covers it).
+      await markInvoicePaid({ midtransOrderId: order_id, paymentType: payment_type, raw: body })
     } else if (isPending) {
       await markInvoiceStatus({
         midtransOrderId: order_id,
