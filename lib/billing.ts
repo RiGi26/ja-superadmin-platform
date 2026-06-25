@@ -155,7 +155,7 @@ export async function createSubscriptionCheckout(args: {
         id: `${plan.platform}-${plan.tier}-${period}`,
         price: amount,
         quantity: 1,
-        name: `Langganan ${plan.name} (${periodLabel}) — Japan Arena`.slice(0, 50),
+        name: `Langganan ${plan.name} (${periodLabel}) — Webzoka`.slice(0, 50),
       },
     ],
     customer_details: {

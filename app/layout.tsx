@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'JapanArena Corp Superadmin',
-  description: 'Internal superadmin dashboard — JapanArena Corp',
+  title: 'Webzoka Superadmin',
+  description: 'Internal superadmin dashboard — Webzoka',
 };
 
 export default function RootLayout({

@@ -11,7 +11,7 @@ export default function UnauthorizedPage() {
         </div>
         <h1 className="text-xl font-semibold text-foreground mb-2">Akses Ditolak</h1>
         <p className="text-sm text-muted-foreground mb-8">
-          Halaman ini hanya untuk superadmin JapanarEna Corp.
+          Halaman ini hanya untuk superadmin Webzoka.
         </p>
         <Button variant="outline" className="border-border text-foreground hover:bg-muted" render={<Link href="/login" />}>
           Kembali ke Login

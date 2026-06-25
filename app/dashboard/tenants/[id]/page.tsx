@@ -8,8 +8,9 @@ import { ArrowLeft, Building2, User, CreditCard, Clock, Users, AlertTriangle } f
 import { TenantLifecycleActions, type PlanOption } from '@/components/dashboard/TenantLifecycleActions'
 
 const PLATFORM_LABEL: Record<string, string> = {
-  lms: 'Japan Arena LMS', clinic: 'Japan Arena Clinic',
-  pharmacy: 'Japan Arena Pharmacy', jastip: 'Japan Arena Jastip',
+  lms: 'Webzoka LMS', clinic: 'Webzoka Clinic',
+  pharmacy: 'Webzoka Pharmacy', jastip: 'Webzoka Jastip',
+  travel: 'Webzoka Travel', stock: 'Portal Operasi (Stock)',
 }
 const STATUS_BADGE: Record<string, string> = {
   active   : 'bg-green-950 text-green-300 border-green-800',
