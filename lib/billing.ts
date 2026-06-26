@@ -14,7 +14,7 @@ import { after } from 'next/server'
 import { addMonths, addYears } from 'date-fns'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getPlatformMidtrans } from '@/lib/midtrans'
-import { syncStockTenant } from '@/lib/stock-sync'
+import { syncTenantPortal } from '@/lib/lms-sync'
 import type { InvoicePeriod } from '@/types/billing'
 
 // Peringkat tier (lintas-platform, by enum subscription_plans.tier). Dipakai
@@ -370,7 +370,7 @@ export async function selfServiceChange(args: {
       payload: { plan_id: planId, tier: selPlan.tier, prorated: 0 },
     })
     try {
-      after(() => syncStockTenant(tenantId, 'plan_changed'))
+      after(() => syncTenantPortal(tenantId, 'plan_changed'))
     } catch {
       /* di luar request scope — reconcile menambal */
     }
@@ -537,11 +537,12 @@ export async function markInvoicePaid(args: {
   ])
   if (evErr) console.error('[billing] subscription_events insert error:', evErr.message)
 
-  // Propagate to the Stock portal cache on activation. Lives here (not just in the
-  // webhook) so EVERY paid path triggers it — webhook AND /api/billing/confirm
-  // (the Snap finish-callback poll, which often wins the race). No-op for non-stock.
+  // Propagate to the tenant's portal cache on activation (Stock or LMS). Lives here
+  // (not just in the webhook) so EVERY paid path triggers it — webhook AND
+  // /api/billing/confirm (the Snap finish-callback poll, which often wins the race).
+  // No-op for platforms without a portal sync yet.
   try {
-    after(() => syncStockTenant(inv.tenant_id, 'subscription_activated'))
+    after(() => syncTenantPortal(inv.tenant_id, 'subscription_activated'))
   } catch {
     // after() outside a request scope — skip; reconcile/webhook covers it.
   }
@@ -701,9 +702,9 @@ export async function applyLifecycleAction(args: {
   })
   if (evErr) console.error('[billing] lifecycle event insert error:', evErr.message)
 
-  // Propagate to the Stock portal cache (no-op for non-stock tenants).
+  // Propagate to the tenant's portal cache (Stock/LMS; no-op for other platforms).
   try {
-    after(() => syncStockTenant(tenantId, event))
+    after(() => syncTenantPortal(tenantId, event))
   } catch {
     // after() outside a request scope (e.g. a script) — skip; reconcile covers it.
   }
