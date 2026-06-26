@@ -116,7 +116,7 @@ Probe cepat: `POST {portal}/api/billing/sync` tanpa tanda tangan → **401**=sec
 |---|---|---|---|---|
 | Stock | B | ✅ LIVE | ✅ LIVE | **Penuh** (referensi) |
 | LMS | A | ✅ LIVE | ➖ (sengaja — status only) | **Live (ringan)** |
-| Klinik | — | ❌ belum (CTA pricing sudah subscribe → perlu gate/perbaiki) | ❌ (tabel entitlements migrasi 009 belum dipakai) | **Belum** (target berikutnya) |
+| Klinik | B (gating ✅) | ❌ belum (Fase B; `linked_tenant_id` siap) | ✅ Fase A LIVE (entitlements+guards, PR clinic#8) | **Billing pending** — target `/wire-self-billing` |
 | Farmasi | — | ❌ (CTA = WhatsApp manual) | ❌ | **Belum** |
 | Jastip | — | ❌ (prototype, no backend) | ❌ | **Belum** |
 | Travel/Rental | — | ❌ (CTA pricing ada; app beda arsitektur) | ❌ | **Belum** |
