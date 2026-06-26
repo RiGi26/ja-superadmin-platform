@@ -187,7 +187,7 @@ export function CreateTenantForm({ plans, linkableTenants }: Props) {
               className="bg-zinc-800 border-zinc-700 text-zinc-200 font-mono"
             />
             {slug && (
-              <p className="text-xs text-zinc-600">Preview: {slug}.japanarenacorp.com</p>
+              <p className="text-xs text-zinc-600">Preview: {slug}.webzoka.com</p>
             )}
           </div>
         </CardContent>
