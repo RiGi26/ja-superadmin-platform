@@ -109,13 +109,15 @@ Probe cepat: `POST {portal}/api/billing/sync` tanpa tanda tangan → **401**=sec
 8. **`selfServiceChange` untuk tenant trial baru** = jalur `renew` (checkout harga **penuh**), karena `isActiveRunning` butuh `status==='active'`. Itu yang bikin direct-pay menghasilkan Snap penuh — fitur, bukan bug.
 9. **Preview branch Vercel terkunci SSO** → tak bisa browser-verify pra-merge. Copy-only = static+tsc; browser-verify di PROD pasca-merge.
 10. **Region mismatch** Vercel↔Supabase = +150–250ms/round-trip. Samakan `vercel.json` regions.
+11. **Core DB pindah → `CORE_SUPABASE_URL`/`_SERVICE_ROLE_KEY` portal basi** (drift SENYAP). Tiap kali superadmin pindah Core DB (cth. shared-lms→jexp→`hxhu`), TIAP portal yg wire Core WAJIB di-update env-nya + redeploy. Mirror best-effort → kalau salah-arah/skip, tenant tak mendarat di Core yg dibaca `checkout-self` → **404 → checkout_failed**, padahal UX kelihatan jalan sampai serah-terima. Cek cepat: query Core `select max(created_at) from tenants where platform='<portal>'` — kalau jauh ketinggalan, env portal salah-arah. (LMS 2026-06-26.)
+12. **Portal pakai custom domain canonical (`<sub>.webzoka.com`)** → UAT di `*.vercel.app` bisa kena cookie cross-domain race (auto-login→checkout via `window.location` → `requireTenant` null → fallback `appOrigin()` custom domain → cert-wall firewall lokal). Workaround UAT: login bersih di vercel.app lalu hit endpoint checkout langsung (sukses → Snap=midtrans). Alur user asli (di custom domain) tak kena. Cert error custom-domain = artefak firewall, BUKAN bug.
 
 ## 7. Matriks status portal (perbarui tiap wiring)
 
 | Portal | Varian | Alur duit (register→bayar→aktif) | Gating fitur per-tier | Status |
 |---|---|---|---|---|
 | Stock | B | ✅ LIVE | ✅ LIVE | **Penuh** (referensi) |
-| LMS | A | ✅ LIVE | ➖ (sengaja — status only) | **Live (ringan)** |
+| LMS | A | ✅ LIVE + UX parity (auto-login/direct-pay/redaksi/badge, PR lms#16) | ➖ (sengaja — status only) | **Penuh (Varian A)** |
 | Klinik | B (gating ✅) | ❌ belum (Fase B; `linked_tenant_id` siap) | ✅ Fase A LIVE (entitlements+guards, PR clinic#8) | **Billing pending** — target `/wire-self-billing` |
 | Farmasi | — | ❌ (CTA = WhatsApp manual) | ❌ | **Belum** |
 | Jastip | — | ❌ (prototype, no backend) | ❌ | **Belum** |
