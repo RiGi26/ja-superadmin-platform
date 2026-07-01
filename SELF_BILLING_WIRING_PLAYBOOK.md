@@ -116,12 +116,14 @@ Probe cepat: `POST {portal}/api/billing/sync` tanpa tanda tangan → **401**=sec
 
 | Portal | Varian | Alur duit (register→bayar→aktif) | Gating fitur per-tier | Status |
 |---|---|---|---|---|
-| Stock | B | ✅ LIVE | ✅ LIVE | **Penuh** (referensi) |
-| LMS | A | ✅ LIVE + UX parity (auto-login/direct-pay/redaksi/badge, PR lms#16) | ➖ (sengaja — status only) | **Penuh (Varian A)** |
-| Klinik | B (gating ✅) | ❌ belum (Fase B; `linked_tenant_id` siap) | ✅ Fase A LIVE (entitlements+guards, PR clinic#8) | **Billing pending** — target `/wire-self-billing` |
-| Farmasi | — | ❌ (CTA = WhatsApp manual) | ❌ | **Belum** |
+| Stock | B | ✅ LIVE | ✅ LIVE | **Penuh** (referensi UI) |
+| LMS | A | ✅ LIVE + UX parity (auto-login/direct-pay/redaksi/badge, PR lms#16); billing UI diselaraskan ke biru (PR lms#21) | ➖ (sengaja — status only) | **Penuh (Varian A)** |
+| Klinik | B (gating ✅) | ⏳ halaman `/admin/langganan` + upgrade (mint→Snap) LIVE (PR clinic#10); butuh env + `linked_tenant_id` terisi | ✅ LIVE (entitlements+guards) | **Billing page LIVE (UI seragam)** — checkout pending env/linked |
+| Farmasi | B (gating ✅) | ⏳ halaman `/billing` + upgrade LIVE (PR pharmacy#7); butuh env; UAT prod render+guard PASS | ✅ LIVE | **Billing page LIVE (UI seragam)** — checkout pending env |
 | Jastip | — | ❌ (prototype, no backend) | ❌ | **Belum** |
-| Travel/Rental | — | ❌ (CTA pricing ada; app beda arsitektur) | ❌ | **Belum** |
+| Travel/Rental | B (gating ✅) | ⏳ halaman `/admin/langganan` (platform Core=`travel`) + upgrade LIVE (PR rental#6); butuh env; UAT Snap owner | ✅ LIVE | **Billing page LIVE (UI seragam)** — checkout pending env, UAT owner |
+
+> **UI seragam (SOP LANGKAH 2.5 di skill):** semua halaman billing in-app ikut standar kanonik Stock — aksen biru `#0071E3`, kartu `rounded-[20px]`, tombol pil, badge "Paling Populer" biru, warna status semantik dipertahankan. Banner gate (`UpsellBanner`/`ExpiredBanner`) di semua portal Tailwind-only & CTA → halaman billing in-app (bukan WhatsApp-only). **Dikecualikan:** websitebuilder (marketplace add-on) & superadmin (ITU checkout pusat). Rental UpsellBanner dikonversi inline→Tailwind.
 
 ## 8. UAT (gerbang "selesai")
 
