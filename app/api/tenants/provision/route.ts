@@ -60,6 +60,11 @@ export async function POST(request: Request) {
 
   const platform = typeof body.platform === 'string' ? body.platform : ''
   const linkedTenantId = typeof body.linked_tenant_id === 'string' ? body.linked_tenant_id : ''
+  // Optional caller-provided Core id. When present, the Core tenant is created with
+  // this exact id (SAME-ID model, e.g. Pharmacy/LMS where portal id == Core id);
+  // when absent, Core generates its own id (NEW-ID model, e.g. Stock/Clinic which
+  // store the returned id as linked_tenant_id). Both flow through this one endpoint.
+  const providedId = typeof body.tenant_id === 'string' && body.tenant_id.trim() ? body.tenant_id.trim() : null
   const name = typeof body.name === 'string' ? body.name.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim() : null
   const phone = typeof body.phone === 'string' ? body.phone.trim() : null
@@ -95,6 +100,7 @@ export async function POST(request: Request) {
   const { data: tenant, error: tErr } = await db
     .from('tenants')
     .insert({
+      ...(providedId ? { id: providedId } : {}),
       name,
       slug,
       platform,
