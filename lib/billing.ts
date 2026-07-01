@@ -15,6 +15,7 @@ import { addMonths, addYears } from 'date-fns'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getPlatformMidtrans } from '@/lib/midtrans'
 import { syncTenantPortal } from '@/lib/lms-sync'
+import { getPromoCampaign, isCampaignActive, type AdminDb } from '@/lib/platform-settings'
 import type { InvoicePeriod } from '@/types/billing'
 
 // Peringkat tier (lintas-platform, by enum subscription_plans.tier). Dipakai
@@ -25,6 +26,54 @@ function tierRank(tier?: string | null): number {
   return TIER_RANK[tier ?? ''] ?? 0
 }
 const DAY_MS = 86_400_000
+
+// ── Promo kampanye (Fase 2) ──────────────────────────────────────────────────
+// Diskon 50% × 3 bulan pertama, KHUSUS tier Pro (enterprise), BULANAN saja,
+// OTOMATIS saat kampanye aktif. Dihitung server-side; portal (LMS/Stock) tak tahu.
+
+// Berapa invoice promo (enterprise bulanan berpromo) yang SUDAH dibayar tenant.
+// 1 invoice paid berpromo = 1 "bulan" promo terpakai → cap di campaign.months.
+export async function countPaidPromoInvoices(db: AdminDb, tenantId: string): Promise<number> {
+  const { data, error } = await db
+    .from('subscription_invoices')
+    .select('id')
+    .eq('tenant_id', tenantId)
+    .eq('status', 'paid')
+    .gt('promo_discount_percent', 0)
+  if (error) {
+    console.error(`[promo] countPaidPromoInvoices gagal: ${error.message}`)
+    return 0
+  }
+  return (data ?? []).length
+}
+
+type ResolvedPromo = { amountOverride: number; promoCode: string; promoDiscountPercent: number }
+
+// Tentukan promo untuk sebuah checkout. null = tak berlaku. Aturan:
+// BULANAN saja · tier == tier kampanye · kampanye aktif (dalam window) · tenant
+// belum pakai `months` invoice promo. Jalur upgrade pro-rata TIDAK memanggil ini.
+async function resolvePromoForCheckout(args: {
+  db: AdminDb
+  tenantId: string
+  tier: string | null | undefined
+  period: InvoicePeriod
+  priceMonthly: number | null | undefined
+}): Promise<ResolvedPromo | null> {
+  const { db, tenantId, tier, period, priceMonthly } = args
+  if (period !== 'monthly') return null
+  const campaign = await getPromoCampaign(db)
+  if (!isCampaignActive(campaign)) return null
+  if (tier !== campaign.tier) return null
+  const base = Math.round(Number(priceMonthly ?? 0))
+  if (!Number.isFinite(base) || base <= 0) return null
+  const pct = Math.max(0, Math.min(100, Math.round(campaign.discountPct)))
+  if (pct <= 0) return null
+  const used = await countPaidPromoInvoices(db, tenantId)
+  if (used >= campaign.months) return null
+  const amountOverride = Math.round(base * (1 - pct / 100))
+  if (amountOverride <= 0) return null
+  return { amountOverride, promoCode: campaign.code, promoDiscountPercent: pct }
+}
 
 // ── createSubscriptionCheckout ───────────────────────────────────────────────
 
@@ -49,9 +98,13 @@ export async function createSubscriptionCheckout(args: {
   // Nominal pro-rata dihitung pemanggil (selfServiceChange); bila ada, dipakai
   // sebagai harga invoice menggantikan harga penuh paket.
   amountOverride?: number
+  // Penanda promo (Fase 2) — bila diisi, disimpan di invoice untuk audit + hitung
+  // kuota. `amountOverride` yang membawa nominal terdiskon; kolom ini metadata.
+  promoCode?: string
+  promoDiscountPercent?: number
 }): Promise<CreateCheckoutResult> {
   const db = createAdminClient()
-  const { tenantId, planId, period, changeType = 'renew', amountOverride } = args
+  const { tenantId, planId, period, changeType = 'renew', amountOverride, promoCode, promoDiscountPercent } = args
 
   // 1. Tenant harus ada.
   const { data: tenant } = await db
@@ -139,6 +192,8 @@ export async function createSubscriptionCheckout(args: {
       status: 'unpaid',
       midtrans_mode: mode,
       change_type: changeType,
+      promo_code: promoCode ?? null,
+      promo_discount_percent: promoDiscountPercent ?? null,
     })
     .select('id')
     .single()
@@ -181,7 +236,10 @@ export async function createSubscriptionCheckout(args: {
         id: `${plan.platform}-${plan.tier}-${period}`,
         price: amount,
         quantity: 1,
-        name: `Langganan ${plan.name} (${periodLabel}) — Webzoka`.slice(0, 50),
+        name: (promoDiscountPercent
+          ? `Langganan ${plan.name} (${periodLabel}) -${promoDiscountPercent}%`
+          : `Langganan ${plan.name} (${periodLabel}) — Webzoka`
+        ).slice(0, 50),
       },
     ],
     customer_details: {
@@ -270,6 +328,16 @@ export async function selfServiceChange(args: {
   if (!selPlan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
   if (!selPlan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
 
+  // Promo kampanye (Fase 2) — dihitung sekali; hanya menempel di jalur RENEW
+  // (aktivasi/perpanjangan penuh). Upgrade pro-rata TIDAK dapat promo.
+  const promo = await resolvePromoForCheckout({
+    db,
+    tenantId,
+    tier: selPlan.tier,
+    period,
+    priceMonthly: selPlan.price_monthly,
+  })
+
   const { data: sub } = await db
     .from('tenant_subscriptions')
     .select('id, plan_id, status, current_period_start, current_period_end')
@@ -301,7 +369,7 @@ export async function selfServiceChange(args: {
   // Tanpa periode aktif berjalan (baru/trial/expired/suspended) → aktivasi/perpanjangan penuh.
   if (!isActiveRunning || !sub) {
     return asCheckout(
-      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew' }),
+      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew', ...(promo ?? {}) }),
       'renew',
     )
   }
@@ -323,7 +391,7 @@ export async function selfServiceChange(args: {
   // Tier sama → perpanjang penuh (+1 periode).
   if (newRank === curRank) {
     return asCheckout(
-      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew' }),
+      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew', ...(promo ?? {}) }),
       'renew',
     )
   }
