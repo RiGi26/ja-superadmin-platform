@@ -14,6 +14,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { syncStockTenant } from '@/lib/stock-sync'
 import { syncPharmacyTenant } from '@/lib/pharmacy-sync'
 import { syncTravelTenant } from '@/lib/travel-sync'
+import { syncClinicTenant } from '@/lib/clinic-sync'
 
 // Core enum tier → LMS plan_tier. LMS portal uses starter/growth/pro (display
 // Starter/Growth/Pro); Core's enterprise → LMS pro, Core's pro → LMS growth.
@@ -115,8 +116,8 @@ export async function syncLmsTenant(tenantId: string, event = 'core_sync'): Prom
 
 /**
  * Route a subscription-change sync to the tenant's portal (Core = SoR). No-op for
- * platforms without a portal sync yet (clinic/pharmacy/jastip — added later). Each
- * sync also self-filters by platform, so this is defence-in-depth, not the only gate.
+ * platforms without a portal sync yet (jastip — added later). Each sync also
+ * self-filters by platform, so this is defence-in-depth, not the only gate.
  */
 export async function syncTenantPortal(tenantId: string, event = 'core_sync'): Promise<void> {
   try {
@@ -130,6 +131,7 @@ export async function syncTenantPortal(tenantId: string, event = 'core_sync'): P
     if (t?.platform === 'lms') return syncLmsTenant(tenantId, event)
     if (t?.platform === 'pharmacy') return syncPharmacyTenant(tenantId, event)
     if (t?.platform === 'travel') return syncTravelTenant(tenantId, event)
+    if (t?.platform === 'clinic') return syncClinicTenant(tenantId, event)
   } catch (err) {
     console.error('[portal-sync] dispatch error:', err instanceof Error ? err.message : err)
   }
