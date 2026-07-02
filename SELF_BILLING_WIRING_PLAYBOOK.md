@@ -121,7 +121,7 @@ Probe cepat: `POST {portal}/api/billing/sync` tanpa tanda tangan → **401**=sec
 | Klinik | B (gating ✅) | ❌ belum (Fase B; `linked_tenant_id` siap) | ✅ Fase A LIVE (entitlements+guards, PR clinic#8) | **Billing pending** — target `/wire-self-billing` |
 | Farmasi | — | ❌ (CTA = WhatsApp manual) | ❌ | **Belum** |
 | Jastip | — | ❌ (prototype, no backend) | ❌ | **Belum** |
-| Travel/Rental | — | ❌ (CTA pricing ada; app beda arsitektur) | ❌ | **Belum** |
+| Rental | B (same-id) | 🚧 wiring (register→provision `platform='rental'`→direct-pay; Core sudah siap) | ✅ LIVE (entitlements+guards) | **Billing in-progress** (rename `travel`→`rental`) |
 
 ## 8. UAT (gerbang "selesai")
 

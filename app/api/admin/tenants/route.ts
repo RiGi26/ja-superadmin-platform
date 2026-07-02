@@ -8,7 +8,7 @@ import { addDays } from 'date-fns'
 const PLATFORM_LABEL: Record<string, string> = {
   lms: 'Webzoka LMS', clinic: 'Webzoka Clinic',
   pharmacy: 'Webzoka Pharmacy', jastip: 'Webzoka Jastip',
-  travel: 'Webzoka Travel', stock: 'Portal Operasi (Stock)',
+  rental: 'Webzoka Rental', stock: 'Portal Operasi (Stock)',
 }
 
 export async function POST(request: Request) {
