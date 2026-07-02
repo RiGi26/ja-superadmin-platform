@@ -13,7 +13,7 @@ import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { syncStockTenant } from '@/lib/stock-sync'
 import { syncPharmacyTenant } from '@/lib/pharmacy-sync'
-import { syncTravelTenant } from '@/lib/travel-sync'
+import { syncRentalTenant } from '@/lib/rental-sync'
 import { syncClinicTenant } from '@/lib/clinic-sync'
 
 // Core enum tier → LMS plan_tier. LMS portal uses starter/growth/pro (display
@@ -130,7 +130,7 @@ export async function syncTenantPortal(tenantId: string, event = 'core_sync'): P
     if (t?.platform === 'stock') return syncStockTenant(tenantId, event)
     if (t?.platform === 'lms') return syncLmsTenant(tenantId, event)
     if (t?.platform === 'pharmacy') return syncPharmacyTenant(tenantId, event)
-    if (t?.platform === 'travel') return syncTravelTenant(tenantId, event)
+    if (t?.platform === 'rental') return syncRentalTenant(tenantId, event)
     if (t?.platform === 'clinic') return syncClinicTenant(tenantId, event)
   } catch (err) {
     console.error('[portal-sync] dispatch error:', err instanceof Error ? err.message : err)

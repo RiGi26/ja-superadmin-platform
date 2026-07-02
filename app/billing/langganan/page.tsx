@@ -15,7 +15,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   clinic: 'Webzoka Clinic',
   pharmacy: 'Webzoka Pharmacy',
   jastip: 'Webzoka Jastip',
-  travel: 'Webzoka Travel',
+  rental: 'Webzoka Rental',
   stock: 'Portal Operasi (Stock)',
 }
 

@@ -19,7 +19,7 @@ const PLATFORM_OPTIONS = [
   { value: 'clinic',   label: 'Webzoka Clinic' },
   { value: 'pharmacy', label: 'Webzoka Pharmacy' },
   { value: 'jastip',   label: 'Webzoka Jastip' },
-  { value: 'travel',   label: 'Webzoka Travel' },
+  { value: 'rental',   label: 'Webzoka Rental' },
   { value: 'stock',    label: 'Portal Operasi (Stock)' },
 ]
 
