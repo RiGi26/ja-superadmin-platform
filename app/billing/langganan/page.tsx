@@ -17,6 +17,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   jastip: 'Webzoka Jastip',
   travel: 'Webzoka Travel',
   stock: 'Portal Operasi (Stock)',
+  laundry: 'Portal Laundry',
 }
 
 function Invalid({ title, desc }: { title: string; desc: string }) {

@@ -3,17 +3,23 @@ import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 // ============================================================
-// POST /api/tenants/provision — register an external-platform tenant (Stock) in
-// the Core DB so it can be billed. Called by the Stock portal at self-service
-// signup. HMAC-SHA256 over `${ts}\n${nonce}\n${rawBody}` with BILLING_SYNC_SECRET
-// (same scheme as the Stock /api/billing/sync §8). Idempotent on (linked_tenant_id,
-// platform). Grants a 14-day trial = full Pro (enterprise tier). Returns the Core
-// tenant id, which the portal stores and later embeds in the checkout token.
+// POST /api/tenants/provision — register an external-platform tenant (new-id model:
+// Stock, Laundry) in the Core DB so it can be billed. Called by the portal at
+// self-service signup. HMAC-SHA256 over `${ts}\n${nonce}\n${rawBody}` with
+// BILLING_SYNC_SECRET (same scheme as the portal /api/billing/sync §8). Idempotent
+// on (linked_tenant_id, platform). Grants a 14-day trial = full Pro (enterprise
+// tier). Returns the Core tenant id, which the portal stores and later embeds in
+// the checkout token.
 // ============================================================
 export const dynamic = 'force-dynamic'
 
 const MAX_SKEW_MS = 5 * 60_000
 const TRIAL_DAYS = 14
+
+// Portals that self-provision through this route (new-id model — Core mints a fresh
+// tenant id, stored back on the portal as linked_tenant_id). Same-id portals
+// (lms/pharmacy) never call this route. Kept in sync with subscription_plans.platform.
+const SUPPORTED_PLATFORMS = new Set(['stock', 'laundry'])
 
 function verifyHmac(rawBody: string, headers: Headers, secret: string): boolean {
   const ts = headers.get('x-ja-timestamp')
@@ -58,7 +64,7 @@ export async function POST(request: Request) {
   const phone = typeof body.phone === 'string' ? body.phone.trim() : null
   let slug = typeof body.slug === 'string' ? slugify(body.slug) : ''
 
-  if (platform !== 'stock') return NextResponse.json({ error: 'unsupported_platform' }, { status: 400 })
+  if (!SUPPORTED_PLATFORMS.has(platform)) return NextResponse.json({ error: 'unsupported_platform' }, { status: 400 })
   if (!linkedTenantId || !name) return NextResponse.json({ error: 'missing_fields' }, { status: 400 })
   if (!slug) slug = slugify(name) || 'tenant'
 
@@ -68,7 +74,7 @@ export async function POST(request: Request) {
   const { data: existing } = await db
     .from('tenants')
     .select('id')
-    .eq('platform', 'stock')
+    .eq('platform', platform)
     .eq('linked_tenant_id', linkedTenantId)
     .maybeSingle()
   if (existing) {
@@ -79,7 +85,7 @@ export async function POST(request: Request) {
   for (let i = 0; i < 5; i++) {
     const { data: clash } = await db.from('tenants').select('id').eq('slug', slug).maybeSingle()
     if (!clash) break
-    slug = `${slugify(name) || 'stock'}-${Math.random().toString(36).slice(2, 7)}`
+    slug = `${slugify(name) || platform}-${Math.random().toString(36).slice(2, 7)}`
   }
 
   const trialEnds = new Date(Date.now() + TRIAL_DAYS * 24 * 60 * 60 * 1000).toISOString()
@@ -90,14 +96,14 @@ export async function POST(request: Request) {
     .insert({
       name,
       slug,
-      platform: 'stock',
+      platform,
       status: 'trial',
       plan_tier: 'enterprise',
       email,
       phone,
       linked_tenant_id: linkedTenantId,
       trial_ends_at: trialEnds,
-      metadata: { source: 'stock-self-signup' },
+      metadata: { source: `${platform}-self-signup` },
     })
     .select('id')
     .single()
@@ -106,11 +112,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'provision_failed' }, { status: 500 })
   }
 
-  // Trial subscription bound to the stock enterprise plan (authoritative tier).
+  // Trial subscription bound to the platform's enterprise plan (authoritative tier).
   const { data: plan } = await db
     .from('subscription_plans')
     .select('id')
-    .eq('platform', 'stock')
+    .eq('platform', platform)
     .eq('tier', 'enterprise')
     .maybeSingle()
 
@@ -126,7 +132,7 @@ export async function POST(request: Request) {
   await db.from('subscription_events').insert({
     tenant_id: tenant.id,
     event_type: 'trial_started',
-    payload: { source: 'stock-self-signup', linked_tenant_id: linkedTenantId },
+    payload: { source: `${platform}-self-signup`, linked_tenant_id: linkedTenantId },
   })
 
   return NextResponse.json({ core_tenant_id: tenant.id })
