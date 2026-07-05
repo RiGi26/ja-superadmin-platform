@@ -15,6 +15,7 @@ import { syncStockTenant } from '@/lib/stock-sync'
 import { syncPharmacyTenant } from '@/lib/pharmacy-sync'
 import { syncRentalTenant } from '@/lib/rental-sync'
 import { syncClinicTenant } from '@/lib/clinic-sync'
+import { syncLaundryTenant } from '@/lib/laundry-sync'
 
 // Core enum tier → LMS plan_tier. LMS portal uses starter/growth/pro (display
 // Starter/Growth/Pro); Core's enterprise → LMS pro, Core's pro → LMS growth.
@@ -132,6 +133,7 @@ export async function syncTenantPortal(tenantId: string, event = 'core_sync'): P
     if (t?.platform === 'pharmacy') return syncPharmacyTenant(tenantId, event)
     if (t?.platform === 'rental') return syncRentalTenant(tenantId, event)
     if (t?.platform === 'clinic') return syncClinicTenant(tenantId, event)
+    if (t?.platform === 'laundry') return syncLaundryTenant(tenantId, event)
   } catch (err) {
     console.error('[portal-sync] dispatch error:', err instanceof Error ? err.message : err)
   }

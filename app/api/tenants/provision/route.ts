@@ -5,7 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 // ============================================================
 // POST /api/tenants/provision — register an external-platform tenant in the Core
 // DB so it can be billed. Called by a portal at self-service signup (Stock, Clinic,
-// Pharmacy, Rental). HMAC-SHA256 over `${ts}\n${nonce}\n${rawBody}` with
+// Pharmacy, Rental, Laundry). HMAC-SHA256 over `${ts}\n${nonce}\n${rawBody}` with
 // BILLING_SYNC_SECRET (same scheme as each portal's /api/billing/sync). Idempotent
 // on (platform, linked_tenant_id). Grants a 14-day trial = full Pro (enterprise
 // tier). Returns the Core tenant id, which the portal stores and later embeds in
@@ -20,7 +20,7 @@ const TRIAL_DAYS = 14
 // column); this allowlist is the only per-portal gate. Add a portal here once its
 // register→provision flow ships. (LMS mirrors via a direct Core client, not this
 // endpoint, so it is intentionally absent.)
-const SUPPORTED_PLATFORMS = new Set(['stock', 'clinic', 'pharmacy', 'rental'])
+const SUPPORTED_PLATFORMS = new Set(['stock', 'clinic', 'pharmacy', 'rental', 'laundry'])
 
 function verifyHmac(rawBody: string, headers: Headers, secret: string): boolean {
   const ts = headers.get('x-ja-timestamp')
@@ -119,7 +119,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'provision_failed' }, { status: 500 })
   }
 
-  // Trial subscription bound to the stock enterprise plan (authoritative tier).
+  // Trial subscription bound to the platform's enterprise plan (authoritative tier).
   const { data: plan } = await db
     .from('subscription_plans')
     .select('id')
