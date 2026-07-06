@@ -7,10 +7,18 @@ type View = 'checking' | 'paid' | 'pending' | 'failed' | 'missing'
 
 const MAX_POLLS = 5
 const POLL_DELAY_MS = 3000
+const REDIRECT_SECONDS = 5
 
-export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
+export function BillingResult({
+  invoiceId,
+  portalUrl,
+}: {
+  invoiceId: string | null
+  portalUrl: string | null
+}) {
   const [view, setView] = useState<View>(invoiceId ? 'checking' : 'missing')
   const [busy, setBusy] = useState(false)
+  const [countdown, setCountdown] = useState(REDIRECT_SECONDS)
   const polls = useRef(0)
 
   async function checkOnce(): Promise<boolean> {
@@ -63,6 +71,24 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invoiceId])
 
+  // Auto-redirect ke dashboard portal HANYA saat paid (pending/failed tidak —
+  // pembayaran VA bisa lunas belakangan, user harus tetap bisa baca status).
+  useEffect(() => {
+    if (view !== 'paid' || !portalUrl) return
+    setCountdown(REDIRECT_SECONDS)
+    const interval = setInterval(() => {
+      setCountdown((c) => {
+        if (c <= 1) {
+          clearInterval(interval)
+          window.location.assign(portalUrl)
+          return 0
+        }
+        return c - 1
+      })
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [view, portalUrl])
+
   async function recheck() {
     setBusy(true)
     setView('checking')
@@ -76,7 +102,21 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
         icon={<CheckCircle2 className="size-12 text-green-500" />}
         title="Pembayaran berhasil"
         desc="Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka."
-      />
+      >
+        {portalUrl && (
+          <div className="flex flex-col items-center gap-2">
+            <a
+              href={portalUrl}
+              className="inline-flex items-center justify-center h-10 px-5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
+            >
+              Masuk ke Dashboard
+            </a>
+            <p className="text-xs text-muted-foreground">
+              Anda akan diarahkan otomatis dalam {countdown} detik…
+            </p>
+          </div>
+        )}
+      </Shell>
     )
   }
 
@@ -86,7 +126,9 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
         icon={<XCircle className="size-12 text-destructive" />}
         title="Pembayaran tidak selesai"
         desc="Transaksi gagal atau kedaluwarsa. Silakan minta tautan pembayaran baru."
-      />
+      >
+        {portalUrl && <DashboardLink portalUrl={portalUrl} />}
+      </Shell>
     )
   }
 
@@ -114,6 +156,7 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
         >
           {busy && <Loader2 className="size-4 animate-spin" />} Cek status lagi
         </button>
+        {portalUrl && <DashboardLink portalUrl={portalUrl} />}
       </Shell>
     )
   }
@@ -124,6 +167,14 @@ export function BillingResult({ invoiceId }: { invoiceId: string | null }) {
       title="Memeriksa pembayaran…"
       desc="Mohon tunggu sebentar."
     />
+  )
+}
+
+function DashboardLink({ portalUrl }: { portalUrl: string }) {
+  return (
+    <a href={portalUrl} className="text-sm text-muted-foreground underline hover:text-foreground">
+      Kembali ke Dashboard
+    </a>
   )
 }
 
