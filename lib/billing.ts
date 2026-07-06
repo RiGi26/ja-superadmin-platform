@@ -15,6 +15,7 @@ import { addMonths, addYears } from 'date-fns'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getPlatformMidtrans } from '@/lib/midtrans'
 import { syncTenantPortal } from '@/lib/lms-sync'
+import { sendSubscriptionPaidEmail } from '@/lib/billing-email'
 import { getPromoCampaign, isCampaignActive, type AdminDb } from '@/lib/platform-settings'
 import type { InvoicePeriod } from '@/types/billing'
 
@@ -611,6 +612,9 @@ export async function markInvoicePaid(args: {
   // No-op for platforms without a portal sync yet.
   try {
     after(() => syncTenantPortal(inv.tenant_id, 'subscription_activated'))
+    // Email konfirmasi pembelian — hanya tercapai pada transisi pertama ke paid
+    // (latch di atas), jadi race webhook/confirm tidak mengirim dobel.
+    after(() => sendSubscriptionPaidEmail(inv.id))
   } catch {
     // after() outside a request scope — skip; reconcile/webhook covers it.
   }
