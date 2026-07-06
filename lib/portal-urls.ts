@@ -1,24 +1,24 @@
 // ============================================================
 // lib/portal-urls.ts — Peta platform → URL dashboard portal tenant.
 // Dipakai halaman /billing/selesai (tombol "Masuk ke Dashboard") dan email
-// konfirmasi pembayaran. Base URL per portal (env var + fallback) HARUS identik
-// dengan lib/*-sync.ts agar tidak drift.
+// konfirmasi pembayaran. SENGAJA hardcode custom domain (bukan env *_URL
+// milik lib/*-sync.ts): env sync boleh menunjuk *.vercel.app untuk HMAC
+// server-to-server, tapi URL user-facing HARUS custom domain — customer
+// register via <sub>.webzoka.com (CTA pricing corp), jadi session cookie
+// mereka hidup di domain itu, bukan di *.vercel.app.
 // ============================================================
 
-const PORTALS: Record<string, { env: string; fallback: string; path: string }> = {
-  stock: { env: 'STOCK_URL', fallback: 'https://stock.webzoka.com', path: '/dashboard' },
-  lms: { env: 'LMS_URL', fallback: 'https://ja-lms-platform.vercel.app', path: '/admin' },
-  pharmacy: { env: 'PHARMACY_URL', fallback: 'https://ja-pharmacy-platform.vercel.app', path: '/dashboard' },
-  rental: { env: 'RENTAL_URL', fallback: 'https://rent.webzoka.com', path: '/admin' },
-  clinic: { env: 'CLINIC_URL', fallback: 'https://clinic.webzoka.com', path: '/admin' },
-  laundry: { env: 'LAUNDRY_URL', fallback: 'https://laundry.webzoka.com', path: '/dashboard' },
+const PORTAL_DASHBOARD_URLS: Record<string, string> = {
+  stock: 'https://stock.webzoka.com/dashboard',
+  lms: 'https://lms.webzoka.com/admin',
+  pharmacy: 'https://pharmacy.webzoka.com/dashboard',
+  rental: 'https://rent.webzoka.com/admin',
+  clinic: 'https://clinic.webzoka.com/admin',
+  laundry: 'https://laundry.webzoka.com/dashboard',
 }
 
 /** URL dashboard portal untuk sebuah platform; null bila platform tak dikenal. */
 export function portalDashboardUrl(platform: string | null | undefined): string | null {
   if (!platform) return null
-  const portal = PORTALS[platform]
-  if (!portal) return null
-  const base = process.env[portal.env]?.trim().replace(/\/+$/, '') || portal.fallback
-  return base + portal.path
+  return PORTAL_DASHBOARD_URLS[platform] ?? null
 }
