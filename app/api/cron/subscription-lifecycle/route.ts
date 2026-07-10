@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, after } from 'next/server'
 import { addDays } from 'date-fns'
 import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { signBillingToken } from '@/lib/billing-link'
+import { syncTenantPortal } from '@/lib/lms-sync'
 
 /**
  * GET /api/cron/subscription-lifecycle — Phase 3 (Workstream D). Dijalankan
@@ -10,11 +11,16 @@ import { signBillingToken } from '@/lib/billing-link'
  *
  *  1. REMINDER bayar H-7/H-3/H-1 sebelum kedaluwarsa (active+trial) via email
  *     (Resend) — idempoten per (period_end, days_before) lewat subscription_events.
- *  2. active lewat current_period_end → past_due + grace (GRACE_DAYS).
- *  3. past_due lewat grace → suspended (+ tenants.status='suspended').
+ *  2. trial lewat trial_ends_at → past_due + grace (kebijakan 2026-07-10: fitur
+ *     terkunci langsung karena past_due bukan status aktif di portal; suspended
+ *     keras menyusul setelah grace). trial_ends_at NULL = data rusak/demo → skip+log.
+ *  3. active lewat current_period_end → past_due + grace (GRACE_DAYS).
+ *  4. past_due lewat grace → suspended (+ tenants.status='suspended').
  *
- * Enforcement otomatis ikut karena gate LMS membaca status ini dari Core DB
- * (Workstream B). Auth: Vercel Cron menyertakan `Authorization: Bearer <CRON_SECRET>`.
+ * Tiap transisi status di-PUSH ke portal tenant via syncTenantPortal (after()) —
+ * portal membaca cache lokal `tenant_entitlements`, BUKAN Core, jadi tanpa push
+ * ini gate portal tidak pernah tahu status berubah.
+ * Auth: Vercel Cron menyertakan `Authorization: Bearer <CRON_SECRET>`.
  */
 
 const GRACE_DAYS = 7
@@ -89,8 +95,28 @@ export async function GET(request: Request) {
       }
     }
 
-    // 2. active lewat periode → past_due + grace.
-    if (s.status === 'active' && s.current_period_end && new Date(s.current_period_end) < now) {
+    // 2. trial lewat trial_ends_at → past_due + grace. NULL = data rusak / tenant
+    //    demo → jangan diproses diam-diam, log supaya kelihatan.
+    if (s.status === 'trial') {
+      if (!s.trial_ends_at) {
+        console.warn('[cron/lifecycle] trial tanpa trial_ends_at, dilewati:', s.tenant_id)
+      } else if (new Date(s.trial_ends_at) < now) {
+        const graceEnds = addDays(now, GRACE_DAYS).toISOString()
+        await db
+          .from('tenant_subscriptions')
+          .update({ status: 'past_due', grace_period_ends_at: graceEnds, updated_at: nowIso })
+          .eq('id', s.id)
+        pastDue++
+        events.push({
+          tenant_id: s.tenant_id,
+          event_type: 'subscription_past_due',
+          payload: { reason: 'trial_expired', trial_ends_at: s.trial_ends_at, grace_period_ends_at: graceEnds },
+        })
+        after(() => syncTenantPortal(s.tenant_id, 'subscription_past_due'))
+      }
+    }
+    // 3. active lewat periode → past_due + grace.
+    else if (s.status === 'active' && s.current_period_end && new Date(s.current_period_end) < now) {
       const graceEnds = addDays(now, GRACE_DAYS).toISOString()
       await db
         .from('tenant_subscriptions')
@@ -102,8 +128,9 @@ export async function GET(request: Request) {
         event_type: 'subscription_past_due',
         payload: { current_period_end: s.current_period_end, grace_period_ends_at: graceEnds },
       })
+      after(() => syncTenantPortal(s.tenant_id, 'subscription_past_due'))
     }
-    // 3. past_due lewat grace → suspended (status terminal; tak diproses lagi).
+    // 4. past_due lewat grace → suspended (status terminal; tak diproses lagi).
     else if (
       s.status === 'past_due' &&
       s.grace_period_ends_at &&
@@ -123,6 +150,7 @@ export async function GET(request: Request) {
         event_type: 'suspended',
         payload: { reason: 'grace_elapsed', grace_period_ends_at: s.grace_period_ends_at },
       })
+      after(() => syncTenantPortal(s.tenant_id, 'suspended'))
     }
   }
 
