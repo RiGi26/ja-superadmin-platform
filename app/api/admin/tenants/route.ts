@@ -135,7 +135,7 @@ export async function POST(request: Request) {
 
   try {
     await resend.emails.send({
-      from   : process.env.RESEND_FROM_EMAIL ?? 'noreply@japanarenacorp.com',
+      from   : process.env.RESEND_FROM_EMAIL ?? 'noreply@webzoka.com',
       to     : owner_email,
       subject: `Selamat datang di ${platformLabel} — ${name}`,
       html   : `

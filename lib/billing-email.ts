@@ -95,7 +95,7 @@ export async function sendSubscriptionPaidEmail(invoiceId: string): Promise<void
 
     const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@japanarenacorp.com',
+      from: process.env.RESEND_FROM_EMAIL ?? 'noreply@webzoka.com',
       to,
       subject,
       html: `

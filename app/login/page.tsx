@@ -67,7 +67,7 @@ export default function LoginPage() {
           <CardHeader className="pb-4">
             <CardTitle className="text-foreground text-base">Login</CardTitle>
             <CardDescription className="text-muted-foreground">
-              Hanya untuk superadmin@japanarenacorp.com
+              Hanya untuk akun superadmin Webzoka
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                   onChange={e => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  placeholder="superadmin@japanarenacorp.com"
+                  placeholder="superadmin@webzoka.com"
                   className="bg-background border-border text-foreground placeholder:text-muted-foreground focus-visible:ring-ring"
                 />
               </div>
