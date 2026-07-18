@@ -21,10 +21,12 @@ const PLATFORM_OPTIONS = [
   { value: 'jastip',   label: 'Webzoka Jastip' },
   { value: 'rental',   label: 'Webzoka Rental' },
   { value: 'stock',    label: 'Portal Operasi (Stock)' },
+  { value: 'laundry',  label: 'Webzoka Laundry' },
 ]
 
 const PLATFORM_SHORT: Record<string, string> = {
   lms: 'LMS', clinic: 'Clinic', pharmacy: 'Pharmacy', jastip: 'Jastip',
+  rental: 'Rental', stock: 'Stock', laundry: 'Laundry',
 }
 
 function slugify(str: string) {
