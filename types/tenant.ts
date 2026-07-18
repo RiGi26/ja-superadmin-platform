@@ -1,4 +1,4 @@
-export type PlatformType = 'lms' | 'clinic' | 'pharmacy' | 'jastip'
+export type PlatformType = 'lms' | 'clinic' | 'pharmacy' | 'jastip' | 'rental' | 'stock' | 'laundry'
 export type TenantStatus = 'trial' | 'active' | 'past_due' | 'suspended' | 'cancelled'
 export type PlanTier = 'starter' | 'pro' | 'enterprise'
 export type GlobalRole = 'superadmin' | 'owner' | 'admin' | 'member'

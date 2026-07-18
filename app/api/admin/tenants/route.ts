@@ -9,6 +9,7 @@ const PLATFORM_LABEL: Record<string, string> = {
   lms: 'Webzoka LMS', clinic: 'Webzoka Clinic',
   pharmacy: 'Webzoka Pharmacy', jastip: 'Webzoka Jastip',
   rental: 'Webzoka Rental', stock: 'Portal Operasi (Stock)',
+  laundry: 'Webzoka Laundry',
 }
 
 export async function POST(request: Request) {
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
 
   // 3. Get plan details
   const { data: plan } = await db.from('subscription_plans')
-    .select('id, tier_display_name, price_monthly')
+    .select('id, tier, tier_display_name, price_monthly')
     .eq('id', plan_id).single()
   if (!plan) return NextResponse.json({ error: 'Plan tidak ditemukan.' }, { status: 404 })
 
@@ -72,7 +73,9 @@ export async function POST(request: Request) {
   const { data: tenant, error: tenantErr } = await db.from('tenants').insert({
     name, slug, platform,
     status            : 'trial',
-    plan_tier         : plan.tier_display_name.toLowerCase(),
+    // Vocab kolom = enum Core ('starter'/'pro'/'enterprise'), BUKAN display name —
+    // portal me-mapping via coreTierTo*() dan tidak mengenal 'growth'
+    plan_tier         : plan.tier,
     owner_user_id     : userId,
     linked_tenant_id  : linked_tenant_id ?? null,
     trial_ends_at     : trialEndsAt,
