@@ -10,7 +10,7 @@
 ```
 Platform  : ja-superadmin-platform (internal tool)
 Stack     : Next.js 16 (App Router) · TypeScript · Supabase · Tailwind · Shadcn/UI
-Database  : PostgreSQL via Supabase — SHARED project dengan ja-lms-platform
+Database  : PostgreSQL via Supabase — STANDALONE Core DB `hxhusfkrlafxdnyasmsu` (SoR billing/langganan). Sejak 2026-06-22 TIDAK lagi shared dgn lms; lms membaca langganan dari Core ini via CORE_SUPABASE_*. (Ref lama `jexpxecxylyeefywdzpd` = cutover yang dibatalkan, JANGAN dipakai.)
 Auth      : Supabase Auth + Custom JWT Claims (user_role = 'superadmin')
 Akses     : HANYA superadmin@japanarenacorp.com
 Deploy    : Vercel → admin.japanarenacorp.com (target)
@@ -43,9 +43,14 @@ if (!isSuperadmin) return NextResponse.json({ error: 'Unauthorized' }, { status:
 
 ---
 
-## 🗄️ Database — Shared Supabase Project
+## 🗄️ Database — Standalone Core DB
 
-Semua platform (lms, clinic, pharmacy, jastip, superadmin) pakai **satu Supabase project**.
+Superadmin pakai **Core DB standalone** `hxhusfkrlafxdnyasmsu` (SoR billing/langganan).
+⚠️ Drift lama "semua platform berbagi satu project" sudah TIDAK berlaku sejak 2026-06-22:
+tiap platform punya project Supabase sendiri (lms `jqypnrwegqyjteparqpv`, clinic
+`lwtzkfchuxcgqnrktnpa`, pharmacy `cnlopjgekiripqtjhjyp`, dll). Mereka membaca status
+langganan dari Core DB ini via `CORE_SUPABASE_*` / sync HMAC, bukan share schema.
+(Ref `jexpxecxylyeefywdzpd` = cutover dibatalkan, JANGAN dipakai.)
 
 **createAdminClient()** (service_role) HANYA boleh dipakai di:
 - `app/api/admin/*/route.ts`
@@ -238,3 +243,11 @@ Cek ini saat bug hanya muncul di production:
 
 *ja-superadmin-platform · JapanArena Corp · Internal Developer Reference*
 *Sprint 2 — Superadmin Dashboard*
+
+## Standar UI mobile (lintas-app)
+
+Tiap fitur/halaman user-facing WAJIB ikut kontrak mobile payung — invoke skill `/mobile-ui`
+sebelum menulis kode; kalau skill tak tersedia (sesi dibuka langsung di repo ini), baca
+`../.claude/commands/mobile-ui.md`. Inti: desain dari 390px; body >=14px, input >=16px;
+target tap >=44px; tabel -> kartu; elemen melayang tak menutupi kontrol + safe-area.
+Bukti UAT wajib menyertakan screenshot viewport 390x844.
