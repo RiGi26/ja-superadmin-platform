@@ -1,0 +1,94 @@
+name: Keep Supabase Projects Active
+
+on:
+  schedule:
+    # 08:17, 16:17, and 00:17 WIB. Non-round minutes reduce scheduler congestion.
+    - cron: "17 1,9,17 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: supabase-keepalive
+  cancel-in-progress: false
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SUPABASE_KEEPALIVE_TARGETS: ${{ secrets.SUPABASE_KEEPALIVE_TARGETS }}
+    steps:
+      - name: Run read-only database checks
+        shell: bash
+        run: |
+          node <<'NODE'
+          const rawTargets = process.env.SUPABASE_KEEPALIVE_TARGETS
+          if (!rawTargets) {
+            throw new Error('SUPABASE_KEEPALIVE_TARGETS is not configured')
+          }
+
+          const targets = JSON.parse(rawTargets)
+          if (!Array.isArray(targets) || targets.length === 0) {
+            throw new Error('SUPABASE_KEEPALIVE_TARGETS must be a non-empty array')
+          }
+
+          function validateTarget(target) {
+            if (!target || typeof target !== 'object') {
+              throw new Error('Every target must be an object')
+            }
+            if (typeof target.name !== 'string' || !target.name.trim()) {
+              throw new Error('Every target needs a name')
+            }
+            if (
+              typeof target.url !== 'string' ||
+              !/^https:\/\/[a-z0-9]+\.supabase\.co$/.test(target.url)
+            ) {
+              throw new Error(`${target.name}: invalid Supabase project URL`)
+            }
+            if (typeof target.key !== 'string' || !target.key.trim()) {
+              throw new Error(`${target.name}: missing publishable key`)
+            }
+            if (
+              typeof target.path !== 'string' ||
+              !target.path.startsWith('/rest/v1/') ||
+              target.path.includes('..')
+            ) {
+              throw new Error(`${target.name}: invalid read-only REST path`)
+            }
+          }
+
+          async function ping(target) {
+            validateTarget(target)
+
+            const response = await fetch(`${target.url}${target.path}`, {
+              method: 'GET',
+              headers: {
+                apikey: target.key,
+                Accept: 'application/json',
+                'Cache-Control': 'no-store',
+              },
+              signal: AbortSignal.timeout(15_000),
+            })
+
+            if (!response.ok) {
+              const detail = (await response.text()).slice(0, 300)
+              const paused = response.status === 540 ? ' (project paused)' : ''
+              throw new Error(`${target.name}: HTTP ${response.status}${paused} ${detail}`)
+            }
+
+            console.log(`${target.name}: HTTP ${response.status}`)
+          }
+
+          const results = await Promise.allSettled(targets.map(ping))
+          const failures = results
+            .filter((result) => result.status === 'rejected')
+            .map((result) => result.reason?.message ?? String(result.reason))
+
+          if (failures.length > 0) {
+            throw new Error(`Keepalive failures:\n${failures.join('\n')}`)
+          }
+
+          console.log(`All ${targets.length} Supabase projects responded successfully`)
+          NODE
