@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Building2, PlusCircle, Users,
-  CreditCard, ScrollText, Settings, Globe
+  CreditCard, ScrollText, Settings, Globe, UserPlus
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -13,6 +14,7 @@ const NAV = [
   { label: 'Website Orders',  href: '/dashboard/website-orders',   icon: Globe },
   { label: 'Semua Tenant',    href: '/dashboard/tenants',          icon: Building2 },
   { label: 'Buat Tenant',     href: '/dashboard/tenants/new',      icon: PlusCircle },
+  { label: 'Register Customer', href: '/dashboard/customers/new',  icon: UserPlus },
   { label: 'Leads',           href: '/dashboard/leads',            icon: Users },
   { label: 'Subscriptions',   href: '/dashboard/subscriptions',    icon: CreditCard },
   { label: 'Audit Log',       href: '/dashboard/audit',            icon: ScrollText },
@@ -25,9 +27,11 @@ export function Sidebar() {
   return (
     <aside className="w-60 flex-shrink-0 bg-card border-r border-border hidden md:flex flex-col">
       <div className="py-6 px-5 flex items-center justify-center border-b border-border">
-        <img
+        <Image
           src="/logo-wide-clean.png"
           alt="Webzoka — Part of Japan Arena Corp"
+          width={200}
+          height={64}
           className="w-[200px] max-w-[88%] max-h-[64px] object-contain"
         />
       </div>
