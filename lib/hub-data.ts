@@ -2,6 +2,7 @@ import 'server-only'
 
 import { cache } from 'react'
 import { redirect } from 'next/navigation'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { signBillingToken } from '@/lib/billing-link'
 
@@ -145,26 +146,34 @@ export const getHubSnapshot = cache(async (): Promise<HubCustomerSnapshot> => {
   const userId = claims.sub
   const claimTenantId = typeof claims.tenant_id === 'string' ? claims.tenant_id : null
 
-  const membershipResult = claimTenantId
-    ? null
-    : await db
-        .from('tenant_members')
-        .select('tenant_id, role')
-        .eq('user_id', userId)
-        .eq('is_active', true)
-        .limit(1)
-        .maybeSingle()
+  // Membership is the authorization gate. A freshly verified email session can
+  // briefly have a valid user id but no refreshed custom tenant_id claim yet.
+  // Resolve the tenant from the user's active membership first so that this
+  // normal claim-propagation window cannot become a false /unauthorized result.
+  const membershipResult = await db
+    .from('tenant_members')
+    .select('tenant_id, role')
+    .eq('user_id', userId)
+    .eq('is_active', true)
+    .limit(1)
+    .maybeSingle()
 
-  const tenantId = claimTenantId ?? membershipResult?.data?.tenant_id ?? null
+  const isSuperadmin = claims.user_role === 'superadmin'
+  const tenantId = membershipResult?.data?.tenant_id ?? (isSuperadmin ? claimTenantId : null)
   if (!tenantId) redirect('/unauthorized')
 
+  // The membership query above is performed with the user's session and RLS.
+  // Use the server-only client for tenant-bound reads after that authorization
+  // decision; those tables intentionally require the tenant_id JWT claim, which
+  // may not be present until the next token refresh after verification.
+  const tenantDb = createAdminClient()
   const [tenantResult, subscriptionResult, invoicesResult, plans] = await Promise.all([
-    db
+    tenantDb
       .from('tenants')
       .select('id, name, slug, platform, status, plan_tier, trial_ends_at')
       .eq('id', tenantId)
       .maybeSingle(),
-    db
+    tenantDb
       .from('tenant_subscriptions')
       .select(
         'id, status, current_period_start, current_period_end, trial_ends_at, plan:subscription_plans(id, platform, tier, tier_display_name, price_monthly, price_yearly, features)',
@@ -173,7 +182,7 @@ export const getHubSnapshot = cache(async (): Promise<HubCustomerSnapshot> => {
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle(),
-    db
+    tenantDb
       .from('subscription_invoices')
       .select('id, midtrans_order_id, amount, status, period, paid_at, created_at')
       .eq('tenant_id', tenantId)
