@@ -67,7 +67,7 @@ export function PublicExploreNav() {
           <NavLinks pathname={pathname} />
         </nav>
         <div className={styles.publicSidebarFooter}>
-          <a href="https://webzoka.com">Webzoka.com <ArrowRight aria-hidden="true" /></a>
+          <a href="https://www.webzoka.com">Webzoka.com <ArrowRight aria-hidden="true" /></a>
           <Link className={styles.publicHubButton} href="/hub">
             Buka Customer Hub <ArrowRight aria-hidden="true" />
           </Link>
@@ -92,7 +92,7 @@ export function PublicExploreNav() {
               <nav aria-label="Menu publik seluler">
                 <NavLinks pathname={pathname} />
               </nav>
-              <a href="https://webzoka.com">Webzoka.com <ArrowRight aria-hidden="true" /></a>
+              <a href="https://www.webzoka.com">Webzoka.com <ArrowRight aria-hidden="true" /></a>
             </div>
           </details>
         </div>

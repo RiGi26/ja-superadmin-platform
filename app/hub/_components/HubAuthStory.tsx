@@ -11,7 +11,7 @@ export function HubAuthStory({
 }) {
   return (
     <section className={styles.loginStory} aria-label="Tentang Webzoka Customer Hub">
-      <a className={styles.loginBrand} href="https://webzoka.com">
+      <a className={styles.loginBrand} href="https://www.webzoka.com">
         <Image src="/logo-rocket.png" alt="" width={42} height={38} priority unoptimized />
         <span translate="no">webzoka</span>
       </a>

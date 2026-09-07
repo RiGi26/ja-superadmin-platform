@@ -11,8 +11,8 @@ export function safeHubReturnPath(value: string | null | undefined) {
   }
 
   try {
-    const parsed = new URL(value, 'https://webzoka.com')
-    if (parsed.origin !== 'https://webzoka.com' || parsed.pathname !== '/oauth/consent') {
+    const parsed = new URL(value, 'https://www.webzoka.com')
+    if (parsed.origin !== 'https://www.webzoka.com' || parsed.pathname !== '/oauth/consent') {
       return null
     }
 
@@ -33,9 +33,9 @@ export function safeHubAuthPath(value: string | null | undefined) {
   if (!value || value.includes('\\')) return '/hub/update-password'
 
   try {
-    const parsed = new URL(value, 'https://webzoka.com')
+    const parsed = new URL(value, 'https://www.webzoka.com')
     if (
-      parsed.origin !== 'https://webzoka.com' ||
+      parsed.origin !== 'https://www.webzoka.com' ||
       parsed.pathname !== '/hub/update-password'
     ) {
       return '/hub/update-password'
