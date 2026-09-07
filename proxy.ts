@@ -5,6 +5,37 @@ import { isSuperadminEmail } from '@/lib/superadmin'
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const hostname = request.nextUrl.hostname.toLowerCase()
+
+  // Production public-domain routing. Keep the internal superadmin hostname on
+  // its existing dashboard surface while the public www hostname opens the
+  // unauthenticated Customer Hub Store. Legacy landing URLs continue to work
+  // through permanent redirects to the new information hostname.
+  const isPublicHubHost = hostname === 'www.webzoka.com'
+  const isApexHost = hostname === 'webzoka.com'
+  const legacyLandingPaths = new Set([
+    '/pricing',
+    '/seluruh-layanan',
+    '/tentang-kami',
+    '/kebijakan-privasi',
+    '/syarat-ketentuan',
+  ])
+  const isLegacyLandingPath = legacyLandingPaths.has(pathname)
+
+  if (isApexHost || (isPublicHubHost && isLegacyLandingPath)) {
+    const destination = new URL(
+      isLegacyLandingPath
+        ? `https://information.webzoka.com${pathname}`
+        : `https://www.webzoka.com${pathname === '/' ? '/hub/store' : pathname}`,
+    )
+    destination.search = request.nextUrl.search
+    return NextResponse.redirect(destination, 308)
+  }
+
+  if (isPublicHubHost && pathname === '/') {
+    // Keep the public URL clean while serving the Store route internally.
+    return NextResponse.rewrite(new URL('/hub/store', request.url))
+  }
 
   const isHubRoute = pathname === '/hub' || pathname.startsWith('/hub/')
   const isHubLogin = pathname === '/hub/login' || pathname === '/hub/forgot-password'
