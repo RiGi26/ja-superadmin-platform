@@ -39,9 +39,16 @@ function stockPortalOrigin() {
 }
 
 export function usesWebzokaSso(platform: string | null | undefined) {
+  // Production cutover must not silently fall back to a direct portal login
+  // if a build-time flag was omitted. Preview deployments still require the
+  // explicit flag, so preview testing remains opt-in.
+  const ssoEnabled =
+    process.env.NEXT_PUBLIC_WEBZOKA_SSO_ENABLED === 'true' ||
+    (process.env.VERCEL_ENV === 'production' && process.env.HUB_SSO_PREVIEW_MODE !== 'true')
+
   return (
     platform === 'stock' &&
-    process.env.NEXT_PUBLIC_WEBZOKA_SSO_ENABLED === 'true'
+    ssoEnabled
   )
 }
 
