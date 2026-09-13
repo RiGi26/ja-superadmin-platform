@@ -21,6 +21,13 @@ export async function proxy(request: NextRequest) {
     '/syarat-ketentuan',
   ])
   const isLegacyLandingPath = legacyLandingPaths.has(pathname)
+  const isLegacyStorePath = pathname === '/store' || pathname.startsWith('/store/')
+
+  if ((isApexHost || isPublicHubHost) && isLegacyStorePath) {
+    const destination = new URL(`https://store.webzoka.com${pathname}`)
+    destination.search = request.nextUrl.search
+    return NextResponse.redirect(destination, 308)
+  }
 
   if (isApexHost || (isPublicHubHost && isLegacyLandingPath)) {
     const destination = new URL(
