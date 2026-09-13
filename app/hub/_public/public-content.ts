@@ -37,8 +37,10 @@ export type Commitment = {
 
 export type PublicNavIcon = 'store' | 'portfolio' | 'article' | 'faq' | 'commitment'
 
+export const PUBLIC_STORE_URL = 'https://store.webzoka.com/store'
+
 export const PUBLIC_NAV: Array<{ href: string; label: string; icon: PublicNavIcon; badge?: string }> = [
-  { href: '/hub/store', label: 'Webzoka Store', icon: 'store' as const },
+  { href: PUBLIC_STORE_URL, label: 'Webzoka Store', icon: 'store' as const },
   { href: '/hub/portofolio', label: 'Portofolio', icon: 'portfolio' as const },
   { href: '/hub/artikel', label: 'Artikel', icon: 'article' as const, badge: 'Baru' },
   { href: '/hub/faq', label: 'FAQ', icon: 'faq' as const },

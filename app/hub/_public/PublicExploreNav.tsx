@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
-import { PUBLIC_NAV, type PublicNavIcon } from './public-content'
+import { PUBLIC_NAV, PUBLIC_STORE_URL, type PublicNavIcon } from './public-content'
 import styles from './public-hub.module.css'
 
 const NAV_ICONS: Record<PublicNavIcon, LucideIcon> = {
@@ -58,7 +58,7 @@ export function PublicExploreNav() {
   return (
     <>
       <aside className={styles.publicSidebar} aria-label="Navigasi Explore Webzoka">
-        <Link className={styles.publicBrand} href="/hub/store" aria-label="Webzoka Store">
+        <Link className={styles.publicBrand} href={PUBLIC_STORE_URL} aria-label="Webzoka Store">
           <Image src="/logo-rocket.png" alt="" width={38} height={35} priority unoptimized />
           <span translate="no"><strong>webzoka</strong><small>Customer Hub</small></span>
         </Link>
@@ -75,7 +75,7 @@ export function PublicExploreNav() {
       </aside>
 
       <header className={styles.publicMobileTopbar}>
-        <Link className={styles.publicMobileBrand} href="/hub/store" aria-label="Webzoka Store">
+        <Link className={styles.publicMobileBrand} href={PUBLIC_STORE_URL} aria-label="Webzoka Store">
           <Image src="/logo-rocket.png" alt="" width={32} height={30} priority unoptimized />
           <span translate="no">webzoka</span>
         </Link>
