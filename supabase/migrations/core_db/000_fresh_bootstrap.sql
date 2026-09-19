@@ -278,6 +278,13 @@ drop policy if exists "service_role_bypass" on public.subscription_invoices;
 create policy "service_role_bypass" on public.subscription_invoices
   for all to service_role using (true) with check (true);
 
+grant select on table public.subscription_invoices to authenticated;
+
+drop policy if exists "tenant_read_own_invoices" on public.subscription_invoices;
+create policy "tenant_read_own_invoices" on public.subscription_invoices
+  for select to authenticated
+  using (tenant_id = nullif((select auth.jwt()) ->> 'tenant_id', '')::uuid);
+
 drop trigger if exists subscription_invoices_updated_at on public.subscription_invoices;
 create trigger subscription_invoices_updated_at
   before update on public.subscription_invoices

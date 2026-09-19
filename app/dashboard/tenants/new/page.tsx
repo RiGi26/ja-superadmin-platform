@@ -7,6 +7,7 @@ export default async function NewTenantPage() {
     .from('subscription_plans')
     .select('id, platform, tier, tier_display_name, price_monthly')
     .eq('is_active', true)
+    .not('platform', 'in', '(stock,jastip)')
     .order('platform')
 
   const { data: linkableTenants } = await db

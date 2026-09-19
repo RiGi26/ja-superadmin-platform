@@ -14,15 +14,11 @@ export { isSuperadminEmail }
 export async function verifySuperadmin(): Promise<boolean> {
   try {
     const supabase = await createClient()
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    if (!session) return false
-    const payload = JSON.parse(atob(session.access_token.split('.')[1]))
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    return payload?.user_role === 'superadmin' || isSuperadminEmail(user?.email)
+    const { data, error } = await supabase.auth.getClaims()
+    if (error || !data?.claims?.sub) return false
+    const role = typeof data.claims.user_role === 'string' ? data.claims.user_role : null
+    const email = typeof data.claims.email === 'string' ? data.claims.email : null
+    return role === 'superadmin' || isSuperadminEmail(email)
   } catch {
     return false
   }

@@ -4,6 +4,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { signBillingToken } from '@/lib/billing-link'
 import { syncTenantPortal } from '@/lib/lms-sync'
+import { hubAppUrl } from '@/lib/hub-app-url'
 
 /**
  * GET /api/cron/subscription-lifecycle — Phase 3 (Workstream D). Dijalankan
@@ -170,7 +171,7 @@ async function sendReminderEmail(
   end: Date,
 ): Promise<boolean> {
   try {
-    const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, '') ?? ''
+    const base = hubAppUrl()
     let payUrl = `${base}/billing/langganan`
     try {
       payUrl += `?token=${encodeURIComponent(signBillingToken(tenantId))}`

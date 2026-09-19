@@ -17,6 +17,7 @@ import { getPlatformMidtrans } from '@/lib/midtrans'
 import { syncTenantPortal } from '@/lib/lms-sync'
 import { sendSubscriptionPaidEmail } from '@/lib/billing-email'
 import { getPromoCampaign, isCampaignActive, type AdminDb } from '@/lib/platform-settings'
+import { hubAppUrl } from '@/lib/hub-app-url'
 import type { InvoicePeriod } from '@/types/billing'
 
 // Peringkat tier (lintas-platform, by enum subscription_plans.tier). Dipakai
@@ -228,7 +229,9 @@ export async function createSubscriptionCheckout(args: {
     period === 'yearly' ? 'YR' : 'MON'
   }`
   const periodLabel = period === 'yearly' ? 'Tahunan' : 'Bulanan'
-  const finishUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/billing/selesai?inv=${inv.id}`
+  // Payment callbacks are customer-facing and must return to the public Hub
+  // hostname, not the internal superadmin hostname.
+  const finishUrl = `${hubAppUrl()}/billing/selesai?inv=${inv.id}`
 
   const snapPayload = {
     transaction_details: { order_id: midtransOrderId, gross_amount: amount },

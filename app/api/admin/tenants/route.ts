@@ -32,6 +32,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Field wajib tidak lengkap.' }, { status: 400 })
   }
 
+  if (platform === 'stock') {
+    return NextResponse.json(
+      { error: 'Gunakan menu Register Customer untuk membuat akun Stock dengan undangan aman.' },
+      { status: 409 },
+    )
+  }
+
   const db = createAdminClient()
 
   // 1. Validasi: slug belum ada
@@ -49,9 +56,12 @@ export async function POST(request: Request) {
 
   // 3. Get plan details
   const { data: plan } = await db.from('subscription_plans')
-    .select('id, tier, tier_display_name, price_monthly')
+    .select('id, platform, tier, tier_display_name, price_monthly')
     .eq('id', plan_id).single()
   if (!plan) return NextResponse.json({ error: 'Plan tidak ditemukan.' }, { status: 404 })
+  if (plan.platform !== platform) {
+    return NextResponse.json({ error: 'Plan tidak sesuai dengan platform.' }, { status: 400 })
+  }
 
   const temporaryPassword = owner_phone || 'JapanarEna2024!'
   const trialEndsAt = addDays(new Date(), 14).toISOString()
