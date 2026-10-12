@@ -135,7 +135,7 @@ race() {
   (PG17_APPNAME="$name-b" pg "$database" -c "$second" > "$name-b.log" 2>&1) & b_pid=$!
   wait "$a_pid"
   wait "$b_pid" || b_status=$?
-  [[ "$b_status" == 3 ]] && grep -q '23505' "$name-b.log" \
+  [[ "$b_status" -ne 0 ]] && grep -q '^ERROR:  23505:' "$name-b.log" \
     || { cat "$name-a.log" "$name-b.log"; echo "FAIL $name loser"; return 1; }
   check "$name exactly one committed winner and SQLSTATE 23505 loser" "$database" "$count_query"
 }
@@ -167,7 +167,7 @@ SQL
       -h /var/run/postgresql -U harness_session -d "$database" \
       -c "SELECT session_user, current_user; SET ROLE $role; SELECT current_user; $statement;" \
       > "$database-$role.log" 2>&1 || role_status=$?
-    [[ "$role_status" == 3 ]] && grep -q '42501' "$database-$role.log" \
+    [[ "$role_status" -ne 0 ]] && grep -q '^ERROR:  42501:' "$database-$role.log" \
       || { cat "$database-$role.log"; echo "FAIL $database $role client denial"; exit 1; }
     cat "$database-$role.log"
     echo "PASS $database $role denied from independent non-superuser login"
