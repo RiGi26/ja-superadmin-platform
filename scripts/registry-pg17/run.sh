@@ -17,7 +17,7 @@ cd "$TASK_DIR"
 python3 - <<'PY'
 import json, os, urllib.request
 def get(path):
-    req = urllib.request.Request('https://api.github.com/repos/RiGi26/ja-superadmin-platform/'+path,
+    req = urllib.request.Request('https://api.github.com/repos/RiGi26/ja-superadmin-platform' + ('/' + path if path else ''),
                                  headers={'Accept':'application/vnd.github+json'})
     with urllib.request.urlopen(req, timeout=30) as response:
         return json.load(response)
