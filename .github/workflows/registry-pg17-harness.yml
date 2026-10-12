@@ -1,0 +1,76 @@
+name: Registry 020 isolated PG17 engine validation
+
+# Publication and opening this draft PR do not run this workflow.
+# The Owner authorizes one run by applying pg17-<exact reviewed head SHA>.
+on:
+  pull_request:
+    types: [labeled]
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: registry-020-pg17-engine
+  cancel-in-progress: false
+
+jobs:
+  engine:
+    if: >-
+      github.repository == 'RiGi26/ja-superadmin-platform' &&
+      github.event.repository.private == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'audit/registry-020-pg17-harness' &&
+      github.event.pull_request.base.sha == '8a9ae5e7d61b706c3bd87f5516d759560876bad5' &&
+      github.event.pull_request.draft == true &&
+      github.event.pull_request.state == 'open' &&
+      github.actor == 'RiGi26' && github.triggering_actor == 'RiGi26' &&
+      github.run_attempt == 1 &&
+      github.event.label.name == format('pg17-{0}', github.event.pull_request.head.sha)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        # Public official PG17 image, pinned by registry index digest.
+        image: postgres:17-bookworm@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826
+        env:
+          POSTGRES_PASSWORD: synthetic-disposable-ci-only
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+        # No host ports, credentials from secrets, or persistent host mounts.
+    steps:
+      - name: Fetch only reviewed harness files without a repository token
+        shell: bash
+        env:
+          HARNESS_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$HARNESS_SHA" =~ ^[0-9a-f]{40}$ ]]
+          mkdir -p "$RUNNER_TEMP/registry-pg17-harness"
+          for file in bootstrap.sql assertions.sql run.sh; do
+            curl --fail --silent --show-error --proto '=https' --tlsv1.2 --max-time 30 \
+              "https://raw.githubusercontent.com/RiGi26/ja-superadmin-platform/$HARNESS_SHA/scripts/registry-pg17/$file" \
+              -o "$RUNNER_TEMP/registry-pg17-harness/$file"
+          done
+          sha256sum "$RUNNER_TEMP/registry-pg17-harness/"*
+      - name: Validate exact Registry SQL using synthetic PG17 engine fixtures
+        shell: bash
+        env:
+          HARNESS_SHA: ${{ github.event.pull_request.head.sha }}
+          PG17_CONTAINER_ID: ${{ job.services.postgres.id }}
+        run: bash "$RUNNER_TEMP/registry-pg17-harness/run.sh"
+      - name: Dispose only this job's PostgreSQL service and anonymous volume
+        if: always()
+        shell: bash
+        env:
+          PG17_CONTAINER_ID: ${{ job.services.postgres.id }}
+        run: |
+          set -euo pipefail
+          [[ "$PG17_CONTAINER_ID" =~ ^[0-9a-f]{64}$ ]]
+          docker stop --time 10 "$PG17_CONTAINER_ID"
+          docker rm --volumes "$PG17_CONTAINER_ID"
+          if docker inspect "$PG17_CONTAINER_ID" >/dev/null 2>&1; then
+            echo 'FAIL service container still exists'; exit 1
+          fi
+          echo 'PASS service container and anonymous data volume disposed'
