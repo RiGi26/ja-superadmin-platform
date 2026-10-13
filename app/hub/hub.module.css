@@ -1733,6 +1733,38 @@
   gap: 24px;
 }
 
+.inventoryList {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.inventoryList .inventoryCard {
+  min-width: 0;
+  margin-top: 0;
+}
+
+.inventoryCard .systemIdentity p,
+.inventoryCard .detailFacts strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.inventoryCard .detailFacts {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+}
+
+.inventoryNotice,
+.inventoryState p {
+  color: var(--hub-ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.inventoryState {
+  flex-wrap: wrap;
+}
+
 .detailFacts {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

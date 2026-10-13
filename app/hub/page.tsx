@@ -1,4 +1,4 @@
-import { getHubSnapshot } from '@/lib/hub-data'
+import { getHubSnapshot, getHubSystemsInventory } from '@/lib/hub-data'
 import { redirect } from 'next/navigation'
 import { HubShell, type HubView } from './_components/HubShell'
 
@@ -12,11 +12,15 @@ export default async function HubPage({
   const query = await searchParams
   if (query.view === 'store') redirect('/hub/store')
   const view = VIEWS.has(query.view as HubView) ? (query.view as HubView) : 'home'
-  const snapshot = await getHubSnapshot()
+  const [snapshot, inventory] = await Promise.all([
+    getHubSnapshot(),
+    view === 'home' || view === 'systems' ? getHubSystemsInventory() : Promise.resolve(null),
+  ])
 
   return (
     <HubShell
       snapshot={snapshot}
+      inventory={inventory}
       view={view}
     />
   )
