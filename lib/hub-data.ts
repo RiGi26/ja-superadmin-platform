@@ -138,7 +138,7 @@ export const getHubSnapshot = cache(async (): Promise<HubCustomerSnapshot> => {
   if (previewEnabled()) return previewSnapshot()
 
   const db = await createClient()
-  const { data: claimsData } = await db.auth.getClaims()
+  const { data: claimsData, error: claimsError } = await db.auth.getClaims()
   const claims = claimsData?.claims
 
   if (!claims?.sub) redirect('/hub/login')
@@ -170,7 +170,7 @@ export const getHubSnapshot = cache(async (): Promise<HubCustomerSnapshot> => {
   const [tenantResult, subscriptionResult, invoicesResult, plans] = await Promise.all([
     tenantDb
       .from('tenants')
-      .select('id, name, slug, platform, status, plan_tier, trial_ends_at')
+      .select('id, name, slug, platform, status, plan_tier, trial_ends_at, owner_user_id')
       .eq('id', tenantId)
       .maybeSingle(),
     tenantDb
@@ -211,7 +211,43 @@ export const getHubSnapshot = cache(async (): Promise<HubCustomerSnapshot> => {
 
   let manageSubscriptionUrl: string | null = null
   try {
-    manageSubscriptionUrl = `/billing/langganan?token=${encodeURIComponent(signBillingToken(tenantId))}`
+    // Preserve read-only tenant selection; billing requires current Auth identity
+    // and an unambiguous active Owner membership on that exact tenant.
+    if (
+      !claimsError &&
+      !membershipResult.error &&
+      typeof userId === 'string' &&
+      userId.length > 0 &&
+      membershipResult.data?.role === 'owner' &&
+      membershipResult.data.tenant_id === tenant.id &&
+      tenant.id === tenantId &&
+      tenant.owner_user_id === userId
+    ) {
+      const { data: authData, error: authError } = await db.auth.getUser()
+      const verifiedUser = authData?.user
+
+      if (!authError && verifiedUser?.id === userId) {
+        const { data: ownerMembership, error: ownerMembershipError } = await db
+          .from('tenant_members')
+          .select('tenant_id, user_id, role, is_active')
+          .eq('user_id', verifiedUser.id)
+          .eq('tenant_id', tenant.id)
+          .eq('is_active', true)
+          .eq('role', 'owner')
+          .maybeSingle()
+
+        if (
+          !ownerMembershipError &&
+          ownerMembership?.user_id === verifiedUser.id &&
+          ownerMembership.tenant_id === tenant.id &&
+          ownerMembership.role === 'owner' &&
+          ownerMembership.is_active === true &&
+          tenant.owner_user_id === verifiedUser.id
+        ) {
+          manageSubscriptionUrl = `/billing/langganan?token=${encodeURIComponent(signBillingToken(tenant.id))}`
+        }
+      }
+    }
   } catch {
     manageSubscriptionUrl = null
   }
