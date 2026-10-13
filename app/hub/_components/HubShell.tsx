@@ -10,7 +10,6 @@ import {
   ChevronRight,
   CircleHelp,
   CreditCard,
-  ExternalLink,
   GraduationCap,
   HeartPulse,
   Home,
@@ -29,8 +28,7 @@ import {
   UsersRound,
   Warehouse,
 } from 'lucide-react'
-import type { HubCustomerSnapshot } from '@/lib/hub-data'
-import { portalAccessUrl, usesWebzokaSso } from '@/lib/portal-urls'
+import type { HubCustomerSnapshot, HubSystemsInventory } from '@/lib/hub-data'
 import { logoutFromHub } from '../actions'
 import styles from '../hub.module.css'
 
@@ -193,22 +191,62 @@ function PreviewNotice() {
   )
 }
 
-function HomeView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
-  const meta = platformMeta(snapshot.tenant.platform)
-  const portalUrl = portalAccessUrl(snapshot.tenant.platform)
-  const hasSso = usesWebzokaSso(snapshot.tenant.platform)
-  const plan = snapshot.subscription?.plan
+function SystemInventory({ inventory, nested = false }: { inventory: HubSystemsInventory | null; nested?: boolean }) {
+  const Heading = nested ? 'h3' : 'h2'
+  if (!inventory?.accessReady || inventory.systems.length === 0) {
+    return (
+      <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}>
+        <Boxes aria-hidden="true" />
+        <div>
+          <Heading>{inventory?.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</Heading>
+          <p>{inventory?.accessReady
+            ? 'Akun Anda belum memiliki keanggotaan aktif untuk sistem yang terdaftar.'
+            : 'Kami belum dapat memverifikasi keanggotaan Anda. Muat ulang halaman atau hubungi bantuan.'}</p>
+        </div>
+        <Link className={styles.secondaryButton} href="/hub?view=support">Hubungi bantuan</Link>
+      </section>
+    )
+  }
+
+  return (
+    <section className={styles.inventoryList} aria-label="Keanggotaan sistem Anda">
+      {inventory.systems.map((system) => (
+        <article key={system.tenant.id} className={`${styles.systemDetailPanel} ${styles.inventoryCard}`}>
+          <div className={styles.systemHeroRow}>
+            <div className={styles.systemIdentity}>
+              <SystemMark platform={system.tenant.platform} size="large" />
+              <div>
+                <Heading>{platformMeta(system.tenant.platform).label}</Heading>
+                <p>{system.tenant.name}</p>
+              </div>
+            </div>
+            <StatusPill status={system.tenant.status} />
+          </div>
+          <div className={styles.detailFacts}>
+            <div><span>Akun bisnis</span><strong>{system.tenant.slug}</strong></div>
+            <div><span>Platform</span><strong translate="no">{system.tenant.platform}</strong></div>
+            <div><span>Peran keanggotaan</span><strong>{system.role}</strong></div>
+          </div>
+          <p className={styles.inventoryNotice}>Keanggotaan akun aktif. Akses masuk ke portal belum diverifikasi.</p>
+        </article>
+      ))}
+    </section>
+  )
+}
+
+function HomeView({ snapshot, inventory }: { snapshot: HubCustomerSnapshot | null; inventory: HubSystemsInventory | null }) {
+  const plan = snapshot?.subscription?.plan
 
   return (
     <>
       <PageHeading
         eyebrow="Customer Hub"
-        title={`Selamat datang, ${snapshot.tenant.name}`}
-        description="Kelola langganan dan akses sistem Webzoka Anda dari satu tempat."
+        title={snapshot ? `Selamat datang, ${snapshot.tenant.name}` : 'Akun Webzoka Anda'}
+        description="Lihat keanggotaan sistem dan kelola langganan Webzoka Anda dari satu tempat."
       />
-      {snapshot.isPreview ? <PreviewNotice /> : null}
+      {snapshot?.isPreview ? <PreviewNotice /> : null}
 
-      <section className={styles.summaryStrip} aria-label="Ringkasan akun">
+      {snapshot ? <section className={styles.summaryStrip} aria-label="Ringkasan akun">
         <div>
           <span>Status akun</span>
           <strong>{statusLabel(snapshot.tenant.status)}</strong>
@@ -221,12 +259,12 @@ function HomeView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
           <span>Periode berikutnya</span>
           <strong>{formatDate(snapshot.subscription?.currentPeriodEnd)}</strong>
         </div>
-      </section>
+      </section> : null}
 
       <section className={styles.sectionBlock}>
         <div className={styles.sectionTitleRow}>
           <div>
-            <p className={styles.sectionKicker}>Sistem aktif</p>
+            <p className={styles.sectionKicker}>Keanggotaan aktif</p>
             <h2>Sistem Saya</h2>
           </div>
           <Link href="/hub?view=systems" className={styles.textLink}>
@@ -234,32 +272,7 @@ function HomeView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
           </Link>
         </div>
 
-        <article className={styles.activeSystemPanel}>
-          <div className={styles.systemIdentity}>
-            <SystemMark platform={snapshot.tenant.platform} size="large" />
-            <div>
-              <div className={styles.systemTitleLine}>
-                <h3>{meta.label}</h3>
-                <StatusPill status={snapshot.subscription?.status ?? snapshot.tenant.status} />
-              </div>
-              <p>{meta.description}</p>
-            </div>
-          </div>
-          <div className={styles.systemFacts}>
-            <div><span>Paket</span><strong>{plan?.name ?? 'Belum dipilih'}</strong></div>
-            <div><span>Akun</span><strong>{snapshot.tenant.slug}</strong></div>
-          </div>
-          {portalUrl ? (
-            <a className={styles.primaryButton} href={portalUrl} target="_blank" rel="noreferrer">
-              {hasSso ? <ShieldCheck aria-hidden="true" /> : <ExternalLink aria-hidden="true" />}
-              {hasSso ? 'Buka dengan Akun Webzoka' : 'Buka sistem'}
-            </a>
-          ) : (
-            <Link className={styles.secondaryButton} href="/hub?view=support">
-              Hubungi bantuan
-            </Link>
-          )}
-        </article>
+        <SystemInventory inventory={inventory} nested />
       </section>
 
       <section className={styles.actionGrid} aria-label="Tindakan cepat">
@@ -283,50 +296,15 @@ function HomeView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
   )
 }
 
-function SystemsView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
-  const meta = platformMeta(snapshot.tenant.platform)
-  const portalUrl = portalAccessUrl(snapshot.tenant.platform)
-  const hasSso = usesWebzokaSso(snapshot.tenant.platform)
-  const plan = snapshot.subscription?.plan
-
+function SystemsView({ inventory }: { inventory: HubSystemsInventory | null }) {
   return (
     <>
       <PageHeading
         eyebrow="Workspace"
         title="Sistem Saya"
-        description="Akses sistem yang sudah aktif untuk bisnis Anda."
+        description="Daftar sistem berdasarkan keanggotaan aktif akun Anda."
       />
-      {snapshot.isPreview ? <PreviewNotice /> : null}
-      <section className={styles.systemDetailPanel}>
-        <div className={styles.systemHeroRow}>
-          <div className={styles.systemIdentity}>
-            <SystemMark platform={snapshot.tenant.platform} size="large" />
-            <div>
-              <p className={styles.sectionKicker}>Sistem utama</p>
-              <h2>{meta.label}</h2>
-              <p>{meta.description}</p>
-            </div>
-          </div>
-          <StatusPill status={snapshot.subscription?.status ?? snapshot.tenant.status} />
-        </div>
-        <div className={styles.detailFacts}>
-          <div><span>Nama bisnis</span><strong>{snapshot.tenant.name}</strong></div>
-          <div><span>Paket</span><strong>{plan?.name ?? 'Belum dipilih'}</strong></div>
-          <div><span>Aktif sampai</span><strong>{formatDate(snapshot.subscription?.currentPeriodEnd)}</strong></div>
-          <div><span>Peran Anda</span><strong>{snapshot.user.role}</strong></div>
-        </div>
-        <div className={styles.buttonRow}>
-          {portalUrl ? (
-            <a className={styles.primaryButton} href={portalUrl} target="_blank" rel="noreferrer">
-              {hasSso ? <ShieldCheck aria-hidden="true" /> : <ExternalLink aria-hidden="true" />}
-              {hasSso ? `Buka ${meta.shortLabel} dengan SSO` : `Buka ${meta.shortLabel}`}
-            </a>
-          ) : null}
-          <Link className={styles.secondaryButton} href="/hub?view=billing">
-            <CreditCard aria-hidden="true" /> Kelola paket
-          </Link>
-        </div>
-      </section>
+      <SystemInventory inventory={inventory} />
 
       <section className={styles.honestEmptyState}>
         <Boxes aria-hidden="true" />
@@ -459,12 +437,19 @@ function SupportView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
 
 export function HubShell({
   snapshot,
+  inventory,
   view,
 }: {
   snapshot: HubCustomerSnapshot
+  inventory: HubSystemsInventory | null
   view: HubView
 }) {
-  const initials = snapshot.tenant.name.trim().charAt(0).toUpperCase() || 'W'
+  const inventoryView = view === 'home' || view === 'systems'
+  const snapshotMatchesInventory = inventory?.accessReady === true &&
+    inventory.systems.some((system) => system.tenant.id === snapshot.tenant.id)
+  const accountTenant = inventoryView && !snapshotMatchesInventory ? null : snapshot.tenant
+  const accountName = accountTenant?.name ?? 'Akun Webzoka'
+  const initials = accountTenant?.name.trim().charAt(0).toUpperCase() || 'W'
 
   return (
     <div className={styles.hubShell}>
@@ -491,7 +476,7 @@ export function HubShell({
         </nav>
         <div className={styles.sidebarAccount}>
           <span className={styles.avatar}>{initials}</span>
-          <span><strong>{snapshot.tenant.name}</strong><small>{snapshot.user.email || 'Akun pelanggan'}</small></span>
+          <span><strong>{accountName}</strong><small>{snapshot.user.email || 'Akun pelanggan'}</small></span>
         </div>
         <form action={logoutFromHub}>
           <button className={styles.logoutButton} type="submit"><LogOut aria-hidden="true" /> Keluar</button>
@@ -508,8 +493,8 @@ export function HubShell({
 
       <main className={styles.hubMain} id="hub-main">
         <div className={styles.contentWrap}>
-          {view === 'home' ? <HomeView snapshot={snapshot} /> : null}
-          {view === 'systems' ? <SystemsView snapshot={snapshot} /> : null}
+          {view === 'home' ? <HomeView snapshot={snapshotMatchesInventory ? snapshot : null} inventory={inventory} /> : null}
+          {view === 'systems' ? <SystemsView inventory={inventory} /> : null}
           {view === 'billing' ? <BillingView snapshot={snapshot} /> : null}
           {view === 'support' ? <SupportView snapshot={snapshot} /> : null}
         </div>

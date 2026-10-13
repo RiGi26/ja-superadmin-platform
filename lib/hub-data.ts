@@ -5,6 +5,75 @@ import { redirect } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { signBillingToken } from '@/lib/billing-link'
+import type { PlatformType, Tenant, TenantMember } from '@/types/tenant'
+
+export type HubSystem = {
+  tenant: Pick<Tenant, 'id' | 'name' | 'slug' | 'status'> & { platform: PlatformType }
+  role: 'owner' | 'admin' | 'member'
+}
+
+export type HubSystemsInventory = {
+  systems: HubSystem[]
+  accessReady: boolean
+}
+
+const CUSTOMER_ROLES = ['owner', 'admin', 'member'] as const
+const INVENTORY_PLATFORMS: PlatformType[] = ['stock', 'lms', 'clinic', 'pharmacy', 'rental', 'laundry', 'jastip']
+
+// Core membership authorizes inventory visibility only, not Company ownership,
+// portal login, or portal-specific permissions. No launch URL is issued here.
+export const getHubSystemsInventory = cache(async (): Promise<HubSystemsInventory> => {
+  const unavailable: HubSystemsInventory = { systems: [], accessReady: false }
+
+  try {
+    const db = await createClient()
+    const { data, error } = await db.auth.getUser()
+    if (error || !data?.user?.id) return unavailable
+
+    const userId = data.user.id
+    // Single joined read keeps membership and exact tenant identity together.
+    // The verified Core subject and explicit filters constrain this server-only
+    // read even when RLS/JWT grants broader SuperAdmin or single-tenant access.
+    const { data: rows, error: membershipError } = await createAdminClient()
+      .from('tenant_members')
+      .select('tenant_id, user_id, role, is_active, tenant:tenants!inner(id, name, slug, platform, status)')
+      .eq('user_id', userId)
+      .eq('is_active', true)
+      .in('role', CUSTOMER_ROLES)
+      .order('tenant_id')
+
+    if (membershipError || !Array.isArray(rows)) return unavailable
+
+    type InventoryRow = Pick<TenantMember, 'tenant_id' | 'user_id' | 'role' | 'is_active'> & {
+      tenant: HubSystem['tenant'] | HubSystem['tenant'][] | null
+    }
+    const systems: HubSystem[] = []
+    const seen = new Set<string>()
+
+    for (const row of rows as InventoryRow[]) {
+      const tenant = row?.tenant
+      if (
+        row?.user_id !== userId || row.is_active !== true ||
+        !CUSTOMER_ROLES.includes(row.role as HubSystem['role']) ||
+        !tenant || Array.isArray(tenant) || typeof tenant.id !== 'string' || !tenant.id ||
+        tenant.id !== row.tenant_id || !INVENTORY_PLATFORMS.includes(tenant.platform) ||
+        typeof tenant.name !== 'string' || !tenant.name.trim() ||
+        typeof tenant.slug !== 'string' || !tenant.slug.trim() ||
+        typeof tenant.status !== 'string' || !tenant.status || seen.has(tenant.id)
+      ) continue
+
+      seen.add(tenant.id)
+      systems.push({
+        tenant: { id: tenant.id, name: tenant.name, slug: tenant.slug, platform: tenant.platform, status: tenant.status },
+        role: row.role as HubSystem['role'],
+      })
+    }
+
+    return { systems, accessReady: true }
+  } catch {
+    return unavailable
+  }
+})
 
 export type HubPlan = {
   id: string
