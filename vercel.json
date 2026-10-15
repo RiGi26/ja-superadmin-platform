@@ -13,7 +13,8 @@
   "git": {
     "deploymentEnabled": {
       "feat/hub-1-authorized-inventory": false,
-      "fix/hub-owner-billing-link-static": false
+      "fix/hub-owner-billing-link-static": false,
+      "integrate/hub-inventory-owner-billing-static": false
     }
   }
 }
