@@ -1,5 +1,25 @@
 # H1.G1 E1 Core and Stock local implementation
 
+## Approved security rollout — 25 October 2026
+
+Owner approval in this chat explicitly covers coordinated SQL/app release,
+commit/push/deployment and exact callback configuration. Both forward migrations
+are installed and matching app builds are promoted: Core 20261025034453 / deployment
+dpl_GQHmfkVbojGZaEzVtQksn9UDVKLT; Stock 20261025034454 / deployment
+dpl_4U8ZQxYYV2ayTNBfJL5GeFxRNoco. Stock kernel is preserved, direct client profile
+writes denied, and managed-session checks now guard Core reads and Stock access.
+Stock signed checks 16/16 passed twice; Core signed revocation checks 2/2; deployed
+public HTTP 8/8. Desktop/mobile browser checks verified team/denial behavior.
+All fixture accounts/profiles removed. Fourteen immutable Stock test audit records
+remain intentionally; final counts are 12 users, 12 tenants, 14 profiles, 2149 audit
+rows. Runtime/commercial gates remain closed. Exact callback configuration remains
+blocked by disabled Supabase Add URL controls; full positive E1 flow is unaccepted.
+
+Current evidence, exact migrations, deployment/source identities and limits:
+[coordinated security review](../../../.wt-webzoka-stock-pdf/docs/security/H1_G1_SECURITY_REVIEW_20261025.md).
+
+Earlier sections below are historical and do not revoke this later approval.
+
 ## Focused security continuation — 25 October 2026
 
 A rollback fixture independently reproduced revoked-session Company and E1
