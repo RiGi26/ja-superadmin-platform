@@ -12,8 +12,12 @@ Stock signed checks 16/16 passed twice; Core signed revocation checks 2/2; deplo
 public HTTP 8/8. Desktop/mobile browser checks verified team/denial behavior.
 All fixture accounts/profiles removed. Fourteen immutable Stock test audit records
 remain intentionally; final counts are 12 users, 12 tenants, 14 profiles, 2149 audit
-rows. Runtime/commercial gates remain closed. Exact callback configuration remains
-blocked by disabled Supabase Add URL controls; full positive E1 flow is unaccepted.
+rows. Runtime/commercial gates remain closed. Exact callback configuration is now
+installed and reload-verified; hosted redirect matching passed 10/10 and final Auth
+health/settings returned 200. Original three URLs and Site URL remain unchanged.
+The initial combined-range pattern caused an Auth 503 interruption; it was removed,
+then replaced with documented explicit hex character lists and verified. Full
+positive E1 application flow remains unaccepted because runtime bindings are closed.
 
 Current evidence, exact migrations, deployment/source identities and limits:
 [coordinated security review](../../../.wt-webzoka-stock-pdf/docs/security/H1_G1_SECURITY_REVIEW_20261025.md).
