@@ -97,6 +97,7 @@ export async function createSubscriptionCheckout(args: {
   // 'renew' (default) = aktivasi/perpanjangan penuh → markInvoicePaid +1 periode.
   // 'upgrade' = upgrade pro-rata di tengah periode → set tier, periode TAK ditambah.
   changeType?: 'renew' | 'upgrade'
+  firstPurchaseOnly?: boolean
   // Nominal pro-rata dihitung pemanggil (selfServiceChange); bila ada, dipakai
   // sebagai harga invoice menggantikan harga penuh paket.
   amountOverride?: number
@@ -145,13 +146,16 @@ export async function createSubscriptionCheckout(args: {
 
   // 3. Get-or-create tenant_subscriptions (invoice mengikat ke satu langganan).
   let subscriptionId: string
-  const { data: existingSub } = await db
+  const { data: existingSub, error: existingSubError } = await db
     .from('tenant_subscriptions')
     .select('id')
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
+  if (args.firstPurchaseOnly && (existingSubError || existingSub !== null)) {
+    return { ok: false, status: 409, error: 'Muat ulang halaman Tagihan sebelum melanjutkan.' }
+  }
   if (existingSub) {
     subscriptionId = existingSub.id
   } else {
@@ -320,6 +324,7 @@ export async function selfServiceChange(args: {
   tenantId: string
   planId: string
   period: InvoicePeriod
+  firstPurchaseOnly?: boolean
 }): Promise<SelfChangeResult> {
   const db = createAdminClient()
   const { tenantId, planId, period } = args
@@ -342,13 +347,17 @@ export async function selfServiceChange(args: {
     priceMonthly: selPlan.price_monthly,
   })
 
-  const { data: sub } = await db
+  const { data: sub, error: subError } = await db
     .from('tenant_subscriptions')
     .select('id, plan_id, status, current_period_start, current_period_end')
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle()
+
+  if (args.firstPurchaseOnly && (subError || sub !== null)) {
+    return { ok: false, status: 409, error: 'Muat ulang halaman Tagihan sebelum melanjutkan.' }
+  }
 
   const now = new Date()
   const periodEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
@@ -373,7 +382,8 @@ export async function selfServiceChange(args: {
   // Tanpa periode aktif berjalan (baru/trial/expired/suspended) → aktivasi/perpanjangan penuh.
   if (!isActiveRunning || !sub) {
     return asCheckout(
-      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew', ...(promo ?? {}) }),
+      await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew', ...(promo ?? {}),
+        ...(args.firstPurchaseOnly ? { firstPurchaseOnly: true } : {}) }),
       'renew',
     )
   }

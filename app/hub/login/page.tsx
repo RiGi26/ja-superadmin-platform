@@ -1,6 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import { GOOGLE_DEV_PATH, googleDevConfig, googleDevLocalHeaders } from '@/lib/google-oauth-dev'
 import { createClient } from '@/lib/supabase/server'
 import { safeHubReturnPath } from '@/lib/hub-return-path'
 import { HubAuthStory } from '../_components/HubAuthStory'
@@ -50,6 +52,19 @@ export default async function HubLoginPage({
             </p>
           ) : null}
           <HubLoginForm next={next} />
+          {!next && googleDevConfig(process.env) && googleDevLocalHeaders(await headers()) ? (
+            <form method="post" action={`${GOOGLE_DEV_PATH}/start`} className="mt-4 grid gap-2">
+              <button type="submit" className={`${styles.secondaryButton} w-full text-base!`}>
+                Masuk dengan Google (uji lokal)
+              </button>
+              <p className={styles.loginIntro}>Sesi uji ini belum memberikan akses perusahaan.</p>
+            </form>
+          ) : null}
+          {query.message === 'google_dev_failed' ? (
+            <p className={styles.formError} role="alert">
+              Sesi Google belum dapat diverifikasi. Mulai kembali melalui tombol Google.
+            </p>
+          ) : null}
           <p className={styles.loginHelp}>
             Belum menjadi pelanggan?{' '}
             <Link href="/hub/store">Jelajahi Webzoka Store</Link>

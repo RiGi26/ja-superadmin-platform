@@ -1,0 +1,209 @@
+{
+  "checked_at_utc": "2026-10-21T04:12:30.631046+00:00",
+  "status": "PASS",
+  "checks_run": 17,
+  "failures": 0,
+  "errors": 0,
+  "validation_levels": {
+    "STATIC": "PASS",
+    "OFFLINE_UNIT_POLICY_MODEL": "PASS",
+    "INTEGRATION": "NOT_EXECUTED",
+    "DB_RUNTIME_NEW_CANDIDATES": "NOT_EXECUTED",
+    "DEV_SQL": "NOT_EXECUTED",
+    "PRODUCTION": "NOT_EXECUTED"
+  },
+  "parser": {
+    "python": "3.14.2 (tags/v3.14.2:df79316, Dec  5 2025, 17:18:21) [MSC v.1944 64 bit (AMD64)]",
+    "pglast": "v8.4",
+    "postgresql_parser": [
+      18,
+      4
+    ],
+    "limitation": "PostgreSQL 18.4 syntax parser; not PostgreSQL 17 runtime, binding or privileges"
+  },
+  "cases": [
+    {
+      "case": "accepted_two_trigger_roster",
+      "expected": "ALLOW_ROSTER_ONLY",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_ddl_command_start_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_ddl_command_start_['CREATE FUNCTION']",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_ddl_command_end_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_ddl_command_end_['CREATE FUNCTION']",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_sql_drop_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_sql_drop_['CREATE FUNCTION']",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_table_rewrite_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_table_rewrite_['CREATE FUNCTION']",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_login_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "unknown_login_['CREATE FUNCTION']",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_mode_D",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_mode_R",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_mode_A",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_mode_D",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_mode_R",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_mode_A",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_drift_evtevent",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_drift_evttags",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_drift_handler",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_drift_evtname",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_0_drift_handler_definition_md5",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_drift_evtevent",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_drift_evttags",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_drift_handler",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_drift_evtname",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "trigger_1_drift_handler_definition_md5",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "handler_drift_handler_owner_postgres",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "handler_drift_security_definer_True",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "handler_drift_handler_configuration_None",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "handler_drift_handler_configuration_['search_path=public",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "handler_drift_handler_definition_changed",
+      "expected": "STOP",
+      "result": "PASS"
+    },
+    {
+      "case": "additional_ownership_gates",
+      "expected": "POLICY_ONLY_NOT_PROVIDER_OBSERVATION",
+      "result": "PASS"
+    }
+  ],
+  "candidate_sha256": {
+    "PATCH.PROPOSED.sql": "448e5a2d9404fe001b718b342069f14b2b0794d42c2049b0934d97aa2355d36a",
+    "RECOVERY.PROPOSED.sql": "e19b27713b93eb6da3d78c9f4eea6f75593d3e86edc698b803368c5c9aca4773"
+  },
+  "private_input_sha256": {
+    "phase1_capture": "2d9da81881af38c3a2814acc849013eb17a58a0d50642b7423fab600d9e7cf5f",
+    "handler_capture": "1e28aea903d94c88ef9f663720e4a366eac42b5f87258f8b73e9186601be69f7",
+    "preservation_snapshot": "700f69872cc870ca106deea53a86ca426ceae4ed2a3169b787ebeb7880a786a7"
+  },
+  "reused_runtime": {
+    "run_id": "39409742149",
+    "postgresql": "17.11",
+    "postgrest": "13.0.7",
+    "accepted_results": "26 PASS; baseline race reproduced and corrected race denied",
+    "scope": "Unchanged function-body race fix only; not new wrappers/provider guards"
+  },
+  "extra_ownership_fields": "NOT_OBSERVED; synthetic negative controls only; enforce at future authorized execution",
+  "independent_review": "Recorded separately in REVIEW.md; this runner is author validation"
+}

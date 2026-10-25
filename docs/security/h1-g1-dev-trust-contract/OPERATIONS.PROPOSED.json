@@ -1,0 +1,373 @@
+{
+  "format": "h1g1-dev-operations-proposal-v1",
+  "date": "2026-10-22",
+  "authorized": false,
+  "executable": false,
+  "positive_runtime_approvable": false,
+  "refusal": "B0_TRUSTED_AUTHORITY_AND_FENCE_CLOSURE_NOT_ESTABLISHED",
+  "sql_payloads_available": false,
+  "approval_unit": "Contract adoption only. Every provider action needs a later complete hash-bound SQL/runner allowlist and explicit Owner authorization.",
+  "targets": {
+    "core": {
+      "project_ref": "mcvekinhgcqygfddyifs",
+      "project_name": "webzoka-core-dev",
+      "database": "postgres",
+      "isolation": "Existing isolated zero-cost DEV; reconfirm before any future operation."
+    },
+    "stock": {
+      "project_ref": null,
+      "status": "BLOCKED_NO_ACCEPTED_ISOLATED_STOCK_DEV_REF",
+      "forbid_fallback": true
+    },
+    "forbidden_project_refs": [
+      "hxhusfkrlafxdnyasmsu",
+      "oyyfcmlquqfrdoffkgsd"
+    ]
+  },
+  "principals": {
+    "installer": {
+      "database_principal": "postgres",
+      "status": "Previously observed on Core DEV only; exact candidate-object ownership and independent recovery still required."
+    },
+    "native_command_transport": {
+      "database_role": "service_role",
+      "purpose": "Execute the named proof-consuming command only; no proof issuance or generic private-table grants."
+    },
+    "rls_test_actor": {
+      "database_role": "authenticated",
+      "purpose": "Real synthetic user JWT and managed session; service-role bypass does not test RLS."
+    },
+    "issuer": {
+      "database_principal": null,
+      "status": "BLOCKED_PROVIDER_SUPPORTED_ISSUER_PRINCIPAL_NOT_ESTABLISHED",
+      "required": "Separate server-owned verifier/issuer with no Company, Owner or audit mutation authority, enforceable custody and independent recovery; no invented login."
+    },
+    "recovery": {
+      "database_principal": "postgres",
+      "status": "Must be separately authenticated and prove actual candidate ownership/privileges; do not assume supabase_admin access."
+    }
+  },
+  "proposed_object_scope": {
+    "core": {
+      "schemas": [
+        "core_e1_stock_private"
+      ],
+      "tables": {
+        "settings": {
+          "columns": [
+            "singleton boolean PRIMARY KEY CHECK(singleton)",
+            "enabled boolean NOT NULL DEFAULT false",
+            "source_manifest_sha256 text NOT NULL",
+            "fence_epoch bigint NOT NULL"
+          ],
+          "checks": [
+            "singleton=true",
+            "enabled remains false in any future scaffold rehearsal"
+          ]
+        },
+        "attestations": {
+          "columns": [
+            "id uuid PRIMARY KEY",
+            "issuer_ref text NOT NULL",
+            "project_ref text NOT NULL",
+            "actor_id uuid NOT NULL",
+            "session_id uuid NOT NULL",
+            "command_id uuid NOT NULL",
+            "native_command_id uuid",
+            "action text NOT NULL",
+            "request_digest text NOT NULL",
+            "native_digest text",
+            "source_manifest_sha256 text NOT NULL",
+            "source_revisions jsonb NOT NULL",
+            "fence_epoch bigint NOT NULL",
+            "evidence_ref uuid NOT NULL",
+            "evidence_digest text NOT NULL",
+            "verified_at timestamptz NOT NULL",
+            "valid_until timestamptz NOT NULL",
+            "revoked_at timestamptz",
+            "consumed_at timestamptz"
+          ],
+          "constraints": [
+            "UNIQUE(actor_id,command_id)",
+            "action allowlist: e1.stock.admit, e1.stock.checkout, e1.stock.bind",
+            "valid_until > verified_at AND valid_until <= verified_at + interval '30 seconds'",
+            "exact project/actor/session/action/digest/fence/source comparison",
+            "native command and parent command differ on admit"
+          ],
+          "issuance": "Only the unestablished independent issuer may populate this table. No client or native command transport INSERT/UPDATE grant."
+        },
+        "reservations": {
+          "columns": [
+            "reservation_id uuid PRIMARY KEY REFERENCES public.company_portal_instances(id)",
+            "company_id uuid NOT NULL REFERENCES public.companies(id)",
+            "core_subject uuid NOT NULL UNIQUE",
+            "core_tenant_id uuid NOT NULL UNIQUE",
+            "product text NOT NULL CHECK(product='stock')",
+            "status text NOT NULL",
+            "stock_tenant_id uuid UNIQUE",
+            "stock_subject uuid UNIQUE",
+            "profile_id uuid UNIQUE",
+            "revision bigint NOT NULL DEFAULT 0"
+          ],
+          "constraints": [
+            "UNIQUE(company_id,product)",
+            "status allowlist: reserved, provisioning, provisioned, revoked, quarantined",
+            "all three Stock IDs NULL before binding, all nonnull after binding",
+            "immutable identity tuple; state/revision CAS only",
+            "core_tenant_id reserves a future billing identity; no legacy tenant INSERT or payment"
+          ]
+        },
+        "outbox": {
+          "columns": [
+            "id uuid PRIMARY KEY",
+            "reservation_id uuid NOT NULL REFERENCES core_e1_stock_private.reservations(reservation_id)",
+            "command_id uuid NOT NULL UNIQUE",
+            "intent_digest text NOT NULL",
+            "reservation_revision bigint NOT NULL",
+            "fence_epoch bigint NOT NULL",
+            "status text NOT NULL",
+            "created_at timestamptz NOT NULL",
+            "ack_digest text"
+          ],
+          "constraints": [
+            "one live creation intent per reservation/revision",
+            "immutable payload and no access-grant effect",
+            "no dispatch without separately authorized provisioner/target"
+          ]
+        }
+      },
+      "new_public_functions": [
+        {
+          "name": "public.core_registry_e1_stock_command",
+          "arguments": "p_actor uuid, p_session uuid, p_auth_until timestamptz, p_command uuid, p_action text, p_payload jsonb",
+          "returns": "jsonb",
+          "owner": "postgres only if exact scoped Definer contract is separately approved; not RLS confinement",
+          "execute_roles": [
+            "service_role"
+          ],
+          "requirements": [
+            "consume independently issued private proof; never issue proof from supplied arguments",
+            "call unchanged core_registry_mutate for server-bound child bootstrap",
+            "same transaction for native bootstrap, native provenance consumption, E1 consumption, reservation, outbox and both audits",
+            "reuse existing core_registry_private.append_event without changing its definition",
+            "replay revalidates current authority and returns original receipt",
+            "guard all state transitions with current managed-session and source-fence authority"
+          ]
+        }
+      ],
+      "new_private_functions": [
+        {
+          "name": "core_e1_stock_private.issue_attestation",
+          "signature_status": "WITHHELD_B0_NO_SUPPORTED_ISSUER_OR_COMPLETE_SOURCE_AUTHORITY",
+          "execute_roles": [],
+          "body": "No positive body supplied or approvable."
+        }
+      ],
+      "existing_objects_read_or_called": [
+        "public.companies",
+        "public.company_memberships",
+        "public.company_portal_instances",
+        "core_registry_private.settings",
+        "core_registry_private.operators",
+        "core_registry_private.provenance",
+        "core_registry_private.owner_claims",
+        "core_registry_private.events",
+        "public.core_registry_mutate(uuid,uuid,timestamptz,uuid,text,jsonb,uuid[])",
+        "core_registry_private.append_event"
+      ],
+      "existing_objects_not_replaced": [
+        "public.core_registry_mutate",
+        "public.core_registry_authorize",
+        "public.core_registry_owner_claim_context",
+        "core_registry_private.proof_valid",
+        "core_registry_private.append_event"
+      ],
+      "legacy_history_reads_conditional": [
+        "public.tenants",
+        "public.users",
+        "public.tenant_members",
+        "public.customer_onboarding",
+        "public.tenant_subscriptions",
+        "public.subscription_invoices",
+        "public.subscription_events"
+      ],
+      "legacy_history_reads_rule": "Existing schema/visibility and all historical links required; missing table is UNKNOWN. No DML to these tables in E1 validation."
+    },
+    "stock": {
+      "schemas": [
+        "stock_e1_private"
+      ],
+      "tables": {
+        "settings": {
+          "columns": [
+            "singleton boolean PRIMARY KEY CHECK(singleton)",
+            "enabled boolean NOT NULL DEFAULT false",
+            "core_project_ref text NOT NULL",
+            "source_manifest_sha256 text NOT NULL",
+            "fence_epoch bigint NOT NULL"
+          ]
+        },
+        "bindings": {
+          "columns": [
+            "reservation_id uuid PRIMARY KEY",
+            "company_id uuid NOT NULL",
+            "core_subject uuid NOT NULL UNIQUE",
+            "core_tenant_id uuid NOT NULL UNIQUE",
+            "stock_tenant_id uuid NOT NULL UNIQUE REFERENCES public.tenant(id) ON DELETE RESTRICT",
+            "stock_subject uuid NOT NULL UNIQUE",
+            "profile_id uuid NOT NULL UNIQUE REFERENCES public.user_profile(id) ON DELETE RESTRICT",
+            "intent_digest text NOT NULL UNIQUE",
+            "fence_epoch bigint NOT NULL",
+            "revision bigint NOT NULL DEFAULT 0",
+            "status text NOT NULL",
+            "created_at timestamptz NOT NULL",
+            "revoked_at timestamptz"
+          ],
+          "constraints": [
+            "status allowlist: provisioned, revoked, quarantined",
+            "binding profile.user_id and tenant_id must match exactly",
+            "do not FK Core IDs across databases",
+            "immutable tuple; revocation cannot be undone by replay",
+            "do not add tenant.core_tenant_id or user_profile.core_user_id"
+          ]
+        }
+      },
+      "new_public_functions": [
+        {
+          "name": "public.create_e1_stock_membership",
+          "arguments": "p_reservation uuid, p_intent_id uuid",
+          "returns": "jsonb",
+          "execute_roles": [
+            "service_role"
+          ],
+          "requirements": [
+            "exact private intent authenticated from Core; no supplied Company/Owner assertions",
+            "fresh supported Stock session/account and Core reservation authority",
+            "shared local tenant/provisioning fence, uniqueness, canonical PR7 profile and trigger audit in one transaction",
+            "local tenant/profile may be created only within the separately approved provisioning transaction",
+            "no managed Auth account mutation inside SQL"
+          ]
+        }
+      ],
+      "existing_read_objects": [
+        "public.tenant",
+        "public.user_profile",
+        "public.tenant_entitlements",
+        "public.audit_event",
+        "public.resolve_stock_context()"
+      ],
+      "existing_dml_scope": "Only manifest-named new synthetic tenant/profile rows and corresponding PR7 audit in a separately authorized fixture transaction. No legacy mapping/billing/cache DML.",
+      "pr7_requirement": "Pin exact approved PR7 source and prove schema prerequisites; do not install the cross-repo stock_provisioning_reference fixture or run old incompatible E1 SQL."
+    },
+    "privilege_contract": [
+      "No new database roles or role memberships in this proposal.",
+      "New private schemas not Data API exposed; ENABLE and FORCE RLS where supported and explicitly inspect effective owner behavior.",
+      "Revoke candidate object/schema/PUBLIC/anon/authenticated/service_role default and column privileges; grant only named outer command EXECUTE to transport.",
+      "No generic private-table SELECT/INSERT/UPDATE/DELETE grants to service_role.",
+      "Do not alter provider-wide default ACLs, existing helper ownership, managed Auth privileges or public schema owner.",
+      "Owner/BYPASSRLS can exceed ordinary policy; independent recovery/custody evidence is required."
+    ],
+    "forbidden_sql": [
+      "auth schema DML/DDL/GRANT",
+      "new LOGIN/NOLOGIN roles or memberships",
+      "ALTER existing Registry definitions or broad ACLs",
+      "ALTER tenant ADD core_tenant_id",
+      "ALTER user_profile ADD core_user_id",
+      "DROP/TRUNCATE/CASCADE or audit-trigger disabling",
+      "historical migration replay or fabricated migration-ledger rows"
+    ]
+  },
+  "future_phases": [
+    {
+      "id": "D0",
+      "authorized": false,
+      "mode": "METADATA_AND_AUTHORITY_PREFLIGHT",
+      "operations": [
+        "confirm exact Core and independently supplied Stock DEV refs, zero incremental cost, synthetic isolation, principal and supported connection/backend affinity",
+        "reuse the three native RPC fingerprints; inspect only genuinely missing candidate dependencies/visibility/owners/ACLs/jobs/containment and fixture scope",
+        "require complete adopted W01-W15 dictionary and issuer/session/hold protocol evidence"
+      ],
+      "on_failure": "STOP_B0_NO_PROVIDER_MUTATION"
+    },
+    {
+      "id": "D1",
+      "authorized": false,
+      "mode": "SINGLE_BACKEND_ROLLBACK_REHEARSAL",
+      "operations": [
+        "approved exact SQL BEGIN and bounded timeouts lock_timeout=3s statement_timeout=10s",
+        "unconditional refusal retained in present proposals; only a separately reviewed hash-bound executable derivative could create the named candidate objects",
+        "test synthetic SQL-only denial and audit-failure abort with terminal ROLLBACK and independent no-change comparison"
+      ],
+      "forbidden": [
+        "COMMIT",
+        "Auth API mutation",
+        "flag activation",
+        "source fencing claimed from isolated locks"
+      ]
+    },
+    {
+      "id": "D2",
+      "authorized": false,
+      "mode": "ACTUAL_MANAGED_AUTH_FIXTURES_AND_RLS",
+      "operations": [
+        "only after exact synthetic IDs/email domains/quotas and cleanup are approved: supported Auth Admin API creates at most six synthetic accounts per named DEV realm, no email/SMS/OAuth delivery",
+        "supported password login, getUser, getClaims and signOut for actual managed sessions",
+        "test missing/revoked session, banned/deleted account through supported APIs where separately enumerated, wrong issuer/subject/session and provider-policy mismatch",
+        "execute candidate denial/authorization checks with real authenticated sessions; no public route or feature flag"
+      ],
+      "on_failure": "CONTAIN_AND_RECOVER_EXACT_FIXTURES",
+      "requires": "B0 closed and exact method/field/ID manifest; current JSON does not authorize these API calls."
+    },
+    {
+      "id": "D3",
+      "authorized": false,
+      "mode": "TWO_CONNECTION_DURABLE_CONCURRENCY",
+      "operations": [
+        "separately approved durable candidate/fixture setup; no COMMIT disguised as rollback-only",
+        "same subject/key => one Company/Owner/reservation and original receipt; changed payload/key/session cannot duplicate or bypass current checks",
+        "conflicting legacy/onboarding/team/manual writer waits or is rejected by proven fence; unknown writer => denial",
+        "revocation before final checkpoint denies; controlled overlapping revocation verifies approved ordering",
+        "same Stock intent => one tenant/profile/binding/audit; duplicate or revoked binding never reactivates",
+        "inject audit failure on both databases and prove zero partial mutations for each local transaction; do not claim cross-database rollback",
+        "lost acknowledgement => pending/quarantined, portal access denied; revalidate before same-key reconciliation"
+      ],
+      "requires": "Exact supported fencing implementation, independent recovery and disposable fixture retention/erasure approval."
+    },
+    {
+      "id": "D4",
+      "authorized": false,
+      "mode": "CONTAINMENT_AND_INDEPENDENT_RECOVERY",
+      "operations": [
+        "candidate settings false; revoke only candidate EXECUTE under actual owner using separate authenticated recovery session; drain only named candidate work",
+        "independently determine uncertain commit before retry/removal; preserve original command IDs and audits",
+        "rollback-only runs restore full candidate object/ACL/dependency baseline",
+        "durable synthetic artifacts retained quarantined unless precise approved disposal rule exists; no audit deletion or trigger bypass",
+        "delete only orphan manifest-named test Auth users via supported Admin API after proving no FK/residual links",
+        "independent fixture inventory must prove no active test access, jobs, outstanding holds or unknown states"
+      ],
+      "on_failure": "STOP_CONTAINED_RETAIN_EVIDENCE_NO_RELEASE"
+    }
+  ],
+  "acceptance": [
+    "AUTH: actual managed-session checkpoint rejects absent/revoked/expired/policy-unsupported and cross-project identities.",
+    "PROVENANCE: all adopted source groups include complete historical states and identities; unknown/hidden/missing sources deny.",
+    "FENCE: every relevant writer is cooperatively serialized or independently contained; lease expiry cannot reopen source while Core outcome uncertain.",
+    "ATOMIC_CORE: Company, Owner, portal/reservation, proof consumption, receipt/outbox and append-only audit commit or abort together.",
+    "ATOMIC_STOCK: tenant/profile/private binding and canonical audit commit or abort together; Auth effects are separate and quarantined on failure.",
+    "REPLAY: exact retry under current authority returns original result; changed payload, foreign tenant, duplicate identity and revoked authority deny.",
+    "E2_E3: independent exact proof and two independent authorized current operator sessions required; cannot pass E1.",
+    "FIRST_CHECKOUT: reserved Stock portal can precede local profile; no access until exact current canonical binding and entitlement verified.",
+    "RECOVERY: independent observer verifies baseline/fixture outcomes and no active residue without deleting protected audit.",
+    "NO_RELEASE: application flags and fixed refusals unchanged; no Production, paid services, SSO or real payment."
+  ],
+  "stop_conditions": [
+    "B0 open",
+    "unconfirmed Stock DEV ref or cost/isolation",
+    "missing supported issuer principal/session mechanism",
+    "unknown or unfenced writer",
+    "unreviewed SQL/body/privilege or target mismatch",
+    "RLS proof attempted with service-role bypass",
+    "incomplete recovery or fixture retention authority",
+    "strict instant revocation/cross-database ACID demanded but unsupported"
+  ]
+}

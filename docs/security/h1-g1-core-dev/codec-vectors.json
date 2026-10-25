@@ -1,0 +1,99 @@
+{
+  "codec": "e1:v2",
+  "source": "lib/e1-workspace.test.mjs",
+  "source_sha256": "01a1e62cbbdbdd9ebfc9f53b33df6fb57e3774cade36311b9f0378bf827d363c",
+  "implementation": "lib/e1-workspace.ts",
+  "implementation_sha256": "ae8a6488844500683e45fcb7472c8b44127df43700a3c25da923f27aff0b86d4",
+  "vectors": {
+    "valid": [
+      {
+        "input": "New Business",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "New Business",
+        "nameHex": "4e657720427573696e657373",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "2a9f240d6dfd08ed130f5c2da47067644282d00d807aed0262ef68c59e1e8506"
+      },
+      {
+        "input": "  Cafe\u0301  ",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "Caf\u00e9",
+        "nameHex": "436166c3a9",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "13ed00609fa767008dc67cae7f35ed70b5c69cf822aa7b4c6afe5045bb05fc30"
+      },
+      {
+        "input": "\u00a0AB\u00a0",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "AB",
+        "nameHex": "4142",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "aad92a11ea379c3a01268990a007856e805d8be8f529b2b6781a12314cae5751"
+      },
+      {
+        "input": "\ud83d\ude00\ud83d\ude00",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "\ud83d\ude00\ud83d\ude00",
+        "nameHex": "f09f9880f09f9880",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "94ea0206caec571dafcd4a3f69b8c2edcb8a023d50fc304b08151c49fd64cf63"
+      },
+      {
+        "input": "A\"\\\u2028B",
+        "subject": "BBBBBBBB-BBBB-4BBB-8BBB-BBBBBBBBBBBB",
+        "key": "AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA",
+        "name": "A\"\\\u2028B",
+        "nameHex": "41225ce280a842",
+        "scope": "03fa93a03adeb539c79bd8fef1c952d3d034aa62e9525161c8bbbdbb9b7997d7",
+        "fingerprint": "d95926e9202fcb05e5452648dd53e2b9122931a0ed4820cf8485358fced6e75a"
+      },
+      {
+        "input": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+        "nameHex": "f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880f09f9880",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "cd8f21329d640735bb90b3d3991620b1192226aebfddb24745384c13584d7046"
+      },
+      {
+        "input": "\t\n\u000b\f\r \u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeffAB\ufeff ",
+        "subject": "11111111-1111-4111-8111-111111111111",
+        "key": "22222222-2222-4222-8222-222222222222",
+        "name": "AB",
+        "nameHex": "4142",
+        "scope": "7b77ee3f302afeb23b718ba36b2057d5e1b275abe713033f8587dc81bdd61627",
+        "fingerprint": "aad92a11ea379c3a01268990a007856e805d8be8f529b2b6781a12314cae5751"
+      }
+    ],
+    "invalidNames": [
+      "",
+      " ",
+      "A",
+      "\ud83d\ude00",
+      "A\tB",
+      "A\nB",
+      "A\u0000B",
+      "A\u007fB",
+      "A\u0085B",
+      "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+      null,
+      42,
+      "\u00a0\u00a0"
+    ],
+    "invalidKeys": [
+      "retry",
+      "22222222222242228222222222222222",
+      "{22222222-2222-4222-8222-222222222222}",
+      "22222222-2222-4222-2222-222222222222",
+      "22222222-2222-9222-8222-222222222222",
+      "00000000-0000-0000-0000-000000000000",
+      null
+    ]
+  },
+  "sql_runtime": "NOT_EXECUTED"
+}

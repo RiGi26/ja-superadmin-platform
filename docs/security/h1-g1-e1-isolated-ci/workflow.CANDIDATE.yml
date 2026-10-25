@@ -1,0 +1,139 @@
+# LOCAL_CANDIDATE_ONLY. Not discoverable under .github/workflows.
+# Promotion, publication, repository settings and one run require Owner approval.
+name: H1 G1 E1 isolated synthetic security candidate
+"on":
+  push:
+    branches: [feat/h1-g1-e1-core-static]
+    paths:
+      - .github/workflows/h1-g1-e1-isolated.yml
+      - docs/security/h1-g1-e1-isolated-ci/workflow.CANDIDATE.yml
+      - docs/security/h1-g1-e1-isolated-ci/supabase/config.toml
+      - docs/security/h1-g1-e1-isolated-ci/supabase/migrations/00000000000000_e1_ci_fixture.sql
+      - docs/security/h1-g1-e1-isolated-ci/tests/e1-negative.test.mjs
+      - docs/security/h1-g1-e1-isolated-ci/vercel.guard.proposed.json
+      - docs/security/h1-g1-e1-isolated-ci/RUNBOOK.md
+permissions:
+  contents: read
+concurrency:
+  group: h1-g1-e1-isolated-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  synthetic-security:
+    if: >-
+      github.repository == 'RiGi26/ja-superadmin-platform' &&
+      github.ref == 'refs/heads/feat/h1-g1-e1-core-static' &&
+      github.event_name == 'push' && github.run_attempt == 1 &&
+      vars.E1_ISOLATED_CI_APPROVED_SHA == github.sha
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Must already exist with required human reviewers before publication.
+    environment: e1-isolated-ci
+    defaults:
+      run:
+        shell: bash
+    env:
+      CANDIDATE_DIR: docs/security/h1-g1-e1-isolated-ci
+      E1_FIXTURE_DIR: ${{ runner.temp }}/h1-g1-e1-fixture
+      E1_TOOLS_DIR: ${{ runner.temp }}/h1-g1-e1-tools
+      E1_ISOLATED_CI_APPROVED_SHA: ${{ vars.E1_ISOLATED_CI_APPROVED_SHA }}
+      SUPABASE_HOME: ${{ runner.temp }}/h1-g1-e1-cli-home
+      SUPABASE_ENV: test
+      SUPABASE_EXPERIMENTAL_STACK: '0'
+      SUPABASE_EXPERIMENTAL: 'false'
+      SUPABASE_USE_SLIM_IMAGES: 'false'
+      SUPABASE_INTERNAL_IMAGE_REGISTRY: docker.io
+      SUPABASE_TELEMETRY_DISABLED: '1'
+      SUPABASE_NO_KEYRING: '1'
+      DO_NOT_TRACK: '1'
+    steps:
+      - name: Checkout the exact approved commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+          submodules: false
+          lfs: false
+      - name: Install checksum-pinned tools into runner temp only
+        id: tools
+        run: |
+          set -euo pipefail
+          mkdir -p "$E1_TOOLS_DIR"
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 2 --connect-timeout 15 --max-time 120 \
+            https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar.xz \
+            -o "$E1_TOOLS_DIR/node.tar.xz"
+          echo "fd8e59d5a511510f6a298afb548f18c7d2b1be404d8b4a27d94fbe49f56cb2d6  $E1_TOOLS_DIR/node.tar.xz" | sha256sum --check --status
+          tar -xJf "$E1_TOOLS_DIR/node.tar.xz" -C "$E1_TOOLS_DIR"
+          curl --proto '=https' --tlsv1.2 -fsSL --retry 2 --connect-timeout 15 --max-time 120 \
+            https://github.com/supabase/cli/releases/download/v2.120.0/supabase_2.120.0_linux_amd64.tar.gz \
+            -o "$E1_TOOLS_DIR/cli.tar.gz"
+          echo "7074584113aa00495beeac661c41fb09f1ddd0a483cd7333894b0d080086dc6e  $E1_TOOLS_DIR/cli.tar.gz" | sha256sum --check --status
+          tar -xzf "$E1_TOOLS_DIR/cli.tar.gz" -C "$E1_TOOLS_DIR" supabase
+          "$E1_TOOLS_DIR/node-v24.21.0-linux-x64/bin/node" --check "$CANDIDATE_DIR/tests/e1-negative.test.mjs"
+          echo 'PASS: pinned tool download and syntax checks'
+      - name: Static candidate tests and stage only the synthetic fixture
+        id: stage
+        run: |
+          set -euo pipefail
+          "$E1_TOOLS_DIR/node-v24.21.0-linux-x64/bin/node" --test \
+            "$CANDIDATE_DIR/tests/e1-negative.test.mjs" > "$RUNNER_TEMP/e1-static.log" 2>&1 || {
+            echo 'FAIL: static candidate checks'; exit 1;
+          }
+          test ! -e "$E1_FIXTURE_DIR"
+          test -z "$(docker ps -aq --filter label=com.supabase.cli.project=h1-g1-e1-ci-disposable)"
+          test -z "$(docker volume ls -q --filter label=com.supabase.cli.project=h1-g1-e1-ci-disposable)"
+          mkdir -p "$E1_FIXTURE_DIR/supabase/migrations"
+          cp "$CANDIDATE_DIR/supabase/config.toml" "$E1_FIXTURE_DIR/supabase/config.toml"
+          cp "$CANDIDATE_DIR/supabase/migrations/00000000000000_e1_ci_fixture.sql" \
+            "$E1_FIXTURE_DIR/supabase/migrations/00000000000000_e1_ci_fixture.sql"
+          test "$(find "$E1_FIXTURE_DIR" -type f | wc -l)" -eq 2
+          test -z "$(find "$E1_FIXTURE_DIR" -type l)"
+          echo 'PASS: static checks and isolated two-file staging'
+      - name: Pull and verify the exact synthetic database image
+        run: |
+          set -euo pipefail
+          timeout 300 docker pull supabase/postgres@sha256:4b438c22395a9a2bd19ee0522742cc9a1ff91db4732ff0c1b08fc07e9c767c22 \
+            > "$RUNNER_TEMP/e1-image.log" 2>&1
+          docker tag supabase/postgres@sha256:4b438c22395a9a2bd19ee0522742cc9a1ff91db4732ff0c1b08fc07e9c767c22 \
+            supabase/postgres:17.11.0.004
+          test "$(docker image inspect --format '{{.Architecture}}' supabase/postgres:17.11.0.004)" = amd64
+          test "$(docker image inspect --format '{{.Id}}' supabase/postgres:17.11.0.004)" = \
+            "$(docker image inspect --format '{{.Id}}' supabase/postgres@sha256:4b438c22395a9a2bd19ee0522742cc9a1ff91db4732ff0c1b08fc07e9c767c22)"
+          echo 'PASS: pinned PostgreSQL image'
+      - name: Start the disposable PostgreSQL-only Supabase fixture
+        id: bootstrap
+        run: |
+          set -euo pipefail
+          timeout 600 env -i PATH="$PATH" HOME="$SUPABASE_HOME" SUPABASE_HOME="$SUPABASE_HOME" \
+            SUPABASE_ENV=test SUPABASE_EXPERIMENTAL_STACK=0 SUPABASE_EXPERIMENTAL=false \
+            SUPABASE_USE_SLIM_IMAGES=false SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io \
+            SUPABASE_TELEMETRY_DISABLED=1 SUPABASE_NO_KEYRING=1 DO_NOT_TRACK=1 \
+            "$E1_TOOLS_DIR/supabase" --workdir "$E1_FIXTURE_DIR" start \
+            --exclude gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,postgres-meta,studio,edge-runtime,logflare,vector,supavisor \
+            > "$RUNNER_TEMP/e1-bootstrap.log" 2>&1 || {
+            echo 'FAIL: isolated fixture bootstrap; no diagnostics uploaded'; exit 1;
+          }
+          echo 'PASS: synthetic fixture bootstrap'
+      - name: Run the isolated SQL security scenarios
+        env:
+          E1_ISOLATED_RUNTIME: '1'
+        run: |
+          set -euo pipefail
+          "$E1_TOOLS_DIR/node-v24.21.0-linux-x64/bin/node" --test \
+            "$CANDIDATE_DIR/tests/e1-negative.test.mjs" > "$RUNNER_TEMP/e1-runtime.log" 2>&1 || {
+            echo 'FAIL: synthetic SQL security scenarios; no runtime PASS'; exit 1;
+          }
+          echo 'PASS: synthetic SQL security scenarios only; no Production equivalence'
+      - name: Remove this exact local stack and its data volumes
+        if: ${{ always() && steps.bootstrap.outcome != 'skipped' && steps.stage.outcome == 'success' && steps.tools.outcome == 'success' }}
+        run: |
+          set -euo pipefail
+          timeout 90 env -i PATH="$PATH" HOME="$SUPABASE_HOME" SUPABASE_HOME="$SUPABASE_HOME" \
+            SUPABASE_ENV=test SUPABASE_EXPERIMENTAL_STACK=0 SUPABASE_EXPERIMENTAL=false \
+            SUPABASE_USE_SLIM_IMAGES=false SUPABASE_INTERNAL_IMAGE_REGISTRY=docker.io \
+            SUPABASE_TELEMETRY_DISABLED=1 SUPABASE_NO_KEYRING=1 DO_NOT_TRACK=1 \
+            "$E1_TOOLS_DIR/supabase" --workdir "$E1_FIXTURE_DIR" stop \
+            --project-id h1-g1-e1-ci-disposable --no-backup > "$RUNNER_TEMP/e1-cleanup.log" 2>&1
+          test -z "$(docker ps -aq --filter label=com.supabase.cli.project=h1-g1-e1-ci-disposable)"
+          test -z "$(docker volume ls -q --filter label=com.supabase.cli.project=h1-g1-e1-ci-disposable)"
+          echo 'PASS: exact fixture containers and volumes removed'

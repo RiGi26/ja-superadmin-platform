@@ -1,0 +1,241 @@
+--- frozen/PATCH.PROPOSED.sql
++++ provider-compatible-v1/PATCH.PROPOSED.sql
+@@ -1,6 +1,6 @@
+ -- LOCAL REVIEW PROPOSAL ONLY. No current DEV execution authority.
+ -- Future target: webzoka-core-dev / mcvekinhgcqygfddyifs. Never Production.
+--- Read REVIEW.md first. Source bytes are reconciled offline; external target proof,
++-- Read PACKAGE.md in this directory and ../REVIEW.md first. Source bytes are reconciled offline; external target proof,
+ -- writer/DDL quiescence, provider preflight and an independently verified recovery
+ -- connection remain mandatory.
+ -- Run only through one reviewed, stop-on-error, persistent transaction connection.
+@@ -31,6 +31,30 @@
+   after_metadata jsonb;
+   settings_rows bigint;
+   disabled boolean;
++  -- Exact observed enabled/tag-relevant roster, not a name-only allowlist.
++  expected_provider constant jsonb := $provider_roster$[
++  {
++    "evtname": "pgrst_ddl_watch",
++    "evttags": null,
++    "handler": "extensions.pgrst_ddl_watch()",
++    "evtevent": "ddl_command_end",
++    "evtenabled": "O",
++    "handler_definition_md5": "afaad7193dcf8f81e728d2bedb85e43e"
++  },
++  {
++    "evtname": "pgrst_drop_watch",
++    "evttags": null,
++    "handler": "extensions.pgrst_drop_watch()",
++    "evtevent": "sql_drop",
++    "evtenabled": "O",
++    "handler_definition_md5": "4357772baf5cfcd5c6d7049585b3a537"
++  }
++]$provider_roster$::jsonb;
++  provider_before jsonb;
++  provider_after jsonb;
++  provider_metadata_before jsonb;
++  provider_metadata_after jsonb;
++  expected_ddl_handler_sha256 constant text := '2b4b5d702ddf70fbd1a05c9825f9f9016d5c0ef97dd3df5f5b012ea23d9b94b1';
+ BEGIN
+   IF current_user <> 'postgres' OR session_user <> 'postgres'
+      OR pg_catalog.current_database() <> 'postgres'
+@@ -64,9 +88,48 @@
+   END IF;
+   -- Supplementary observations only: external ingress/job/custodian/DDL quiescence
+   -- must be established before this transaction and retained through verification.
+-  IF EXISTS (SELECT 1 FROM pg_catalog.pg_event_trigger
+-    WHERE evtenabled <> 'D' AND (evttags IS NULL OR 'CREATE FUNCTION' = ANY(evttags))) THEN
+-    RAISE EXCEPTION 'STOP: applicable provider DDL event trigger requires separate source review';
++  -- CREATE OR REPLACE FUNCTION has command tag CREATE FUNCTION. The observed
++  -- ddl_command_end watcher is reviewed notification-only code. The observed
++  -- sql_drop watcher cannot fire for this statement (PostgreSQL 17 event matrix).
++  -- Retain both exact records: an unknown, missing, reconfigured or changed
++  -- enabled/tag-relevant trigger must stop. No trigger is disabled or modified.
++  SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'evtname', e.evtname, 'evtevent', e.evtevent, 'evtenabled', e.evtenabled,
++      'evttags', e.evttags, 'handler', e.evtfoid::pg_catalog.regprocedure::text,
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb),
++    COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'trigger', pg_catalog.to_jsonb(e),
++      'handler_metadata', pg_catalog.to_jsonb(p) - 'prosrc',
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb)
++    INTO provider_before, provider_metadata_before
++    FROM pg_catalog.pg_event_trigger e
++    JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++    WHERE e.evtenabled <> 'D'
++      AND (e.evttags IS NULL OR 'CREATE FUNCTION' = ANY(e.evttags));
++  IF provider_before IS DISTINCT FROM expected_provider THEN
++    RAISE EXCEPTION 'STOP: provider trigger roster, event applicability or handler source drift';
++  END IF;
++  -- Handler owner/security/configuration were inspected. Event-trigger ownership
++  -- and drop-handler ownership are stricter execution-time requirements; they
++  -- were not projected by accepted Phase 1 and are not claimed observed offline.
++  IF pg_catalog.current_setting('session_replication_role') <> 'origin'
++     OR EXISTS (SELECT 1 FROM pg_catalog.pg_event_trigger e
++       JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++       WHERE e.evtname IN ('pgrst_ddl_watch', 'pgrst_drop_watch')
++         AND (e.evtowner <> 'supabase_admin'::pg_catalog.regrole
++           OR p.proowner <> 'supabase_admin'::pg_catalog.regrole))
++     OR NOT EXISTS (SELECT 1 FROM pg_catalog.pg_proc p
++       WHERE p.oid = pg_catalog.to_regprocedure('extensions.pgrst_ddl_watch()')
++         AND p.proowner = 'supabase_admin'::pg_catalog.regrole AND NOT p.prosecdef
++         AND p.proconfig IS NOT DISTINCT FROM ARRAY['search_path=""']::text[]
++         AND pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
++           pg_catalog.pg_get_functiondef(p.oid), 'UTF8')), 'hex') = expected_ddl_handler_sha256
++         AND p.prokind = 'f' AND p.pronargs = 0
++         AND p.prorettype = 'pg_catalog.event_trigger'::pg_catalog.regtype
++         AND p.prolang = (SELECT oid FROM pg_catalog.pg_language WHERE lanname = 'plpgsql')) THEN
++    RAISE EXCEPTION 'STOP: provider ownership, handler security/configuration or replication mode';
+   END IF;
+   IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_proc p
+     WHERE p.oid = target AND p.proowner = 'postgres'::regrole AND p.prosecdef
+@@ -119,6 +182,26 @@
+   -- exactly the isolated-tested post-fence guard. Never DROP, GRANT or ALTER OWNER.
+   EXECUTE after_definition;
+ 
++  SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'evtname', e.evtname, 'evtevent', e.evtevent, 'evtenabled', e.evtenabled,
++      'evttags', e.evttags, 'handler', e.evtfoid::pg_catalog.regprocedure::text,
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb),
++    COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'trigger', pg_catalog.to_jsonb(e),
++      'handler_metadata', pg_catalog.to_jsonb(p) - 'prosrc',
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb)
++    INTO provider_after, provider_metadata_after
++    FROM pg_catalog.pg_event_trigger e
++    JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++    WHERE e.evtenabled <> 'D'
++      AND (e.evttags IS NULL OR 'CREATE FUNCTION' = ANY(e.evttags));
++  IF provider_after IS DISTINCT FROM provider_before
++     OR provider_metadata_after IS DISTINCT FROM provider_metadata_before THEN
++    RAISE EXCEPTION 'STOP: provider trigger/handler metadata or source changed during replacement';
++  END IF;
++
+   SELECT pg_catalog.jsonb_build_object(
+     'proc', pg_catalog.to_jsonb(p) - 'prosrc',
+     'dependencies', (SELECT COALESCE(jsonb_agg(to_jsonb(d) ORDER BY to_jsonb(d)::text), '[]'::jsonb)
+--- frozen/RECOVERY.PROPOSED.sql
++++ provider-compatible-v1/RECOVERY.PROPOSED.sql
+@@ -2,7 +2,7 @@
+ -- Restores a KNOWN-VULNERABLE baseline. Keep runtime disabled and all writers
+ -- quiesced throughout and afterwards. Never use this as a runtime repair or enablement.
+ -- Future target: webzoka-core-dev / mcvekinhgcqygfddyifs. Never Production.
+--- Read REVIEW.md first. Source bytes are reconciled offline; external target proof,
++-- Read PACKAGE.md in this directory and ../REVIEW.md first. Source bytes are reconciled offline; external target proof,
+ -- writer/DDL quiescence, provider preflight and an independently verified recovery
+ -- connection remain mandatory.
+ -- Run only through one reviewed, stop-on-error, persistent transaction connection.
+@@ -33,6 +33,30 @@
+   after_metadata jsonb;
+   settings_rows bigint;
+   disabled boolean;
++  -- Exact observed enabled/tag-relevant roster, not a name-only allowlist.
++  expected_provider constant jsonb := $provider_roster$[
++  {
++    "evtname": "pgrst_ddl_watch",
++    "evttags": null,
++    "handler": "extensions.pgrst_ddl_watch()",
++    "evtevent": "ddl_command_end",
++    "evtenabled": "O",
++    "handler_definition_md5": "afaad7193dcf8f81e728d2bedb85e43e"
++  },
++  {
++    "evtname": "pgrst_drop_watch",
++    "evttags": null,
++    "handler": "extensions.pgrst_drop_watch()",
++    "evtevent": "sql_drop",
++    "evtenabled": "O",
++    "handler_definition_md5": "4357772baf5cfcd5c6d7049585b3a537"
++  }
++]$provider_roster$::jsonb;
++  provider_before jsonb;
++  provider_after jsonb;
++  provider_metadata_before jsonb;
++  provider_metadata_after jsonb;
++  expected_ddl_handler_sha256 constant text := '2b4b5d702ddf70fbd1a05c9825f9f9016d5c0ef97dd3df5f5b012ea23d9b94b1';
+ BEGIN
+   IF current_user <> 'postgres' OR session_user <> 'postgres'
+      OR pg_catalog.current_database() <> 'postgres'
+@@ -66,9 +90,48 @@
+   END IF;
+   -- Supplementary observations only: external ingress/job/custodian/DDL quiescence
+   -- must be established before this transaction and retained through verification.
+-  IF EXISTS (SELECT 1 FROM pg_catalog.pg_event_trigger
+-    WHERE evtenabled <> 'D' AND (evttags IS NULL OR 'CREATE FUNCTION' = ANY(evttags))) THEN
+-    RAISE EXCEPTION 'STOP: applicable provider DDL event trigger requires separate source review';
++  -- CREATE OR REPLACE FUNCTION has command tag CREATE FUNCTION. The observed
++  -- ddl_command_end watcher is reviewed notification-only code. The observed
++  -- sql_drop watcher cannot fire for this statement (PostgreSQL 17 event matrix).
++  -- Retain both exact records: an unknown, missing, reconfigured or changed
++  -- enabled/tag-relevant trigger must stop. No trigger is disabled or modified.
++  SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'evtname', e.evtname, 'evtevent', e.evtevent, 'evtenabled', e.evtenabled,
++      'evttags', e.evttags, 'handler', e.evtfoid::pg_catalog.regprocedure::text,
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb),
++    COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'trigger', pg_catalog.to_jsonb(e),
++      'handler_metadata', pg_catalog.to_jsonb(p) - 'prosrc',
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb)
++    INTO provider_before, provider_metadata_before
++    FROM pg_catalog.pg_event_trigger e
++    JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++    WHERE e.evtenabled <> 'D'
++      AND (e.evttags IS NULL OR 'CREATE FUNCTION' = ANY(e.evttags));
++  IF provider_before IS DISTINCT FROM expected_provider THEN
++    RAISE EXCEPTION 'STOP: provider trigger roster, event applicability or handler source drift';
++  END IF;
++  -- Handler owner/security/configuration were inspected. Event-trigger ownership
++  -- and drop-handler ownership are stricter execution-time requirements; they
++  -- were not projected by accepted Phase 1 and are not claimed observed offline.
++  IF pg_catalog.current_setting('session_replication_role') <> 'origin'
++     OR EXISTS (SELECT 1 FROM pg_catalog.pg_event_trigger e
++       JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++       WHERE e.evtname IN ('pgrst_ddl_watch', 'pgrst_drop_watch')
++         AND (e.evtowner <> 'supabase_admin'::pg_catalog.regrole
++           OR p.proowner <> 'supabase_admin'::pg_catalog.regrole))
++     OR NOT EXISTS (SELECT 1 FROM pg_catalog.pg_proc p
++       WHERE p.oid = pg_catalog.to_regprocedure('extensions.pgrst_ddl_watch()')
++         AND p.proowner = 'supabase_admin'::pg_catalog.regrole AND NOT p.prosecdef
++         AND p.proconfig IS NOT DISTINCT FROM ARRAY['search_path=""']::text[]
++         AND pg_catalog.encode(pg_catalog.sha256(pg_catalog.convert_to(
++           pg_catalog.pg_get_functiondef(p.oid), 'UTF8')), 'hex') = expected_ddl_handler_sha256
++         AND p.prokind = 'f' AND p.pronargs = 0
++         AND p.prorettype = 'pg_catalog.event_trigger'::pg_catalog.regtype
++         AND p.prolang = (SELECT oid FROM pg_catalog.pg_language WHERE lanname = 'plpgsql')) THEN
++    RAISE EXCEPTION 'STOP: provider ownership, handler security/configuration or replication mode';
+   END IF;
+   IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_proc p
+     WHERE p.oid = target AND p.proowner = 'postgres'::regrole AND p.prosecdef
+@@ -121,6 +184,26 @@
+   -- only that guard removed, under continued containment. Never DROP, GRANT or ALTER OWNER.
+   EXECUTE after_definition;
+ 
++  SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'evtname', e.evtname, 'evtevent', e.evtevent, 'evtenabled', e.evtenabled,
++      'evttags', e.evttags, 'handler', e.evtfoid::pg_catalog.regprocedure::text,
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb),
++    COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
++      'trigger', pg_catalog.to_jsonb(e),
++      'handler_metadata', pg_catalog.to_jsonb(p) - 'prosrc',
++      'handler_definition_md5', pg_catalog.md5(pg_catalog.pg_get_functiondef(e.evtfoid)))
++      ORDER BY e.evtname), '[]'::jsonb)
++    INTO provider_after, provider_metadata_after
++    FROM pg_catalog.pg_event_trigger e
++    JOIN pg_catalog.pg_proc p ON p.oid = e.evtfoid
++    WHERE e.evtenabled <> 'D'
++      AND (e.evttags IS NULL OR 'CREATE FUNCTION' = ANY(e.evttags));
++  IF provider_after IS DISTINCT FROM provider_before
++     OR provider_metadata_after IS DISTINCT FROM provider_metadata_before THEN
++    RAISE EXCEPTION 'STOP: provider trigger/handler metadata or source changed during replacement';
++  END IF;
++
+   SELECT pg_catalog.jsonb_build_object(
+     'proc', pg_catalog.to_jsonb(p) - 'prosrc',
+     'dependencies', (SELECT COALESCE(jsonb_agg(to_jsonb(d) ORDER BY to_jsonb(d)::text), '[]'::jsonb)

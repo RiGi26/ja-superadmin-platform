@@ -1,0 +1,840 @@
+{
+  "format": "h1g1-dev-source-evidence-v1",
+  "date": "2026-10-22",
+  "authoritative_mapping": false,
+  "positive_admission": false,
+  "scope": "Pinned local Core/Stock sources and accepted PR7; no provider/deployed completeness claim",
+  "groups": [
+    {
+      "key": "W01",
+      "family": "Native Company and Owner mutations",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "LOCAL_FIXED_DENIAL_NATIVE_FENCE_PARTIAL",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "lib/core-registry-native.ts",
+          "git_ref": null,
+          "anchors": [
+            "registryMutationBinding()",
+            "e1StockMutationBinding()"
+          ],
+          "sha256": "e4d9e09e928fd352ad5b75bc8f7ef31a47b2796eea0753e95c5191fdf92df054",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "registryMutationBinding()",
+              "line": 135
+            },
+            {
+              "anchor": "e1StockMutationBinding()",
+              "line": 192
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "lib/registry-mutation-binding.ts",
+          "git_ref": null,
+          "anchors": [
+            "W01_W15_SOURCE_MAPPING_AND_ALL_WRITER_FENCE_UNBOUND"
+          ],
+          "sha256": "c1cbdb92062419d81a9c4d8dcc97978360eff1a99e161f0bc03964982fcfbbb2",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "W01_W15_SOURCE_MAPPING_AND_ALL_WRITER_FENCE_UNBOUND",
+              "line": 10
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "docs/security/h1-g1-core-dev/runtime-gate-correction/definitions/mutate.baseline.txt",
+          "git_ref": null,
+          "anchors": [
+            "core_registry_writes",
+            "COMPLETE_CLEAN_PROVENANCE_REQUIRED"
+          ],
+          "sha256": "9185872def4078ab4d16bb3545faa9d09476d91c959edae49065a4b1be49cd81",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "core_registry_writes",
+              "line": 21
+            },
+            {
+              "anchor": "COMPLETE_CLEAN_PROVENANCE_REQUIRED",
+              "line": 56
+            }
+          ]
+        }
+      ],
+      "gap": "Native advisory lock does not constrain independent service, SQL or other database writers."
+    },
+    {
+      "key": "W02",
+      "family": "Core self-service and manual onboarding issuance",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "lib/customer-onboarding.ts",
+          "git_ref": null,
+          "anchors": [
+            "async function insertRequest",
+            "startSelfServiceStockOnboarding",
+            "startManualStockOnboarding"
+          ],
+          "sha256": "3cb8ec0106f5b9e802bf28b2f18ea4db50e21c6bfb8e6dd939eb0b5e66b7ab9f",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "async function insertRequest",
+              "line": 269
+            },
+            {
+              "anchor": "startSelfServiceStockOnboarding",
+              "line": 355
+            },
+            {
+              "anchor": "startManualStockOnboarding",
+              "line": 437
+            }
+          ]
+        }
+      ],
+      "gap": "Separate Auth API effects and onboarding INSERT; no shared Registry writer fence."
+    },
+    {
+      "key": "W03",
+      "family": "Core legacy onboarding finalization",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED_RELATIVE_TO_E1",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "supabase/migrations/core_db/019_customer_onboarding.sql",
+          "git_ref": null,
+          "anchors": [
+            "function public.finalize_customer_onboarding",
+            "insert into public.tenants",
+            "insert into public.tenant_members"
+          ],
+          "sha256": "f3472d4810ab59a9d2d6bcb74ce592592e5d83bc11061eba774be99f15d538a4",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "function public.finalize_customer_onboarding",
+              "line": 101
+            },
+            {
+              "anchor": "insert into public.tenants",
+              "line": 182
+            },
+            {
+              "anchor": "insert into public.tenant_members",
+              "line": 252
+            }
+          ]
+        }
+      ],
+      "gap": "Onboarding row lock covers that request only; finalization can reactivate legacy membership."
+    },
+    {
+      "key": "W04",
+      "family": "Core provisioning request, retry and completion",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "lib/customer-onboarding.ts",
+          "git_ref": null,
+          "anchors": [
+            "provisionStockOnboarding",
+            "/api/internal/provision",
+            "queueStockProvisioning"
+          ],
+          "sha256": "3cb8ec0106f5b9e802bf28b2f18ea4db50e21c6bfb8e6dd939eb0b5e66b7ab9f",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "provisionStockOnboarding",
+              "line": 609
+            },
+            {
+              "anchor": "/api/internal/provision",
+              "line": 693
+            },
+            {
+              "anchor": "queueStockProvisioning",
+              "line": 606
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "app/api/cron/customer-onboarding/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "customer_onboarding"
+          ],
+          "sha256": "77a49c8b3487227b5e833980019e6e85702f557dc12884055568afaa5e50f202",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "customer_onboarding",
+              "line": 26
+            }
+          ]
+        }
+      ],
+      "gap": "HTTP acknowledgement and Core portal mapping are separate commits."
+    },
+    {
+      "key": "W05",
+      "family": "Core platform-admin tenant/member creation",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED_STOCK_REJECTED_OTHER_HISTORY_RELEVANT",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "app/api/admin/tenants/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "platform === 'stock'",
+            "from('tenant_members').insert"
+          ],
+          "sha256": "606d2a103b4966ec7369a862459ce3000270921e3e6f7968e214753c93e64c62",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "platform === 'stock'",
+              "line": 35
+            },
+            {
+              "anchor": "from('tenant_members').insert",
+              "line": 115
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "lib/auth.ts",
+          "git_ref": null,
+          "anchors": [
+            "verifySuperadmin"
+          ],
+          "sha256": "672e63c998690f4e1f5a83f7e76089b1d959c205e2e523552d180dde63ca9856",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "verifySuperadmin",
+              "line": 3
+            }
+          ]
+        }
+      ],
+      "gap": "Legacy role/email operator gate is not independent Company-owner authority."
+    },
+    {
+      "key": "W06",
+      "family": "Inbound portal-to-Core tenant provisioning",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "app/api/tenants/provision/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "SUPPORTED_PLATFORMS",
+            "verifyHmac",
+            "linked_tenant_id"
+          ],
+          "sha256": "ace55b0d6f75e77a895a66cf0ede92ff8c7e60bfcb3e25553fe43a8447e074cb",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "SUPPORTED_PLATFORMS",
+              "line": 23
+            },
+            {
+              "anchor": "verifyHmac",
+              "line": 25
+            },
+            {
+              "anchor": "linked_tenant_id",
+              "line": 10
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "src/lib/core-provision.ts",
+          "git_ref": null,
+          "anchors": [
+            "provisionCoreTenant"
+          ],
+          "sha256": "1f1e7ea616600e0396d6c0008735c6bb651da2d94b17ba17bdcb44a2855da838",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "provisionCoreTenant",
+              "line": 30
+            }
+          ]
+        }
+      ],
+      "gap": "HMAC authenticates transport; it does not bind current Core subject or Company."
+    },
+    {
+      "key": "W07",
+      "family": "Billing history, lifecycle and entitlement mapping sync",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "lib/billing.ts",
+          "git_ref": null,
+          "anchors": [
+            "from('tenant_subscriptions')",
+            "from('subscription_invoices')"
+          ],
+          "sha256": "c78ea2d8a02d0435672c8846cbe09e6ec0676400056e133eed3c75a927dff64a",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "from('tenant_subscriptions')",
+              "line": 150
+            },
+            {
+              "anchor": "from('subscription_invoices')",
+              "line": 40
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "app/api/cron/subscription-lifecycle/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "tenant_subscriptions"
+          ],
+          "sha256": "1ba2daceddda8e5d774900ff8e0985f3f71bf421c18e94253fff839e53d918ae",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "tenant_subscriptions",
+              "line": 54
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "lib/stock-sync.ts",
+          "git_ref": null,
+          "anchors": [
+            "linked_tenant_id: tenant.id"
+          ],
+          "sha256": "d18e0af8d7c9646d8167ee8c8df8cc18402c42b7c623148d85abba0296390440",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "linked_tenant_id: tenant.id",
+              "line": 78
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "src/app/api/billing/sync/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "linked_tenant_id: linkedTenantId"
+          ],
+          "sha256": "9646ddf6ee3aeb4be9809677f42860ff7e9ea3ccc4553bd3ef2819006045bed2",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "linked_tenant_id: linkedTenantId",
+              "line": 106
+            }
+          ]
+        }
+      ],
+      "gap": "Billing mapping can change independently; cache and financial history cannot issue Owner proof."
+    },
+    {
+      "key": "W08",
+      "family": "Stock public registration",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "stock",
+          "path": "src/app/api/register/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "auth.admin.createUser",
+            "from('user_profile')",
+            "provisionCoreTenant"
+          ],
+          "sha256": "aa5750c731195ddc2070295fea9983cacc1a615edb5967ed3c1b54d7e8fc6eb7",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "auth.admin.createUser",
+              "line": 76
+            },
+            {
+              "anchor": "from('user_profile')",
+              "line": 96
+            },
+            {
+              "anchor": "provisionCoreTenant",
+              "line": 5
+            }
+          ]
+        }
+      ],
+      "gap": "Tenant, Auth, profile, entitlement and Core registration are not one transaction."
+    },
+    {
+      "key": "W09",
+      "family": "Core-targeted Stock internal provisioning receiver",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNKNOWN_EXTERNAL",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "lib/customer-onboarding.ts",
+          "git_ref": null,
+          "anchors": [
+            "/api/internal/provision"
+          ],
+          "sha256": "3cb8ec0106f5b9e802bf28b2f18ea4db50e21c6bfb8e6dd939eb0b5e66b7ab9f",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "/api/internal/provision",
+              "line": 693
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "supabase/tests/fixtures/stock_provisioning_reference.sql",
+          "git_ref": "703171f6afbac0895e1fda4bd3079038efee888a",
+          "anchors": [
+            "Source: RiGi26/ja-stock-platform",
+            "TEST ONLY"
+          ],
+          "sha256": "c6a6dc6f48f89de00d459414cf09a143e785795b650177003715da2c2d0b9c81",
+          "source_state": "PINNED_GIT_OBJECT",
+          "anchor_lines": [
+            {
+              "anchor": "Source: RiGi26/ja-stock-platform",
+              "line": 3
+            },
+            {
+              "anchor": "TEST ONLY",
+              "line": 1
+            }
+          ]
+        }
+      ],
+      "gap": "Receiver absent in inspected Webzoka Stock HEAD and PR7 tree; cross-repo guarded fixture is not installed-schema evidence."
+    },
+    {
+      "key": "W10",
+      "family": "Stock team membership and revocation",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "LOCAL_LEGACY_UNFENCED_PR7_LOCAL_FENCE_ONLY",
+      "sources": [
+        {
+          "repository": "stock",
+          "path": "src/app/actions/tim.ts",
+          "git_ref": null,
+          "anchors": [
+            "createUserProfile",
+            "auth.admin.createUser"
+          ],
+          "sha256": "7d886933fe19c021e2075c74ed936635d5f9559ecd1330d8a824091557ba6387",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "createUserProfile",
+              "line": 224
+            },
+            {
+              "anchor": "auth.admin.createUser",
+              "line": 267
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "src/app/actions/tim.ts",
+          "git_ref": "703171f6afbac0895e1fda4bd3079038efee888a",
+          "anchors": [
+            "update_stock_team_profile",
+            "TEAM_ACCOUNT_CREATION_UNAVAILABLE"
+          ],
+          "sha256": "1b8fb8d4a791131e8d99c121f07ea2b8e16dc99c340d6fb6b6e54c913fb3852a",
+          "source_state": "PINNED_GIT_OBJECT",
+          "anchor_lines": [
+            {
+              "anchor": "update_stock_team_profile",
+              "line": 63
+            },
+            {
+              "anchor": "TEAM_ACCOUNT_CREATION_UNAVAILABLE",
+              "line": 89
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "supabase/migrations/20261005050200_stock_team_profile_writer.sql",
+          "git_ref": "703171f6afbac0895e1fda4bd3079038efee888a",
+          "anchors": [
+            "for update",
+            "audit_stock_profile_change"
+          ],
+          "sha256": "aaa31573642d4091c2896caccb824b0de3f5f0cd51e586d9ea7905909c62c283",
+          "source_state": "PINNED_GIT_OBJECT",
+          "anchor_lines": [
+            {
+              "anchor": "for update",
+              "line": 87
+            },
+            {
+              "anchor": "audit_stock_profile_change",
+              "line": 4
+            }
+          ]
+        }
+      ],
+      "gap": "PR7 tenant lock and audit do not constrain all service-role/system writers or Core; deployed selection unknown."
+    },
+    {
+      "key": "W11",
+      "family": "Stock demo self-heal and scheduled seed",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED_EXCLUDE_DEMO",
+      "sources": [
+        {
+          "repository": "stock",
+          "path": "src/app/api/demo/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "ensureDemoAccount",
+            "auth.admin.updateUserById"
+          ],
+          "sha256": "ad2ae3f0653931eff43858791415c5e3d90d53a8001054c5412374441a85e9a0",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "ensureDemoAccount",
+              "line": 26
+            },
+            {
+              "anchor": "auth.admin.updateUserById",
+              "line": 51
+            }
+          ]
+        },
+        {
+          "repository": "stock",
+          "path": "supabase/migrations/009_demo_seed.sql",
+          "git_ref": null,
+          "anchors": [
+            "function public.seed_demo",
+            "cron.schedule"
+          ],
+          "sha256": "1c997fc812136d41ba7849711af0e5c3facfd9798041c6ea2ffcfedfffff65b0",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "function public.seed_demo",
+              "line": 7
+            },
+            {
+              "anchor": "cron.schedule",
+              "line": 170
+            }
+          ]
+        }
+      ],
+      "gap": "Independent Auth/profile/tenant writers; actual scheduled execution inventory unverified."
+    },
+    {
+      "key": "W12",
+      "family": "Stock privileged bootstrap tooling",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNFENCED",
+      "sources": [
+        {
+          "repository": "stock",
+          "path": "scripts/bootstrap-internal-tenant.mjs",
+          "git_ref": null,
+          "anchors": [
+            "ensureOwner",
+            "bootstrapInternalTenant",
+            "auth.admin.updateUserById"
+          ],
+          "sha256": "601902a271780bcef648e8b4be197afbefa45d55a3124f4a5ed236f243e6197b",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "ensureOwner",
+              "line": 209
+            },
+            {
+              "anchor": "bootstrapInternalTenant",
+              "line": 226
+            },
+            {
+              "anchor": "auth.admin.updateUserById",
+              "line": 218
+            }
+          ]
+        }
+      ],
+      "gap": "Multi-operation administrative bootstrap does not participate in E1 fencing."
+    },
+    {
+      "key": "W13",
+      "family": "Core import/backfill/seed and privileged manual writers",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "SOURCE_WRITERS_FOUND_EFFECTIVE_AUTHORITY_UNKNOWN",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "supabase/migrations/core_db/006_import_to_core_db.sql",
+          "git_ref": null,
+          "anchors": [
+            "INSERT INTO public.tenants",
+            "INSERT INTO public.tenant_members"
+          ],
+          "sha256": "4e7138f2e33514b3a76d8573bf980b0657b1e6f9e9e983b731e539d7cea49855",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "INSERT INTO public.tenants",
+              "line": 22
+            },
+            {
+              "anchor": "INSERT INTO public.tenant_members",
+              "line": 160
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "supabase/migrations/core_db/010_backfill_real_tenants.sql",
+          "git_ref": null,
+          "anchors": [
+            "INSERT INTO public.tenants"
+          ],
+          "sha256": "7b5279cb0770d50a5aafcf198bc4a5c10f2bcc16770750691351b5be787bbbee",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "INSERT INTO public.tenants",
+              "line": 16
+            }
+          ]
+        }
+      ],
+      "gap": "Installed jobs, actual SQL authority, credential custody, effective grants and manual writer exclusion are not established."
+    },
+    {
+      "key": "W14",
+      "family": "Other portal realms and external callers",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNKNOWN_NOT_INSPECTED",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "app/api/tenants/provision/route.ts",
+          "git_ref": null,
+          "anchors": [
+            "SUPPORTED_PLATFORMS"
+          ],
+          "sha256": "ace55b0d6f75e77a895a66cf0ede92ff8c7e60bfcb3e25553fe43a8447e074cb",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "SUPPORTED_PLATFORMS",
+              "line": 23
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "lib/hub-data.ts",
+          "git_ref": null,
+          "anchors": [
+            "tenant_members"
+          ],
+          "sha256": "66ae97d2a80eccf8adcf01eba73fabaa03d25c5d711fe7b1b139db3934efc5d0",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "tenant_members",
+              "line": 37
+            }
+          ]
+        }
+      ],
+      "gap": "No complete cross-portal historical identity links or writer inventory supplied; no absence inferred."
+    },
+    {
+      "key": "W15",
+      "family": "Pending and disputed claims, revoked history and provenance custodians",
+      "mapping_status": "PROPOSED_NOT_AUTHORITATIVE",
+      "complete": false,
+      "participating_writer_verified": false,
+      "classification": "UNKNOWN_ISSUER_AND_HISTORY_COMPLETENESS",
+      "sources": [
+        {
+          "repository": "core",
+          "path": "docs/security/h1-g1-core-dev/runtime-gate-correction/definitions/mutate.baseline.txt",
+          "git_ref": null,
+          "anchors": [
+            "core_registry_private.owner_claims",
+            "core_registry_private.provenance"
+          ],
+          "sha256": "9185872def4078ab4d16bb3545faa9d09476d91c959edae49065a4b1be49cd81",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "core_registry_private.owner_claims",
+              "line": 11
+            },
+            {
+              "anchor": "core_registry_private.provenance",
+              "line": 11
+            }
+          ]
+        },
+        {
+          "repository": "core",
+          "path": "docs/security/h1-g1-core-dev/SUPABASE_NATIVE_DEV_PACKAGE.md",
+          "git_ref": null,
+          "anchors": [
+            "No verified producer/source-to-W01",
+            "Admin getUserById proves current account state"
+          ],
+          "sha256": "7d3e585a37b7833c5548df200561b9c76943677d67cfd59026303b0b6abb93f2",
+          "source_state": "LOCAL_WORKING_BYTES_NOT_DEPLOYMENT_PROOF",
+          "anchor_lines": [
+            {
+              "anchor": "No verified producer/source-to-W01",
+              "line": 181
+            },
+            {
+              "anchor": "Admin getUserById proves current account state",
+              "line": 192
+            }
+          ]
+        }
+      ],
+      "gap": "No authoritative W-key dictionary, complete historical link/tombstone inventory or independently current two-operator issuer."
+    }
+  ],
+  "repositories": {
+    "core": {
+      "head": "5dcff3c3bab1d6aaccf6b315a47e9bbb6edb6f0a",
+      "branch": "feat/h1-g1-e1-core-static"
+    },
+    "stock": {
+      "head": "13f65413e5424ed9c8392a5db68683a86ba5196f",
+      "branch": "codex/stock-v2-conditional-pdf"
+    }
+  },
+  "absence_observation": {
+    "repository": "stock",
+    "path": "src/app/api/internal/provision/route.ts",
+    "local_HEAD": "13f65413e5424ed9c8392a5db68683a86ba5196f",
+    "local_file_absent": true,
+    "pr7_ref": "703171f6afbac0895e1fda4bd3079038efee888a",
+    "pr7_tree_path_absent": true,
+    "limit": "No deployed absence or other-repository completeness claim."
+  },
+  "protected_source_pins": [
+    {
+      "repository": "core",
+      "path": "lib/registry-mutation-binding.ts",
+      "sha256": "c1cbdb92062419d81a9c4d8dcc97978360eff1a99e161f0bc03964982fcfbbb2"
+    },
+    {
+      "repository": "core",
+      "path": "lib/core-company.ts",
+      "sha256": "55044e1e604c19c08cd0e5478afb7697dd757185838ce65488ccbd354d5451b0"
+    },
+    {
+      "repository": "core",
+      "path": "lib/core-registry-native.ts",
+      "sha256": "e4d9e09e928fd352ad5b75bc8f7ef31a47b2796eea0753e95c5191fdf92df054"
+    },
+    {
+      "repository": "core",
+      "path": "lib/e1-stock-integration.ts",
+      "sha256": "233f34f35b5c2a089a6f3904f3bd0c0b4b3a3de0a12fb370a52d3230fa98f2af"
+    },
+    {
+      "repository": "stock",
+      "path": "src/lib/e1-company-stock.ts",
+      "sha256": "0627220509fb72758388af652fc6155ac68c99fdfe3f2d8b29732bb7b121ae4a"
+    },
+    {
+      "repository": "stock",
+      "path": "src/lib/stock-security-context.ts",
+      "sha256": "f48d96ce862f97c878c207cbbc3ede238f727e596e7c6d371a41a3fa6d49530e"
+    },
+    {
+      "repository": "core",
+      "path": "docs/security/h1-g1-e1-stock-forward.PROPOSED.sql",
+      "sha256": "ce70bd1f91815fbe3faff34d717c225f913a3765652a81886904cdd987630301"
+    },
+    {
+      "repository": "stock",
+      "path": "docs/security/E1_STOCK_MEMBERSHIP_FORWARD.PROPOSED.sql",
+      "sha256": "73eb84d00e5fcd78d57f04c8fa34b5b9a475381c4c095b95bf6a83ecc9525efc"
+    }
+  ]
+}

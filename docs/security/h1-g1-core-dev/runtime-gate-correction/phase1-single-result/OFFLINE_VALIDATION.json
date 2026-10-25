@@ -1,0 +1,143 @@
+{
+  "result": "PASS",
+  "validation_level": "OFFLINE STATIC + SYNTHETIC CAPTURE MODEL ONLY",
+  "at_utc": "2026-10-20T17:13:31.097972+00:00",
+  "python": "3.14.2",
+  "parser": {
+    "pglast": "v8.4",
+    "postgresql_parser": [
+      18,
+      4
+    ]
+  },
+  "original_sha256": "0418387c5a1c047d1ef04e56efb5f3ea6915a3ddda9fe36fde64f8effcdcc51e",
+  "checks": [
+    {
+      "check": "Approved original and frozen copy retain exact SHA-256 and bytes",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: parse and exactly one result-producing top-level SELECT",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: exact READ ONLY/READ COMMITTED, timeout, search_path and ROLLBACK AST",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: exact SELECT bytes, AST scope, single materialized evaluation and reproducible transformation",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: no added catalog scope, mutating statements, row locks, truncating LIMIT or privilege-changing calls",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: every group complete, always-returning aggregate, explicit empty array, original order and row cardinality",
+      "result": "PASS"
+    },
+    {
+      "check": "Primary: output contract exposes exact JSON text, UTF-8 bytes, SHA-256 and structural status",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: parse and exactly one result-producing top-level SELECT",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: exact READ ONLY/READ COMMITTED, timeout, search_path and ROLLBACK AST",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: exact SELECT bytes, AST scope, single materialized evaluation and reproducible transformation",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: no added catalog scope, mutating statements, row locks, truncating LIMIT or privilege-changing calls",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: every group complete, always-returning aggregate, explicit empty array, original order and row cardinality",
+      "result": "PASS"
+    },
+    {
+      "check": "Recovery identity: output contract exposes exact JSON text, UTF-8 bytes, SHA-256 and structural status",
+      "result": "PASS"
+    },
+    {
+      "check": "Synthetic capture contract: >100 array entries, empty/multiple rows, NULL retention, UTF-8 checksum and five corruption negatives",
+      "result": "PASS"
+    }
+  ],
+  "passed": 14,
+  "failed": 0,
+  "files": [
+    {
+      "file": "H1G1_PHASE1_SINGLE_RESULT.PROPOSED.sql",
+      "bytes": 8213,
+      "sha256": "7ed57b39d802083a7561d6476fe637f7f29995d71623be01d64e3c09f144af27",
+      "group_count": 9
+    },
+    {
+      "file": "H1G1_RECOVERY_IDENTITY_SINGLE_RESULT.PROPOSED.sql",
+      "bytes": 3376,
+      "sha256": "5e8554fa168e05322b3b6214e30b8c38b302cccdac5f6dde409149c8893a86fc",
+      "group_count": 2
+    }
+  ],
+  "dev_sql_execution_count": 0,
+  "database_runtime_tests": 0,
+  "dashboard_modified": false,
+  "hosted_capture_equivalence_proven": false,
+  "postgresql_17_runtime_compatibility_proven": false,
+  "independent_review_complete": false,
+  "execution_authorized": false,
+  "original_selects": [
+    {
+      "id": "01_connection_identity",
+      "bytes": 736,
+      "sha256": "dfad0a66b7d627721cfae41dabab827efab2bc2f8ac15281386aa438df891278"
+    },
+    {
+      "id": "02_role_capabilities",
+      "bytes": 94,
+      "sha256": "c3bcbdc93ec7f8df73a899243a2b8e0834cc4029aedc629e853f0abcc8a60bc4"
+    },
+    {
+      "id": "03_runtime_disabled_singleton",
+      "bytes": 136,
+      "sha256": "bf3cba1728008e7ae1e13447b66f32a4470b66eefb9175cfc1ee7a4573119c7d"
+    },
+    {
+      "id": "04_other_database_sessions",
+      "bytes": 179,
+      "sha256": "ad8b1f672efda4749213ac965f425cec039b2a83b7cb7b7405a4defddec252a2"
+    },
+    {
+      "id": "05_registry_advisory_fence",
+      "bytes": 350,
+      "sha256": "3492876e995dae51b6535f0d8ffdc60dffa68c08db7e0209a41a5a586adac48e"
+    },
+    {
+      "id": "06_prepared_transactions",
+      "bytes": 99,
+      "sha256": "2dad53177a371fcf2b8bd3a85ac85eddd1d6e617999ac02f21d3fea6c3604495"
+    },
+    {
+      "id": "07_caller_isolation_settings",
+      "bytes": 496,
+      "sha256": "caa62e2cf281c0646a3857daf7eead74e1612fd946c541a87e8f91ddc731fcad"
+    },
+    {
+      "id": "08_applicable_event_triggers",
+      "bytes": 284,
+      "sha256": "7495d5a93a12a196e3f85fdd2414a8bbb22b56d5837474cddf61b5ebbe4fe5b3"
+    },
+    {
+      "id": "09_mutation_metadata_acl_dependencies",
+      "bytes": 1016,
+      "sha256": "934bd85032a020042241f6176eebe44ba627b9474cc05ed9465f7ffe720f3277"
+    }
+  ],
+  "harness_correction": "Initial AST comparison flagged shifted IN-list byte offsets. Ignored parser source positions rexpr_list_start/end; all semantic AST fields remain compared. SQL unchanged."
+}
