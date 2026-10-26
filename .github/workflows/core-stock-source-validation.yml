@@ -38,7 +38,9 @@ jobs:
       - run: npx --no-install tsc --noEmit
       - run: npx --no-install eslint app/hub/workspace lib/hub-e1-workspace.ts lib/core-company.ts lib/core-registry-native.ts lib/e1-stock-binding.ts lib/registry-mutation-binding.ts lib/e1-realm.ts lib/hub-return-path.ts proxy.ts app/hub/login/page.tsx app/api/auth/e1/stock/quarantine/route.ts
       - run: npm run build
-      - name: Check candidate whitespace
+      - name: Check successor whitespace against the installed security baseline
         env:
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: git diff --check "$PR_BASE_SHA" HEAD
+          SOURCE_BASE_SHA: e92e74bb4536e8f7344c3c376fd02a1d35797756
+        # Older SQL and patch evidence are immutable. Exact-byte tests cover that
+        # history; this check covers every successor change, including CRLF pins.
+        run: git -c core.whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol diff --check "$SOURCE_BASE_SHA" HEAD
