@@ -1,5 +1,145 @@
 # Proposed native SSO application transport
 
+## Current Step 6 — Production-backed testing and consent repair, 26 October 2026
+
+Release update: the Owner explicitly approved the Corp-only release after the
+candidate handoff. Corporate PR #167 merged as
+`950f39679e539afa34d3b4ce251a4604bafa6395` after lint/typecheck/build and Preview
+checks passed. Ready Production `dpl_3Mq4ksjpdBgSHwQgSM5yyNwy8r6f` now serves both
+corporate hosts. Live HTTP passes 7/7; desktop/mobile browser navigation reaches
+Core login with the same synthetic consent selector. The corporate 404 is
+resolved. This is anonymous routing evidence, not authenticated E1 acceptance.
+Core/Stock deployments and gates remain unchanged. Protected approval integrity,
+the Core Origin fix release, and uninterrupted authenticated UAT remain pending.
+Earlier corporate Preview URLs and release-pending statements below are historical.
+
+This supersedes the earlier DEV-only blocker interpretation below. The Owner
+approved existing Production databases and the temporary callback. Managed
+Auth/DB integration passed 48/48; deployed Preview HTTP passed its 16 primary
+flow assertions. Fresh independent post-revocation Stock browser-cookie reads
+return `ok=false` and zero tenant rows; fixture sessions are zero in both realms.
+The final HTTP file retains one harness failure caused by expecting a null/array
+instead of that installed context contract. It is not labeled 19/19.
+
+Deployed desktop/mobile browser UAT reached real inactive quarantine and fresh
+Core status with the original UUIDs. It required consent-host and private Preview
+navigation adapters. Browser UAT found a real Origin failure: Core workspace
+`no-referrer` caused `Origin: null`. The candidate now uses `strict-origin`,
+preserving the exact Origin check while suppressing paths/query referrers;
+20/20 focused tests, TypeScript and focused lint pass.
+
+The managed consent host currently returns 404. The Owner delegated the stability
+decision, selecting two exact corporate-site redirects to Core's existing
+consent endpoint, preserving Core's global Site URL. The final corporate Preview
+passes four HTTP scenarios and desktop/mobile navigation into Core login; its
+synthetic selector test is not authenticated full-flow acceptance. Configuration
+redirects revalidate and do not honor scoped page headers; no no-store claim is
+made for that hop.
+
+Test Auth accounts are disabled; E1 and generic Registry gates are closed. The
+temporary callback, Preview OIDC variable, and three Core/Stock test deployments
+were removed. Marked Production fixture graph/audit records remain append-only;
+Stock is inactive with zero entitlements. Production app aliases are unchanged.
+The protected approval-document hash failure remains unresolved. Corporate
+routing release needs explicit release authority; Core/Stock activation remains
+separately gated. Full evidence and scenario limits are recorded in the current
+Step 6 section of `../H1_G1_E1_STOCK_LOCAL_CONTRACT.md`.
+
+## Step 6 UAT approval and environment blocker — 26 October 2026
+
+Owner's "Approve full flow uat" authorizes testing. Fresh public HTTP and real
+browser checks confirm the existing Core login redirect and closed deployed E1
+boundaries; Core quarantine and Stock start/callback return 503 `blocked`.
+Both live deployment IDs still match the earlier security rollout. Current
+candidate source remains local with three false release constants. Exact source
+origins/realms pin the Production pair, so arbitrary Preview environment values
+cannot establish an isolated UAT flow. No current runnable isolated candidate pair
+was verified; positive HTTP/browser, managed Auth, RLS and database-race scenarios
+remain NOT_EXECUTED. No Production data/configuration or deployed code changed.
+
+The root authority contract separately gates deployment, release activation and
+Production mutation. Source append-only graph/audit protections also prevent
+assuming live positive fixtures can be deleted afterward. The concrete next
+proposal is an isolated non-Production UAT pair plus test deployments with
+test-only gate enablement and exact callback/origin/realm configuration. No paid
+resource, workstation installation or Production fallback is inferred. Detailed
+scenario matrix, evidence and screenshot-export limitation: Step 6 of
+`../H1_G1_E1_STOCK_LOCAL_CONTRACT.md`. Testing approval is retained; setup/release
+authority is the unresolved material gate.
+
+## Step 5 local concurrency/recovery checks — 26 October 2026
+
+Owner's "Go step 5" continues the local-only Core/Stock envelope. Two reproduced
+recovery defects are repaired: late callback responses cannot delete a newer
+flow's continuation/PKCE cookies, and writer `55P03` contention preserves
+`unconfirmed` original selectors for an explicit fresh-auth retry. The installed
+SDK keeps its normal session storage key; only E1 browser continuation and
+verifier cookies are flow-scoped, secure, HttpOnly, host-only and ten-minute.
+Observed older flows are retired on explicit restart; in-flight callbacks can
+retire only their own flow. No automatic retry or global latest-login guarantee
+is introduced. Shared normal Stock session cookies still require runtime UAT.
+
+Core UNIT: 836/837, solely the unchanged protected-document hash failure. Stock
+UNIT: 264/264, including 58 reciprocal source-composition cases with synthetic
+Auth/RPC boundaries and controlled recovery interleavings. Types and focused lint
+pass. Mocked durable-state replay is not database locking, uniqueness or audit
+atomicity proof. Release flags remain false; SQL, provider settings and Production
+are unchanged. Full-flow UAT and controlled release remain later authority gates.
+See Step 5 in `../H1_G1_E1_STOCK_LOCAL_CONTRACT.md` for evidence and limitations.
+
+## Step 4 local security/failure acceptance — 26 October 2026
+
+Owner's "Go step 4" continues local verification in the same worktrees. Three
+reproduced defects were repaired: observation deadlines are enforced after slow
+parallel context reads, malformed direct Server Action form arguments fail
+closed, and Hub selectors share the approved native UUID codec. Expired pre-write
+observations invoke no writer; post-write uncertainty retains the original IDs.
+No source observation is renewed by a wait, and no Auth-row lock or SQL change
+was introduced. Current Core/Stock tests report 833/834 and 246/246 respectively;
+the sole Core failure is the existing protected approval-document hash mismatch.
+All release flags remain false. These are STATIC/UNIT results, not managed Auth,
+RLS/SQL concurrency, deployed UAT or release acceptance. See the Step 4 section
+of `../H1_G1_E1_STOCK_LOCAL_CONTRACT.md` for exact evidence and remaining gates.
+
+## Step 3 local caller/results update — 25 October 2026
+
+Owner's "Go a head step 3" authorizes the dedicated `/hub/workspace` caller,
+current-session Core context read and inactive Stock HTML results described in
+`../H1_G1_E1_STOCK_LOCAL_CONTRACT.md`. Distinct admission/binding keys survive
+retries; callback return selectors never assert success. Existing legacy Hub and
+billing remain isolated. Native release constants remain false. This is local
+STATIC/UNIT and synthetic-render visual evidence, not a runtime or release grant.
+Full framework hydration, managed Auth/database flow and deployed UAT remain
+NOT_EXECUTED. The historical protected-document hash failure is still visible.
+
+## Step 2 local reciprocal composition — 25 October 2026
+
+Owner "okee go next step 2" authorizes the reciprocal server implementation in
+the existing worktrees. Core now selects the installed bind RPC. Stock confirms
+persisted inactive context and reciprocal Core binding, with exact application
+hosts, pinned credentials, fresh bounded identities and unchanged PKCE custody.
+All release constants remain false; no SQL/provider/runtime/release action or Hub
+caller wiring occurred. Binding uses a distinct command UUID from admission and
+preserves it for retries. Checkout and activation remain blocked.
+
+Current implementation, source-composition evidence and Step 3 caller contract:
+[Step 2 reciprocal integration](../H1_G1_E1_STOCK_LOCAL_CONTRACT.md#step-2--reciprocal-server-integration-25-october-2026).
+Historical fixed-bind-refusal and wildcard-host statements below are superseded.
+
+## Step 1 local authority binding — 25 October 2026
+
+Core admission now binds the installed resource-isolated RPC and verifies the
+current managed session using a pinned bearer. The Company facade uses the approved
+Production realm; the historical W1 DEV export remains isolated and unwired.
+Admission binding does not open reciprocal transport, legacy operator commands,
+Hub callers or either application release constant. No SQL/provider/runtime or
+release action occurred. Accepted checkpoint-based revocation semantics remain
+unchanged; instantaneous revocation at cross-system commit is not claimed.
+
+Scope authority, implementation, current evidence and next-package handoff:
+[Step 1 Core authority binding](../H1_G1_E1_STOCK_LOCAL_CONTRACT.md#step-1--core-authority-binding-25-october-2026).
+Historical "unbound" and DEV-only statements below do not describe this successor.
+
 ## Approved security rollout — 25 October 2026
 
 Owner approval in this chat explicitly covers coordinated SQL/app release,

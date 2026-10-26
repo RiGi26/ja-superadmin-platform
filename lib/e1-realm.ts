@@ -4,3 +4,5 @@
  */
 export const CORE_E1_ORIGIN = 'https://hxhusfkrlafxdnyasmsu.supabase.co' as const
 export const STOCK_E1_ORIGIN = 'https://oyyfcmlquqfrdoffkgsd.supabase.co' as const
+export const CORE_E1_APP_ORIGIN = 'https://ja-superadmin-platform.vercel.app' as const
+export const STOCK_E1_APP_ORIGIN = 'https://webzoka-stock-platform.vercel.app' as const

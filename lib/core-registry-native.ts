@@ -3,7 +3,7 @@ import 'server-only'
 import { createHash, timingSafeEqual } from 'node:crypto'
 import { z } from 'zod'
 import { CORE_COMPANY_RUNTIME_ENABLED } from '@/lib/core-company'
-import { CORE_E1_ORIGIN } from '@/lib/e1-realm'
+import { CORE_E1_ORIGIN, STOCK_E1_ORIGIN } from '@/lib/e1-realm'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { E1_STOCK_RUNTIME_ENABLED } from '@/lib/e1-stock-integration'
@@ -57,6 +57,9 @@ const stockReservation = z.object({ companyId: uuid, reservationId: uuid, coreTe
 const stockReceipt = z.object({ reservation: stockReservation, receipt,
   modeledOnly: z.literal(false) }).strict()
 
+// Token custody stays private. Returned identity observations contain no bearer.
+const actorTokens = new WeakMap<object, string>()
+
 function enabled() {
   return Boolean(CORE_COMPANY_RUNTIME_ENABLED) && process.env.NEXT_PUBLIC_SUPABASE_URL === CORE_E1_ORIGIN
 }
@@ -72,8 +75,11 @@ function verifiedAccount(value: unknown, expectedId?: string) {
 }
 
 async function verifyCoreToken(client: Awaited<ReturnType<typeof createClient>>, token: string, expectedClientId?: string) {
-  // A live account lookup and verified claims are both required. Their managed
-  // revocation/commit behavior still needs runtime evidence before gates open.
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL !== CORE_E1_ORIGIN ||
+      !token || token.length > 8192 || /[\s,]/.test(token)) throw new Error('AUTH_REQUIRED')
+  const started = Date.now()
+  // Live account, verified claims and installed managed-session RPC must all
+  // observe the SAME bearer. No fallback to stored users or a service credential.
   const userResult = await client.auth.getUser(token)
   if (userResult.error) throw new Error('AUTH_REQUIRED')
   const user = verifiedAccount(userResult.data.user)
@@ -88,9 +94,15 @@ async function verifyCoreToken(client: Awaited<ReturnType<typeof createClient>>,
       claims.iat >= claims.exp || (claims.nbf !== undefined && claims.nbf > now)) {
     throw new Error('AUTH_REQUIRED')
   }
-  return { subject: user.id, session: claims.session_id,
+  const live = await client.rpc('core_registry_session_is_live')
+    .setHeader('Authorization', `Bearer ${token}`)
+  const until = Math.min(claims.exp * 1000, started + 30_000)
+  if (live.error || live.data !== true || until <= Date.now()) throw new Error('AUTH_REQUIRED')
+  const actor = Object.freeze({ subject: user.id, session: claims.session_id,
     customer: claims.user_role !== 'superadmin' && !isSuperadminEmail(user.email),
-    until: new Date(Math.min(claims.exp * 1000, Date.now() + 30_000)).toISOString() }
+    until: new Date(until).toISOString() })
+  actorTokens.set(actor, token)
+  return actor
 }
 
 async function authenticate(client: Awaited<ReturnType<typeof createClient>>) {
@@ -120,15 +132,17 @@ export async function authorizeNativeCompany(input: unknown) {
   if (!enabled()) return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
   try {
     const client = await createClient()
-    await authenticate(client)
+    const actor = await authenticate(client)
     const result = await client.rpc('core_registry_authorize', {
       p_company: parsed.data.companyId, p_owner_only: parsed.data.ownerOnly,
-    })
+    }).setHeader('Authorization', `Bearer ${actorTokens.get(actor)!}`)
     if (result.error) return { status: 'denied' as const }
     const access = authorization.parse(result.data)
     if (access.companyId !== parsed.data.companyId || (parsed.data.ownerOnly && access.role !== 'owner')) {
       return { status: 'denied' as const }
     }
+    const latest = await authenticate(client)
+    if (latest.subject !== actor.subject || latest.session !== actor.session) return { status: 'denied' as const }
     return { status: 'authorized' as const, access }
   } catch {
     return { status: 'denied' as const }
@@ -140,6 +154,34 @@ export async function authorizeNativeOwnerBilling(input: unknown) {
   const parsed = z.object({ companyId: uuid }).strict().safeParse(input)
   if (!parsed.success) return { status: 'denied' as const }
   return authorizeNativeCompany({ companyId: parsed.data.companyId, ownerOnly: true })
+}
+
+/** Hub selectors confer no authority. Read only the current customer's reserved
+ * graph, with the same pinned session checks used by native commands. */
+export async function readNativeE1StockContext(input: unknown) {
+  const parsed = stockSelector.omit({ product: true }).safeParse(input)
+  if (!parsed.success) return { status: 'denied' as const }
+  if (!enabled() || !Boolean(E1_STOCK_RUNTIME_ENABLED)) return { status: 'blocked' as const }
+  try {
+    const client = await createClient()
+    const actor = await authenticate(client)
+    if (!actor.customer) return { status: 'denied' as const }
+    const result = await client.rpc('core_registry_e1_stock_context', {
+      p_company: parsed.data.companyId, p_reservation: parsed.data.reservationId,
+    }).setHeader('Authorization', `Bearer ${actorTokens.get(actor)!}`)
+    if (result.error) return { status: 'unconfirmed' as const }
+    const context = stockReservation.extend({
+      companyName: z.string().min(2).max(100), stockOrigin: z.literal(STOCK_E1_ORIGIN),
+      stockBinding: z.object({ stockTenantId: uuid, stockSubject: uuid, profileId: uuid,
+        auditEventId: uuid, status: z.literal('quarantined') }).strict().nullable(),
+    }).strict().parse(result.data)
+    const latest = await authenticate(client)
+    if (!latest.customer || latest.subject !== actor.subject || latest.session !== actor.session ||
+        context.coreSubject !== actor.subject || context.companyId !== parsed.data.companyId ||
+        context.reservationId !== parsed.data.reservationId) return { status: 'denied' as const }
+    return { status: context.stockBinding ? 'quarantined' as const : 'reserved' as const,
+      companyName: context.companyName, ...parsed.data, isActive: false as const }
+  } catch { return { status: 'denied' as const } }
 }
 
 /** A command maps to one atomic writer RPC; the private audit is in that transaction. */
@@ -196,31 +238,36 @@ export async function executeNativeCompanyCommand(input: unknown) {
   }
 }
 
-/** Dormant E1 transport. Only admission has a resource-isolation adapter; other
+/** Release-gated E1 transport. Only admission has a resource-isolation adapter; other
  * commands are explicitly blocked before client construction or Auth calls.
  * Creation provenance is produced with native rows, not issued by a fake broker.
- * No service role table writes, payments, provider calls or E2/E3 shortcut.
- * Installed DEV is not asserted to contain this new RPC or proposal schema. */
+ * No direct table writes, payments, provisioning calls or E2/E3 shortcut.
+ * Uses the installed Core resource command and accepted checkpoint semantics.
+ * No instantaneous cross-system revocation or Production acceptance is implied. */
 export async function executeNativeE1StockCommand(input: unknown) {
   const parsed = e1StockCommand.safeParse(input)
   if (!parsed.success) return { status: 'denied' as const }
   if (!enabled() || !Boolean(E1_STOCK_RUNTIME_ENABLED)) return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
-  const binding = e1StockMutationBinding()
-  if (binding.status === 'blocked') return binding
   if (parsed.data.action !== 'e1.stock.admit') return { status: 'blocked' as const, reason: 'E1_COMMAND_ADAPTER_UNBOUND' as const }
+  const binding = e1StockMutationBinding(parsed.data.action)
+  if (binding.status === 'blocked') return binding
   let writeAttempted = false
   try {
     const client = await createClient()
     const initial = await authenticate(client)
+    // The SQL command never waits on the Registry fence; retries must enter
+    // here and reauthenticate. Client construction below performs no I/O.
     const actor = await authenticate(client)
     if (!initial.customer || !actor.customer || initial.subject !== actor.subject || initial.session !== actor.session) throw new Error('AUTH_CHANGED')
     const admin = createAdminClient()
     writeAttempted = true
-    const result = await admin.rpc('core_registry_e1_stock_create', {
+    const result = await admin.rpc(binding.rpc, {
       p_actor: actor.subject, p_session: actor.session, p_auth_until: actor.until,
       p_command: parsed.data.commandId, p_company_name: parsed.data.payload.companyName,
     })
     if (result.error) {
+      if (result.error.code === 'PGRST202') return { status: 'blocked' as const, reason: 'E1_ADMISSION_RPC_UNAVAILABLE' as const }
+      if (result.error.code === '55P03') return { status: 'unconfirmed' as const, commandId: parsed.data.commandId }
       if (/^[0-9A-Z]{5}$/.test(result.error.code)) return { status: 'denied' as const }
       throw new Error('WRITE_UNCONFIRMED')
     }

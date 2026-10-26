@@ -1,5 +1,711 @@
 # H1.G1 E1 Core and Stock local implementation
 
+## Release-gate continuation — 26 October 2026
+
+Owner subsequently approved the explicit bounded reconciliation and Core/Stock
+release plan in this chat with “okee i proved.” The original proposal is now
+restored at the immutable pin; the 12,003-byte updated version is retained as
+`h1-g1-core-dev/RUNTIME_APPROVAL_DISCOVERY_20261023.HISTORICAL.md`. Fresh local
+Core UNIT passes 838/838, Stock 280/280, zero skipped tests; both types and
+focused lint pass. Native manifests include both preserved proposal versions.
+No test assertion or historical SQL was weakened. General activation remains
+excluded. Earlier pending statements below describe the pre-approval snapshot.
+
+The transferred worktrees and remote task branches still match Core `e92e74b`
+and Stock `72fb354`. Fresh source checks: Core 837/838, with only the preserved
+approval-document hash failure; Stock 280/280; both TypeScript and focused lint
+exit 0. Zero tests skipped. These are local source checks, not runtime acceptance.
+
+The original protected proposal was recovered from the 23 October chat output
+and exactly matches the immutable `c4567b...cc7` pin. The current `5ec814...d9be`
+version results from four recorded edits under an explicit Owner instruction to
+update the runtime proposal. Both versions and the exact diff are prepared in
+`h1-g1-release-gates-20261026/scratchpad/`; neither protected file nor assertion
+changed. Recommended reconciliation preserves the current document as a dated
+historical file and restores the pinned original, subject to Owner authority.
+
+See [approval provenance, exact reconciliation and controlled rollout](H1_G1_CORE_STOCK_RELEASE_GATES_20261026.md).
+Core's strict-origin correction and all other WIP remain preserved. No commit,
+push, CI, provider/DB/configuration change or deployment occurred in this
+continuation. Uninterrupted authenticated browser UAT and Core/Stock Production
+acceptance remain NOT_EXECUTED here. Corp's completed release is unchanged.
+
+## Current Step 6 result — approved Production-backed UAT, 26 October 2026
+
+### Corporate routing release update
+
+After the verified candidate handoff, the Owner explicitly answered “approved”
+to commit, push, PR/CI, merge, and Production deployment of the Corp redirect
+only. `RiGi26/ja-landingpage-platform` PR #167 merged commit
+`950f39679e539afa34d3b4ce251a4604bafa6395`, after Public CI lint, typecheck, build,
+and Vercel Preview checks passed on head
+`1ed7deaaffa69a2a5c561e7e2d72146bfa968958`.
+
+Vercel Production `dpl_3Mq4ksjpdBgSHwQgSM5yyNwy8r6f` is Ready. Both
+`www.webzoka.com` and `ja-landingpage-platform.vercel.app` resolve to that exact
+deployment, linked by Vercel's success status on the merge commit. Live HTTP
+checks pass 7/7: both consent-path variants on both hosts preserve the request
+identifier and fixed Core destination, existing store/legal redirects remain
+unchanged, and unrelated nested paths still return 404 after normal trailing
+slash normalization. Production browser checks reach Core login from both hosts
+with the same continuation at desktop and mobile widths; mobile document width
+is 390px. These checks use a synthetic selector and do not authenticate a user.
+
+This resolves the corporate consent-host 404 recorded below. Earlier deployment
+IDs and corporate release-pending statements are historical. The merged Corp
+worktree and task branch are cleaned after preservation checks; manual corporate
+UAT Previews are removed. Release evidence is `CORP_RELEASE_PROVIDER.json`,
+`CORP_RELEASE_HTTP.json`, and `CORP_RELEASE_BROWSER.json` in the evidence directory.
+Core and Stock app deployments and feature gates are unchanged by this release.
+The protected Core approval hash failure, unreleased Core Origin fix, and
+uninterrupted authenticated feature UAT remain separate release gates.
+
+This section supersedes the earlier Step 6 environment-blocker interpretation
+below. The Owner explicitly approved “Approve full flow uat”, “okeey go ahead use
+the stock production”, and “Approve temporary callback” in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`. A separate DEV project is not required for
+this approved test envelope. Supabase Free rejected branching; no new project or
+branch was created, and Core DEV was not changed.
+
+### Environments, fixtures, and limits
+
+Tests used the existing managed Production pair: Core `hxhusfkrlafxdnyasmsu` and
+Stock `oyyfcmlquqfrdoffkgsd`. **Production data changed:** one clearly marked test
+Company, Owner membership, reservation, Stock tenant, inactive profile, immutable
+origins/binding, and audit records were created. The same fixture and command IDs
+were reused throughout. Append-only records were retained, not deleted.
+
+Run: `28047c1c-a0c6-425e-bb08-bb8b21f15ec9`; Core subject
+`acdcbea5-9516-487b-b654-fb1f56a892f2`; Stock subject
+`7a44cf21-b34a-4d40-89c0-92f898b51bff`; Company
+`495681c7-a888-48bc-8cab-52d8f3ad02a7`; reservation
+`2728ea28-47e8-4c0f-bf55-d782d4f332e0`; admission command
+`d42747bf-a4a5-40ac-b91b-b4cae4e29c9c`; binding command
+`dd820e74-d36b-486b-8d03-b698d6901db6`.
+
+Private Core/Stock Preview snapshots temporarily enabled application gates,
+pinned the two UAT aliases, restricted Core identity to the exact fixture, and
+expired at `2026-10-26T06:16:51.929Z`. Test-only Preview protection used existing
+short-lived Vercel OIDC credentials. Actual repository release constants stayed
+false. There was no payment, entitlement, active Stock access, generic Registry
+enablement, schema/ACL/RLS migration, or Production app promotion.
+
+### Executed acceptance
+
+| Level/scenario | Fresh evidence | Result |
+| --- | --- | --- |
+| Managed Auth/DB integration | `MANAGED_FLOW.json`, 48/48 | PASS: real concurrent admission, same-command recovery, native PKCE, lost acknowledgements after real commits, reciprocal inactive binding, native code replay rejection, effective RLS, and fresh Core session revocation denial. This driver uses test source gates and a Core loopback address adapter; it is not browser evidence. |
+| Deployed Preview HTTP/cookie session | First 16 assertions in final `DEPLOYED_HTTP.json` | PASS: anonymous 307, authenticated fresh quarantine 200, controlled invalid input, foreign Origin 403, native start 303, real managed consent and callback 200, no provider credentials in normal Stock cookie, replay 400, inactive dashboard 307 to login. |
+| Revocation | Final HTTP teardown/Core denial plus `POST_REVOCATION_STOCK.json` | PASS: global fixture revocation and bans; fresh Core GET denied; an actual prior Stock browser session gets `ok=false` and zero visible tenants. |
+| Browser Origin regression | `BROWSER_RESULT.json`, before/after actual request headers | FIXED in candidate: `no-referrer` made the cross-origin form send `Origin: null` and receive 403. Workspace metadata now uses `strict-origin`: exact Core Origin, origin-only Referer, and 303. Stock Origin validation was not relaxed. |
+| Deployed browser quarantine and return | Core/Stock desktop and mobile screenshots, `BROWSER_RESULT.json` | PASS WITH ADAPTERS: native Auth, real inactive receipt, UUID-only return link, fresh Core quarantine, reload. At 390×844 both documents are 390px wide; controls are at least 44px. |
+| Uninterrupted configured consent | `consent-provider-404.png` | FAIL in existing Production routing: managed consent lands at `www.webzoka.com/oauth/consent/`, which returns 404. The successful browser run navigated the same authorization request to Core Preview and authenticated the protected callback separately. It is not uninterrupted Production acceptance. |
+
+Harness failures remain in evidence. The first integration attempt did not handle
+an already-approved consent redirect; the application already did. An HTTP driver
+initially omitted `await` on SDK cookie combination. Its final revocation check
+also expected a null/array instead of the installed `{ok:false}` contract.
+`DEPLOYED_HTTP.json` therefore retains that failed harness assertion rather than
+claiming 19/19. Independent fresh Stock browser-cookie readback confirms the
+actual denial and effective RLS. Source tests are not weakened to hide failures.
+
+### Consent-host repair selected by the Owner's delegated decision
+
+The Owner's “pilihkan keputusan yang paling tepat untuk kestabilan dan bisa live”
+authorizes the stability choice and implementation in the corporate host.
+Provider inspection identifies `www.webzoka.com` as `ja-landingpage-platform`,
+project `prj_BjUvWyOuoXPu3FQ72xvFGhYI0LWp`, working folder `ja-corp-landing`.
+The isolated `.wt-consent-route` branch `fix/core-oauth-consent-route` starts at
+`74afeb7d2c76cab5a03632359b1fb9ab52c7aee6`.
+
+Two exact-path temporary redirects send `/oauth/consent` and `/oauth/consent/` to
+`https://ja-superadmin-platform.vercel.app/oauth/consent`, preserving the managed
+request identifier. This avoids changing Core's global Auth Site URL or email
+destinations. An injected `next` parameter cannot choose the destination.
+Configuration redirects return `public, max-age=0, must-revalidate`; ineffective
+scoped page-header entries were removed after actual HTTP verification. Do not
+claim no-store on this transport redirect. Core retains managed authentication
+and consent checks.
+
+The final corporate Preview is
+`https://ja-landingpage-platform-p5tr7eean-rigi26s-projects.vercel.app`, deployment
+`dpl_Fe4fGyWUys4VdowALPcZm4DGspVv`. `CORP_ROUTING_HTTP.json` proves 4/4: both
+307 variants preserve the request and fixed host, while store/legal rules remain
+unchanged. Browser evidence proves navigation into the existing Core login,
+preserving the consent continuation, at 1280×800 and 390×844. This uses a synthetic
+authorization request selector and is not another authenticated E1 run.
+
+### Cleanup, source verification, and release status
+
+Both fixture Auth accounts are banned and have zero managed sessions. Core has
+one test origin, one binding, and two audit events. Stock has one origin, an
+inactive profile, two audit events, and zero fixture entitlements. Core E1 is
+false with null Stock origin; Stock E1 and generic Registry remain false.
+Original Stock Site URL and four callback entries were restored; the temporary
+fifth callback was removed, and both managed Auth settings endpoints return 200.
+The temporary Stock Preview OIDC environment variable and all three Core/Stock
+test deployments were removed. The corporate routing Preview contains no fixture
+credentials and remains available for review. Test brokers and browser auth
+interceptors were stopped; fixture browser cookies were cleared.
+
+Core focused Origin regression tests pass 20/20; TypeScript and focused ESLint
+pass. Current manifests are regenerated and verified after these documentation
+changes. The protected runtime proposal is unchanged: actual SHA256
+`5ec8142763141981ddacefc4e38e474fb0507a3cb1c246806829162fa0b2d9be`, expected
+`c4567b1b3385f23e2ad83975ce42906815dc0b978b5cb4b4d0299dcd07b69cc7`.
+That historical approval-integrity failure remains a Core release blocker; no
+complete-suite green or Production-ready claim is made.
+
+Production app aliases retain Core `dpl_GQHmfkVbojGZaEzVtQksn9UDVKLT`, Stock
+`dpl_4U8ZQxYYV2ayTNBfJL5GeFxRNoco`, and corporate
+`dpl_2G9U9qyvtWwzkb1UE5awED5maUTP`. No commit, push, PR, merge, CI, or
+Production deployment is authorized by Codex itself. The next controlled release
+can ship the independently verified corporate routing repair; Core/Stock feature
+activation remains separately gated, including approval-integrity reconciliation
+and uninterrupted post-release UAT. Earlier Step 6 notes below are historical.
+
+Evidence directory:
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-production-uat-20261026/scratchpad/`.
+
+## Step 6 — approved UAT preflight and blocked positive flow, 26 October 2026
+
+`START_AUTHORITY`: Owner's "Approve full flow uat" in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`. This authorizes full-flow testing;
+deployment, release-gate changes and unspecified Production mutations remain
+separately protected by the root `AGENTS.md` authority section. The complete
+Step 5 source hashes, both repository identities, branches and HEADs were
+rechecked with zero drift before any runtime request. No application code changed.
+
+### Executed checks
+
+Vercel connector identity was verified as `rigi26` under the configured team
+`team_MGLKh5XmYFCwtCh6CjyaaL6f`. Its Core deployment listing returned 403 and
+its exact Stock project search returned no results. The existing CLI independently
+authenticated as `rigi26`; read-only inspection of the same exact target aliases
+succeeded. Core remains Ready on `dpl_GQHmfkVbojGZaEzVtQksn9UDVKLT`; Stock remains
+Ready on `dpl_4U8ZQxYYV2ayTNBfJL5GeFxRNoco`, both Production. These match the
+previous security rollout, not evidence that the local successor was released.
+Preview catalogs were read only for these two projects. They contain Core entries
+up to 13 hours old and Stock entries 15 days old; no current runnable candidate
+pair, exact current candidate bytes or isolated database configuration was verified.
+No environment values, build/runtime logs or customer records were requested.
+
+| Scenario | Observed | Result and scope |
+| --- | --- | --- |
+| Anonymous Core `/hub/workspace` | HTTP 307 to `/hub/login`; browser reaches Customer Hub login | PASS, existing anonymous redirect only. The redirect does not prove that the successor workspace page exists behind authentication. |
+| Core `/hub/login`, Stock `/login` | Both HTTP 200 | PASS, existing public pages only; no sign-in or cookie-session acceptance. |
+| Core quarantine without credentials | POST returns 503, `status=blocked`, `no-store`, no Set-Cookie | PASS, closed deployed boundary only. |
+| Stock start without selectors | POST returns 503, `status=blocked`, private/no-store, no Set-Cookie | PASS, closed deployed boundary only; no valid OAuth start was attempted. |
+| Stock callback without code | GET returns 503, `status=blocked`, private/no-store, no Set-Cookie | PASS, closed deployed boundary only; no code was consumed. |
+| Desktop/mobile DOM | Core login redirect and Stock blocked body observed at 1280×800 and 390×844; document width equals viewport width | Partial BROWSER evidence only. No authenticated flow or successor presentation executed. |
+| Screenshot export | MCP rejected the required Temp/Codex scratchpad path as outside its permitted roots | BLOCKED; no screenshot evidence retained and no mobile visual acceptance claim. Output-root controls were not changed or bypassed. |
+
+Browser console observations were the expected Stock 503 plus a favicon 404;
+neither establishes an application-code regression. The isolated browser page was
+closed. Six HTTP responses and four browser DOM observations are retained in
+`PUBLIC_HTTP.json` and `BROWSER_BASELINE.json` under
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step6-20261026/scratchpad/`.
+
+### Why positive UAT stops here
+
+All three current source release constants are still false. Both source realm
+modules pin the live application origins and Production Supabase pair Core
+`hxhusfkrlafxdnyasmsu` / Stock `oyyfcmlquqfrdoffkgsd`. Changing only environment
+variables cannot make an arbitrary Preview pair satisfy the existing exact-origin
+checks. Current database gate state was not queried. No fixture accounts,
+Company, membership, reservation, Stock tenant/profile, audit record or payment
+were created. No customer credentials were used or requested.
+
+Source inspection of the installed migration files also shows append-only E1
+origins/bindings, protected graph references and immutable audit records. A live
+positive fixture cannot be promised removable without disabling protections or
+approving retained Production records. UAT approval does not authorize either.
+Historical SQL and the protected approval-document hash assertion remain unchanged.
+
+### Concrete proposed continuation — not executed or approved
+
+Prepare an isolated non-Production Core/Stock UAT pair and test deployments,
+using the exact Step 5 candidate plus reviewed environment-specific configuration.
+Before provisioning or mutation, identify exact test project/realm/origin identities,
+verify compatible existing zero-cost resources, and ensure no Production/customer
+data is copied. Do not install workstation database tooling or incur cost.
+E1 gates may be enabled only in the authorized isolated test pair; exact SSO
+callback URLs and realm/origin mappings need explicit environment authority.
+Preserve strict checks, managed-session requirements, RLS, append-only audit,
+distinct commands and inactive Stock membership. A Preview URL against the live
+database pair is not an isolated test environment. Any missing compatible free
+runtime must be reported before resource creation or a Production fallback.
+
+Once that setup/deployment envelope is approved and available, run the following
+acceptance matrix in this same UAT task; no separate technical prompt is needed:
+
+| Test | Required evidence | Current result |
+| --- | --- | --- |
+| New customer admission → native SSO/PKCE → inactive Stock stage → Core bind → Hub return | Authenticated HTTP cookie session plus real desktop/mobile browser interaction, actual persisted tuple and append-only audit counts, no Core provider credentials in browser storage | NOT_EXECUTED |
+| Reload and exact replay | Same admission/binding commands and immutable tuple/audit identifiers; no duplicate Company, membership or resources | NOT_EXECUTED |
+| Overlapping callbacks, restart and duplicate code | Actual provider code consumption, per-flow cookie isolation, deterministic interleavings and final database counts | NOT_EXECUTED |
+| Lost stage/bind acknowledgement and explicit retry | Inactive partial state; same IDs and fresh authority; no automatic retry or invented cross-database rollback | NOT_EXECUTED |
+| Revocation, foreign account/tenant, current Owner loss, expiry and contention | Real managed Auth, effective RLS/ACL, ≤30-second checkpoint semantics and actual transaction scheduling | NOT_EXECUTED |
+| Test-state restoration | Revoke fixture sessions, restore test-only configuration, retain immutable test audit in the isolated environment; verify no Production changes | NOT_EXECUTED |
+
+`FINAL_STATUS: FULL_FLOW_UAT_BLOCKED_MISSING_ISOLATED_RUNNABLE_CANDIDATE`.
+`FULL_FLOW_UAT: NOT_EXECUTED`. `PRODUCTION_READY: NO`.
+`PRODUCTION_APPLICATION_OR_DATABASE_STATE_CHANGED: NO`.
+The earlier Step 5 STATIC/UNIT evidence remains applicable to unchanged source;
+Core's protected-document failure is still unresolved. Only documentation and
+current native manifest bytes change in this continuation. No commit, push, CI,
+deployment, flag/provider/SQL mutation, dependency/worktree creation or cleanup
+occurred. Required next Owner decision: authorize the isolated UAT setup and
+test deployments described above; existing testing approval remains valid.
+
+## Step 5 — local concurrency and recovery checks, 26 October 2026
+
+`START_AUTHORITY`: Owner's "Go step 5" in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`, continuing the existing local-only
+Core/Stock envelope. Preflight found zero source or HEAD drift from Step 4.
+The same two worktrees were reused. No runtime, provider, SQL, CI, commit, push,
+deployment, financial action or new worktree/dependency installation occurred.
+All three application release constants remain false.
+
+### Reproduced defects and repairs
+
+| Finding | Before repair | Repair and fresh UNIT evidence |
+| --- | --- | --- |
+| S5-F01: late callback cleared a newer restart | Callback A paused after code exchange. Restart B set a new continuation and PKCE verifier. A's successful response then deleted both singleton cookies, preventing B from completing. The ordered regression failed before repair. | Continuation and PKCE browser cookies now have separate names per random flow UUID. The cookie bridge projects only that flow's verifier into the installed SDK's normal storage key, including chunks. A callback deletes only its own cookies. Explicit restart retires valid older flows observed in its request, preserving their original command/Company/reservation selectors. Tests cover late success and uncertainty before/after B completes, parallel starts with reversed responses, chunk cleanup, duplicate-code consumption, and isolation from unrelated normal-login verifiers. |
+| S5-F02: contention looked like a policy denial | Native admission mapped SQLSTATE `55P03` to `denied`, removing the Hub's explicit same-command retry path. The regression expecting retained uncertainty failed before repair. | Admission, Stock staging and Core binding classify writer `55P03` as `unconfirmed` with their original selectors. Other SQL policy refusals still deny; missing RPCs still block. There is no automatic writer retry. A controlled overlapping admission test proves a busy caller preserves its command and reauthenticates on explicit retry. |
+
+Recovery composition tests load actual source from both repositories and the
+installed SSR SDK. Synthetic Auth and RPC boundaries retain modeled durable
+state across request-local clients. Cases cover lost stage replies, lost Core
+acknowledgements, stage/bind contention, fresh-session retries, duplicate
+callbacks, revoked/missing Owner authority after a partial result, overlapping
+callbacks and attempted replacement of an already bound command. Every
+successful public receipt remains inactive. Same-key retries retain the modeled
+tuple and audit identifiers; that is evidence of caller behavior against an
+assumed SQL contract, not proof of database uniqueness or atomicity.
+
+### Fresh evidence and contract limits
+
+| Level / requirement | Result | Evidence and limit |
+| --- | --- | --- |
+| STATIC | PASS | Both TypeScript checks and focused source lint exit 0. Current native manifests retain 64 raw / 63 Git-byte entries; final manifest and diff checks are recorded separately after this documentation update. Historical SQL/install artifacts remain unchanged. |
+| UNIT, Core broad | 836/837; one pre-existing failure | `core-unit-final.txt`, zero skipped. Sole failure: unchanged `RUNTIME_APPROVAL_PROPOSAL.md` hash mismatch, actual `5ec814...d9be` versus protected historical `c4567b...cc7`. Neither document nor assertion was edited, repinned or skipped. |
+| UNIT, Stock | PASS: 264/264 | `stock-unit-final.txt`, zero skipped. Includes 58 reciprocal source-composition cases, flow-isolated SDK cookie tests and writer-contention recovery. |
+| Recovery selectors and authority | PASS, UNIT | Admission/binding commands remain distinct; recovery retains original IDs and rechecks current native identity, session and Owner context. Partial work stays inactive; no cross-database rollback, entitlement, activation or payment is claimed. |
+| Browser cookie interleavings | PASS, UNIT | Real Next Request/Response and installed SSR SDK, synthetic token endpoint, manually ordered browser cookie-jar responses. No real browser or managed OAuth server executed. |
+| SQL concurrency, audit atomicity, RLS and managed Auth | NOT_EXECUTED | Mocked RPC serialization/replay is an assumption. No actual lock scheduling, database race, effective ACL/RLS or live revocation evidence. Installed SQL source guards are STATIC only. |
+| Framework build/hydration; deployed HTTP/browser UAT; Production | NOT_EXECUTED | Presentation source is unchanged; Step 3 renders remain layout-only evidence. This task neither starts a deployed flow nor opens a release flag. |
+
+Flow-scoped cookies protect E1 continuation and PKCE state from late responses.
+The normal Stock session cookie intentionally retains the SDK's normal shared
+name. This change does not promise a global "latest login wins" rule across
+tabs, immediate logout at SQL commit, or a cross-system transaction. Request-local
+paired identity and bounded observation checks remain mandatory. Runtime browser
+acceptance must still exercise overlapping logins, code replay and expiry against
+the real provider, followed by authorized database checks of tuple/audit counts.
+No new Auth-row locks, privileges or provider callback configuration were added.
+
+Evidence directory:
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step5-20261026/scratchpad/`.
+Before-fix logs: `stock-overlap-before.txt`, `core-contention-before.txt`.
+`FINAL_RESULT.json` records final source hashes, exact results, protected artifacts
+and changes since Step 4. Broad tests precede the documentation-only update;
+the final manifest check covers the final document bytes independently.
+
+`FINAL_STATUS: LOCAL_CONCURRENCY_RECOVERY_CHECKED_WITH_PREEXISTING_CORE_SUITE_FAILURE`.
+`DB_CONCURRENCY_ACCEPTANCE: NOT_ESTABLISHED`. `PRODUCTION_CHANGED: NO`.
+This is a same-agent contract review, not independent certification or release
+approval. Both worktrees remain uncommitted and unstaged. Step 6 is full-flow
+HTTP/browser UAT under applicable runtime authority; Step 7 is controlled release
+and cleanup. Neither phase runs automatically from this local handoff.
+
+## Step 4 — local security and failure acceptance, 26 October 2026
+
+`START_AUTHORITY`: Owner's "Go step 4" in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`, following the Step 3 handoff. The same
+local Core/Stock envelope continues: inspect, reproduce, minimally repair and
+verify security/failure behavior. Release constants remain false. There is no
+new authority for provider access, live SQL/Auth execution, CI, commit, push,
+deployment, payment or Production mutation.
+
+Preflight compared both HEADs and every source hash retained in the Step 3
+handoff; there was zero drift. The original branches/worktrees and prior work
+were reused. No dependency, worktree or local database runtime was installed.
+
+### Findings reproduced and repaired
+
+| Finding | Reproducer and first broken boundary | Repair and fresh result |
+| --- | --- | --- |
+| S4-F01: expired parallel identity observations | A context read can finish after its parallel identity checks. With a logical 31-second read delay, Core binding and Stock staging could still invoke their writer, or return confirmed quarantine after a write; Stock's final reciprocal confirmation had the same gap. Five stale-window cases failed before repair. This is an application observation-lifetime defect, not evidence of a live database access bypass. | Stock identity observations in the Core binder now expire at the earlier JWT expiry or observation start + 30 seconds. Core binding, Stock staging and final server confirmation check the original deadlines after awaited context reads. The writer receives the earlier unchanged Core/Stock deadline. Expiry before a write denies without invoking the writer; expiry afterward returns `unconfirmed` with the original selectors. Logical 29-second controls pass; 30/31-second staging/binding cases refuse stale observations. |
+| S4-F02: malformed direct action argument | A direct Server Action call with a null/plain-object form argument threw before returning a controlled result. The bound selectors and previous state are untrusted inputs too. | The Hub DAL checks the runtime FormData type before reading fields. Malformed arguments return `invalid` before admission. Tests invoke the actual action wrapper and also prove that forged previous quarantine/Company state cannot override a fresh denial. |
+| S4-F03: incompatible UUID acceptance | Generic `z.uuid()` accepted nil/max UUIDs as binding selectors even though native SSO and the approved request codec reject them. An admission could therefore be followed by an unusable continuation selector. | Hub keys and result selectors reuse the existing canonical RFC UUID codec. Nil/max UUIDs fail before admission/read; valid uppercase keys normalize and remain distinct. The immutable historical codec and existing login allowlist were not changed. |
+
+The retained before-fix logs contain seven failing cases across these three
+findings; the same 12-case reproducer selection passed after the first targeted
+repair for each cause. Additional exact-deadline, action-state and normalization
+checks are included in the final broad run. The tests use a logical clock and
+synthetic RPC/Auth observations. They do not simulate PostgreSQL lock scheduling
+or prove managed-provider revocation at wall-clock time.
+
+The source SQL retains its independent `p_auth_until` validation; no SQL or Auth
+row lock was added or changed. These repairs preserve the approved checkpoint
+model and do not claim instantaneous cross-system logout at transaction commit.
+
+### Acceptance against the approved contract
+
+| Requirement | Local result | Evidence and scope |
+| --- | --- | --- |
+| Closed release fuses; strict inputs | PASS, STATIC/UNIT | Real source constants remain false. Existing gate tests make no SDK/writer calls; malformed action inputs, unknown form/query authority fields, injected HTTP role/token/status fields and unsupported UUIDs fail closed. |
+| Current native identity and exact realms | PASS, UNIT | Actual Core and Stock source rejects banned/deleted/unconfirmed/anonymous accounts, foreign issuer/audience/role/subject, expired/future tokens, nonliteral managed-session success and missing/wrong native links. Core's actual native binder independently checks customer policy and current Owner context. |
+| Fresh authority after waits | PASS, UNIT | Original deadlines are checked after parallel reads. Boundary cases cover 29, 30 and 31 seconds for pre/post staging and binding, plus delayed final reciprocal confirmation. A 30-second observation cannot be renewed by waiting. |
+| Inactive partial outcomes and stable recovery selectors | PASS, UNIT | Lost Stock/Core responses, failed/missing bind RPC, wrong/active writer or persisted-context receipts, post-stage/post-bind revocation and tampered HTTP acknowledgements remain inactive and unconfirmed with the same command/Company/reservation. No automatic retry or claimed cross-database rollback occurs. |
+| Credential custody | PASS, UNIT | All 49 reciprocal source-composition cases use the installed SSR SDK/PKCE code and actual source from both repositories, with synthetic Auth/RPC responses. Persisted browser cookie payloads are decoded and checked for absence of Core provider/refresh credentials on both success and failure; public receipt bodies do not expose them. Existing cookie, HTML/no-referrer/CSP and body-limit suites also pass. |
+| E1 scope; legacy, ownership and finance boundaries | PASS, STATIC/UNIT | Generic legacy Company/Owner mutation and checkout/activation bindings remain blocked. Current native Owner/context checks are required. No E2/E3 proof shortcut, tenant adoption, billing token, payment, entitlement or active portal grant was added. Existing Hub dispatcher, billing and historical SQL source protections remain intact. |
+| Effective RLS/ACL, native OAuth trust and SQL transaction behavior | NOT_EXECUTED in Step 4 | Synthetic getClaims/RPC results do not prove live signature validation, managed-session revocation, effective RLS, uniqueness, audit atomicity or database rollback. Existing installed-source checks are STATIC evidence only. |
+
+This is a same-agent review against the approved contract with adversarial input
+and failure tests; it is not independent security certification or release approval.
+
+### Fresh verification and limits
+
+| Level | Result | Evidence |
+| --- | --- | --- |
+| STATIC | PASS | Both TypeScript checks, focused lint and diff checks exit 0. Current native manifests retain 64 raw / 63 Git-byte entries; protected installation artifacts are unchanged. |
+| UNIT, Core broad | 833/834; one pre-existing failure | `core-unit-final.txt`, zero skipped. The sole failure remains the protected `RUNTIME_APPROVAL_PROPOSAL.md` hash mismatch: actual `5ec814...d9be`, historical expected `c4567b...cc7`. Neither the document nor its expected hash was edited. |
+| UNIT, Stock | PASS: 246/246 | `stock-unit-final.txt`, zero skipped; includes 49 actual-source reciprocal composition cases and the new clock/failure cases. |
+| Reproducer | PASS after repair | `core-reproducer-before/after.txt` and `stock-reproducer-before/after.txt` retain failing and passing results. |
+| UI layout evidence | REUSED only for unchanged presentation | Step 3 TSX/CSS/Stock HTML source is unchanged. Its 22 synthetic desktop/mobile renders remain layout evidence; they do not prove the new guards or a live browser flow. |
+| FRAMEWORK BUILD / HYDRATION | NOT_EXECUTED | No running Next.js app or browser Server Action submission. |
+| INTEGRATION / DB RUNTIME / CONCURRENCY | NOT_EXECUTED | No provider, SQL, real transaction scheduling or managed Auth execution. |
+| DEPLOYED HTTP / BROWSER UAT / PRODUCTION | NOT_EXECUTED | No deployment or Production action; existing runtime/release gates remain binding. |
+
+Evidence directory:
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step4-20261026/scratchpad/`.
+`FINAL_RESULT.json` retains exact final source hashes, validation and requirement
+results. Unit evidence remains valid across the subsequent documentation-only
+update; the final manifest check separately verifies those exact document bytes.
+
+`FINAL_STATUS: LOCAL_SECURITY_FAILURE_ACCEPTANCE_VERIFIED_WITH_PREEXISTING_CORE_SUITE_FAILURE`
+
+`RUNTIME_SECURITY_ACCEPTANCE: NOT_ESTABLISHED`.
+`PRODUCTION_CHANGED: NO`. No live customer rows, credential values or .env values
+were read. SQL, migrations, ACL/RLS, Auth/provider settings, allowlists, billing
+and deployed applications are unchanged. Both worktrees remain uncommitted and
+unstaged with protected/unrelated work preserved. The next package is Step 5
+concurrency/recovery acceptance; full-flow UAT and controlled release remain later
+gates, and this result grants no authority to open runtime flags.
+
+## Step 3 — Customer Hub caller and results, 25 October 2026
+
+`START_AUTHORITY`: Owner's "Go a head step 3" in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`, following the Step 2 handoff. This
+authorizes the local caller/result implementation and focused verification in
+the same Core and Stock worktrees. It does not authorize opening release flags,
+provider or database changes, CI, commit, push, deployment or payment activation.
+
+### Caller and navigation
+
+The dedicated `/hub/workspace` route uses the existing Hub navy/blue palette,
+clear form hierarchy, one primary action, visible inactive state and a stacked
+mobile layout. It does not route a native Company through legacy tenant data,
+inventory or billing. Existing `/hub`, its dispatcher, blank-Company isolation,
+legacy onboarding, billing actions and Owner checks retain their behavior.
+The previously detached `E1WorkspaceCandidate` remains an unchanged historical
+candidate; the new route uses `WorkspaceView` and a separate Server Action.
+
+The initial route generates distinct admission and reciprocal-binding UUIDs in
+the current URL. Admission posts only the business name; the server validates the
+bound selectors, the shared normalized-name schema and the current customer
+through the native DAL. Unknown/duplicate application fields and shared command
+UUIDs fail before admission. React action state preserves pending, invalid,
+denied, blocked and uncertain results. An uncertain admission keeps the same
+keys and name for retry; it never generates a replacement command automatically.
+Reloading the original URL retains both keys. The business name is not placed
+in the URL; after a reload it must be entered again if admission is unconfirmed,
+and the native idempotency contract rejects a different payload for that key.
+
+After admission, only the binding command, returned Company and reservation
+selectors replace the current URL. The Stock form posts exactly those three
+selectors to the fixed approved Stock origin and retains them on retries. A
+reload/status check independently reads `core_registry_e1_stock_context` under
+the current customer's pinned Core JWT. Both native flags, realm, current account,
+managed session, customer policy and matching subject/Company/reservation are
+checked; identity is rechecked after the read. No admin client or writer is used
+for this read. The UI receives only the name, selected IDs and inactive status.
+`quarantined` here means Core currently records a reciprocal quarantine tuple;
+it is not a fresh independent Stock session observation or an active access grant.
+
+Login adds an entry link. The authentication proxy preserves `next` only for the
+existing OAuth consent path and this exact workspace path. The return allowlist
+accepts either no selectors, distinct admission/binding keys, or the exact three
+UUID selectors; duplicate fields, extra status/activation hints, fragments and
+foreign origins are rejected. Existing OAuth and password-recovery rules remain.
+The exact navigation delta and return-helper bytes are covered by the existing
+source-preservation contracts and the refreshed current native manifests. The
+protected approval proposal and its failing historical hash assertion are unchanged.
+
+### Stock browser results
+
+Native start/callback handlers preserve their JSON protocol for existing clients.
+Requests accepting HTML receive a static, script-free result screen with
+`quarantined`, `unconfirmed`, `denied`, `blocked` and unavailable/pending recovery
+messages. The callback's actual server result supplies the message. No query
+parameter can assert success. Return links use the fixed Core origin and UUID
+selectors only; Hub rereads its own current state on return.
+
+HTML responses retain private/no-store headers, SDK cookie chunks and exact
+continuation deletion on confirmed quarantine. A unit test caught combined
+Set-Cookie parsing losing deletion; cookies are now reapplied individually from
+the original response. Provider tokens, refresh tokens, codes and flow nonces
+are absent from rendered pages and return URLs. Responses include no-referrer,
+nosniff and a restrictive CSP. Conflicting starts return the original continuation
+selectors; a lost callback response remains uncertain with those selectors and
+keeps recovery continuity. No browser redirect enters a protected Stock portal.
+
+### Fresh evidence and remaining gates
+
+| Level | Result | Evidence and limitation |
+| --- | --- | --- |
+| STATIC | PASS | Core and Stock TypeScript; focused lint; exact-byte native manifests; diff checks. Source constants remain false. |
+| UNIT, Core | 823/824; one existing failure | `core-unit-final.txt`. Includes 15 caller/render tests and 12 native context cases. Sole failure is the preserved approval-document hash mismatch, actual `5ec814...d9be` versus historical expected `c4567b...cc7`. Zero tests skipped. |
+| UNIT, Stock | PASS: 199/199 | `stock-unit-final.txt`, including HTML/JSON status handling, actual SDK PKCE/cookie code, continuation deletion, selector recovery and the 10 reciprocal source-composition cases. Auth/RPC results remain synthetic. |
+| LOCAL VISUAL | PASS: 22 rendered states | Seven Hub and four Stock states at 1440×1000 and 390×844. Actual component/stylesheet renders and actual handler-generated HTML; no horizontal overflow, inputs 16px, interactive target heights at least 44px. Screenshots are retained in the task scratchpad. |
+| FRAMEWORK BUILD / HYDRATION | NOT_EXECUTED | No running Next.js application or live Server Action/browser submission was exercised. Static renders use synthetic action-state hooks for inspection only. |
+| INTEGRATION / DB RUNTIME | NOT_EXECUTED | No provider session, SQL, effective RLS, transaction, contention or recovery-runtime test was run in this step. |
+| DEPLOYED HTTP / BROWSER UAT / PRODUCTION | NOT_EXECUTED | The deployed applications are unchanged. Local render screenshots do not satisfy the later full-flow UAT gate. |
+
+Evidence directory:
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step3-20261025/scratchpad/`.
+Final screenshots use `h1-g1-step3-new-1440.png`, `h1-g1-step3-new-390.png`,
+`h1-g1-step3-blocked-390.png`, `h1-g1-step3-reserved-390.png`, and
+`h1-g1-step3-stock-quarantined-{1440,390}.png`. Earlier screenshots without a
+numeric viewport suffix document the initial font-fallback inspection and are
+superseded. `browser-layout-results.json` records all 22 layout observations.
+The temporary synthetic-render HTTP server is stopped after verification.
+
+`FINAL_STATUS: LOCAL_HUB_CALLER_AND_RESULTS_VERIFIED_WITH_PREEXISTING_CORE_SUITE_FAILURE`
+
+`PRODUCTION_CHANGED: NO`. Both worktrees retain uncommitted source and prior
+Steps 1–2 work. All three application release constants remain false. SQL,
+migrations, ACL/RLS, native Auth settings, allowlists and deployed applications
+were not modified. No .env values, live credentials or customer rows were read.
+The next package is Step 4 security/failure acceptance; Steps 5 concurrency and
+recovery, 6 full-flow HTTP/browser UAT and 7 controlled release remain separate.
+
+## Step 2 — reciprocal server integration, 25 October 2026
+
+`START_AUTHORITY`: Owner's "okee go next step 2" in chat
+`01a172d2-5154-7da1-86ba-aed6a7002ee6`, after the Step 1 handoff. This continues
+local implementation and verification in the same two worktrees, with Step 1
+changes preserved. Core HEAD remains `e92e74bb4536e8f7344c3c376fd02a1d35797756`;
+Stock HEAD remains `72fb354ace0da860de5f3ea9ee2bc387290bd74d`. No additional
+checkout, dependency installation or external runtime action was needed.
+
+### Server composition
+
+1. Stock's dedicated start/callback handlers retain native OAuth, random nonce,
+   SDK PKCE, bounded continuation and the same request-local callback client.
+   Configured application origins must exactly equal
+   `https://ja-superadmin-platform.vercel.app` and
+   `https://webzoka-stock-platform.vercel.app`. Another valid Vercel hostname is
+   rejected before code exchange or credential transmission. Both repositories
+   pin the same public application/database realm mapping.
+2. Shared Stock identity verification checks live accounts, verified claims,
+   issuer, audience, role, session, expiry and the native linked Core subject.
+   Core identity additionally requires its installed managed-session RPC with
+   the pinned bearer. Each observation expires within 30 seconds of its start;
+   slow calls cannot extend prior authority. Provider credentials remain in
+   callback memory; the existing cookie adapter strips them from browser storage.
+3. Stock stages through the existing `stock_e1_resource_stage` command. It
+   rechecks current Core reservation and both identities, then independently
+   reads `stock_e1_resource_context` under the pinned Stock JWT. That installed
+   context checks managed-session state and the persisted inactive profile/audit
+   tuple. A writer response alone cannot establish staging confirmation.
+4. `e1StockMutationBinding('e1.stock.bind')` now selects
+   `core_registry_e1_stock_bind_stage`. Core checks the linked native accounts,
+   current Owner/reservation and fresh Stock context before the atomic RPC, then
+   verifies both contexts afterward. A missing RPC reports a blocked dependency;
+   there is no fallback writer. Core's JSON body is capped at 2 KiB and three
+   seconds, with bearer-only authentication and generic private responses.
+5. Stock sends the two pinned customer credentials only in headers to the fixed
+   Core path, with redirects disabled, no cookies, no-store and a bounded timeout.
+   After the Core receipt, Stock independently rereads current Core reciprocal
+   binding and Stock inactive context. An acknowledgement without a persisted
+   matching Core tuple returns `unconfirmed`. Successful confirmation remains
+   `quarantined` with `isActive: false`; no active portal or billing grant occurs.
+
+`bound` selects a reviewed implementation; it is not runtime readiness or release
+authority. All three application release constants remain false. Generic legacy
+Registry mutations, E2/E3/operator paths and checkout/activation remain blocked.
+SQL, migrations, ACL/RLS, database settings, Auth configuration, callback allowlist,
+deployed applications and the Step 1 protected files were not changed.
+
+### Caller contract for Step 3
+
+Use the Company and reservation IDs returned by admission, then create and retain
+one distinct UUID for the reciprocal binding command. Admission and binding must
+not share a command UUID: the native audit has `UNIQUE (actor_id, command_id)`.
+The form's `commandId` is this binding-command selector, never an authority claim.
+Every retry/restarted SSO must retain that same binding command, Company and
+reservation. A lost cross-realm response or a later Core policy/session denial
+can leave a committed inactive resource; Core rechecks its own customer policy,
+including its email allowlist, before binding. Such an inactive resource
+cannot be rolled back through HTTP or replaced with new IDs automatically.
+
+Step 3 owns the Customer Hub caller and result UI. Its result handling must
+preserve `quarantined`, `unconfirmed`, `denied` and `blocked`, without interpreting
+quarantine as product activation. No Hub caller or user-facing copy was changed.
+
+### Verification and limits
+
+Fresh source-composition checks passed 10/10 in Stock
+`scripts/e1-reciprocal.spec.mjs`. They load actual source from both repositories,
+exercise installed SSR PKCE/cookie code and the actual Core handler, native
+binder, Stock staging and server composition. The fixture validates the generated
+PKCE verifier/challenge relationship, inactive success, native pairing/session
+denials, closed gates, lost response and an acknowledgement without Core binding.
+Auth and RPC responses are synthetic: this is UNIT source-composition evidence,
+not managed OAuth, SQL transaction, effective RLS, concurrency or Production proof.
+
+Stock's selected existing and new unit suites passed 192/192; Core reciprocal
+checks passed 68/68, including fresh managed context, missing RPC and stalled-body
+denial. The unrelated protected approval-document hash failure from Step 1 remains
+the sole Core broad-suite failure; that file was verified byte-identical to the
+Step 1 handoff and was neither repinned nor skipped.
+
+`FINAL_STATUS: LOCAL_SERVER_INTEGRATION_VERIFIED_WITH_PREEXISTING_CORE_SUITE_FAILURE`
+
+| Validation | Result | Evidence |
+| --- | --- | --- |
+| STATIC | PASS | Core/Stock TypeScript exit 0, focused lint exit 0, both diff checks exit 0; current Core raw/Git-byte manifests contain 54/53 entries. |
+| UNIT, Stock | PASS: 192/192 | `stock-unit-final.txt`, including 10 actual-source reciprocal composition cases. |
+| UNIT, focused Core | PASS: 68/68 | `core-bind-final.txt`, including bounded-body denial and current persisted-context checks. |
+| UNIT, broad Core | FAIL: 796/797; zero skipped | `core-unit-final.txt`; only the existing protected `RUNTIME_APPROVAL_PROPOSAL.md` hash mismatch described in Step 1. |
+
+The TypeScript Core check is retained from the same unchanged TypeScript source;
+later edits affected tests, documentation and manifests. Source-composition tests
+explicitly override release constants only in their isolated module mocks; the
+shipped source constants remain false. Historical SQL and the installation
+manifest have no Git diff. Both worktrees retain uncommitted, unstaged work.
+
+Evidence directory:
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step2-20261025/scratchpad/`.
+`INTEGRATION / DB RUNTIME / BROWSER UAT / PRODUCTION: NOT_EXECUTED` for this phase.
+No UI behavior was activated, and no external runtime or release action was
+performed. The installed foundation's historical evidence retains its original
+scope; these new adapters require later signed runtime and full-flow acceptance.
+`PRODUCTION_CHANGED: NO`. Commit/push/CI, enrollment, flag activation, merge and
+deployment were not performed. Step 2 does not authorize the later packages.
+
+## Step 1 — Core authority binding, 25 October 2026
+
+Scope authority: Owner requested "Okeey go on next step on the new chat task"
+in source chat `01a16b4f-46a0-7342-84c6-b957ede58024`. The resulting handoff to
+`01a172d2-5154-7da1-86ba-aed6a7002ee6` authorizes local investigation,
+implementation and focused verification of Step 1. Packages 2–7 and release
+actions are not activated by this work. The existing Core and Stock worktrees
+were reused at `e92e74bb4536e8f7344c3c376fd02a1d35797756` and
+`72fb354ace0da860de5f3ea9ee2bc387290bd74d`; unrelated Core files were preserved.
+
+### Implementation and trust boundaries
+
+- `core-company.ts` now delegates new Stock Company creation to the native E1
+  admission command, using only a normalized name and idempotency key. Reads
+  require an explicit Company selector and delegate to native authorization.
+  The active realm is `hxhusfkrlafxdnyasmsu`; `oyyfcmlquqfrdoffkgsd` remains the
+  fixed Stock realm. Legacy DEV exports remain only for the unchanged, unwired
+  W1 proposal. No active native verifier uses that DEV realm.
+- `core-registry-native.ts` verifies one pinned bearer with `getUser`, signed
+  claims and the installed `core_registry_session_is_live` RPC. The RPC and
+  Company read use an explicit Authorization header; cookie/default-client
+  identity cannot substitute another bearer. The observation expires no later
+  than 30 seconds after verification began or JWT expiry. Missing RPC, errors,
+  false/malformed results, changed sessions and stale observations fail closed.
+- E1 admission uses the real `core_registry_e1_stock_create` RPC after fresh
+  checkpoints. That installed command owns generated IDs, canonical history and
+  pending-claim exclusion, uniqueness, Company × Stock mapping, immutable origin,
+  scoped writer guards and atomic append-only audit. It does not accept an
+  existing Company/tenant ID, a clean-history claim or an operator attestation.
+  A missing admission RPC reports `E1_ADMISSION_RPC_UNAVAILABLE`; no fallback
+  writer or automatic retry is used. Post-write verification failure stays
+  `unconfirmed` with the original command ID, never a rollback claim.
+- `e1StockMutationBinding('e1.stock.admit')` selects the concrete adapter; its
+  `bound` status is not runtime readiness, authorization or release approval.
+  Reciprocal bind/checkout remain blocked. `registryMutationBinding()` retains
+  the independent proof and two-current-operator dependency for legacy/E2/E3.
+  No old W1 issuer is fabricated or imposed on valid resource-isolated E1.
+- Both application release constants remain literal false. Database settings,
+  provider configuration, SQL bodies, privileges, migrations, Hub callers,
+  commercial behavior and Production deployments were not changed. The only
+  Stock edit corrects the exact evidence filename
+  `CALLBACK_AUTH_HEALTH.WITH_PATTERN.json` in the existing review.
+
+### Revocation semantics and evidence limits
+
+The accepted checkpoint contract recorded below remains binding: deny revocation
+observed before the final checkpoint, reauthenticate after contention, and do not
+claim instantaneous revocation between an HTTP observation and SQL commit. No
+Auth-row locks, Auth writes or new privileges were introduced. The installed
+managed-session/RLS rollout evidence remains valid for its unchanged SQL; this
+task makes no fresh provider-state claim. Supabase documents why signed JWT
+verification alone is insufficient after logout in
+[User sessions](https://supabase.com/docs/guides/auth/sessions#how-to-ensure-an-access-token-jwt-cannot-be-used-after-a-user-signs-out).
+The installed SDK's `setHeader` behavior is checked with its real RPC builder
+and a synthetic fetch response, without network access.
+
+Historical SQL/proposals and `INSTALLATION_MANIFEST.sha256` remain byte-identical.
+Current native manifests cover the authorized facade/test successors. Retired
+mock W1 facade tests were replaced with real adapter contract tests; preserved
+historical SQL and legacy denial tests remain. Older whole-file pins for the
+facade are no longer treated as a prohibition on this explicitly requested change.
+The Hub activation scanner now checks imports/re-exports/dynamic imports instead
+of falsely flagging the detached component's own declaration; negative controls
+still reject runtime activation and caller wiring.
+
+Fresh verification artifacts are in
+`C:/Users/61140/AppData/Local/Temp/Codex/h1-g1-step1-20261025/scratchpad/`.
+
+`FINAL_STATUS: LOCAL_IMPLEMENTATION_VERIFIED_WITH_PREEXISTING_SUITE_FAILURE`
+
+| Validation level | Fresh result | Evidence and limit |
+| --- | --- | --- |
+| STATIC | PASS | `types-final.txt` and `lint-final.txt`: exit 0; both repository diff checks: exit 0. Current raw manifest has 54 entries and Git-byte manifest has 53. Git conversion is checked without staging or writing objects. |
+| UNIT | Full suite FAIL: 793 passed, 1 failed, 0 skipped | `unit-final.txt`: 794 checks. The sole failure is the preserved unrelated approval-document hash described below. Native admission, managed-session, facade, isolation, retry, receipt and manifest checks passed. |
+| INTEGRATION | NOT_EXECUTED | This task implements internal release-gated DAL behavior; no HTTP caller or runtime was activated. The SDK request-header check uses a synthetic fetch response and is UNIT evidence. |
+| DB RUNTIME | NOT_EXECUTED | No SQL or runtime enrollment was authorized or performed for this new phase. Existing installed SQL and prior scoped evidence were reused without a new runtime claim. |
+| BROWSER UAT | NOT_EXECUTED | No UI or caller wiring changed. Positive E1 browser acceptance belongs to the remaining packages. |
+| PRODUCTION | NOT_EXECUTED | No provider or Production action occurred. No new deployed behavior or acceptance is claimed. |
+
+The remaining full-suite failure is in
+`google-oauth-dev.test.mjs`'s historical-artifact guard. The handoff explicitly
+protects the unrelated, untracked
+`docs/security/h1-g1-core-dev/RUNTIME_APPROVAL_PROPOSAL.md`. Its SHA-256 is
+`5ec8142763141981ddacefc4e38e474fb0507a3cb1c246806829162fa0b2d9be`;
+the original committed test already pins
+`c4567b1b3385f23e2ad83975ce42906815dc0b978b5cb4b4d0299dcd07b69cc7`.
+LF/CRLF comparison excludes a line-ending explanation. This task did not edit,
+delete, repin or skip that document. `PROTECTED_DOCUMENT_MISMATCH.json` records
+the original test pin, untracked state and preservation authority. The full suite
+is therefore not reported as PASS. No runtime acceptance follows from the other
+793 checks.
+
+Historical SQL, the installation manifest and `core-w1.ts` have no Git diff;
+the historical installation-manifest SHA-256 remains
+`7a6992ee0b812f71c03ae164538ee3c83781aa6041c9c07571d50e6a28725d6e`.
+Task changes remain uncommitted and unstaged on the original branches.
+`PRODUCTION_CHANGED: NO`.
+
+### Handoff
+
+Step 2 is reciprocal server integration, using the preserved admission result
+and native provider credentials. Keep its gate closed until its own adapters and
+acceptance are satisfied. Step 3 owns Hub caller/result UI. Security, concurrency,
+recovery, HTTP/browser acceptance and controlled release remain later packages.
+Local Step 1 source does not authorize commit/push/CI, runtime enrollment, flag
+activation, merge or deployment. No new SQL or provider permission is needed for
+the local implementation; future runtime/release work still needs its applicable
+explicit authority. No Notion write or new workstation dependency was used.
+
 ## Approved security rollout — 25 October 2026
 
 Owner approval in this chat explicitly covers coordinated SQL/app release,

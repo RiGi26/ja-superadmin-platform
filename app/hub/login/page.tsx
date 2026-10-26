@@ -69,6 +69,7 @@ export default async function HubLoginPage({
             Belum menjadi pelanggan?{' '}
             <Link href="/hub/store">Jelajahi Webzoka Store</Link>
           </p>
+          <p className={styles.loginHelp}><Link href="/hub/workspace">Buat workspace usaha gratis</Link></p>
         </div>
       </section>
     </main>

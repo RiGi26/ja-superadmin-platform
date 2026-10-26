@@ -1,0 +1,39 @@
+name: Core Stock source validation
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: core-stock-source-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      NEXT_PUBLIC_SUPABASE_URL: https://core-validation.invalid
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: synthetic-validation-only
+      SUPABASE_SERVICE_ROLE_KEY: synthetic-validation-only
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --test lib/*.test.mjs
+      - run: npx --no-install tsc --noEmit
+      - run: npx --no-install eslint app/hub/workspace lib/hub-e1-workspace.ts lib/core-company.ts lib/core-registry-native.ts lib/e1-stock-binding.ts lib/registry-mutation-binding.ts lib/e1-realm.ts lib/hub-return-path.ts proxy.ts app/hub/login/page.tsx app/api/auth/e1/stock/quarantine/route.ts
+      - run: npm run build
+      - name: Check candidate whitespace
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: git diff --check "$PR_BASE_SHA" HEAD

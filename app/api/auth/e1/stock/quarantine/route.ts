@@ -14,10 +14,16 @@ async function readSelector(request: Request) {
   const reader = request.body?.getReader()
   if (!reader) throw new Error('INVALID_REQUEST')
   const decoder = new TextDecoder('utf-8', { fatal: true })
+  const deadline = AbortSignal.timeout(3000)
   let text = '', bytes = 0
   try {
     for (;;) {
-      const part = await reader.read()
+      const part = await new Promise<ReadableStreamReadResult<Uint8Array>>((resolve, reject) => {
+        const aborted = () => reject(new Error('INVALID_REQUEST'))
+        if (deadline.aborted) { aborted(); return }
+        deadline.addEventListener('abort', aborted, { once: true })
+        reader.read().then(resolve, reject).finally(() => deadline.removeEventListener('abort', aborted))
+      })
       if (part.done) break
       bytes += part.value.byteLength
       if (bytes > 2048) throw new Error('INVALID_REQUEST')
@@ -25,7 +31,7 @@ async function readSelector(request: Request) {
     }
     return selector.parse(JSON.parse(text + decoder.decode()))
   } finally {
-    await reader.cancel().catch(() => {})
+    void reader.cancel().catch(() => {})
     reader.releaseLock()
   }
 }

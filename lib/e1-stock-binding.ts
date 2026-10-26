@@ -32,7 +32,8 @@ export function e1StockTransportGate() {
       process.env.NEXT_PUBLIC_SUPABASE_URL !== CORE_E1_ORIGIN) {
     return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
   }
-  return e1StockMutationBinding()
+  // Select the reciprocal adapter explicitly; release constants remain closed.
+  return e1StockMutationBinding('e1.stock.bind')
 }
 
 type NativeCredentials = Readonly<{ coreToken: string; stockToken: string }>
@@ -99,6 +100,7 @@ async function bindQuarantine(input: unknown, credentials?: NativeCredentials) {
       global: { headers: { Authorization: `Bearer ${token}` } },
     })
     const liveStock = async () => {
+      const started = Date.now()
       const user = await stock.auth.getUser(token)
       if (user.error) throw new Error('AUTH_REQUIRED')
       const account = verifyNativeAccount(user.data.user)
@@ -114,7 +116,9 @@ async function bindQuarantine(input: unknown, credentials?: NativeCredentials) {
       const now = Date.now() / 1000
       if (claims.sub !== account.id || claims.iat > now || claims.exp <= now || claims.iat >= claims.exp ||
           (claims.nbf !== undefined && claims.nbf > now) || claims.user_role === 'superadmin') throw new Error('AUTH_REQUIRED')
-      return { subject: account.id, session: claims.session_id, expires: claims.exp }
+      const until = Math.min(claims.exp * 1000, started + 30_000)
+      if (until <= Date.now()) throw new Error('AUTH_REQUIRED')
+      return { subject: account.id, session: claims.session_id, until }
     }
     const stockActor = await liveStock()
     const readStock = async () => {
@@ -129,21 +133,28 @@ async function bindQuarantine(input: unknown, credentials?: NativeCredentials) {
       return value
     }
     const value = await readStock()
-    const [freshCore, freshStock, freshContext] = await Promise.all([liveCore(), liveStock(), readCore()])
-    if (!freshCore.customer || freshCore.subject !== actor.subject || freshCore.session !== actor.session ||
+    const [freshCore, freshStock, freshContext, freshValue] = await Promise.all([
+      liveCore(), liveStock(), readCore(), readStock(),
+    ])
+    // Parallel context reads may finish after the identity observations. Their
+    // original deadlines must still hold when used; waiting never renews them.
+    if (Date.parse(freshCore.until) <= Date.now() || freshStock.until <= Date.now() ||
+        !freshCore.customer || freshCore.subject !== actor.subject || freshCore.session !== actor.session ||
         freshStock.subject !== stockActor.subject || freshStock.session !== stockActor.session ||
         freshContext.stockOrigin !== context.stockOrigin || freshContext.coreTenantId !== context.coreTenantId ||
-        !sameTuple(freshContext.stockBinding, value)) throw new Error('AUTH_CHANGED')
+        !sameTuple(freshContext.stockBinding, value) || !same(freshValue, value)) throw new Error('AUTH_CHANGED')
     const admin = createAdminClient()
     attempted = true
-    const result = await admin.rpc('core_registry_e1_stock_bind_stage', {
+    const result = await admin.rpc(bindingGate.rpc, {
       p_actor: actor.subject, p_session: actor.session, p_command: request.commandId,
       p_company: request.companyId, p_reservation: request.reservationId,
       p_stock_subject: stockActor.subject, p_stock_session: stockActor.session,
       p_stock_tenant: value.stockTenantId, p_profile: value.profileId, p_stock_audit_event: value.auditEventId,
-      p_auth_until: new Date(Math.min(Date.parse(freshCore.until), freshStock.expires * 1000, Date.now() + 30_000)).toISOString(),
+      p_auth_until: new Date(Math.min(Date.parse(freshCore.until), freshStock.until)).toISOString(),
     })
     if (result.error) {
+      if (result.error.code === 'PGRST202') return { status: 'blocked' as const, reason: 'E1_BIND_RPC_UNAVAILABLE' as const }
+      if (result.error.code === '55P03') return { status: 'unconfirmed' as const, ...request }
       if (/^[0-9A-Z]{5}$/.test(result.error.code)) return { status: 'denied' as const }
       throw new Error('UNCONFIRMED')
     }
@@ -152,7 +163,8 @@ async function bindQuarantine(input: unknown, credentials?: NativeCredentials) {
     const [lastCore, lastStock, lastValue, lastContext] = await Promise.all([
       liveCore(), liveStock(), readStock(), readCore(),
     ])
-    if (!lastCore.customer || lastCore.subject !== actor.subject || lastCore.session !== actor.session ||
+    if (Date.parse(lastCore.until) <= Date.now() || lastStock.until <= Date.now() ||
+        !lastCore.customer || lastCore.subject !== actor.subject || lastCore.session !== actor.session ||
         lastStock.subject !== stockActor.subject || lastStock.session !== stockActor.session || !same(lastValue, value) ||
         lastContext.stockOrigin !== context.stockOrigin || lastContext.coreTenantId !== context.coreTenantId ||
         lastContext.stockBinding === null || !sameTuple(lastContext.stockBinding, value)) throw new Error('UNCONFIRMED')
