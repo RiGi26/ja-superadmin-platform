@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { redirect } from 'next/navigation'
-import { CORE_COMPANY_RUNTIME_ENABLED } from '@/lib/core-company'
-import { E1_STOCK_RUNTIME_ENABLED } from '@/lib/e1-stock-integration'
+import { E1_QUARANTINE_RUNTIME_ENABLED } from '@/lib/e1-quarantine-release'
 import { STOCK_E1_APP_ORIGIN } from '@/lib/e1-realm'
 import { hubE1Keys, hubE1Selectors, hubE1ReturnPath, readHubE1Workspace, type HubE1State } from '@/lib/hub-e1-workspace'
 import { WorkspaceView } from './WorkspaceView'
@@ -13,7 +12,7 @@ export const metadata = { referrer: 'strict-origin' as const }
 
 export default async function WorkspacePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const query = await searchParams
-  const enabled = Boolean(CORE_COMPANY_RUNTIME_ENABLED) && Boolean(E1_STOCK_RUNTIME_ENABLED)
+  const enabled = Boolean(E1_QUARANTINE_RUNTIME_ENABLED)
   let initial: HubE1State = { status: enabled ? 'new' : 'blocked' }
   let keys: { admissionId: string; commandId: string } | null = null
   let returnPath = '/hub/workspace'

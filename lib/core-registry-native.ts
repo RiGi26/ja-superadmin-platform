@@ -6,7 +6,7 @@ import { CORE_COMPANY_RUNTIME_ENABLED } from '@/lib/core-company'
 import { CORE_E1_ORIGIN, STOCK_E1_ORIGIN } from '@/lib/e1-realm'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { E1_STOCK_RUNTIME_ENABLED } from '@/lib/e1-stock-integration'
+import { E1_QUARANTINE_RUNTIME_ENABLED } from '@/lib/e1-quarantine-release'
 import { registryMutationBinding, e1StockMutationBinding } from '@/lib/registry-mutation-binding'
 import { isSuperadminEmail } from '@/lib/superadmin'
 
@@ -62,6 +62,10 @@ const actorTokens = new WeakMap<object, string>()
 
 function enabled() {
   return Boolean(CORE_COMPANY_RUNTIME_ENABLED) && process.env.NEXT_PUBLIC_SUPABASE_URL === CORE_E1_ORIGIN
+}
+
+function quarantineEnabled() {
+  return Boolean(E1_QUARANTINE_RUNTIME_ENABLED) && process.env.NEXT_PUBLIC_SUPABASE_URL === CORE_E1_ORIGIN
 }
 
 function verifiedAccount(value: unknown, expectedId?: string) {
@@ -161,7 +165,7 @@ export async function authorizeNativeOwnerBilling(input: unknown) {
 export async function readNativeE1StockContext(input: unknown) {
   const parsed = stockSelector.omit({ product: true }).safeParse(input)
   if (!parsed.success) return { status: 'denied' as const }
-  if (!enabled() || !Boolean(E1_STOCK_RUNTIME_ENABLED)) return { status: 'blocked' as const }
+  if (!quarantineEnabled()) return { status: 'blocked' as const }
   try {
     const client = await createClient()
     const actor = await authenticate(client)
@@ -247,7 +251,7 @@ export async function executeNativeCompanyCommand(input: unknown) {
 export async function executeNativeE1StockCommand(input: unknown) {
   const parsed = e1StockCommand.safeParse(input)
   if (!parsed.success) return { status: 'denied' as const }
-  if (!enabled() || !Boolean(E1_STOCK_RUNTIME_ENABLED)) return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
+  if (!quarantineEnabled()) return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
   if (parsed.data.action !== 'e1.stock.admit') return { status: 'blocked' as const, reason: 'E1_COMMAND_ADAPTER_UNBOUND' as const }
   const binding = e1StockMutationBinding(parsed.data.action)
   if (binding.status === 'blocked') return binding
