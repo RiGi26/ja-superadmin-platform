@@ -130,7 +130,7 @@ export async function proxy(request: NextRequest) {
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
       const loginUrl = new URL('/hub/login', request.url)
-      if (isOAuthConsent) {
+      if (isOAuthConsent || pathname === '/hub/workspace') {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)

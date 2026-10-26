@@ -1,0 +1,3 @@
+# Preserve the exact historical bytes used by immutable approval assertions.
+docs/security/h1-g1-core-dev/codec-vectors.json -text
+supabase/migrations/core_db/001_core_schema.sql -text

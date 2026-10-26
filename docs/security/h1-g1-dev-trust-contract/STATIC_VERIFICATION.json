@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-22",
+  "environment": "Windows PowerShell + Node; local files and pinned Git objects only",
+  "level": "STATIC",
+  "checks": [
+    {
+      "check": "15 explicit proposed W-key mappings; no manufactured coverage",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "30 exact source-byte pins and verified anchor lines",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "eight protected application and historical SQL inputs unchanged since package pinning",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "exact DEV scope; no wildcard Stock target or Production fallback",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "all proposed provider actions denied and executable SQL explicitly unavailable",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "three feature flags and fixed refusal source remain unchanged and disabled",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "requirements trace to source, issuer, mapping, transaction, validation, recovery and one decision",
+      "result": "PASS_STATIC"
+    },
+    {
+      "check": "prior binding handoff link resolves; no positive runtime or CODE_READY claim",
+      "result": "PASS_STATIC"
+    }
+  ],
+  "prior_unit_evidence_reused": {
+    "core": 103,
+    "stock": 55,
+    "rerun": false,
+    "claim": "Prior offline UNIT/model plus STATIC source checks, not managed runtime."
+  },
+  "levels": {
+    "STATIC": "PASS_PACKAGE_INTEGRITY_AND_REQUIREMENT_TRACE",
+    "UNIT": "NOT_RERUN_PRIOR_EVIDENCE_REUSED",
+    "INTEGRATION": "NOT_EXECUTED",
+    "DB_RUNTIME": "NOT_EXECUTED",
+    "BROWSER_UAT": "NOT_EXECUTED",
+    "PRODUCTION": "NOT_EXECUTED"
+  },
+  "status": "CONTRACT_PREPARED_B0_OPEN_NO_PROVIDER_EXECUTION_APPROVAL"
+}

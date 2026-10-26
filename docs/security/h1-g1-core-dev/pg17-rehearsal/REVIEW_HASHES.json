@@ -1,0 +1,90 @@
+{
+  "sql": "6ec9547f74f3c17d75551fdf0528b2b737a830eb18b8bbe9b2e1d25856074629",
+  "inventory": "05c911da6c65da82dc987eb5e1e11178dd3fd1e6735cf2ef2afe9740f61dfdf3",
+  "runner": "2c65cd63200f2599876c8515deb036a6ea1f0bef209c5df9274035e6e2003631",
+  "status": "APPROVED_DEV_ONLY_BACKEND_TLS_EXCEPTION_RUNTIME_NOT_EXECUTED",
+  "project": "mcvekinhgcqygfddyifs",
+  "database": "postgres",
+  "hash_algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "docs/security/h1-g1-core-dev/pg17-rehearsal/capability.PROPOSED.sql",
+      "bytes": 10405,
+      "sha256": "6ec9547f74f3c17d75551fdf0528b2b737a830eb18b8bbe9b2e1d25856074629"
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/pg17-rehearsal/EXECUTION_CONTRACT.md",
+      "bytes": 19247,
+      "sha256": "74299162d1fd8186a855cfa961809cf1391083b4aec372d67f7f55fd4eeeea69"
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/pg17-rehearsal/inventory.READ_ONLY.sql",
+      "bytes": 2561,
+      "sha256": "05c911da6c65da82dc987eb5e1e11178dd3fd1e6735cf2ef2afe9740f61dfdf3"
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/pg17-rehearsal/runner.offline.test.mjs",
+      "bytes": 8936,
+      "sha256": "1b027274846bc534fce3d54d1eca9504bbb6ccb9568917e87a609163822407db"
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/pg17-rehearsal/runner.PROPOSED.mjs",
+      "bytes": 8993,
+      "sha256": "2c65cd63200f2599876c8515deb036a6ea1f0bef209c5df9274035e6e2003631"
+    }
+  ],
+  "preserved_sql_references": [
+    {
+      "path": "docs/security/h1-g1-core-dev/001_registry.PROPOSED.sql",
+      "bytes": 8055,
+      "sha256": "b242b4eb188ddadd0ffc7e3d99849bec119ed336a20cf6283a817c53ac384c11",
+      "provenance": "AUTHORIZED_LOCAL_SOURCE_REMEDIATION",
+      "before_sha256": "66df550ba6b01b7c47c42525fe9c7584489e4756534ed8428f5b1f0e88b1f9af",
+      "git_state": "UNTRACKED",
+      "in_base_main": false
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/002_writer.PROPOSED.sql",
+      "bytes": 20445,
+      "sha256": "b4e2cbc6d72b817a2806793f86fd571f5e95ff83a966adf4ae2a750ccdb5e859",
+      "provenance": "AUTHORIZED_LOCAL_SOURCE_REMEDIATION",
+      "before_sha256": "87fba3e0080b5955112e6cb8932b0db8fc2b4e4bd3b43a36dbe2fa8ed83c17f3",
+      "git_state": "UNTRACKED",
+      "in_base_main": false
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/003_catalog_checks.READ_ONLY.sql",
+      "bytes": 9974,
+      "sha256": "b2b144f92e65b7c6164c9ca38772b5f3718b6f09244ea79bc960c360455d5044",
+      "provenance": "AUTHORIZED_LOCAL_SOURCE_REMEDIATION",
+      "before_sha256": "9f16b320c71b2d0be5fc74280ca5eed24aa6fff46164e4a9d2a36c93451ce8bb",
+      "git_state": "UNTRACKED",
+      "in_base_main": false
+    },
+    {
+      "path": "docs/security/h1-g1-core-dev/004_recovery.PROPOSED.sql",
+      "bytes": 4142,
+      "sha256": "3b8a8b3fe1f6c07d101da10700d856f449af4281b5ef57d9c3d95ba7cf4c6f8a",
+      "provenance": "AUTHORIZED_LOCAL_SOURCE_REMEDIATION",
+      "before_sha256": "ad8fbd2534fc2fdd8a80bf4152d4e658ee06eb0707bc99d1acff70dab0c711a7",
+      "git_state": "UNTRACKED",
+      "in_base_main": false
+    }
+  ],
+  "transport_revision": {
+    "owner_authorization_date": "2026-10-15",
+    "approved_diff_sha256": "883adacad5c6913578fb3bffcb81d263cf34591033890c2bd2e3eda64a9ead73",
+    "original_runner_sha256": "7bf4a59a97ae33882813e5d82cee279664db5dfe3fffb1051be9d1e017991b98",
+    "revised_runner_sha256": "d73445bcb1d6a0ad1da611bd49e45162c78bfa165725f116e4bbb09c59003787"
+  },
+  "dev_only_backend_tls_revision": {
+    "owner_authorization_date": "2026-10-15",
+    "control_tower_url": "https://app.notion.com/p/3f8f69eadca081419bfaca1dcb823c95",
+    "exact_decision_heading": "15 Oct 2026 \u2014 H1.G1 DEV review decision and target date",
+    "approved_zip_sha256": "fc32077e40b262142bcf187b9048ebfe93da0c9f4ce868dc1e8b6c8b0e8020ac",
+    "approved_diff_sha256": "6be54b19492099c9d6228056b8dddb0acfab064e187a5371637557ac6327ec0a",
+    "original_runner_sha256": "d73445bcb1d6a0ad1da611bd49e45162c78bfa165725f116e4bbb09c59003787",
+    "revised_runner_sha256": "2c65cd63200f2599876c8515deb036a6ea1f0bef209c5df9274035e6e2003631",
+    "scope": "One isolated synthetic DEV rollback rehearsal; backend ssl=false risk accepted; frontend CA and hostname verification mandatory; no Production exception"
+  }
+}

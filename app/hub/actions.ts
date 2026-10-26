@@ -2,6 +2,9 @@
 
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
+import { signBillingToken } from '@/lib/billing-link'
+import { getHubBillingOwnerTenant, getHubFirstPurchaseOwnerTenant } from '@/lib/hub-billing'
+import { selfServiceChange } from '@/lib/billing'
 import { hubAppUrl } from '@/lib/hub-app-url'
 import { getOnboardingStatus } from '@/lib/customer-onboarding'
 import { createClient } from '@/lib/supabase/server'
@@ -113,4 +116,66 @@ export async function updateHubPassword(
 
   await db.auth.signOut()
   redirect('/hub/login?message=password_updated')
+}
+
+// Capabilities are issued only by this explicit Billing form submission.
+export async function openHubSubscriptionManagement(formData: FormData): Promise<never> {
+  const requestedTenants = formData.getAll('tenant_id')
+  const tenantId = requestedTenants.length === 1
+    ? await getHubBillingOwnerTenant(requestedTenants[0])
+    : null
+  if (!tenantId) redirect('/unauthorized')
+
+  let url: string
+  try {
+    url = `/billing/langganan?token=${encodeURIComponent(signBillingToken(tenantId))}`
+  } catch {
+    redirect('/unauthorized')
+  }
+  redirect(url)
+}
+
+export async function submitHubFirstPurchase(formData: FormData): Promise<never> {
+  const fields = ['tenant_id', 'plan_id', 'period']
+  // Next.js may include its own $ACTION_ transport fields. No Company selector,
+  // mapping, price, role or bearer token is accepted as financial authority.
+  if ([...formData.keys()].some((key) => !fields.includes(key) && !key.startsWith('$ACTION_')) ||
+      fields.some((key) => formData.getAll(key).length !== 1)) redirect('/unauthorized')
+  const tenantId = formData.get('tenant_id')
+  const planId = formData.get('plan_id')
+  const period = formData.get('period')
+  if (typeof planId !== 'string' || !z.string().uuid().safeParse(planId).success ||
+      (period !== 'monthly' && period !== 'yearly')) redirect('/unauthorized')
+
+  const owner = await getHubFirstPurchaseOwnerTenant(tenantId)
+  if (!owner) redirect('/unauthorized')
+  let planResult
+  try {
+    const db = await createClient()
+    planResult = await db.from('subscription_plans')
+      .select('id, platform, is_active').eq('id', planId).eq('is_active', true).maybeSingle()
+  } catch {
+    redirect('/unauthorized')
+  }
+  const { data: plan, error } = planResult
+  if (error || plan?.id !== planId || plan.platform !== owner.platform || plan.is_active !== true) {
+    redirect('/unauthorized')
+  }
+  // The displayed button and earlier plan read are not submission authority.
+  const freshOwner = await getHubFirstPurchaseOwnerTenant(tenantId)
+  if (!freshOwner || freshOwner.tenantId !== owner.tenantId || freshOwner.platform !== owner.platform) {
+    redirect('/unauthorized')
+  }
+
+  let destination: string | null = null
+  try {
+    const result = await selfServiceChange({ tenantId: freshOwner.tenantId, planId, period, firstPurchaseOnly: true })
+    if (result.ok && result.kind === 'checkout') {
+      const url = new URL(result.redirectUrl)
+      if (url.protocol === 'https:' && !url.username && !url.password) destination = url.href
+    }
+  } catch {
+    // Existing engine owns invoice/payment recovery. Never retry a financial call here.
+  }
+  redirect(destination ?? '/hub?view=billing&purchase=failed')
 }

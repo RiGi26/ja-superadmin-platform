@@ -12,6 +12,16 @@ export function safeHubReturnPath(value: string | null | undefined) {
 
   try {
     const parsed = new URL(value, 'https://www.webzoka.com')
+    if (parsed.origin === 'https://www.webzoka.com' && parsed.pathname === '/hub/workspace' && !parsed.hash) {
+      const keys = [...parsed.searchParams.keys()].sort().join(',')
+      const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+      if (!keys) return '/hub/workspace'
+      if (!['admissionId,commandId', 'commandId,companyId,reservationId'].includes(keys) ||
+          [...parsed.searchParams.values()].some(selector => !uuid.test(selector))) return null
+      if (parsed.searchParams.has('admissionId') && parsed.searchParams.get('admissionId')!.toLowerCase() ===
+          parsed.searchParams.get('commandId')!.toLowerCase()) return null
+      return `/hub/workspace?${parsed.searchParams.toString()}`
+    }
     if (parsed.origin !== 'https://www.webzoka.com' || parsed.pathname !== '/oauth/consent') {
       return null
     }

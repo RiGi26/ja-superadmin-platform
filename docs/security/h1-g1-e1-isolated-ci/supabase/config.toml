@@ -1,0 +1,59 @@
+# LOCAL_CANDIDATE_ONLY / SYNTHETIC_FIXTURE_ONLY. No linked project or remote.
+project_id = "h1-g1-e1-ci-disposable"
+
+[api]
+enabled = false
+port = 55431
+schemas = ["e1_ci"]
+extra_search_path = []
+max_rows = 100
+
+[db]
+port = 55432
+shadow_port = 55430
+major_version = 17
+
+[db.pooler]
+enabled = false
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[db.seed]
+enabled = false
+sql_paths = []
+
+[realtime]
+enabled = false
+
+[studio]
+enabled = false
+
+[local_smtp]
+enabled = false
+
+[storage]
+enabled = false
+
+[storage.s3_protocol]
+enabled = false
+
+[storage.analytics]
+enabled = false
+
+[storage.vector]
+enabled = false
+
+[auth]
+enabled = false
+enable_signup = false
+
+[edge_runtime]
+enabled = false
+
+[analytics]
+enabled = false
+
+[experimental]
+stack = false

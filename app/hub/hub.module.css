@@ -1733,6 +1733,38 @@
   gap: 24px;
 }
 
+.inventoryList {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.inventoryList .inventoryCard {
+  min-width: 0;
+  margin-top: 0;
+}
+
+.inventoryCard .systemIdentity p,
+.inventoryCard .detailFacts strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.inventoryCard .detailFacts {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
+}
+
+.inventoryNotice,
+.inventoryState p {
+  color: var(--hub-ink);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.inventoryState {
+  flex-wrap: wrap;
+}
+
 .detailFacts {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2019,6 +2051,48 @@
   align-items: center;
   gap: 30px;
 }
+
+.firstPurchaseForm {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+  margin-top: 24px;
+  border: 1px solid var(--hub-line);
+  border-radius: 16px;
+  padding: 20px;
+  background: #fff;
+}
+
+.firstPurchaseForm h2,
+.firstPurchaseForm p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.firstPurchaseForm h2 { font-size: 20px; }
+.firstPurchaseForm p { font-size: 14px; line-height: 1.6; }
+.firstPurchaseForm label { font-size: 16px; font-weight: 650; }
+
+.firstPurchaseForm select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--hub-line);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  color: var(--hub-ink);
+  font: inherit;
+  font-size: 16px;
+}
+
+.firstPurchaseForm select:focus-visible {
+  outline: 2px solid var(--hub-blue);
+  outline-offset: 2px;
+}
+
+.firstPurchaseForm button { width: 100%; min-height: 44px; font-size: 16px; }
 
 .billingPlanIdentity {
   display: flex;
