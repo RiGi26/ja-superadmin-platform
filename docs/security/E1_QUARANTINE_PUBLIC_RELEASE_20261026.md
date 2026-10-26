@@ -34,3 +34,19 @@ after validation. Never reactivate a Stock profile or create test entitlements.
 Fresh implementation/release evidence and exact deployment IDs belong to this
 chat's handoff and the linked release PRs. The earlier disabled-release note and
 historical approval documents retain their original scope and bytes.
+
+## Required security dependency successor
+
+The 22 October advisories GHSA-673q-mjm6-r5xr, GHSA-2464-fhr4-w9xw and
+GHSA-p3m5-59mp-jv5r require Next.js 16.4.1 before public release. Both apps use
+App Router/Server Actions. Core additionally pins Zod 4.6.6 for the constrained
+collection validation advisory. Existing package names remain unchanged;
+lockfiles are regenerated without installing workstation dependencies. The
+unused shadcn generator is correctly classified as a development dependency;
+no application import exists. Existing source-map-js is updated to its patch.
+
+Historical isolation tests continue comparing every frozen source byte. The
+only dependency exception accepts the exact old/new LF package and lock hashes,
+and checks that Core package changes contain only patched existing versions
+and that build-only CLI classification. Arbitrary package/lock drift fails. The
+immutable installation manifest and protected approval proposal are unchanged.
