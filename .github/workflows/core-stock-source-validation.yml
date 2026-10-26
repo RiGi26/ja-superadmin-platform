@@ -36,7 +36,7 @@ jobs:
           git update-ref refs/heads/integrate/hub-inventory-owner-billing-static 265bdb507d92264a0abc8e640e683bafa363b13c
       - run: node --test lib/*.test.mjs
       - run: npx --no-install tsc --noEmit
-      - run: npx --no-install eslint app/hub/workspace lib/hub-e1-workspace.ts lib/core-company.ts lib/core-registry-native.ts lib/e1-stock-binding.ts lib/registry-mutation-binding.ts lib/e1-realm.ts lib/hub-return-path.ts proxy.ts app/hub/login/page.tsx app/api/auth/e1/stock/quarantine/route.ts
+      - run: npx --no-install eslint app/hub/workspace lib/hub-e1-workspace.ts lib/e1-quarantine-release.ts lib/core-company.ts lib/core-registry-native.ts lib/e1-stock-binding.ts lib/registry-mutation-binding.ts lib/e1-realm.ts lib/hub-return-path.ts proxy.ts app/hub/login/page.tsx app/api/auth/e1/stock/quarantine/route.ts
       - run: npm run build
       - name: Check successor whitespace against the installed security baseline
         env:

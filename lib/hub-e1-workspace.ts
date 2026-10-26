@@ -1,7 +1,7 @@
 import 'server-only'
 
 import { z } from 'zod'
-import { requestCoreCompanyBootstrap } from '@/lib/core-company'
+import { requestE1QuarantineBootstrap } from '@/lib/e1-quarantine-release'
 import { readNativeE1StockContext } from '@/lib/core-registry-native'
 import { e1WorkspaceRequestSchema } from '@/lib/e1-workspace'
 
@@ -27,7 +27,7 @@ export async function submitHubE1Workspace(keys: unknown, form: unknown): Promis
   const input = e1WorkspaceRequestSchema.safeParse({ companyName: form.get('companyName'), idempotencyKey: parsedKeys.data.admissionId })
   if (!input.success) return { status: 'invalid' }
   try {
-    const result = await requestCoreCompanyBootstrap(input.data)
+    const result = await requestE1QuarantineBootstrap(input.data)
     if (result.status === 'completed') {
       const selected = hubE1Selectors.parse({ commandId: parsedKeys.data.commandId,
         companyId: result.reservation.companyId, reservationId: result.reservation.reservationId })

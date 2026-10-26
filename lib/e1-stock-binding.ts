@@ -3,9 +3,8 @@ import 'server-only'
 import { createClient as createSdkClient } from '@supabase/supabase-js'
 import { headers } from 'next/headers'
 import { z } from 'zod'
-import { CORE_COMPANY_RUNTIME_ENABLED } from '@/lib/core-company'
+import { E1_QUARANTINE_RUNTIME_ENABLED } from '@/lib/e1-quarantine-release'
 import { CORE_E1_ORIGIN, STOCK_E1_ORIGIN } from '@/lib/e1-realm'
-import { E1_STOCK_RUNTIME_ENABLED } from '@/lib/e1-stock-integration'
 import { e1StockMutationBinding } from '@/lib/registry-mutation-binding'
 import { verifyNativeCoreSession, verifyNativeCoreProvider, verifyNativeAccount } from '@/lib/core-registry-native'
 import { createClient } from '@/lib/supabase/server'
@@ -28,11 +27,11 @@ const sameTuple = (a: z.infer<typeof tuple> | null, b: z.infer<typeof staged>) =
   (Object.keys(a) as (keyof typeof a)[]).every(key => a[key] === b[key])
 
 export function e1StockTransportGate() {
-  if (!CORE_COMPANY_RUNTIME_ENABLED || !E1_STOCK_RUNTIME_ENABLED ||
+  if (!E1_QUARANTINE_RUNTIME_ENABLED ||
       process.env.NEXT_PUBLIC_SUPABASE_URL !== CORE_E1_ORIGIN) {
     return { status: 'blocked' as const, reason: 'RUNTIME_DISABLED' as const }
   }
-  // Select the reciprocal adapter explicitly; release constants remain closed.
+  // This release selects only the installed reciprocal quarantine adapter.
   return e1StockMutationBinding('e1.stock.bind')
 }
 
