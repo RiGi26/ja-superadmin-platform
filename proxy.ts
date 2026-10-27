@@ -45,7 +45,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const isHubRoute = pathname === '/hub' || pathname.startsWith('/hub/')
-  const isHubLogin = pathname === '/hub/login' || pathname === '/hub/forgot-password'
+  const isHubLogin = pathname === '/hub/login' || pathname === '/hub/forgot-password' || pathname === '/hub/signup'
   const isOAuthConsent = pathname === '/oauth/consent'
   const isPublicHubExplore =
     (pathname === '/hub' && request.nextUrl.searchParams.get('view') === 'store') ||
@@ -130,7 +130,7 @@ export async function proxy(request: NextRequest) {
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
       const loginUrl = new URL('/hub/login', request.url)
-      if (isOAuthConsent || pathname === '/hub/workspace') {
+      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/account') {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)
