@@ -74,7 +74,7 @@ export function HubLoginForm({ next }: { next?: string | null }) {
       <SubmitButton />
       {next ? (
         <p className={styles.ssoLoginHint}>
-          Setelah masuk, Anda akan kembali ke proses penyambungan sistem.
+          Setelah masuk, Anda akan kembali ke halaman yang dituju.
         </p>
       ) : null}
     </form>

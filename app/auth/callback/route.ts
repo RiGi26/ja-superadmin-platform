@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server'
 import { safeHubAuthPath } from '@/lib/hub-return-path'
 import { createClient } from '@/lib/supabase/server'
+import { finishHubRegistration } from '@/lib/hub-registration'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
+  if (requestUrl.searchParams.get('flow') === 'signup') return finishHubRegistration(request)
   const code = requestUrl.searchParams.get('code')
   const next = safeHubAuthPath(requestUrl.searchParams.get('next'))
 

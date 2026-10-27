@@ -1,0 +1,16 @@
+.heading { margin: 0; color: var(--hub-ink); font-size: clamp(26px, 4vw, 32px); line-height: 1.2; letter-spacing: -0.035em; font-weight: 750; }
+.help { margin: 0; color: var(--hub-muted); font-size: 14px; line-height: 1.6; }
+.form label, .form button, .form [role="alert"] { font-size: 14px; }
+.form input:not([type="checkbox"]):not([type="hidden"]):not([tabindex="-1"]) { min-height: 48px; }
+.passwordHelp { margin: -5px 0 16px; }
+.footnote { margin-top: 10px; }
+.terms { display: flex; min-height: 44px; align-items: flex-start; gap: 10px; margin: 8px 0; padding: 6px 0; font-size: 14px; line-height: 1.6; cursor: pointer; }
+.terms input { width: 20px; height: 20px; flex: 0 0 20px; margin-top: 2px; accent-color: var(--hub-blue); }
+.honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+.captcha { max-width: 100%; margin-block: 8px; }
+.link { display: inline-flex; min-height: 44px; align-items: center; color: var(--hub-blue-dark); font-weight: 650; text-underline-offset: 3px; }
+.link:focus-visible { outline: 3px solid #4998ff73; outline-offset: 3px; border-radius: 4px; }
+.success { display: grid; gap: 16px; padding-top: 12px; }
+.success > svg { width: 36px; height: 36px; color: var(--hub-blue); }
+.success h3 { margin: 0; font-size: 22px; font-weight: 700; }
+.success p { margin: 0; color: var(--hub-muted); font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }

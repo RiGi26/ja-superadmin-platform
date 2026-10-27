@@ -47,7 +47,7 @@ export async function loginToHub(
 
   if (next) redirect(next)
   if (claims.user_role === 'superadmin') redirect('/dashboard')
-  redirect('/hub')
+  redirect('/hub/account')
 }
 
 export async function logoutFromHub() {

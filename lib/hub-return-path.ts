@@ -12,6 +12,9 @@ export function safeHubReturnPath(value: string | null | undefined) {
 
   try {
     const parsed = new URL(value, 'https://www.webzoka.com')
+    if (parsed.origin === 'https://www.webzoka.com' && parsed.pathname === '/hub/account' && !parsed.search && !parsed.hash) {
+      return '/hub/account'
+    }
     if (parsed.origin === 'https://www.webzoka.com' && parsed.pathname === '/hub/workspace' && !parsed.hash) {
       const keys = [...parsed.searchParams.keys()].sort().join(',')
       const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i

@@ -23,7 +23,15 @@ export default async function HubLoginPage({
 
   const db = await createClient()
   const { data } = await db.auth.getClaims()
-  if (data?.claims?.sub) redirect(next ?? '/hub')
+  let invalidSession = false
+  if (data?.claims?.sub) {
+    const identity = await db.auth.getUser().catch(() => null)
+    const user = identity?.data.user
+    if (!identity?.error && user?.email && user.email_confirmed_at && !user.is_anonymous && user.id === data.claims.sub) {
+      redirect(next ?? (data.claims.user_role === 'superadmin' ? '/dashboard' : '/hub/account'))
+    }
+    invalidSession = true
+  }
 
   return (
     <main className={styles.loginPage}>
@@ -51,6 +59,7 @@ export default async function HubLoginPage({
               Kata sandi berhasil diperbarui. Silakan masuk dengan kata sandi baru.
             </p>
           ) : null}
+          {invalidSession ? <p className={styles.formError} role="alert">Sesi belum dapat diverifikasi. Verifikasi email Anda atau masuk kembali.</p> : null}
           <HubLoginForm next={next} />
           {!next && googleDevConfig(process.env) && googleDevLocalHeaders(await headers()) ? (
             <form method="post" action={`${GOOGLE_DEV_PATH}/start`} className="mt-4 grid gap-2">
@@ -69,7 +78,7 @@ export default async function HubLoginPage({
             Belum menjadi pelanggan?{' '}
             <Link href="/hub/store">Jelajahi Webzoka Store</Link>
           </p>
-          <p className={styles.loginHelp}><Link href="/hub/workspace">Buat workspace usaha gratis</Link></p>
+          <p className={styles.loginHelp}><Link className={styles.loginSecondaryLink} href="/hub/signup">Buat akun Customer Hub gratis</Link></p>
         </div>
       </section>
     </main>
