@@ -1,68 +1,74 @@
-# Customer Hub self-signup candidate — 27 October 2026
+# Customer Hub self-signup UAT — 27 October 2026
 
-## Objective and current result
+## Result and tested candidate
 
-Validate an anonymous visitor registering, verifying email, creating a new Company as its first Owner, and using Customer Hub without administrator intervention.
+**PASS for the approved Preview journey:** anonymous signup → controlled-inbox email verification → authenticated account → self-service new Company/first Owner → Customer Hub use → logout/login rediscovery. No administrator created or promoted the Company Owner.
 
-**The hosted objective is not achieved yet.** The deployed signup rejected the approved synthetic test. This document describes a local, uncommitted remediation candidate; it is not release approval or evidence of hosted success.
+Tested application commit: `6e66dddfe1fe8f93d765664fddc6fa78fd66066f`.
+Repository: `RiGi26/ja-superadmin-platform`. [PR #53](https://github.com/RiGi26/ja-superadmin-platform/pull/53).
+Preview: `dpl_EbeDzrXWJGPEFHtJR7o5BEbYS4DB`, READY, at `https://ja-superadmin-platform-gsmugsx57-rigi26s-projects.vercel.app`.
+Application environment: Preview. Backing database: approved Production Core project `hxhusfkrlafxdnyasmsu`; all created business/account data is synthetic.
 
-Repository: `RiGi26/ja-superadmin-platform`. Branch: `feat/hub-self-signup-20261027`. Base: `4e4937ca55fada4856a2c10551a4f3c01e212045` (Core PR #52).
+Production application deployment remains `dpl_H3G4jR8eJE6Ys38dY8Ltmog9VE2L` at `4e4937ca55fada4856a2c10551a4f3c01e212045`. This PR has not been merged or deployed to Production. Production release needs separate authority and a reviewed permanent callback configuration; the temporary Preview callback was removed after testing. This report does not claim Production signup readiness.
 
-## Observed deployed failure
+## Implementation
 
-On 27 October 2026, the valid synthetic submission to `/hub/onboarding/stock` returned HTTP 200 with application error `Pendaftaran mandiri sedang disiapkan. Hubungi tim Webzoka.` The deployed action rejects before account creation while unified onboarding is closed. The login footer's free-workspace link redirects an anonymous customer back to login; it does not create an Auth account.
+Public signup uses the public Supabase Auth client, email confirmation, optional configured CAPTCHA, validated credentials and a fixed server-owned callback. It accepts no Company, tenant or role authority from the form. The PKCE callback freshly verifies the confirmed, non-anonymous identity against the exchanged session. Recovery callbacks remain separate.
 
-The exact test alias is `webzokacompany+uat-hub-20261027-a17b28@gmail.com`, controlled by the connected Webzoka company inbox. The rejected run created no matching Auth user, onboarding, tenant, subscription, invoice, Stock Auth user, or verification email. Request/authentication audit logs remain retained. No fixture deletion was necessary.
+The account page supports verified customers without legacy tenants. Own-row RLS reads discover selectors only; the released E1 context independently validates current session, Owner membership and exact Company graph before displaying ownership. Existing E1 workspace creation atomically creates Company, first Owner, reservation and audit. Login recovery avoids redirects in a loop; local logout expires only this project's session/PKCE cookies even when provider logout fails.
 
-The Owner approved synthetic signup, verification-message effects, trial effects if applicable, identity and cleanup. A separate explicit instruction permits this additional worktree and requests removal after completion and preservation. These grants do not authorize code publication, deployment, provider configuration, migration, payment or opening product gates.
+Generic Registry, legacy unified onboarding, trial finalizer, billing, pricing and Stock activation gates remain unchanged. Historical security manifests and gate artifacts retain their original bytes; exact signup successor checks preserve baseline comparisons and negative controls.
 
-## Candidate behavior
+## Acceptance evidence
 
-1. `/hub/signup` accepts name, email, a confirmed password, and consent. It uses the public Supabase Auth client, provider email confirmation and optional configured CAPTCHA. It does not accept tenant, Company, role or redirect authority from the form.
-2. The PKCE callback requires a fresh confirmed, non-anonymous identity matching the exchanged session, then returns to `/hub/account`. The existing password-recovery callback remains separate.
-3. The account page supports verified identities without a legacy tenant. Existing legacy members retain their dashboard path. Stale or ineligible sessions render recoverable login instead of redirecting in a loop.
-4. A new customer follows the existing `/hub/workspace` flow. Its released E1 adapter atomically creates the new Company, first Owner, audit and inactive Stock reservation. Existing, contested or legacy businesses do not use this automatic first-Owner path.
-5. On normal login, own-active RLS reads discover Company/reservation selectors. The released `readNativeE1StockContext` independently verifies the live session, current Owner and exact E1 graph before displaying Company name, Owner role and inactive Stock status. Ambiguous, failed or denied reads do not display ownership or offer creation.
-6. The Owner can refresh workspace status, browse Store/help and sign out. Logout and rejected newly established sessions expire only the current project's session/PKCE cookies even when provider logout fails.
+| Scenario | Result | Fresh evidence |
+| --- | --- | --- |
+| Anonymous access | PASS | Signup/login HTTP 200; account/workspace/Hub HTTP 307 to login. Store navigation reaches account login and public signup. |
+| Validation | PASS | Mismatched password confirmation rejected before Auth creation. |
+| Signup and delivery | PASS | Valid signup HTTP 200 application success; Core Auth user created; real confirmation email delivered to the controlled alias. |
+| Verification gating | PASS | Before confirmation, account HTTP 307 to login; no managed customer session. |
+| Email return and PKCE | PASS after approved test configuration | Initial email returned to Site URL. After exact temporary callback addition, newly delivered email targeted Preview callback; actual link confirmed email and established account session. No manually generated link, edited verification URL or administrator confirmation was used. |
+| New Company/Owner | PASS | Customer submitted the workspace form. Core recorded active Company, active owner membership, reserved inactive Stock resource and matching atomic admission audit. |
+| Hub use | PASS | Account HTTP 200 displays Company and Owner; creation CTA suppressed. Refresh, Store/help navigation and return preserve ownership. |
+| Logout and fresh login | PASS | Logout removed app cookies; managed sessions became zero; account redirected to login. Wrong-password control denied. A new tab logged in normally and rediscovered Owner with HTTP 200. |
+| Session refresh | PASS | Following a user pause, normal Hub reload refreshed the expired session and preserved Owner access. Expired-token API denial was not counted as revocation evidence. |
+| Foreign graph | PASS | Current customer denied the approved retained foreign fixture; HTTP 200 with denied application state, no foreign Company name and no creation control. |
+| Revocation | PASS | Fresh token had 3552 seconds remaining. Session live before global logout; logout HTTP 204; same unexpired token then returned live=false and Company context=null. Zero managed sessions; browser Company access denied and account returned to login. |
+| Desktop/mobile | PASS | Actual Preview screenshots at desktop and 390×844. No mobile horizontal overflow; visible controls at least 44px, signup inputs 16px/48px. |
+| Cleanup | PASS | Exact synthetic Auth account banned; subsequent normal login denied; zero managed sessions. Temporary callback removed and baseline reloaded/verified. Required birth/audit records retained. |
 
-The generic Company Registry fuse, legacy unified onboarding, trial finalizer, billing, payments and Stock activation remain unchanged. This candidate does not recover a lost Stock continuation command; the original workspace continuation path remains unchanged. Auth signup and free workspace creation do not start a trial.
+Synthetic identity: `webzokacompany+uat-hub-20261027-a17b28@gmail.com`, controlled by connected Webzoka company Gmail.
+Core subject: `a88c907b-1d9e-45cc-82c3-67dba212cc64`.
+Company: `e5af9ca0-41d2-47ec-b7aa-ac647ecf5e9d`.
+Owner membership: `3bbcd529-4020-4139-bcbc-50a61243ec19`.
+Reservation: `ad397392-e34d-45a7-9140-5f482ba64a21`.
+Audit: `c9ca5267-a8a5-4007-af12-0495ed38323e`, action `e1.stock.admit`, actor equal to Core subject, admission command `eb7200f5-3308-4d08-8080-1178bd516c2b`.
 
-## Release-gate comparison
+## Cleanup and boundaries
 
-[Core PR #52](https://github.com/RiGi26/ja-superadmin-platform/pull/52) and [Stock PR #13](https://github.com/RiGi26/webzoka-stock-platform/pull/13) accepted retained-fixture native SSO into inactive quarantine. They do not prove public signup or active Stock readiness. The historical gate documents and exact-byte security manifests remain unchanged. A closed source-successor contract validates each precise signup addition against historical bytes and rejects adjacent changes.
+The Owner approved synthetic signup, verification-message effects, test identity and cleanup, then commit/PR/CI/Preview UAT. After the exact temporary URL request, the Owner replied “don loggin. gunakan best waynya” and supplied the signed-in Core URL Configuration screenshot. Only that Preview callback was added and later removed. Site URL stayed `https://www.webzoka.com`. Baseline redirect URLs were verified after reload:
 
-Metadata-only inspection of Core project `hxhusfkrlafxdnyasmsu` confirmed authenticated SELECT, enabled/forced RLS, own-active policies and restrictive live-session policies on Company tables. This supports selector discovery; it is not authenticated runtime evidence. No DDL or policy change is proposed.
+- `https://webzoka-customer-hub-preview.vercel.app/auth/callback`
+- `https://www.webzoka.com/**`
+- `https://superadmin.webzoka.com/**`
 
-## Verification and remaining acceptance
+Final database counts: banned=true, managed sessions=0, legacy onboarding=0, legacy tenants=0, legacy memberships=0, trial/subscriptions=0, invoices=0, Stock Auth users for the alias=0. One Company/Owner birth graph and one admission audit remain intentionally retained, as required by the release contract. No payment, entitlement or active Stock access was created or tested.
 
-Final local verification: **883 tests passed, zero failed or skipped; build, focused lint and post-build TypeScript checks exited 0.** Whitespace validation also exited 0. Independent review found no remaining findings in session recovery or scoped Company rediscovery. Its acceptance is source-level only.
+Cross-check: [Core PR #52](https://github.com/RiGi26/ja-superadmin-platform/pull/52), [Stock PR #13](https://github.com/RiGi26/webzoka-stock-platform/pull/13), and Codex chat `01a176d1-fa8a-7a71-88c8-6a2ce3d3c432` (“Continue Core–Stock release gates and…”) retain their quarantine/activation boundaries. That chat's latest Basic/Pro work remains a separate isolated validation candidate. No pricing changes or activation authority were imported into this PR. Foreign selectors came from its approved retained fixture; that fixture was not unbanned or modified.
 
-| Level | Current scope and limitation |
-| --- | --- |
-| STATIC | PASS: source, callback, identity, source-preservation and release-boundary review; post-build TypeScript, focused lint, production build and whitespace validation. |
-| UNIT | PASS: 883/883, exit 0. Regressions cover registration, callback eligibility, logout failure cleanup, redirect-loop prevention, selector discovery, denied/foreign/ambiguous scope, and actual account-page ownership/creation states. |
-| INTEGRATION | Deployed legacy signup application error reproduced. Candidate's valid form → Auth/email callback not executed on hosted runtime. |
-| DB RUNTIME | Metadata and absence checks only. New Auth/Company/Owner creation and user-session RLS reads remain unverified. |
-| BROWSER UAT | Deployed failure recorded at desktop and 390×844. Local signup validation rendered. Account screenshots are explicitly labeled synthetic offline fixtures, not authenticated UAT. |
-| PRODUCTION | No deployment, migration, provider configuration, payment or activation change. No successful signup claim. |
+## Verification levels and artifacts
 
-Hosted acceptance still requires: public navigation to signup; synthetic signup; actual controlled-inbox verification; callback identity; new Company creation; first-Owner membership/audit evidence; account status after logout/login and fresh browser session; denial of foreign/revoked access; Store/help navigation; desktop/mobile screenshots; and approved cleanup with residual-count verification. Preserve append-only audit; revoke sessions before identity cleanup. Never broaden cleanup to unrelated data.
+- **STATIC:** PASS: source review, preserved gates/manifests, TypeScript, lint and whitespace.
+- **UNIT:** PASS: 883 local tests, zero failures/skips.
+- **INTEGRATION:** PASS for this Preview signup/verification/Company/account path. [CI run 40448390287](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/40448390287) passed tests, types, lint, build and baseline whitespace.
+- **DB RUNTIME:** PASS for scoped synthetic identity, Company/Owner/audit, isolation, revocation and cleanup.
+- **BROWSER UAT:** PASS for the named Preview scenarios, desktop and mobile.
+- **PRODUCTION:** Application release NOT_EXECUTED; approved synthetic Core data and temporary Auth configuration effects described above. Production customer readiness and active Stock/payment flows are not claimed.
 
-## Evidence and publication boundary
+Artifacts: `C:\Users\61140\AppData\Local\Temp\Codex\hub-self-signup-20261027-a17b28\scratchpad`. Actual hosted screenshots: `hub-preview-signup-desktop-a17b28.png`, `hub-preview-signup-mobile-a17b28.png`, `hub-preview-email-sent-mobile-a17b28.png`, `hub-preview-owner-desktop-a17b28.png`, `hub-preview-owner-mobile-a17b28.png`, `hub-preview-foreign-denied-a17b28.png`, `hub-preview-revoked-account-a17b28.png`. `AUTH_URL_RESTORE.json` records the non-secret baseline and restoration. Earlier `hub-candidate-*` screenshots are labeled local fixtures and are not hosted evidence.
 
-Session artifacts live at `C:\Users\61140\AppData\Local\Temp\Codex\hub-self-signup-20261027-a17b28\scratchpad`:
+Original deployed legacy-signup failure remains in `UAT_REPORT.md` and its structured evidence. A local production-server command was automatically rejected with “blocked by policy”; it was not rerun through an alternate command. Hosted UAT above supplies actual runtime evidence.
 
-- `UAT_REPORT.md`, `UAT_RESULT.json`, `UAT_EVIDENCE.json`: original deployed failure and zero-fixture checks.
-- `candidate-unit-owner-final.log`, `candidate-build-owner-final.log`, `candidate-lint-owner-final.log`, `candidate-types-owner.log`, `candidate-types-owner-final.log`: local verification output.
-- `hub-candidate-signup-desktop-a17b28.png`, `hub-candidate-signup-mobile-a17b28.png`: local signup rendering.
-- `hub-candidate-account-desktop-a17b28.png`, `hub-candidate-account-mobile-a17b28.png`: labeled offline Company/Owner layout with synthetic data, fallback font and real public logo. At 390px, no horizontal overflow; interactive targets are at least 44px tall.
+No password, API key, access token or verification URL is included in this record. A sign-in snapshot exposed a credential during setup; the Owner was advised to rotate it and it was excluded from saved evidence.
 
-Automatic approval review rejected `npm run start -- --hostname 127.0.0.1 --port 3017` with `blocked by policy`; no more specific reason was returned. That local production-server check was not executed. No alternate server command was used to evade the rejection.
-
-Root `AGENTS.md`, consolidated operating rules, **Protected authority**, requires explicit authority for commit, push/PR/CI, Preview, merge and deploy. Publication remains pending. The PR workflow runs on pull requests targeting `main`; its synthetic environment and pinned Actions remain unchanged, with lint coverage extended to candidate files. `vercel.json` has no Git deployment guard, so an authorized push may automatically create a Preview. No push, PR, CI or Preview has been triggered by this task.
-
-### Publication authorization received
-
-The Owner subsequently answered the explicit publication request: **“Authorize commit, PR, CI and Preview UAT.”** This authorizes committing the reviewed candidate, pushing `feat/hub-self-signup-20261027`, opening a PR to Core `main`, running CI and automatic Preview, and continuing the previously approved synthetic signup/Company Owner UAT. Production merge/deploy, provider configuration, migration, payments and Stock activation remain outside this grant. Earlier statements that publication was pending describe the checkpoint before this response.
-
-Keep this worktree until changes are preserved and the task is complete; then remove it under the Owner's cleanup instruction. Preserve all other worktrees and unrelated pricing work.
+The additional worktree may be removed after the final evidence commit is preserved remotely and no process uses it. The remote PR branch and protected Preview remain available for review; other worktrees and unrelated pricing work must remain untouched.
