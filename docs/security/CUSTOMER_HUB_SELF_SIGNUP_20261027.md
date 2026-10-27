@@ -46,6 +46,8 @@ Audit: `c9ca5267-a8a5-4007-af12-0495ed38323e`, action `e1.stock.admit`, actor eq
 
 ## Cleanup and boundaries
 
+The final image audit found that the first Owner image named “desktop” was mobile width. It was replaced with a fresh authenticated 1280×900 capture, followed by a 390×844 capture. For this supplementary rendering check only, the already-admitted synthetic fixture was temporarily unbanned and its test password rotated; the original self-service signup/verification/Owner journey had already passed before that maintenance. No administrator created or changed Company ownership. Logout and the fixture ban were repeated afterward.
+
 The Owner approved synthetic signup, verification-message effects, test identity and cleanup, then commit/PR/CI/Preview UAT. After the exact temporary URL request, the Owner replied “don loggin. gunakan best waynya” and supplied the signed-in Core URL Configuration screenshot. Only that Preview callback was added and later removed. Site URL stayed `https://www.webzoka.com`. Baseline redirect URLs were verified after reload:
 
 - `https://webzoka-customer-hub-preview.vercel.app/auth/callback`
