@@ -4,7 +4,7 @@ import { getPublicStockPlans } from '@/lib/customer-onboarding'
 
 export const metadata: Metadata = {
   title: 'Webzoka Store | Customer Hub',
-  description: 'Lihat proyek Webzoka yang sudah live dan temukan arah digital yang pas untuk bisnis Anda.',
+  description: 'Jelajahi fitur, paket, dan trial 14 hari Webzoka Stock untuk pesanan, persediaan, dan produksi.',
 }
 
 export const dynamic = 'force-dynamic'
