@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
-import { ArrowRight, Headset, LayoutGrid, ReceiptText, UserRound } from 'lucide-react'
+import { Headset, LayoutGrid, ReceiptText, UserRound } from 'lucide-react'
 import { GOOGLE_DEV_PATH, googleDevConfig, googleDevLocalHeaders } from '@/lib/google-oauth-dev'
 import { createClient } from '@/lib/supabase/server'
 import { safeHubReturnPath } from '@/lib/hub-return-path'
@@ -45,7 +45,7 @@ export default async function HubLoginPage({
         </a>
         <nav aria-label="Navigasi publik">
           <Link className={styles.storeLink} href="/hub/store">
-            Jelajahi Store <ArrowRight aria-hidden="true" />
+            Jelajahi Store
           </Link>
         </nav>
       </header>
@@ -95,10 +95,13 @@ export default async function HubLoginPage({
             </p>
             <div className={styles.hubMap} role="img" aria-label="Satu akun Webzoka menghubungkan sistem bisnis, tagihan, dan bantuan.">
               <div className={styles.mapAccount}><UserRound aria-hidden="true" />Akun Webzoka Anda</div>
-              <div className={styles.mapTrunk} />
-              <div className={styles.mapBranches} />
-              <div className={styles.mapDestinations}>
-                <span>Sistem bisnis</span><span>Tagihan</span><span>Bantuan</span>
+              <div className={styles.mapStructure}>
+                <svg className={styles.mapConnectors} viewBox="0 0 360 32" preserveAspectRatio="none" aria-hidden="true">
+                  <path d="M180 0v14M57.33 14h245.34M57.33 14v18M180 14v18M302.67 14v18" />
+                </svg>
+                <div className={styles.mapDestinations}>
+                  <span>Sistem bisnis</span><span>Tagihan</span><span>Bantuan</span>
+                </div>
               </div>
             </div>
             <ul className={styles.benefits}>
@@ -106,7 +109,6 @@ export default async function HubLoginPage({
               <li><ReceiptText aria-hidden="true" /><div><strong>Tagihan &amp; langganan</strong><p>Lihat paket dan status pembayaran Anda.</p></div></li>
               <li><Headset aria-hidden="true" /><div><strong>Bantuan Webzoka</strong><p>Hubungi tim kami saat membutuhkan bantuan.</p></div></li>
             </ul>
-            <p className={styles.storyFooter}>Bagian dari Japan Arena Corp</p>
           </aside>
         </div>
         <footer className={styles.footer}>
