@@ -68,7 +68,7 @@ export function PublicExploreNav() {
         </nav>
         <div className={styles.publicSidebarFooter}>
           <a href="https://www.webzoka.com">Webzoka.com <ArrowRight aria-hidden="true" /></a>
-          <Link className={styles.publicHubButton} href="/hub/account">
+          <Link className={styles.publicHubButton} href="/hub/login">
             Buka Customer Hub <ArrowRight aria-hidden="true" />
           </Link>
         </div>
@@ -80,7 +80,7 @@ export function PublicExploreNav() {
           <span translate="no">webzoka</span>
         </Link>
         <div className={styles.publicMobileActions}>
-          <Link className={styles.publicMobileHubLink} href="/hub/account">Customer Hub</Link>
+          <Link className={styles.publicMobileHubLink} href="/hub/login">Customer Hub</Link>
           <details className={styles.publicMenuDisclosure}>
             <summary aria-label="Buka menu publik">
               <Menu aria-hidden="true" />

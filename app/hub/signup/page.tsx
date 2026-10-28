@@ -26,7 +26,7 @@ export default async function HubSignupPage({ searchParams }: { searchParams: Pr
           <h1 className={signup.heading}>Buat akun gratis</h1>
           <p className={styles.loginIntro}>Gunakan email yang Anda kelola. Tautan verifikasi akan dikirim ke email tersebut.</p>
           <HubSignupForm verificationFailed={query.error === 'verification_failed'} />
-          <p className={styles.loginHelp}>Sudah punya akun? <Link className={signup.link} href="/hub/login?next=%2Fhub%2Faccount">Masuk ke Customer Hub</Link></p>
+          <p className={styles.loginHelp}>Sudah punya akun? <Link className={signup.link} href="/hub/login">Masuk ke Customer Hub</Link></p>
         </div>
       </section>
     </main>

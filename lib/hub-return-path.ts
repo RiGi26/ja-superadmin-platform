@@ -12,6 +12,11 @@ export function safeHubReturnPath(value: string | null | undefined) {
 
   try {
     const parsed = new URL(value, 'https://www.webzoka.com')
+    if (parsed.origin === 'https://www.webzoka.com' && !parsed.hash &&
+        ['/hub/systems', '/hub/billing', '/hub/support'].includes(parsed.pathname) &&
+        (!parsed.search || (parsed.pathname === '/hub/billing' && parsed.search === '?purchase=failed'))) {
+      return `${parsed.pathname}${parsed.search}`
+    }
     if (parsed.origin === 'https://www.webzoka.com' && parsed.pathname === '/hub/account' && !parsed.search && !parsed.hash) {
       return '/hub/account'
     }

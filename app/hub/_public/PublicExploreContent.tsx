@@ -54,7 +54,7 @@ function PublicCta({ title, description }: { title: string; description: string 
         <h2>{title}</h2>
         <p>{description}</p>
       </div>
-      <Link className={styles.publicPrimaryButton} href="/hub/account">
+      <Link className={styles.publicPrimaryButton} href="/hub/login">
         Buka Customer Hub <ArrowRight aria-hidden="true" />
       </Link>
     </section>

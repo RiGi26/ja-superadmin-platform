@@ -13,7 +13,7 @@ export const getHubAccount = cache(async (): Promise<HubAccount> => {
   const { data, error } = await db.auth.getUser().catch(() => ({ data: { user: null }, error: true }))
   const user = data?.user
   if (error || !user?.id || !user.email || !user.email_confirmed_at || user.is_anonymous === true) {
-    redirect('/hub/login?next=%2Fhub%2Faccount')
+    redirect('/hub/login')
   }
   // This own-membership read chooses the existing dashboard only. Its data is
   // never copied into Company context, and failed reads do not grant access.

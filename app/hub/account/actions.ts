@@ -10,5 +10,5 @@ export async function logoutHubAccount() {
     await db.auth.signOut({ scope: 'local' })
   } catch { /* Provider availability must not prevent local logout. */ }
   await clearHubSessionCookies()
-  redirect('/hub/login?next=%2Fhub%2Faccount')
+  redirect('/hub/login')
 }

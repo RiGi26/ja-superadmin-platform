@@ -111,7 +111,7 @@ export default async function HubLoginPage({
         </div>
         <footer className={styles.footer}>
           <p>© {new Date().getFullYear()} Webzoka</p>
-          <a href="https://information.webzoka.com/kebijakan-privasi">Kebijakan privasi</a>
+          <a href="https://www.webzoka.com/privacy/">Kebijakan privasi</a>
         </footer>
       </main>
     </div>
