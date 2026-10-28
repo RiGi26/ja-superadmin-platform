@@ -1,37 +1,29 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import type { LucideIcon } from 'lucide-react'
 import {
   ArrowRight,
   BadgeCheck,
-  BookOpenCheck,
   Boxes,
   CalendarDays,
-  ChevronRight,
-  CircleHelp,
   CreditCard,
   GraduationCap,
   HeartPulse,
-  Home,
   HousePlug,
-  Landmark,
-  LayoutGrid,
   LogOut,
   MessageCircle,
   PackageCheck,
   ReceiptText,
   ShieldCheck,
   Shirt,
-  ShoppingBag,
   Store,
   Stethoscope,
-  UsersRound,
   Warehouse,
 } from 'lucide-react'
 import type { HubCustomerSnapshot, HubSystemsInventory } from '@/lib/hub-data'
 import type { HubFirstPurchaseTenant } from '@/lib/hub-billing'
 import { logoutFromHub, openHubSubscriptionManagement, submitHubFirstPurchase } from '../actions'
-import styles from '../hub.module.css'
+import { HubNavigation, type HubNavigationItem } from './HubNavigation'
+import styles from './hub-interior.module.css'
 
 export type HubView = 'home' | 'systems' | 'billing' | 'support'
 
@@ -95,14 +87,12 @@ const PLATFORM_META: Record<string, PlatformMeta> = {
   },
 }
 
-type HubNavItem = { id: HubView | 'store'; label: string; icon: LucideIcon; href: string }
-
-const NAV: HubNavItem[] = [
-  { id: 'home', label: 'Beranda', icon: Home, href: '/hub' },
-  { id: 'systems', label: 'Sistem Saya', icon: LayoutGrid, href: '/hub/systems' },
-  { id: 'store', label: 'Store', icon: ShoppingBag, href: '/hub/store' },
-  { id: 'billing', label: 'Tagihan', icon: ReceiptText, href: '/hub/billing' },
-  { id: 'support', label: 'Bantuan', icon: CircleHelp, href: '/hub/support' },
+const NAV: HubNavigationItem[] = [
+  { id: 'home', label: 'Beranda', icon: 'home', href: '/hub' },
+  { id: 'systems', label: 'Sistem Saya', icon: 'systems', href: '/hub/systems' },
+  { id: 'store', label: 'Store', icon: 'store', href: '/hub/store' },
+  { id: 'billing', label: 'Tagihan', icon: 'billing', href: '/hub/billing' },
+  { id: 'support', label: 'Bantuan', icon: 'support', href: '/hub/support' },
 ]
 
 const STATUS_LABEL: Record<string, string> = {
@@ -237,64 +227,22 @@ function SystemInventory({ inventory, nested = false }: { inventory: HubSystemsI
 
 function HomeView({ snapshot, inventory }: { snapshot: HubCustomerSnapshot | null; inventory: HubSystemsInventory | null }) {
   const plan = snapshot?.subscription?.plan
-
-  return (
-    <>
-      <PageHeading
-        eyebrow="Customer Hub"
-        title={snapshot ? `Selamat datang, ${snapshot.tenant.name}` : 'Akun Webzoka Anda'}
-        description="Lihat keanggotaan sistem dan kelola langganan Webzoka Anda dari satu tempat."
-      />
-      {snapshot?.isPreview ? <PreviewNotice /> : null}
-
-      {snapshot ? <section className={styles.summaryStrip} aria-label="Ringkasan akun">
-        <div>
-          <span>Status akun</span>
-          <strong>{statusLabel(snapshot.tenant.status)}</strong>
-        </div>
-        <div>
-          <span>Paket aktif</span>
-          <strong>{plan?.name ?? snapshot.tenant.planTier ?? 'Belum ada paket'}</strong>
-        </div>
-        <div>
-          <span>Periode berikutnya</span>
-          <strong>{formatDate(snapshot.subscription?.currentPeriodEnd)}</strong>
-        </div>
-      </section> : null}
-
-      <section className={styles.sectionBlock}>
-        <div className={styles.sectionTitleRow}>
-          <div>
-            <p className={styles.sectionKicker}>Keanggotaan aktif</p>
-            <h2>Sistem Saya</h2>
-          </div>
-          <Link href="/hub/systems" className={styles.textLink}>
-            Lihat detail <ArrowRight aria-hidden="true" />
-          </Link>
-        </div>
-
-        <SystemInventory inventory={inventory} nested />
-      </section>
-
-      <section className={styles.actionGrid} aria-label="Tindakan cepat">
-        <Link href="/hub/store" className={styles.actionRow}>
-          <span className={styles.actionIcon}><Store aria-hidden="true" /></span>
-          <span><strong>Jelajahi Webzoka Store</strong><small>Lihat paket dan solusi bisnis lainnya.</small></span>
-          <ChevronRight aria-hidden="true" />
-        </Link>
-        <Link href="/hub/billing" className={styles.actionRow}>
-          <span className={styles.actionIcon}><CreditCard aria-hidden="true" /></span>
-          <span><strong>Kelola langganan</strong><small>Periksa periode aktif dan riwayat pembayaran.</small></span>
-          <ChevronRight aria-hidden="true" />
-        </Link>
-        <Link href="/hub/support" className={styles.actionRow}>
-          <span className={styles.actionIcon}><MessageCircle aria-hidden="true" /></span>
-          <span><strong>Butuh bantuan?</strong><small>Hubungi tim Webzoka melalui jalur resmi.</small></span>
-          <ChevronRight aria-hidden="true" />
-        </Link>
-      </section>
-    </>
-  )
+  return <>
+    <PageHeading eyebrow="Customer Hub" title={snapshot ? `Selamat datang, ${snapshot.tenant.name}` : 'Akun Webzoka Anda'} description="Kelola keanggotaan sistem dan layanan Webzoka Anda dari satu tempat." />
+    {snapshot?.isPreview ? <PreviewNotice /> : null}
+    <div className={styles.overviewGrid}>
+      <article className={styles.workspaceCard}>
+        <div className={styles.workspaceHeading}><SystemMark platform={snapshot?.tenant.platform ?? 'unknown'} size="large" /><div><p className={styles.sectionKicker}>Akun bisnis</p><h2>{snapshot?.tenant.name ?? 'Keanggotaan sistem Anda'}</h2></div></div>
+        <p>Ruang untuk layanan usaha Anda.</p>
+        <p className={styles.muted}>Periksa sistem yang terhubung ke akun Anda. Keanggotaan tidak otomatis memverifikasi akses masuk ke portal.</p>
+        {snapshot ? <section className={styles.summaryStrip} aria-label="Ringkasan akun"><div><span>Status akun</span><strong>{statusLabel(snapshot.tenant.status)}</strong></div><div><span>Paket aktif</span><strong>{plan?.name ?? snapshot.tenant.planTier ?? 'Belum ada paket'}</strong></div><div><span>Periode berikutnya</span><strong>{formatDate(snapshot.subscription?.currentPeriodEnd)}</strong></div></section> : null}
+        <div className={styles.buttonRow}><Link href="/hub/systems" className={styles.primaryButton}>Lihat sistem saya</Link><Link href="/hub/support" className={styles.secondaryButton}>Bantuan akun</Link></div>
+      </article>
+      <aside className={styles.nextCard}><SystemMark platform="stock" size="large" /><p className={styles.sectionKicker}>Langkah berikutnya</p><h2>Kenali Webzoka Stock.</h2><p>Lihat fitur untuk pesanan, persediaan, dan produksi. Pilih paket sesuai kebutuhan operasional tim Anda.</p><Link href="/hub/store" className={styles.secondaryButton}>Jelajahi Store</Link><small>Akses produk mengikuti proses aktivasi masing-masing layanan.</small></aside>
+    </div>
+    <section className={styles.sectionBlock}><div className={styles.sectionTitleRow}><h2>Sistem Saya</h2><Link href="/hub/systems" className={styles.textLink}>Lihat detail</Link></div><SystemInventory inventory={inventory} nested /></section>
+    <section className={styles.actionGrid} aria-label="Akses cepat"><Link href="/hub/systems" className={styles.actionRow}><Boxes aria-hidden="true" /><span><strong>Sistem Saya</strong><small>Keanggotaan sistem akun Anda</small></span></Link><Link href="/hub/billing" className={styles.actionRow}><CreditCard aria-hidden="true" /><span><strong>Tagihan & paket</strong><small>Informasi yang tersedia untuk akun Anda</small></span></Link><Link href="/hub/support" className={styles.actionRow}><MessageCircle aria-hidden="true" /><span><strong>Bantuan Webzoka</strong><small>Bantuan akses, akun, dan langganan</small></span></Link></section>
+  </>
 }
 
 function SystemsView({ inventory }: { inventory: HubSystemsInventory | null }) {
@@ -368,7 +316,7 @@ function BillingView({ snapshot, canManageSubscription, firstPurchaseTenant, pur
             </button>
           ) : (
             <Link className={styles.primaryButton} href="/hub/store">
-              <ShoppingBag aria-hidden="true" /> Lihat paket
+              <Store aria-hidden="true" /> Lihat paket
             </Link>
           )}
         </div>
@@ -433,41 +381,16 @@ function BillingView({ snapshot, canManageSubscription, firstPurchaseTenant, pur
 }
 
 function SupportView({ snapshot }: { snapshot: HubCustomerSnapshot }) {
-  const whatsapp = `https://wa.me/6281296917963?text=${encodeURIComponent(
-    `Halo Webzoka, saya butuh bantuan untuk akun ${snapshot.tenant.name}.`,
-  )}`
-  return (
-    <>
-      <PageHeading
-        eyebrow="Bantuan"
-        title="Kami siap membantu"
-        description="Ceritakan kendala Anda melalui jalur dukungan resmi Webzoka."
-      />
-      {snapshot.isPreview ? <PreviewNotice /> : null}
-      <section className={styles.supportGrid}>
-        <article className={styles.supportPrimary}>
-          <span className={styles.supportIcon}><MessageCircle aria-hidden="true" /></span>
-          <p className={styles.sectionKicker}>Respons tercepat</p>
-          <h2>WhatsApp Webzoka</h2>
-          <p>Sertakan nama bisnis dan sistem yang digunakan agar tim kami dapat membantu lebih cepat.</p>
-          <a className={styles.primaryButton} href={whatsapp} target="_blank" rel="noreferrer">
-            <MessageCircle aria-hidden="true" /> Mulai percakapan
-          </a>
-        </article>
-        <article className={styles.supportSecondary}>
-          <span className={styles.supportIcon}><BookOpenCheck aria-hidden="true" /></span>
-          <h2>Pusat panduan</h2>
-          <p>Panduan terpusat dan pelacakan tiket akan hadir pada tahap Customer Hub berikutnya.</p>
-          <span className={styles.comingLabel}>Tahap berikutnya</span>
-        </article>
-      </section>
-      <section className={styles.accountReference}>
-        <div><UsersRound aria-hidden="true" /><span><small>Akun bisnis</small><strong>{snapshot.tenant.name}</strong></span></div>
-        <div><PackageCheck aria-hidden="true" /><span><small>Sistem</small><strong>{platformMeta(snapshot.tenant.platform).label}</strong></span></div>
-        <div><Landmark aria-hidden="true" /><span><small>ID pelanggan</small><strong>{snapshot.tenant.slug}</strong></span></div>
-      </section>
-    </>
-  )
+  const whatsapp = `https://wa.me/6281296917963?text=${encodeURIComponent(`Halo Webzoka, saya butuh bantuan untuk akun ${snapshot.tenant.name}.`)}`
+  return <>
+    <PageHeading eyebrow="Bantuan" title="Kami siap membantu." description="Untuk kendala akses sistem, akun, atau langganan Webzoka Anda." />
+    {snapshot.isPreview ? <PreviewNotice /> : null}
+    <section className={styles.supportGrid}>
+      <article className={styles.supportPrimary}><span className={styles.supportIcon}><MessageCircle aria-hidden="true" /></span><h2>WhatsApp Webzoka</h2><p>Sertakan nama usaha, sistem terkait, dan ringkasan kendala agar tim dapat memahami kebutuhan Anda.</p><a className={styles.secondaryButton} href={whatsapp} target="_blank" rel="noopener noreferrer">Buka WhatsApp<span className={styles.srOnly}> — membuka tab baru</span></a></article>
+      <article className={styles.supportSecondary}><h2>Informasi untuk disertakan</h2><dl className={styles.supportFacts}><div><dt>Akun bisnis</dt><dd>{snapshot.tenant.name}</dd></div><div><dt>Sistem terkait</dt><dd>{platformMeta(snapshot.tenant.platform).label}</dd></div><div><dt>ID pelanggan</dt><dd>{snapshot.tenant.slug}</dd></div><div><dt>Email akun</dt><dd>{snapshot.user.email || 'Belum tersedia'}</dd></div></dl><p>Jangan membagikan kata sandi atau kode verifikasi melalui percakapan.</p></article>
+    </section>
+    <section className={styles.sectionBlock}><h2>Pertanyaan umum</h2><div className={styles.faq}><details><summary>Mengapa sistem saya belum muncul?</summary><p>Sistem ditampilkan berdasarkan keanggotaan akun. Hubungi bantuan bila akun belum terhubung sebagaimana mestinya.</p></details><details><summary>Apakah workspace berarti sudah berlangganan?</summary><p>Tidak. Pembuatan workspace tidak otomatis memulai trial, tagihan, atau pembayaran produk.</p></details><details><summary>Di mana saya melihat transaksi layanan?</summary><p>Buka menu Tagihan untuk melihat paket dan riwayat yang tersedia bagi akun Anda. Jika akses belum tersedia, hubungi tim Webzoka.</p></details></div><p className={styles.guideNote}>Panduan terpusat dan pelacakan tiket belum tersedia.</p></section>
+  </>
 }
 
 export function HubShell({
@@ -495,44 +418,10 @@ export function HubShell({
   return (
     <div className={styles.hubShell}>
       <a className={styles.skipLink} href="#hub-main">Lewati ke konten utama</a>
-      <aside className={styles.sidebar}>
-        <Link className={styles.brand} href="/hub" aria-label="Webzoka Customer Hub">
-          <Image src="/logo-rocket.png" alt="" width={38} height={35} priority unoptimized />
-          <span translate="no"><strong>webzoka</strong><small>Customer Hub</small></span>
-        </Link>
-        <nav className={styles.sidebarNav} aria-label="Navigasi utama">
-          {NAV.map((item) => {
-            const Icon = item.icon
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                className={item.id !== 'store' && view === item.id ? styles.navActive : ''}
-                aria-current={item.id !== 'store' && view === item.id ? 'page' : undefined}
-              >
-                <Icon aria-hidden="true" /> {item.label}
-              </Link>
-            )
-          })}
-        </nav>
-        <div className={styles.sidebarAccount}>
-          <span className={styles.avatar}>{initials}</span>
-          <span><strong>{accountName}</strong><small>{snapshot.user.email || 'Akun pelanggan'}</small></span>
-        </div>
-        <form action={logoutFromHub}>
-          <button className={styles.logoutButton} type="submit"><LogOut aria-hidden="true" /> Keluar</button>
-        </form>
-      </aside>
+      <HubNavigation label="Customer Hub" home="/hub" items={NAV} current={view} footer={<div><div className={styles.sidebarAccount}><span className={styles.avatar}>{initials}</span><span><strong>{accountName}</strong><small>{snapshot.user.email || 'Akun pelanggan'}</small></span></div><form action={logoutFromHub}><button className={styles.logoutButton} type="submit"><LogOut aria-hidden="true" /> Keluar</button></form></div>} />
+      <header className={styles.topbar}><p>Customer Hub <strong>{NAV.find(item => item.id === view)?.label}</strong></p><span className={styles.avatar} aria-label={accountName}>{initials}</span></header>
 
-      <div className={styles.mobileTopbar}>
-        <Link className={styles.mobileBrand} href="/hub" aria-label="Webzoka Customer Hub">
-          <Image src="/logo-rocket.png" alt="" width={34} height={31} priority unoptimized />
-          <span translate="no">webzoka</span>
-        </Link>
-        <span className={styles.avatar}>{initials}</span>
-      </div>
-
-      <main className={styles.hubMain} id="hub-main">
+      <main className={styles.hubMain} id="hub-main" tabIndex={-1}>
         <div className={styles.contentWrap}>
           {view === 'home' ? <HomeView snapshot={snapshotMatchesInventory ? snapshot : null} inventory={inventory} /> : null}
           {view === 'systems' ? <SystemsView inventory={inventory} /> : null}
@@ -541,22 +430,7 @@ export function HubShell({
         </div>
       </main>
 
-      <nav className={styles.mobileNav} aria-label="Navigasi utama seluler">
-        {NAV.map((item) => {
-          const Icon = item.icon
-          return (
-            <Link
-              key={item.id}
-              href={item.href}
-              className={item.id !== 'store' && view === item.id ? styles.mobileNavActive : ''}
-              aria-current={item.id !== 'store' && view === item.id ? 'page' : undefined}
-            >
-              <Icon aria-hidden="true" />
-              <span>{item.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
+
     </div>
   )
 }
