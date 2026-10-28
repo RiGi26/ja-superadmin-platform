@@ -2,10 +2,19 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isSuperadminEmail } from '@/lib/superadmin'
+import { canonicalHubUrl, hubRequestHostname, internalHubPath, publicHubPath } from '@/lib/hub-navigation'
 
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const hostname = request.nextUrl.hostname.toLowerCase()
+  const hostname = hubRequestHostname(request.nextUrl.hostname, request.headers?.get('host'))
+  const routingUrl = new URL(request.nextUrl)
+  routingUrl.hostname = hostname
+  const canonical = canonicalHubUrl(routingUrl, {
+    production: process.env.VERCEL_ENV === 'production',
+    configuredOrigin: process.env.WEBZOKA_HUB_APP_URL,
+    method: request.method,
+  })
+  if (canonical) return NextResponse.redirect(canonical, 307)
+  const pathname = internalHubPath(request.nextUrl.pathname, hostname)
 
   // Production public-domain routing. Keep the internal superadmin hostname on
   // its existing dashboard surface while the public www hostname opens the
@@ -129,8 +138,8 @@ export async function proxy(request: NextRequest) {
 
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
-      const loginUrl = new URL('/hub/login', request.url)
-      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/account') {
+      const loginUrl = new URL(publicHubPath('/hub/login', hostname), routingUrl)
+      if (isOAuthConsent || pathname === '/hub/workspace' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)

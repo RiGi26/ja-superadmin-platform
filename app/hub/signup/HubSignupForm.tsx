@@ -31,7 +31,7 @@ export function HubSignupForm({ verificationFailed = false }: { verificationFail
       <h3>Periksa email Anda</h3>
       <p>{state.message}</p>
       <p>Buka tautan verifikasi di browser yang Anda gunakan untuk mendaftar.</p>
-      <Link className={styles.primaryButton} href="/hub/login?next=%2Fhub%2Faccount">Masuk setelah verifikasi <ArrowRight aria-hidden="true" /></Link>
+      <Link className={styles.primaryButton} href="/hub/login">Masuk setelah verifikasi <ArrowRight aria-hidden="true" /></Link>
       <a className={signup.link} href="/hub/signup">Gunakan email lain</a>
     </div>
   )

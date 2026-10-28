@@ -177,5 +177,5 @@ export async function submitHubFirstPurchase(formData: FormData): Promise<never>
   } catch {
     // Existing engine owns invoice/payment recovery. Never retry a financial call here.
   }
-  redirect(destination ?? '/hub?view=billing&purchase=failed')
+  redirect(destination ?? '/hub/billing?purchase=failed')
 }

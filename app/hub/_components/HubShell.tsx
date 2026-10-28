@@ -99,10 +99,10 @@ type HubNavItem = { id: HubView | 'store'; label: string; icon: LucideIcon; href
 
 const NAV: HubNavItem[] = [
   { id: 'home', label: 'Beranda', icon: Home, href: '/hub' },
-  { id: 'systems', label: 'Sistem Saya', icon: LayoutGrid, href: '/hub?view=systems' },
+  { id: 'systems', label: 'Sistem Saya', icon: LayoutGrid, href: '/hub/systems' },
   { id: 'store', label: 'Store', icon: ShoppingBag, href: '/hub/store' },
-  { id: 'billing', label: 'Tagihan', icon: ReceiptText, href: '/hub?view=billing' },
-  { id: 'support', label: 'Bantuan', icon: CircleHelp, href: '/hub?view=support' },
+  { id: 'billing', label: 'Tagihan', icon: ReceiptText, href: '/hub/billing' },
+  { id: 'support', label: 'Bantuan', icon: CircleHelp, href: '/hub/support' },
 ]
 
 const STATUS_LABEL: Record<string, string> = {
@@ -204,7 +204,7 @@ function SystemInventory({ inventory, nested = false }: { inventory: HubSystemsI
             ? 'Akun Anda belum memiliki keanggotaan aktif untuk sistem yang terdaftar.'
             : 'Kami belum dapat memverifikasi keanggotaan Anda. Muat ulang halaman atau hubungi bantuan.'}</p>
         </div>
-        <Link className={styles.secondaryButton} href="/hub?view=support">Hubungi bantuan</Link>
+        <Link className={styles.secondaryButton} href="/hub/support">Hubungi bantuan</Link>
       </section>
     )
   }
@@ -268,7 +268,7 @@ function HomeView({ snapshot, inventory }: { snapshot: HubCustomerSnapshot | nul
             <p className={styles.sectionKicker}>Keanggotaan aktif</p>
             <h2>Sistem Saya</h2>
           </div>
-          <Link href="/hub?view=systems" className={styles.textLink}>
+          <Link href="/hub/systems" className={styles.textLink}>
             Lihat detail <ArrowRight aria-hidden="true" />
           </Link>
         </div>
@@ -282,12 +282,12 @@ function HomeView({ snapshot, inventory }: { snapshot: HubCustomerSnapshot | nul
           <span><strong>Jelajahi Webzoka Store</strong><small>Lihat paket dan solusi bisnis lainnya.</small></span>
           <ChevronRight aria-hidden="true" />
         </Link>
-        <Link href="/hub?view=billing" className={styles.actionRow}>
+        <Link href="/hub/billing" className={styles.actionRow}>
           <span className={styles.actionIcon}><CreditCard aria-hidden="true" /></span>
           <span><strong>Kelola langganan</strong><small>Periksa periode aktif dan riwayat pembayaran.</small></span>
           <ChevronRight aria-hidden="true" />
         </Link>
-        <Link href="/hub?view=support" className={styles.actionRow}>
+        <Link href="/hub/support" className={styles.actionRow}>
           <span className={styles.actionIcon}><MessageCircle aria-hidden="true" /></span>
           <span><strong>Butuh bantuan?</strong><small>Hubungi tim Webzoka melalui jalur resmi.</small></span>
           <ChevronRight aria-hidden="true" />
