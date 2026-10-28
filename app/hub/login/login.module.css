@@ -49,10 +49,8 @@
 }
 .brand { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--ink); }
 .brand:hover { text-decoration: none !important; }
-.brand img { width: 36px; height: 35px; object-fit: contain; }
+.brand img { width: 44px; height: 44px; object-fit: contain; }
 .wordmark { font-size: 50px; font-weight: 800; letter-spacing: -2.2px; line-height: 1; }
-.brandDivider { width: 1px; height: 24px; background: #c9d2df; margin: 0 8px 0 12px; }
-.brandProduct { font-size: 14px; font-weight: 500; color: var(--muted); }
 .page .storeLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color 180ms ease, transform 180ms ease; }
 .page .storeLink:hover, .page .storeLink:focus-visible { color: var(--blue); text-decoration: none; transform: translateX(2px); }
 .main { padding: 34px 32px 44px; }
@@ -176,7 +174,6 @@
 }
 @media (max-width: 760px) {
   .header { padding: 20px 24px; }
-  .brandDivider, .brandProduct { display: none; }
   .storeLink { font-size: 13px; }
   .main { padding: 15px 24px max(22px, env(safe-area-inset-bottom)); }
   .layout { grid-template-columns: minmax(0, 1fr); max-width: 480px; border-radius: 18px; }

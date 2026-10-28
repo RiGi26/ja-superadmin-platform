@@ -38,10 +38,8 @@ export default async function HubLoginPage({
       <a className={styles.skipLink} href="#hub-login">Langsung ke formulir masuk</a>
       <header className={styles.header}>
         <a className={styles.brand} href="https://www.webzoka.com" aria-label="Beranda Webzoka">
-          <Image src="/logo-rocket.png" alt="" width={36} height={35} priority unoptimized />
+          <Image src="/logo-rocket.png" alt="" width={44} height={44} priority unoptimized />
           <span className={styles.wordmark} translate="no">webzoka</span>
-          <span className={styles.brandDivider} aria-hidden="true" />
-          <span className={styles.brandProduct}>Customer Hub</span>
         </a>
         <nav aria-label="Navigasi publik">
           <Link className={styles.storeLink} href="/hub/store">
