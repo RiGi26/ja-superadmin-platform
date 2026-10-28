@@ -50,11 +50,11 @@
 .brand { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--ink); }
 .brand:hover { text-decoration: none !important; }
 .brand img { width: 36px; height: 35px; object-fit: contain; }
-.wordmark { font-size: 25px; font-weight: 800; letter-spacing: -1.1px; }
+.wordmark { font-size: 50px; font-weight: 800; letter-spacing: -2.2px; line-height: 1; }
 .brandDivider { width: 1px; height: 24px; background: #c9d2df; margin: 0 8px 0 12px; }
 .brandProduct { font-size: 14px; font-weight: 500; color: var(--muted); }
-.storeLink { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--muted); }
-.storeLink svg { width: 17px; height: 17px; }
+.page .storeLink { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; transition: color 180ms ease, transform 180ms ease; }
+.page .storeLink:hover, .page .storeLink:focus-visible { color: var(--blue); text-decoration: none; transform: translateX(2px); }
 .main { padding: 34px 32px 44px; }
 .layout {
   max-width: 1088px;
@@ -149,9 +149,9 @@
 .hubMap { margin: 29px 0 27px; padding: 23px 18px 20px; border: 1px solid #365071; border-radius: 13px; background: var(--navy-panel); }
 .mapAccount { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-weight: 600; color: #f1f6ff; }
 .mapAccount svg { width: 18px; height: 18px; color: var(--light-blue); }
-.mapTrunk { height: 19px; width: 1px; background: #6e87a7; margin: 11px auto 0; }
-.mapBranches { height: 16px; border: 1px solid #6e87a7; border-bottom: 0; border-radius: 7px 7px 0 0; margin: 0 14%; position: relative; }
-.mapBranches::after { content: ''; display: block; height: 15px; width: 1px; background: #6e87a7; position: absolute; left: 50%; }
+.mapStructure { position: relative; padding-top: 32px; }
+.mapConnectors { position: absolute; inset: 0 0 auto; width: 100%; height: 32px; overflow: visible; }
+.mapConnectors path { fill: none; stroke: #6e87a7; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
 .mapDestinations { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; font-size: 11px; text-align: center; color: #e3edfa; }
 .mapDestinations span { background: #213e63; border-radius: 6px; padding: 9px 4px; }
 .benefits { padding: 0; margin: 0; list-style: none; display: grid; gap: 19px; }
@@ -159,8 +159,6 @@
 .benefits svg { color: var(--light-blue); margin-top: 2px; width: 20px; height: 20px; }
 .benefits strong { display: block; font-size: 14px; font-weight: 600; margin-bottom: 3px; }
 .benefits p { margin: 0; font-size: 13px; line-height: 1.65; color: var(--light-ink); }
-.storyFooter { margin: auto 0 0; padding-top: 28px; color: var(--light-ink); font-size: 11px; display: flex; align-items: center; gap: 9px; }
-.storyFooter::before { content: ''; display: block; width: 21px; height: 1px; background: #7c93b2; }
 .footer { max-width: 1088px; display: flex; justify-content: space-between; gap: 15px; margin: 22px auto 0; color: var(--muted); font-size: 12px; }
 .footer a { color: var(--muted); display: inline-flex; align-items: center; min-height: 44px; }
 .footer p { margin: 0; display: flex; align-items: center; min-height: 44px; }
@@ -184,7 +182,7 @@
   .layout { grid-template-columns: minmax(0, 1fr); max-width: 480px; border-radius: 18px; }
   .formPanel { padding: 32px 28px 25px; }
   .storyPanel { padding: 28px; }
-  .storyContext, .hubMap, .benefits, .storyFooter { display: none; }
+  .storyContext, .hubMap, .benefits { display: none; }
   .storyTitle { font-size: 23px; letter-spacing: -0.6px; margin-bottom: 9px; }
   .footer { max-width: 480px; margin-top: 12px; }
 }
