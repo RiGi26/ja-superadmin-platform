@@ -37,7 +37,7 @@ function ConsentError() {
         <p className={styles.eyebrow}>Webzoka SSO</p>
         <h1>Permintaan akses tidak tersedia</h1>
         <p>Mulai kembali dari Customer Hub, lalu buka Webzoka Stock dari Sistem Saya.</p>
-        <Link className={styles.oauthPrimaryButton} href="/hub?view=systems" prefetch={false}>
+        <Link className={styles.oauthPrimaryButton} href="/hub/systems" prefetch={false}>
           Kembali ke Customer Hub <ArrowRight aria-hidden="true" />
         </Link>
       </section>
@@ -132,10 +132,10 @@ export default async function OAuthConsentPage({
 
         {previewMode ? (
           <div className={styles.oauthActions}>
-            <Link className={styles.oauthPrimaryButton} href="/hub?view=systems" prefetch={false}>
+            <Link className={styles.oauthPrimaryButton} href="/hub/systems" prefetch={false}>
               Lanjut ke Webzoka Stock <ArrowRight aria-hidden="true" />
             </Link>
-            <Link className={styles.oauthSecondaryButton} href="/hub?view=systems" prefetch={false}>
+            <Link className={styles.oauthSecondaryButton} href="/hub/systems" prefetch={false}>
               Batal
             </Link>
           </div>

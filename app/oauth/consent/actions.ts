@@ -16,7 +16,7 @@ export async function approveWebzokaAuthorization(formData: FormData) {
   const authorizationId = normalizeAuthorizationId(
     String(formData.get('authorization_id') ?? ''),
   )
-  if (!authorizationId) redirect('/hub?view=systems')
+  if (!authorizationId) redirect('/hub/systems')
 
   const db = await createClient()
   const { data, error } = await db.auth.oauth.approveAuthorization(authorizationId, {
@@ -31,7 +31,7 @@ export async function denyWebzokaAuthorization(formData: FormData) {
   const authorizationId = normalizeAuthorizationId(
     String(formData.get('authorization_id') ?? ''),
   )
-  if (!authorizationId) redirect('/hub?view=systems')
+  if (!authorizationId) redirect('/hub/systems')
 
   const db = await createClient()
   const { data, error } = await db.auth.oauth.denyAuthorization(authorizationId, {

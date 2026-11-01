@@ -1,0 +1,2027 @@
+{
+  "date": "2026-11-01",
+  "scope": "Approved read-only Core and Stock baseline probes only",
+  "targets": {
+    "core": "hxhusfkrlafxdnyasmsu",
+    "stock": "oyyfcmlquqfrdoffkgsd"
+  },
+  "probeHashes": {
+    "core": "d9f6458babd1eb31308b7fef89bf6c7f89274a8b7c4e23eb872c9fe93475e5af",
+    "stock": "62f5674dd2b6e83a74fdfb0b81f3139d1df8165eb656a4f0d322339acdab0824"
+  },
+  "results": {
+    "core": {
+      "database": [
+        {
+          "database_name": "postgres",
+          "database_role": "postgres"
+        }
+      ],
+      "functions": [
+        {
+          "schema_name": "core_e1_resource_private",
+          "function_name": "guard_graph",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "b1216196573a28f56081de18b1eec712"
+        },
+        {
+          "schema_name": "core_e1_resource_private",
+          "function_name": "immutable_origin",
+          "arguments": "",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "63bb1c57eff899d2f25f5e53d1fce863"
+        },
+        {
+          "schema_name": "core_e1_resource_private",
+          "function_name": "lock_registry",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "a9bdf49dc9f359f45503e29992887166"
+        },
+        {
+          "schema_name": "core_e1_resource_private",
+          "function_name": "reservation_json",
+          "arguments": "o core_e1_resource_private.origins",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "7d2fe72fa7cf6b2b02faa432640d302b"
+        },
+        {
+          "schema_name": "public",
+          "function_name": "apply_verified_subscription_payment",
+          "arguments": "p_order text, p_mode text, p_amount integer, p_verified_status jsonb",
+          "security_definer": false,
+          "function_config_hash": "457a20662fe8dbd47c7f262f1d721d55",
+          "grants": "{postgres=X/postgres,service_role=X/postgres}",
+          "definition_hash": "93ac205ace3e12c0317288f0893dfba0"
+        },
+        {
+          "schema_name": "public",
+          "function_name": "billing_sandbox_uat_allowed",
+          "arguments": "p_tenant uuid, p_plan uuid",
+          "security_definer": false,
+          "function_config_hash": "86848e74287bde206a1238f01a1c9b0b",
+          "grants": "{postgres=X/postgres,service_role=X/postgres}",
+          "definition_hash": "4db58d67920ed921f2dddb9f46029a0f"
+        },
+        {
+          "schema_name": "public",
+          "function_name": "core_registry_session_is_live",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418",
+          "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+          "definition_hash": "a1ca5fc1f0e7efc1fa587cebbf555786"
+        }
+      ],
+      "columns": [
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "company_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "membership_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "core_subject",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "reservation_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "core_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "command_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "request_digest",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "stock_origin",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "source",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "reservation_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "stock_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "stock_subject",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "profile_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "stock_audit_event_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "command_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "display_name",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "revision",
+          "data_type": "bigint",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "audit_head",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "companies",
+          "column_name": "retired_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "company_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "core_auth_user_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "role",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_memberships",
+          "column_name": "revoked_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "company_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "portal_type",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "lifecycle_status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "legacy_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "portal_instance_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "company_portal_instances",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "event_type",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "payload",
+          "data_type": "jsonb",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "created_by",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_events",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "subscription_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "plan_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "period",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "amount",
+          "data_type": "integer",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "midtrans_order_id",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "snap_token",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "redirect_url",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "midtrans_mode",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "payment_type",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "paid_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "raw_notification",
+          "data_type": "jsonb",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "updated_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "change_type",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "promo_code",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_invoices",
+          "column_name": "promo_discount_percent",
+          "data_type": "integer",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "platform",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "tier",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "name",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "price_monthly",
+          "data_type": "numeric",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "price_yearly",
+          "data_type": "numeric",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "features",
+          "data_type": "jsonb",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "max_users",
+          "data_type": "integer",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "is_active",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "tier_display_name",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "offer_version",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "public_tier",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "is_for_sale",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "allowed_periods",
+          "data_type": "ARRAY",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "subscription_plans",
+          "column_name": "entitlement_contract",
+          "data_type": "jsonb",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "plan_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "trial_ends_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "current_period_start",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "current_period_end",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "grace_period_ends_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "cancelled_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "midtrans_order_id",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "midtrans_subscription_id",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "updated_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "scheduled_plan_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_subscriptions",
+          "column_name": "scheduled_plan_set_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "name",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "slug",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "platform",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "plan_tier",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "email",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "phone",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "address",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "logo_url",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "linked_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "fonnte_token",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "suspended_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "cancelled_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "updated_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "owner_user_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "metadata",
+          "data_type": "jsonb",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenants",
+          "column_name": "trial_ends_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        }
+      ],
+      "tables": [
+        {
+          "schema_name": "core_e1_resource_private",
+          "table_name": "origins",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "core_e1_resource_private",
+          "table_name": "settings",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "core_e1_resource_private",
+          "table_name": "stock_bindings",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "companies",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "company_memberships",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "company_portal_instances",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "subscription_events",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "subscription_invoices",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "subscription_plans",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "tenant_subscriptions",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "tenants",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,anon=arwdDxtm/postgres,authenticated=arwdDxtm/postgres,service_role=arwdDxtm/postgres}"
+        }
+      ],
+      "policies": [
+        {
+          "schemaname": "public",
+          "tablename": "companies",
+          "policyname": "core_managed_session_required",
+          "permissive": "RESTRICTIVE",
+          "roles": "{authenticated}",
+          "cmd": "ALL",
+          "using_hash": "307e2d71e811fba8cc88085102f8e8b6",
+          "check_hash": "307e2d71e811fba8cc88085102f8e8b6"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "companies",
+          "policyname": "own_active_company",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "b712335491d29e471edaf46722b3655f",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "company_memberships",
+          "policyname": "core_managed_session_required",
+          "permissive": "RESTRICTIVE",
+          "roles": "{authenticated}",
+          "cmd": "ALL",
+          "using_hash": "307e2d71e811fba8cc88085102f8e8b6",
+          "check_hash": "307e2d71e811fba8cc88085102f8e8b6"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "company_memberships",
+          "policyname": "own_active_membership",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "eb39f1b9bb1d890ef858863893b37634",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "company_portal_instances",
+          "policyname": "core_managed_session_required",
+          "permissive": "RESTRICTIVE",
+          "roles": "{authenticated}",
+          "cmd": "ALL",
+          "using_hash": "307e2d71e811fba8cc88085102f8e8b6",
+          "check_hash": "307e2d71e811fba8cc88085102f8e8b6"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "company_portal_instances",
+          "policyname": "own_company_portal",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "a8d2fed3f72b63e3870e2b1b76961cb9",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "subscription_events",
+          "policyname": "superadmin_all_events",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "ALL",
+          "using_hash": "7aa55db5112e270fda21d689cacd94c8",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "subscription_events",
+          "policyname": "tenant_read_own_events",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "SELECT",
+          "using_hash": "6169823c4aa740066324656f4c8ce121",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "subscription_invoices",
+          "policyname": "service_role_bypass",
+          "permissive": "PERMISSIVE",
+          "roles": "{service_role}",
+          "cmd": "ALL",
+          "using_hash": "b326b5062b2f0e69046810717534cb09",
+          "check_hash": "b326b5062b2f0e69046810717534cb09"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "subscription_plans",
+          "policyname": "anyone_read_active_plans",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "SELECT",
+          "using_hash": "2bd5353c68510b2f4d445049d8e0f87d",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "subscription_plans",
+          "policyname": "superadmin_manage_plans",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "ALL",
+          "using_hash": "7aa55db5112e270fda21d689cacd94c8",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenant_subscriptions",
+          "policyname": "superadmin_all_subscriptions",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "ALL",
+          "using_hash": "7aa55db5112e270fda21d689cacd94c8",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenant_subscriptions",
+          "policyname": "tenant_read_own_subscription",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "SELECT",
+          "using_hash": "6169823c4aa740066324656f4c8ce121",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenants",
+          "policyname": "member_read_own_tenant",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "SELECT",
+          "using_hash": "1bd07a90de43d04e8617852099d1292b",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenants",
+          "policyname": "superadmin_all_tenants",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "ALL",
+          "using_hash": "7aa55db5112e270fda21d689cacd94c8",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        }
+      ],
+      "offers": [
+        {
+          "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+          "platform": "stock",
+          "offer_version": "basic-pro-2026-10-v1",
+          "public_tier": "basic",
+          "tier": "starter",
+          "price_monthly": "149000.00",
+          "price_yearly": null,
+          "is_active": false,
+          "is_for_sale": false,
+          "allowed_periods": [
+            "monthly"
+          ],
+          "entitlement_contract": {
+            "features": [
+              "orders",
+              "catalog",
+              "stock"
+            ],
+            "portal_tier": "starter",
+            "storage_bytes": null,
+            "max_active_users": 1
+          }
+        },
+        {
+          "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "platform": "stock",
+          "offer_version": "basic-pro-2026-10-v1",
+          "public_tier": "pro",
+          "tier": "pro",
+          "price_monthly": "359000.00",
+          "price_yearly": null,
+          "is_active": false,
+          "is_for_sale": false,
+          "allowed_periods": [
+            "monthly"
+          ],
+          "entitlement_contract": {
+            "features": [
+              "orders",
+              "catalog",
+              "stock",
+              "suppliers",
+              "finance"
+            ],
+            "portal_tier": "growth",
+            "storage_bytes": null,
+            "max_active_users": 3
+          }
+        }
+      ]
+    },
+    "stock": {
+      "database": [
+        {
+          "database_name": "postgres",
+          "database_role": "postgres"
+        }
+      ],
+      "functions": [
+        {
+          "schema_name": "public",
+          "function_name": "resolve_stock_context",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "c5660610857e128d78b73bc4396debb5",
+          "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+          "definition_hash": "834cb1addbd9be11307fb7189b4e9665"
+        },
+        {
+          "schema_name": "stock_e1_resource_private",
+          "function_name": "guard_profile",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "df3a5933d2b87a83f8f579662503cdbd"
+        },
+        {
+          "schema_name": "stock_e1_resource_private",
+          "function_name": "resolve_stock_context_internal",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "7fd07a74da55672b82667c5bb07e9f7d"
+        },
+        {
+          "schema_name": "stock_private",
+          "function_name": "resolve_stock_context_internal",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "c5660610857e128d78b73bc4396debb5",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "2cfffa8d138c10c2a1c3caa43f14d5bb"
+        },
+        {
+          "schema_name": "stock_private",
+          "function_name": "session_is_live",
+          "arguments": "",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418",
+          "grants": "{postgres=X/postgres}",
+          "definition_hash": "bae909e102caee44d029fe0d638eda40"
+        }
+      ],
+      "columns": [
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "actor_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "action",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "entity_type",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "entity_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "source",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "reason",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "before_data",
+          "data_type": "jsonb",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "after_data",
+          "data_type": "jsonb",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "audit_event",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "slug",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "nama",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "phone_cc",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "currency",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "modules",
+          "data_type": "jsonb",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant",
+          "column_name": "core_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "tier",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "entitlements",
+          "data_type": "jsonb",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "max_active_users",
+          "data_type": "integer",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "status",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "linked_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "synced_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "expires_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "updated_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "offer_version",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "plan_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "public_tier",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "tenant_entitlements",
+          "column_name": "plan_display_name",
+          "data_type": "text",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "user_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "role",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "is_active",
+          "data_type": "boolean",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "public",
+          "table_name": "user_profile",
+          "column_name": "core_user_id",
+          "data_type": "uuid",
+          "is_nullable": "YES"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "reservation_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "company_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "core_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "core_subject",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "stock_tenant_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "stock_subject",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "profile_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "audit_event_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "company_name",
+          "data_type": "text",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "stage_session_id",
+          "data_type": "uuid",
+          "is_nullable": "NO"
+        },
+        {
+          "table_schema": "stock_e1_resource_private",
+          "table_name": "origins",
+          "column_name": "created_at",
+          "data_type": "timestamp with time zone",
+          "is_nullable": "NO"
+        }
+      ],
+      "tables": [
+        {
+          "schema_name": "public",
+          "table_name": "audit_event",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "tenant",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "tenant_entitlements",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "rls": true,
+          "forced_rls": false,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}"
+        },
+        {
+          "schema_name": "stock_e1_resource_private",
+          "table_name": "origins",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres}"
+        },
+        {
+          "schema_name": "stock_e1_resource_private",
+          "table_name": "settings",
+          "rls": true,
+          "forced_rls": true,
+          "owner": "postgres",
+          "grants": "{postgres=arwdDxtm/postgres}"
+        }
+      ],
+      "policies": [
+        {
+          "schemaname": "public",
+          "tablename": "audit_event",
+          "policyname": "audit_event_tenant_select",
+          "permissive": "PERMISSIVE",
+          "roles": "{public}",
+          "cmd": "SELECT",
+          "using_hash": "0a6c67a5a45161b7fce2e9b714447dd3",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenant",
+          "policyname": "stock_tenant_read",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "c5597caaa6cf0e28a1ade7365b2b86d5",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "tenant_entitlements",
+          "policyname": "stock_entitlement_read",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "3a1b43413b052c5a01d248366ea63876",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        },
+        {
+          "schemaname": "public",
+          "tablename": "user_profile",
+          "policyname": "stock_profile_read",
+          "permissive": "PERMISSIVE",
+          "roles": "{authenticated}",
+          "cmd": "SELECT",
+          "using_hash": "21a824d0f96854c6ad14b2517fac8a7f",
+          "check_hash": "d41d8cd98f00b204e9800998ecf8427e"
+        }
+      ],
+      "triggers": [
+        {
+          "schema_name": "public",
+          "table_name": "audit_event",
+          "trigger_name": "trg_audit_event_immutable",
+          "enabled": "O",
+          "function_name": "prevent_audit_mutation()",
+          "definition_hash": "1c8ecc74a2b66cf5f9948c90cd12ecad"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "e1_stock_profile_guard",
+          "enabled": "O",
+          "function_name": "stock_e1_resource_private.guard_profile()",
+          "definition_hash": "014188f9b2b175e875ad1b0d6b952102"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "e1_stock_profile_lock",
+          "enabled": "O",
+          "function_name": "stock_e1_resource_private.lock_profiles()",
+          "definition_hash": "20ce9599a5e875ee6ccb6d0561e8e0ab"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "e1_stock_profile_truncate",
+          "enabled": "O",
+          "function_name": "stock_e1_resource_private.guard_profile()",
+          "definition_hash": "868765024686e45c94430618f60d70ce"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "trg_audit_user_profile_change",
+          "enabled": "O",
+          "function_name": "audit_stock_profile_change()",
+          "definition_hash": "4bd2db5d6b17436e208c411022f845bb"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "trg_stock_profile_identity_immutable",
+          "enabled": "O",
+          "function_name": "guard_stock_profile_identity()",
+          "definition_hash": "f9d0297b39e9e81030b5b9353cad8178"
+        },
+        {
+          "schema_name": "public",
+          "table_name": "user_profile",
+          "trigger_name": "user_profile_core_mapping_immutable",
+          "enabled": "O",
+          "function_name": "prevent_core_mapping_reassignment()",
+          "definition_hash": "81534b6bfd25dffca7f474256ae22556"
+        },
+        {
+          "schema_name": "stock_e1_resource_private",
+          "table_name": "origins",
+          "trigger_name": "e1_stock_origin_immutable",
+          "enabled": "O",
+          "function_name": "stock_e1_resource_private.guard_origin()",
+          "definition_hash": "5fe1bafdc638142982622019db3107cb"
+        }
+      ]
+    }
+  },
+  "observedAtUtc": "2026-11-01 10:05:55 UTC",
+  "authorization": "Owner approved the two linked read-only baseline probes on 1 November 2026.",
+  "mutationsPerformed": false,
+  "statementExecution": "Whole approved READ ONLY scripts, then identical approved SELECT statements individually because MCP returns only the final result set.",
+  "definitionComparison": [
+    {
+      "system": "core",
+      "function": "public.apply_verified_subscription_payment",
+      "sourceFile": "docs/pricing/ATOMIC_SUBSCRIPTION_PAYMENT.PROPOSED.sql",
+      "installedDefinitionHash": "93ac205ace3e12c0317288f0893dfba0",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "93ac205ace3e12c0317288f0893dfba0",
+          "security_definer": false,
+          "function_config_hash": "457a20662fe8dbd47c7f262f1d721d55"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "93ac205ace3e12c0317288f0893dfba0",
+          "security_definer": false,
+          "function_config_hash": "457a20662fe8dbd47c7f262f1d721d55"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "core",
+      "function": "public.billing_sandbox_uat_allowed",
+      "sourceFile": "docs/pricing/SANDBOX_UAT_COHORT.PROPOSED.sql",
+      "installedDefinitionHash": "4db58d67920ed921f2dddb9f46029a0f",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "4db58d67920ed921f2dddb9f46029a0f",
+          "security_definer": false,
+          "function_config_hash": "86848e74287bde206a1238f01a1c9b0b"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "4db58d67920ed921f2dddb9f46029a0f",
+          "security_definer": false,
+          "function_config_hash": "86848e74287bde206a1238f01a1c9b0b"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "core",
+      "function": "public.core_registry_session_is_live",
+      "sourceFile": "supabase/migrations/core_db/20261025034453_h1_g1_core_managed_session_forward.sql",
+      "installedDefinitionHash": "a1ca5fc1f0e7efc1fa587cebbf555786",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "51e94f18454c4ffe697a02d8b6ba28c9",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "a1ca5fc1f0e7efc1fa587cebbf555786",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "LF"
+    },
+    {
+      "system": "core",
+      "function": "core_e1_resource_private.guard_graph",
+      "sourceFile": "supabase/migrations/core_db/20261023112244_h1_g1_e1_core_production.sql",
+      "installedDefinitionHash": "b1216196573a28f56081de18b1eec712",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "b1216196573a28f56081de18b1eec712",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "b1216196573a28f56081de18b1eec712",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "core",
+      "function": "core_e1_resource_private.immutable_origin",
+      "sourceFile": "supabase/migrations/core_db/20261023112244_h1_g1_e1_core_production.sql",
+      "installedDefinitionHash": "63bb1c57eff899d2f25f5e53d1fce863",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "63bb1c57eff899d2f25f5e53d1fce863",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "63bb1c57eff899d2f25f5e53d1fce863",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "core",
+      "function": "core_e1_resource_private.lock_registry",
+      "sourceFile": "supabase/migrations/core_db/20261023112244_h1_g1_e1_core_production.sql",
+      "installedDefinitionHash": "a9bdf49dc9f359f45503e29992887166",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "a9bdf49dc9f359f45503e29992887166",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "a9bdf49dc9f359f45503e29992887166",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "core",
+      "function": "core_e1_resource_private.reservation_json",
+      "sourceFile": "supabase/migrations/core_db/20261023112244_h1_g1_e1_core_production.sql",
+      "installedDefinitionHash": "7d2fe72fa7cf6b2b02faa432640d302b",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "7d2fe72fa7cf6b2b02faa432640d302b",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "7d2fe72fa7cf6b2b02faa432640d302b",
+          "security_definer": false,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "stock",
+      "function": "public.resolve_stock_context",
+      "sourceFile": "supabase/migrations/20261024000844_h1_g1_stock_canonical_context.sql",
+      "installedDefinitionHash": "834cb1addbd9be11307fb7189b4e9665",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "ffc2f3e87ed51057058c79b1b9256a12",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "ffc2f3e87ed51057058c79b1b9256a12",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        }
+      ],
+      "status": "UNRECONCILED",
+      "matchedVariant": null
+    },
+    {
+      "system": "stock",
+      "function": "stock_e1_resource_private.resolve_stock_context_internal",
+      "sourceFile": "supabase/migrations/20261024000844_h1_g1_stock_canonical_context.sql",
+      "installedDefinitionHash": "7fd07a74da55672b82667c5bb07e9f7d",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "7fd07a74da55672b82667c5bb07e9f7d",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "7fd07a74da55672b82667c5bb07e9f7d",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    },
+    {
+      "system": "stock",
+      "function": "stock_e1_resource_private.guard_profile",
+      "sourceFile": "supabase/migrations/20261023112244_h1_g1_e1_stock_production.sql",
+      "installedDefinitionHash": "df3a5933d2b87a83f8f579662503cdbd",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "bc052bc879cb2a1230bbcf7653e58e7f",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "bc052bc879cb2a1230bbcf7653e58e7f",
+          "security_definer": true,
+          "function_config_hash": "af3be9c3d4c2d891da1a7618c49685d3"
+        }
+      ],
+      "status": "UNRECONCILED",
+      "matchedVariant": null
+    },
+    {
+      "system": "stock",
+      "function": "stock_private.resolve_stock_context_internal",
+      "sourceFile": "supabase/migrations/20261025034454_h1_g1_stock_canonical_rls_forward.sql",
+      "installedDefinitionHash": "2cfffa8d138c10c2a1c3caa43f14d5bb",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "51fa4a1cc5447c6540c9b2bd10757e19",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "51fa4a1cc5447c6540c9b2bd10757e19",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        }
+      ],
+      "status": "UNRECONCILED",
+      "matchedVariant": null
+    },
+    {
+      "system": "stock",
+      "function": "stock_private.session_is_live",
+      "sourceFile": "supabase/migrations/20261025034454_h1_g1_stock_canonical_rls_forward.sql",
+      "installedDefinitionHash": "bae909e102caee44d029fe0d638eda40",
+      "sourceDefinitions": [
+        {
+          "variant": "raw",
+          "definition_hash": "bae909e102caee44d029fe0d638eda40",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        },
+        {
+          "variant": "LF",
+          "definition_hash": "bae909e102caee44d029fe0d638eda40",
+          "security_definer": true,
+          "function_config_hash": "dadcf84a46e0b119d1669a7e5c721418"
+        }
+      ],
+      "status": "MATCH",
+      "matchedVariant": "raw"
+    }
+  ],
+  "followUp": {
+    "script": "docs/pricing/STOCK_SELF_PAYMENT_DEFINITION_REVIEW_READONLY.sql",
+    "sha256": "cc7e4c96ef3ee47f98808a5feb0e669676b819fde08d47546d5ced32f1c33550",
+    "unit": {
+      "missingFunctions": "PASS_no_definitions",
+      "changedFunctions": "PASS_no_definitions",
+      "exactFixtureHashes": "PASS_three_definitions"
+    },
+    "providerExecution": "NOT_EXECUTED_REQUIRES_OWNER_APPROVAL"
+  },
+  "findings": {
+    "coreAtomicCommit": "INSTALLED_EXACT_SOURCE_MATCH_DO_NOT_REPLAY",
+    "offers": "BOTH_INACTIVE_NOT_FOR_SALE",
+    "newBillingObjects": "NOT_RETURNED_BY_APPROVED_NAMESPACE_PREDICATES",
+    "stockReceiverMigration": "BLOCKED_ADDITIONAL_ACTIVE_GUARDS_REVIEW",
+    "productionWrites": false
+  },
+  "stockDefinitionReview": {
+    "status": "COMPLETE_APPROVED",
+    "file": "../.wt-webzoka-stock-pdf/docs/pricing/STOCK_INSTALLED_GUARDS_20261101.READONLY.json",
+    "finding": "Installed context assertions and bounded pilot activation/revocation were omitted by historical-source receiver; migration now refuses active namespace"
+  },
+  "nextDependencyReview": {
+    "script": "docs/pricing/STOCK_ACTIVE_CONTRACT_REVIEW_READONLY.sql",
+    "sha256": "3b40094089d8014d93f8a8f13632da86cfcd40cf58917e981772949be375fba2",
+    "unit": {
+      "absentBaseline": "PASS_no_contract",
+      "exactFixture": "PASS_metadata_only",
+      "changedBaseline": "PASS_no_contract"
+    },
+    "providerExecution": "NOT_EXECUTED_PENDING_OWNER_APPROVAL"
+  }
+}

@@ -133,10 +133,9 @@ export function midtransServerKeys(): string[] {
 }
 
 // Verifikasi tanda tangan webhook Midtrans. MONEY-SAFETY: dicocokkan HANYA
-// terhadap key dari `mode` invoice (environment tempat ia DIBUAT) supaya
-// notifikasi bertanda tangan key environment LAIN (mis. sandbox untuk invoice
-// produksi) DITOLAK. Hanya bila key mode itu tak terkonfigurasi, jatuh ke semua
-// key sebagai jaring pengaman. Timing-safe + length-guarded.
+// terhadap key dari `mode` invoice (environment tempat ia DIBUAT). Missing keys
+// fail closed; another environment's key can never verify this invoice.
+// Timing-safe + length-guarded.
 export function verifyMidtransSignature(args: {
   orderId: string
   statusCode: string
@@ -146,7 +145,7 @@ export function verifyMidtransSignature(args: {
 }): boolean {
   const { orderId, statusCode, grossAmount, signatureKey, mode } = args
   const key = serverKeyForMode(mode)
-  const candidates = key ? [key] : midtransServerKeys()
+  const candidates = key ? [key] : []
   const sigBuf = Buffer.from(signatureKey ?? '')
   return candidates.some((k) => {
     const expected = crypto

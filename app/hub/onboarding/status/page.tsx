@@ -86,7 +86,7 @@ export default async function OnboardingStatusPage({
 
           <div className={styles.buttonRow}>
             {onboarding.status === 'ready' ? (
-              <Link className={styles.primaryLink} href="/hub?view=systems">
+              <Link className={styles.primaryLink} href="/hub/systems">
                 Buka Customer Hub <ExternalLink aria-hidden="true" />
               </Link>
             ) : null}

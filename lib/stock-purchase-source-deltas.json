@@ -1,0 +1,1514 @@
+[
+  {
+    "file": "app/api/billing/checkout-self/route.ts",
+    "profile": "runtime",
+    "beforeHash": "7a17281609ec79bd9be30ab478be7137f25e3b89e90d49a20c7be3d3e46daf5d",
+    "afterHash": "54ce11e972f4d9c6a4ec890fe0611b87cafdb596cfa383d20499f0c3e7bee14b",
+    "edits": [
+      {
+        "beforeOffset": 2685,
+        "afterOffset": 2685,
+        "before": "  if (!plan_id && basicProEnabled() && (tenant.platform === 'lms' || tenant.platform === 'stock')) {\n",
+        "after": "  if (!plan_id && basicProEnabled(undefined, tenant.platform) && (tenant.platform === 'lms' || tenant.platform === 'stock')) {\n"
+      }
+    ]
+  },
+  {
+    "file": "app/api/cron/subscription-lifecycle/route.ts",
+    "profile": "runtime",
+    "beforeHash": "d2a30f48d5ce74e7ece7ddc18e3c05691eba389a615c356e63c3097f0caff5df",
+    "afterHash": "9d2e338326d0be70b4f169196632b4d1cac08fd7dbc501041729723eae254a51",
+    "edits": [
+      {
+        "beforeOffset": 324,
+        "afterOffset": 324,
+        "before": "",
+        "after": "import { reconcileStockPaidActivations } from '@/lib/stock-paid-activation'\n"
+      },
+      {
+        "beforeOffset": 1960,
+        "afterOffset": 2036,
+        "before": "",
+        "after": "  after(() => reconcileStockPaidActivations())\n\n"
+      }
+    ]
+  },
+  {
+    "file": "app/api/public/stock-price-quotes/route.ts",
+    "profile": "runtime",
+    "beforeHash": "7028d7713e23cb325d3de8d564f3bef2e36124727a66f90e045e6c095299a6fd",
+    "afterHash": "633b870774154750586922a1ac1d5903bf4bd1035b72075147b3e55216259f1e",
+    "edits": [
+      {
+        "beforeOffset": 215,
+        "afterOffset": 215,
+        "before": "",
+        "after": "import { stockPurchaseAvailable } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 628,
+        "afterOffset": 697,
+        "before": "      .select('id,platform,tier,tier_display_name,price_monthly,price_yearly,offer_version,public_tier,allowed_periods,entitlement_contract')\n",
+        "after": "      .select('id,platform,tier,tier_display_name,price_monthly,price_yearly,offer_version,public_tier,allowed_periods,entitlement_contract,is_active,is_for_sale')\n"
+      },
+      {
+        "beforeOffset": 905,
+        "afterOffset": 996,
+        "before": "    if (quote) return NextResponse.json(quote, { headers })\n",
+        "after": "    if (quote) return NextResponse.json({ ...quote, salesEnabled: stockPurchaseAvailable(quote.salesEnabled) }, { headers })\n"
+      }
+    ]
+  },
+  {
+    "file": "app/billing/langganan/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "9ebaadf9747db9921f7997661b9e354f89029f93202f5a870e8df66ae558c29c",
+    "afterHash": "6e7ca9fd2d463a1aa1a017c43b8400cad40e0c92b7b1fbb3e221ad84471d87ee",
+    "edits": [
+      {
+        "beforeOffset": 282,
+        "afterOffset": 282,
+        "before": "",
+        "after": "import { managedStockBilling } from '@/lib/stock-billing-authority'\nimport { redirect } from 'next/navigation'\nimport { hubAppUrl } from '@/lib/hub-app-url'\n"
+      },
+      {
+        "beforeOffset": 2153,
+        "afterOffset": 2310,
+        "before": "",
+        "after": "  const managed = await managedStockBilling(verified.tenantId)\n  if (managed === 'managed') redirect(`${hubAppUrl()}/account?view=billing`)\n  if (managed === 'unavailable') return <Invalid title=\"Akses belum dapat diperiksa\" desc=\"Buka Customer Hub untuk memeriksa akses pembayaran Anda.\" />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/billing/selesai/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "052cc108cd3a91b06913f4596bb16ce876c57fde65835e5e995e734ff03a0173",
+    "afterHash": "985540bce42a3c299220e8e828ad886254fe1f9652102829db7dae2954f64497",
+    "edits": [
+      {
+        "beforeOffset": 153,
+        "afterOffset": 153,
+        "before": "",
+        "after": "import { managedStockBilling } from '@/lib/stock-billing-authority'\n"
+      },
+      {
+        "beforeOffset": 794,
+        "afterOffset": 862,
+        "before": "",
+        "after": "  let stockPurchase = false\n"
+      },
+      {
+        "beforeOffset": 1330,
+        "afterOffset": 1426,
+        "before": "      if (platform === 'stock' && typeof data?.tenant_id === 'string') {\n        portalUrl = await sandboxBillingReturnUrl(data.tenant_id, portalUrl)\n",
+        "after": "      if (platform === 'stock' && data?.tenant_id) {\n        const managed = await managedStockBilling(data.tenant_id)\n        stockPurchase = managed !== 'legacy'\n        if (stockPurchase) portalUrl = '/hub/account?view=billing'\n        else portalUrl = await sandboxBillingReturnUrl(data.tenant_id, portalUrl)\n"
+      },
+      {
+        "beforeOffset": 1771,
+        "afterOffset": 2030,
+        "before": "        <BillingResult invoiceId={inv ?? null} portalUrl={portalUrl} />\n",
+        "after": "        <BillingResult invoiceId={inv ?? null} portalUrl={portalUrl} stockPurchase={stockPurchase} />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/billing/selesai/Result.tsx",
+    "profile": "runtime",
+    "beforeHash": "80ee386bfeb599eb8df5c31855faa4e7a7be40ba7c2b60487efd9299ad4aad9e",
+    "afterHash": "b1e6f4f063760c708a482b5282a04d9eb2665aaff9af9a18a4c8b5e3ba197a8a",
+    "edits": [
+      {
+        "beforeOffset": 337,
+        "afterOffset": 337,
+        "before": "",
+        "after": "  stockPurchase = false,\n"
+      },
+      {
+        "beforeOffset": 396,
+        "afterOffset": 421,
+        "before": "",
+        "after": "  stockPurchase?: boolean\n"
+      },
+      {
+        "beforeOffset": 994,
+        "afterOffset": 1045,
+        "before": "",
+        "after": "        setCountdown(REDIRECT_SECONDS)\n"
+      },
+      {
+        "beforeOffset": 2217,
+        "afterOffset": 2307,
+        "before": "    setCountdown(REDIRECT_SECONDS)\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 2830,
+        "afterOffset": 2885,
+        "before": "        desc=\"Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka.\"\n",
+        "after": "        desc={stockPurchase ? 'Pembayaran sudah diterima. Periksa status aktivasi Stock di Tagihan Customer Hub. Tidak perlu membayar lagi.' : 'Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka.'}\n"
+      },
+      {
+        "beforeOffset": 3226,
+        "afterOffset": 3412,
+        "before": "              Masuk ke Dashboard\n",
+        "after": "              {stockPurchase ? 'Periksa aktivasi Stock' : 'Masuk ke Dashboard'}\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/_components/AccountHub.tsx",
+    "profile": "runtime",
+    "beforeHash": "0f37bb33703d3704d4d2456fb7bc2f9931bf076e16378ed4e20cce7d89132401",
+    "afterHash": "9b52a881b830e34cda8c327faf3a9ff8ae035bb6575889d828bd1ab8e8d1aec5",
+    "edits": [
+      {
+        "beforeOffset": 367,
+        "afterOffset": 367,
+        "before": "",
+        "after": "import type { StockBillingAccount } from '@/lib/stock-self-payment'\nimport { StockBillingPanel } from './StockBillingPanel'\n"
+      },
+      {
+        "beforeOffset": 899,
+        "afterOffset": 1023,
+        "before": "export function AccountHub({ account, view }: { account: HubAccount; view: AccountHubView }) {\n",
+        "after": "export function AccountHub({ account, view, billing = null }: { account: HubAccount; view: AccountHubView; billing?: StockBillingAccount | null }) {\n"
+      },
+      {
+        "beforeOffset": 1242,
+        "afterOffset": 1420,
+        "before": "  const workspaceDescription = ready\n",
+        "after": "  const companyId = account.workspace.status === 'ready' ? account.workspace.companyId : null\n  const paidWorkspace = billing?.status === 'ready' && companyId\n    ? billing.workspaces.find(workspace => workspace.companyId === companyId)\n    : null\n  const workspaceDescription = paidWorkspace?.activation === 'active'\n    ? 'Webzoka Stock aktif untuk workspace ini. Buka Sistem Saya untuk mulai bekerja.'\n    : paidWorkspace?.activation === 'pending'\n      ? 'Pembayaran diterima. Aktivasi Webzoka Stock sedang diproses.'\n      : ready\n"
+      },
+      {
+        "beforeOffset": 6132,
+        "afterOffset": 6809,
+        "before": "      {view === 'systems' && <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}><LayoutGrid aria-hidden=\"true\" /><div><h2>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</h2><p>{account.accessReady ? workspaceDescription : 'Akses keanggotaan belum dapat diperiksa. Muat ulang halaman atau hubungi bantuan.'}</p></div><Link className={styles.primaryButton} href=\"/hub/store\">Jelajahi Store</Link><Link className={styles.textLink} href={help}>Bantuan aktivasi</Link></section>}\n      {view === 'billing' && <><section className={styles.workspaceCard}><div className={styles.workspaceHeading}><span className={styles.systemMark}><ReceiptText aria-hidden=\"true\" /></span><h2>Akses tagihan belum tersedia</h2></div><p className={styles.muted}>Akun dan workspace tidak otomatis memberikan akses mengelola langganan atau melihat tagihan produk.</p><div className={styles.buttonRow}><Link className={styles.primaryButton} href=\"/hub/store#stock-packages\">Lihat paket di Store</Link><Link className={styles.secondaryButton} href={help}>Bantuan akses tagihan</Link></div></section><section className={styles.sectionBlock}><h2>Riwayat tagihan</h2><div className={styles.inlineNotice}><ReceiptText aria-hidden=\"true\" /><span>Riwayat belum dapat ditampilkan untuk akun ini. Hubungi bantuan bila Anda memerlukan pemeriksaan.</span></div></section></>}\n",
+        "after": "      {view === 'systems' && (billing?.status === 'ready' && billing.workspaces.length > 0 ? <StockBillingPanel billing={billing} systemsOnly /> : <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}><LayoutGrid aria-hidden=\"true\" /><div><h2>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</h2><p>{account.accessReady ? workspaceDescription : 'Akses keanggotaan belum dapat diperiksa. Muat ulang halaman atau hubungi bantuan.'}</p></div><Link className={styles.primaryButton} href=\"/hub/store\">Jelajahi Store</Link><Link className={styles.textLink} href={help}>Bantuan aktivasi</Link></section>)}\n      {view === 'billing' && (billing?.status === 'ready' ? <StockBillingPanel billing={billing} /> : <><section className={styles.workspaceCard}><div className={styles.workspaceHeading}><span className={styles.systemMark}><ReceiptText aria-hidden=\"true\" /></span><h2>Akses tagihan belum tersedia</h2></div><p className={styles.muted}>Akun dan workspace tidak otomatis memberikan akses mengelola langganan atau melihat tagihan produk.</p><div className={styles.buttonRow}><Link className={styles.primaryButton} href=\"/hub/store#stock-packages\">Lihat paket di Store</Link><Link className={styles.secondaryButton} href={help}>Bantuan akses tagihan</Link></div></section><section className={styles.sectionBlock}><h2>Riwayat tagihan</h2><div className={styles.inlineNotice}><ReceiptText aria-hidden=\"true\" /><span>Riwayat belum dapat ditampilkan untuk akun ini. Hubungi bantuan bila Anda memerlukan pemeriksaan.</span></div></section></>)}\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/_components/store-front.module.css",
+    "profile": "runtime",
+    "beforeHash": "061bc977ad926232a733fcf643ad6cbd6636781a364dbd71a2b80d0beed7920d",
+    "afterHash": "bfb311241a6610a1853d6b29744057d6684ca61847e08f464ccae24e3d341c62",
+    "edits": [
+      {
+        "beforeOffset": 9874,
+        "afterOffset": 9874,
+        "before": "",
+        "after": ".twoPlans{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none;margin:0}.twoPlans .planIntro{font-size:16px}.twoPlans .planFeatures li,.twoPlans .price small{font-size:14px}.consultationLink{display:flex;align-items:center;justify-content:center;min-height:44px;font-size:14px;color:var(--blue);margin-top:8px}.purchaseTrial p{font-size:14px}\n@media(max-width:760px){.twoPlans{grid-template-columns:minmax(0,1fr)}}\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/_components/StoreShowcase.tsx",
+    "profile": "runtime",
+    "beforeHash": "c6206aaa714357d194d91acf470911521206c25eb9f2ddc341e4d20a2599bae8",
+    "afterHash": "f0a1eb3c0635e8ec03edd0f9fc27615eb4fe38c48733b70758136e5c6e0727ca",
+    "edits": [
+      {
+        "beforeOffset": 130,
+        "afterOffset": 130,
+        "before": "import { StoreFront } from './StoreFront'\n",
+        "after": "import { StockStoreFront, type StockStoreQuote } from './StockStoreFront'\n"
+      },
+      {
+        "beforeOffset": 1606,
+        "afterOffset": 1638,
+        "before": "export function StoreShowcase({ plans = [] }: { plans?: StockPlanChoice[] }) {\n  return <StoreFront plans={plans} />\n",
+        "after": "export function StoreShowcase({ quote = null }: { plans?: StockPlanChoice[]; quote?: StockStoreQuote | null }) {\n  return <StockStoreFront quote={quote} />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/(public)/store/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "1f0d29769e01daf0c5eb38e189ea8af3462a2b1e8c2cde37f598689bb24a17f8",
+    "afterHash": "96e97032cac5ee2bfdf5784262182b41d96f9e832675ad2bcf7b5ef0a76fdd35",
+    "edits": [
+      {
+        "beforeOffset": 101,
+        "afterOffset": 101,
+        "before": "import { getStockStoreCatalog } from '@/lib/stock-store-catalog'\n",
+        "after": "import { readStockPurchaseOffers } from '@/lib/stock-self-payment'\n"
+      },
+      {
+        "beforeOffset": 244,
+        "afterOffset": 246,
+        "before": "  description: 'Bandingkan paket Basic dan Pro Webzoka Stock untuk pesanan, stok, pembelian, dan keuangan. Trial 14 hari terpisah dari paket berbayar.',\n",
+        "after": "  description: 'Jelajahi fitur, paket, dan trial 14 hari Webzoka Stock untuk pesanan, persediaan, dan produksi.',\n"
+      },
+      {
+        "beforeOffset": 484,
+        "afterOffset": 447,
+        "before": "  const plans = await getStockStoreCatalog()\n  return <StoreShowcase plans={plans} />\n",
+        "after": "  const quote = await readStockPurchaseOffers()\n  return <StoreShowcase quote={quote} />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/account/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "540dbf0fed36868ff90161376b4dec78dc41d78b216b7a62da9dc32dc24e90a3",
+    "afterHash": "ec7eab7f56b3f4c26993dd0dbb2815062e9aa43d2f99e278c619e254a1b31b2d",
+    "edits": [
+      {
+        "beforeOffset": 126,
+        "afterOffset": 126,
+        "before": "",
+        "after": "import { readStockBillingAccount } from '@/lib/stock-self-payment'\n"
+      },
+      {
+        "beforeOffset": 127,
+        "afterOffset": 194,
+        "before": "export const metadata = { title: 'Akun Saya | Webzoka Customer Hub', robots: { index: false, follow: false } }\n",
+        "after": "export const metadata = { title: 'Akun Saya | Webzoka Customer Hub', referrer: 'strict-origin' as const, robots: { index: false, follow: false } }\n"
+      },
+      {
+        "beforeOffset": 343,
+        "afterOffset": 446,
+        "before": "  searchParams?: Promise<{ view?: string }>\n} = {}) {\n  const account = await getHubAccount()\n",
+        "after": "  searchParams: Promise<{ view?: string | string[] }>\n}) {\n"
+      },
+      {
+        "beforeOffset": 472,
+        "afterOffset": 540,
+        "before": "  const view: AccountHubView = ['systems', 'billing', 'support'].includes(query?.view ?? '') ? query?.view as AccountHubView : 'home'\n  return <AccountHub account={account} view={view} />\n",
+        "after": "  const requested = typeof query.view === 'string' ? query.view : ''\n  const view: AccountHubView = ['systems', 'billing', 'support'].includes(requested) ? requested as AccountHubView : 'home'\n  const [account, billing] = await Promise.all([getHubAccount(), view === 'support' ? Promise.resolve(null) : readStockBillingAccount()])\n  return <AccountHub account={account} view={view} billing={billing} />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/login/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "7a7267495d3256cf060ed03799a367bd3a4a6c96852aa29e1daff0b50998fe97",
+    "afterHash": "b24cc6e2f4857d2afb920de9ca7d4594a993ca1409f74f0bd98039d67d3d2ed2",
+    "edits": [
+      {
+        "beforeOffset": 4189,
+        "afterOffset": 4189,
+        "before": "              Belum punya akun? <Link href=\"/hub/signup\">Buat akun</Link>\n",
+        "after": "              Belum punya akun? <Link href={`/hub/signup${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Buat akun</Link>\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/signup/HubSignupForm.tsx",
+    "profile": "runtime",
+    "beforeHash": "2a5ec54a4a91ddf64a682cdf3f3371d14b1f43879de8f8f377d133ae38af5f95",
+    "afterHash": "4466a27af2c53775ba19c5def65a75619bb4a2a9933a1f9e3962b6e09ff357d2",
+    "edits": [
+      {
+        "beforeOffset": 831,
+        "afterOffset": 831,
+        "before": "export function HubSignupForm({ verificationFailed = false }: { verificationFailed?: boolean }) {\n",
+        "after": "export function HubSignupForm({ verificationFailed = false, next = null }: { verificationFailed?: boolean; next?: string | null }) {\n"
+      },
+      {
+        "beforeOffset": 4247,
+        "afterOffset": 4282,
+        "before": "      <Link className={styles.primaryButton} href=\"/hub/login\">Masuk setelah verifikasi</Link>\n      <a className={signup.link} href=\"/hub/signup\">Gunakan email lain</a>\n",
+        "after": "      <Link className={styles.primaryButton} href={`/hub/login${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Masuk setelah verifikasi</Link>\n      <a className={signup.link} href={`/hub/signup${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Gunakan email lain</a>\n"
+      },
+      {
+        "beforeOffset": 4923,
+        "afterOffset": 5062,
+        "before": "",
+        "after": "      {next && <input type=\"hidden\" name=\"next\" value={next} />}\n"
+      },
+      {
+        "beforeOffset": 9352,
+        "afterOffset": 9556,
+        "before": "      <p className={`${styles.signup} ${signup.loginLink}`}>Sudah punya akun? <Link href=\"/hub/login\">Masuk</Link></p>\n",
+        "after": "      <p className={`${styles.signup} ${signup.loginLink}`}>Sudah punya akun? <Link href={`/hub/login${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Masuk</Link></p>\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/signup/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "e15460a045125c6e5b7669f4a9b5cb15f0c5df702588d66b5fc1394069ebd1d5",
+    "afterHash": "18dd5ea4f9c9916d47e3181416f7416db64224613c7db6614cc20f71a82ef7db",
+    "edits": [
+      {
+        "beforeOffset": 335,
+        "afterOffset": 335,
+        "before": "",
+        "after": "import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 482,
+        "afterOffset": 550,
+        "before": "export default async function HubSignupPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {\n",
+        "after": "export default async function HubSignupPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {\n"
+      },
+      {
+        "beforeOffset": 628,
+        "afterOffset": 711,
+        "before": "",
+        "after": "  const next = safeStockCheckoutPath(query.next)\n"
+      },
+      {
+        "beforeOffset": 707,
+        "afterOffset": 839,
+        "before": "  if (data?.claims?.sub) redirect('/hub/account')\n",
+        "after": "  if (data?.claims?.sub) redirect(next ?? '/hub/account')\n"
+      },
+      {
+        "beforeOffset": 1659,
+        "afterOffset": 1799,
+        "before": "            <HubSignupForm verificationFailed={query.error === 'verification_failed'} />\n",
+        "after": "            <HubSignupForm verificationFailed={query.error === 'verification_failed'} next={next} />\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/workspace/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "e9c45ae4a104b671bcc5abf1fef3d2fb8b646eb90e3aafdb0d36086c54006d86",
+    "afterHash": "15cabf969bc85cd504be0afe3ab07554951e68189e096bc4607146893ec7319f",
+    "edits": [
+      {
+        "beforeOffset": 484,
+        "afterOffset": 484,
+        "before": "",
+        "after": "import { readStockPurchaseIntent } from '@/lib/stock-self-payment'\n"
+      },
+      {
+        "beforeOffset": 969,
+        "afterOffset": 1036,
+        "before": "",
+        "after": "  const purchaseIntent = await readStockPurchaseIntent()\n"
+      },
+      {
+        "beforeOffset": 2415,
+        "afterOffset": 2539,
+        "before": "    stockStart={`${STOCK_E1_APP_ORIGIN}/api/auth/e1/start`} returnPath={returnPath} />}\n",
+        "after": "    stockStart={`${STOCK_E1_APP_ORIGIN}/api/auth/e1/start`} returnPath={returnPath}\n    checkoutPath={purchaseIntent ? '/hub/checkout/stock' : null} />}\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/workspace/WorkspaceView.tsx",
+    "profile": "runtime",
+    "beforeHash": "1b7889951d8b5b139eb4ad663036f3845ed3d361c51f62d5edab53777ffaeaaa",
+    "afterHash": "3ca06aa04fa50a3258b742806ca3c2fc2afd9adfbf0c700d3851150e232f9289",
+    "edits": [
+      {
+        "beforeOffset": 1323,
+        "afterOffset": 1323,
+        "before": "export function WorkspaceView({ initial, keys, enabled, stockStart, returnPath }: {\n",
+        "after": "export function WorkspaceView({ initial, keys, enabled, stockStart, returnPath, checkoutPath = null }: {\n"
+      },
+      {
+        "beforeOffset": 1487,
+        "afterOffset": 1508,
+        "before": "  enabled: boolean; stockStart: string; returnPath: string;\n",
+        "after": "  enabled: boolean; stockStart: string; returnPath: string; checkoutPath?: string | null;\n"
+      },
+      {
+        "beforeOffset": 4732,
+        "afterOffset": 4783,
+        "before": "",
+        "after": "            {state.status === 'quarantined' && checkoutPath && <a className={styles.secondary} href={checkoutPath}>Lanjutkan pilihan paket Stock</a>}\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/billing-sandbox-uat.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "9742860953cc5c1ada54aeaf0c69d01a9aa7359eb78846a9784b19fb740c8008",
+    "afterHash": "d06a07677be701e2ed350f819deb23238a2e4335ae2f1442fdf8ee49ca13f046",
+    "edits": [
+      {
+        "beforeOffset": 878,
+        "afterOffset": 878,
+        "before": "function load(environment = env, answer = true, error = null) {\n",
+        "after": "function load(environment = env, answer = true, error = null, company = false) {\n"
+      },
+      {
+        "beforeOffset": 1111,
+        "afterOffset": 1128,
+        "before": "",
+        "after": "    if (name === '@/lib/stock-purchase-policy') return { STOCK_PAID_BILLING_RUNTIME_ENABLED: company }\n"
+      },
+      {
+        "beforeOffset": 1212,
+        "afterOffset": 1332,
+        "before": "      calls.push({ name, args }); return { abortSignal: async () => ({ data: answer, error }) }\n",
+        "after": "      calls.push({ name, args }); return { abortSignal: async () => ({ data: name === 'stock_billing_sandbox_allowed' ? company : answer, error }) }\n"
+      },
+      {
+        "beforeOffset": 3750,
+        "afterOffset": 3923,
+        "before": "",
+        "after": "\ntest('Company sandbox uses its separate finite DB cohort while the legacy cohort stays unchanged', async () => {\n  const company = load(env, false, null, true)\n  assert.equal(await company.sandboxPurchaseAllowed(plan, 'SYNTHETIC-COMPANY-TENANT'), true)\n  assert.deepEqual(company.calls.map(call => call.name), ['billing_sandbox_uat_allowed', 'stock_billing_sandbox_allowed'])\n  assert.equal(policy.basicProEnabled('true'), false)\n  assert.equal(await load(env, false, { message: 'Unavailable' }, true).sandboxPurchaseAllowed(plan, 'SYNTHETIC-COMPANY-TENANT'), false)\n})\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/billing-sandbox-uat.ts",
+    "profile": "runtime",
+    "beforeHash": "f9ee41f54a8e0d384b68d7a132daccc2ae674e7d5a20090c337821022863c62c",
+    "afterHash": "f1a1536d85d535297295953e04905f480c2df508c88cd944681cf01ff7e5ab8d",
+    "edits": [
+      {
+        "beforeOffset": 147,
+        "afterOffset": 147,
+        "before": "",
+        "after": "import { STOCK_PAID_BILLING_RUNTIME_ENABLED } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 496,
+        "afterOffset": 577,
+        "before": "  if (plan.platform !== 'stock' || !approvedOffer(plan)) return false\n  return sandboxCohortAllowed(tenantId, plan.id)\n",
+        "after": "  if (process.env.BILLING_SANDBOX_UAT_ENABLED !== 'true' ||\n      process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://hxhusfkrlafxdnyasmsu.supabase.co' ||\n      process.env.WEBZOKA_HUB_APP_URL !== 'https://hub.webzoka.com' ||\n      plan.platform !== 'stock' || !approvedOffer(plan)) return false\n  try {\n    const result = await createAdminClient().rpc('billing_sandbox_uat_allowed', {\n      p_tenant: tenantId, p_plan: plan.id,\n    }).abortSignal(AbortSignal.timeout(1500))\n    if (!result.error && result.data === true) return true\n    if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return false\n    const company = await createAdminClient().rpc('stock_billing_sandbox_allowed', { p_tenant: tenantId, p_plan: plan.id })\n      .abortSignal(AbortSignal.timeout(1500))\n    return !company.error && company.data === true\n  } catch { return false }\n}\n\nexport async function prepareSandboxCheckoutPlan<T extends CatalogPlan>(plan: T, tenantId: string) {\n  const sandboxUat = await sandboxPurchaseAllowed(plan, tenantId)\n  return { plan: sandboxUat ? { ...plan, is_active: true, is_for_sale: true } : plan, sandboxUat }\n}\n\nexport function sandboxNotificationHeaders(sandboxUat: boolean): Record<string, string> {\n  return sandboxUat ? { 'X-Override-Notification': 'https://hub.webzoka.com/api/billing/webhook' } : {}\n"
+      },
+      {
+        "beforeOffset": 618,
+        "afterOffset": 1884,
+        "before": "async function sandboxCohortAllowed(tenantId: string, planId: string): Promise<boolean> {\n",
+        "after": "// The original legacy sandbox cohort retains its exact return/replay behavior.\n// Company eligibility does not inherit a legacy fixture's redirect or diagnostic.\nasync function legacySandboxCohortAllowed(tenantId: string): Promise<boolean> {\n"
+      },
+      {
+        "beforeOffset": 1033,
+        "afterOffset": 2452,
+        "before": "      p_tenant: tenantId, p_plan: planId,\n",
+        "after": "      p_tenant: tenantId, p_plan: '5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001',\n"
+      },
+      {
+        "beforeOffset": 1200,
+        "afterOffset": 2651,
+        "before": "/** The private cohort selects its authenticated test origin; other portals keep their URL. */\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 1411,
+        "afterOffset": 2767,
+        "before": "  return await sandboxCohortAllowed(tenantId, '5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001')\n    ? 'https://webzoka-stock-platform.vercel.app/dashboard' : normalUrl\n",
+        "after": "  return await legacySandboxCohortAllowed(tenantId) ? 'https://webzoka-stock-platform.vercel.app/dashboard' : normalUrl\n"
+      },
+      {
+        "beforeOffset": 1572,
+        "afterOffset": 2890,
+        "before": "/** A temporary diagnostic sends the same signed sync twice without exporting credentials. */\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 1756,
+        "afterOffset": 2980,
+        "before": "  return process.env.BILLING_SANDBOX_REPLAY_PROBE_ENABLED === 'true'\n    && await sandboxCohortAllowed(tenantId, '5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001')\n}\n\nexport async function prepareSandboxCheckoutPlan<T extends CatalogPlan>(plan: T, tenantId: string) {\n  const sandboxUat = await sandboxPurchaseAllowed(plan, tenantId)\n  return { plan: sandboxUat ? { ...plan, is_active: true, is_for_sale: true } : plan, sandboxUat }\n}\n\nexport function sandboxNotificationHeaders(sandboxUat: boolean): Record<string, string> {\n  return sandboxUat ? { 'X-Override-Notification': 'https://hub.webzoka.com/api/billing/webhook' } : {}\n",
+        "after": "  return process.env.BILLING_SANDBOX_REPLAY_PROBE_ENABLED === 'true' && await legacySandboxCohortAllowed(tenantId)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/billing.ts",
+    "profile": "runtime",
+    "beforeHash": "ff70564acf3910315c7edc7eedabc097ac2f9e52e99de28c3bf53cc0c68873a1",
+    "afterHash": "2de90cb2c6dec7205beb4a9558168b61ea8302c4953b9cb5963bc8c93d4bb53c",
+    "edits": [
+      {
+        "beforeOffset": 4961,
+        "afterOffset": 4961,
+        "before": "",
+        "after": "  // Company checkout persists its order before contacting the provider. Existing\n  // legacy callers retain their reviewed lifecycle and contract behavior.\n  durableCheckout?: true\n  stockAuthority?: import('@/lib/stock-billing-authority').StockBillingAuthority\n"
+      },
+      {
+        "beforeOffset": 5379,
+        "afterOffset": 5642,
+        "before": "",
+        "after": "  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')\n  const authorityError = await stockBillingOperationError(args.tenantId, args.planId, args.period, args.stockAuthority)\n  if (authorityError) return authorityError\n"
+      },
+      {
+        "beforeOffset": 7807,
+        "afterOffset": 8321,
+        "before": "    if (subErr || !newSub) {\n",
+        "after": "    if (args.durableCheckout && (subErr as { code?: string } | null)?.code === '23505') {\n      const raced = await db.from('tenant_subscriptions').select('id,plan_id').eq('tenant_id', tenantId).maybeSingle()\n      if (raced.error || !raced.data || raced.data.plan_id !== planId) return { ok: false, status: 409, error: 'Periksa kembali tagihan yang sedang diproses.' }\n      subscriptionId = raced.data.id\n    } else if (subErr || !newSub) {\n"
+      },
+      {
+        "beforeOffset": 7930,
+        "afterOffset": 8858,
+        "before": "",
+        "after": "    } else {\n      subscriptionId = newSub.id\n"
+      },
+      {
+        "beforeOffset": 7936,
+        "afterOffset": 8910,
+        "before": "    subscriptionId = newSub.id\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 8787,
+        "afterOffset": 9730,
+        "before": "",
+        "after": "  if (args.durableCheckout && live) {\n    return { ok: false, status: 409, error: 'Tagihan sedang diproses. Periksa status pembayaran sebelum mencoba kembali.' }\n  }\n"
+      },
+      {
+        "beforeOffset": 11887,
+        "afterOffset": 12996,
+        "before": "  const snapRes = await fetch(snapApiUrl, {\n",
+        "after": "  if (args.durableCheckout) {\n    const reserved = await db.from('subscription_invoices')\n      .update({ midtrans_order_id: midtransOrderId, status: 'awaiting_payment', updated_at: new Date().toISOString() })\n      .eq('id', inv.id).eq('status', 'unpaid').select('id').maybeSingle()\n    if (reserved.error || reserved.data?.id !== inv.id) return { ok: false, status: 503, error: 'Tagihan belum dapat disiapkan. Periksa kembali status pembayaran.' }\n  }\n  let snapRes: Response\n  let snapData: { token?: string; redirect_url?: string; error_messages?: string[] }\n  try {\n    snapRes = await fetch(snapApiUrl, {\n"
+      },
+      {
+        "beforeOffset": 12196,
+        "afterOffset": 13872,
+        "before": "  })\n  const snapData = await snapRes.json()\n",
+        "after": "    })\n    snapData = await snapRes.json()\n  } catch (error) {\n    if (!args.durableCheckout) throw error\n    return { ok: false, status: 503, error: 'Hasil pembayaran belum dapat dipastikan. Periksa Tagihan; jangan membuat pembayaran pengganti.' }\n  }\n"
+      },
+      {
+        "beforeOffset": 12262,
+        "afterOffset": 14146,
+        "before": "",
+        "after": "    if (args.durableCheckout) return { ok: false, status: 503, error: 'Penyedia pembayaran belum mengonfirmasi tagihan. Periksa status sebelum mencoba kembali.' }\n"
+      },
+      {
+        "beforeOffset": 12559,
+        "afterOffset": 14606,
+        "before": "  await db\n",
+        "after": "  const saved = await db\n"
+      },
+      {
+        "beforeOffset": 12846,
+        "afterOffset": 14907,
+        "before": "  return { ok: true, invoiceId: inv.id, redirectUrl: snapData.redirect_url, amount, reused: false }\n",
+        "after": "  if (args.durableCheckout && (saved.error || typeof snapData.token !== 'string' || typeof snapData.redirect_url !== 'string')) {\n    return { ok: false, status: 503, error: 'Tautan pembayaran belum dapat dikonfirmasi. Periksa status tagihan.' }\n  }\n\n  return { ok: true, invoiceId: inv.id, redirectUrl: snapData.redirect_url!, amount, reused: false }\n"
+      },
+      {
+        "beforeOffset": 14140,
+        "afterOffset": 16453,
+        "before": "",
+        "after": "  durableCheckout?: true\n  stockAuthority?: import('@/lib/stock-billing-authority').StockBillingAuthority\n"
+      },
+      {
+        "beforeOffset": 14172,
+        "afterOffset": 16591,
+        "before": "",
+        "after": "  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')\n  const authorityError = await stockBillingOperationError(args.tenantId, args.planId, args.period, args.stockAuthority)\n  if (authorityError) return authorityError\n"
+      },
+      {
+        "beforeOffset": 16529,
+        "afterOffset": 19199,
+        "before": "        ...(args.firstPurchaseOnly ? { firstPurchaseOnly: true } : {}) }),\n",
+        "after": "        ...(args.firstPurchaseOnly ? { firstPurchaseOnly: true } : {}),\n        ...(args.durableCheckout ? { durableCheckout: true } : {}),\n        ...(args.stockAuthority ? { stockAuthority: args.stockAuthority } : {}) }),\n"
+      },
+      {
+        "beforeOffset": 20265,
+        "afterOffset": 23084,
+        "before": "",
+        "after": "  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')\n  const authorityError = await stockBillingOperationError(tenantId)\n  if (authorityError) return { ok: false, error: authorityError.error }\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/core-registry-native.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "06d3420db6b5e5130606df4921605f8b8fe6e35b52b535c2b0d3fc10175bcd9d",
+    "afterHash": "e0ce97fa4a02a17b4420cb19c03410abe5568e5a9b933fb69be72714db029324",
+    "edits": [
+      {
+        "beforeOffset": 128,
+        "afterOffset": 128,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 42455,
+        "afterOffset": 42541,
+        "before": "    const source = signupHistoricalBytes(path, historicalNavigationBytes(path, historicalPricingTestBytes(path, readFileSync(join(root, path)))))\n",
+        "after": "    const current = readFileSync(join(root, path))\n    const restored = historicalStockPurchaseSource(path, current.toString('utf8'))\n    const bytes = restored === current.toString('utf8') ? current : Buffer.from(restored)\n    const source = signupHistoricalBytes(path, historicalNavigationBytes(path, historicalPricingTestBytes(path, bytes)))\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/google-oauth-dev.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "06f800d70d322fd0401098197e1282d57da4e85bfa967d747299c69e5884884b",
+    "afterHash": "710bf53f65b92c61952944f59c8d7d685fa214325755c2d161a15e4214d34def",
+    "edits": [
+      {
+        "beforeOffset": 517,
+        "afterOffset": 517,
+        "before": "",
+        "after": "import { stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 2444,
+        "afterOffset": 2519,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/google-social-ui-source-contract.mjs",
+    "profile": "runtime",
+    "beforeHash": "f86b7d15e80afcc8484e86a08141240483ed8409f6ab0eb0fd3b98ef0e4df519",
+    "afterHash": "d0a7a5b618974cbfcb8af8f02c620116705767bf9cbfe33448a8dda253f3838f",
+    "edits": [
+      {
+        "beforeOffset": 193,
+        "afterOffset": 193,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource, stockPurchaseCandidateSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 6406,
+        "afterOffset": 6522,
+        "before": "  return file === 'app/hub/login/page.tsx'\n",
+        "after": "  const result = file === 'app/hub/login/page.tsx'\n"
+      },
+      {
+        "beforeOffset": 6644,
+        "afterOffset": 6768,
+        "before": "",
+        "after": "  return stockPurchaseCandidateSource(file, result)\n"
+      },
+      {
+        "beforeOffset": 6712,
+        "afterOffset": 6888,
+        "before": "",
+        "after": "  candidate = historicalStockPurchaseSource(file, candidate)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/google-social-ui-source-contract.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "4b5082b121b478d7ef53f803c47ff27e48a50a8ec226b970cf1a71c7b974e0db",
+    "afterHash": "71cbce7540b8a33c9a27d497dc261a6107f2360b752503b471c37a651c458f51",
+    "edits": [
+      {
+        "beforeOffset": 2159,
+        "afterOffset": 2159,
+        "before": "  assert.notEqual(hash(historicalGoogleSocialUiSource(file, current + '\\n// unrelated mutation\\n')), pins[file])\n",
+        "after": "  let mutated = null\n  try { mutated = hash(historicalGoogleSocialUiSource(file, current + '\\n// unrelated mutation\\n')) } catch { /* Rejected unknown bytes cannot satisfy the historical pin. */ }\n  assert.notEqual(mutated, pins[file])\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/google-social.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "540a8192dc2efd1dd829653d4a0210577b65ed8e5e0b51ab85e28089db65968a",
+    "afterHash": "0dd0a05cba3bce11703492f5ff1ff1a7fe2a80a375cd495a2932e2000f5a8d57",
+    "edits": [
+      {
+        "beforeOffset": 1899,
+        "afterOffset": 1899,
+        "before": "const returns = load('./hub-return-path.ts', {})\n",
+        "after": "const catalog = load('./plan-catalog.ts', {})\nconst purchasePolicy = load('./stock-purchase-policy.ts', { '@/lib/plan-catalog': catalog })\nconst returns = load('./hub-return-path.ts', { '@/lib/stock-purchase-policy': purchasePolicy })\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-e1-workspace.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "772e7584e33e95f22826439359fc92b4f40fb6b643496625112689d9dd2cef12",
+    "afterHash": "e176867c3cd327da32acfeb8d8f3a5a07993f768d95c990ee0ac859e0a7870a5",
+    "edits": [
+      {
+        "beforeOffset": 433,
+        "afterOffset": 433,
+        "before": "",
+        "after": "import { stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 7067,
+        "afterOffset": 7142,
+        "before": "const returnApi = load('lib/hub-return-path.ts', name => { throw new Error(name) })\n",
+        "after": "const returnApi = load('lib/hub-return-path.ts', name => { if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture; throw new Error(name) })\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-first-purchase-engine.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "ba5b489523a370129c241db29fc8e2ed73e0450e2dfea47c0885539e229d9db5",
+    "afterHash": "dd0825d9385b32ad8ee9f2615db23343d10161749cc742b982fa44a4e9a5bf1b",
+    "edits": [
+      {
+        "beforeOffset": 2156,
+        "afterOffset": 2156,
+        "before": "",
+        "after": "        : table === 'subscription_invoices' && write.method === 'update' && write.args[0].snap_token && options.saveError\n        ? { data: null, error: { code: 'UNAVAILABLE' } }\n"
+      },
+      {
+        "beforeOffset": 3813,
+        "afterOffset": 3992,
+        "before": "",
+        "after": "      if (options.fetchError) throw new Error('Lost provider response')\n"
+      },
+      {
+        "beforeOffset": 5951,
+        "afterOffset": 6202,
+        "before": "",
+        "after": "      // This legacy fixture keeps the new Company runtime source fuse closed.\n      if (name === '@/lib/stock-billing-authority') return { stockBillingOperationError: async () => null }\n"
+      },
+      {
+        "beforeOffset": 6494,
+        "afterOffset": 6932,
+        "before": "",
+        "after": "test('Company checkout reserves the durable order before gateway I/O and never retries an uncertain result', async () => {\n  const h = engine({ fetchError: true })\n  const result = await h.checkout({ durableCheckout: true })\n  assert.equal(result.ok, false)\n  assert.equal(result.status, 503)\n  const paymentIndex = h.calls.findIndex(call => call.method === 'paymentFetch')\n  const reservationIndex = h.calls.findIndex(call => call.operations?.some(op => op.method === 'update' && op.args[0].midtrans_order_id && !op.args[0].snap_token))\n  assert.ok(reservationIndex >= 0 && reservationIndex < paymentIndex)\n  assert.equal(h.calls.filter(call => call.method === 'paymentFetch').length, 1)\n  assert.ok(!h.calls.some(call => call.operations?.some(op => op.method === 'update' && op.args[0].status === 'failed')))\n  const pending = engine({ liveInvoices: [{ id: 'unit-invoice', redirect_url: null, midtrans_mode: 'sandbox', amount: 100000 }] })\n  assert.equal((await pending.checkout({ durableCheckout: true })).status, 409)\n  assert.ok(!pending.calls.some(call => ['paymentFetch', 'paymentConfig'].includes(call.method)))\n})\n\ntest('Company double submission reuses an issued checkout; losing the saved link cannot create another charge', async () => {\n  for (const invoiceConflict of [false, true]) {\n    const live = { id: 'unit-invoice', redirect_url: 'https://sandbox.example.invalid/existing', amount: 100000, midtrans_mode: 'sandbox' }\n    const h = engine({ invoiceConflict, liveInvoices: invoiceConflict ? [null, live] : [live] })\n    const result = await h.checkout({ durableCheckout: true })\n    assert.equal(result.ok, true); assert.equal(result.reused, true)\n    assert.equal(h.calls.filter(call => call.method === 'paymentFetch').length, 0)\n  }\n  const lost = engine({ saveError: true })\n  assert.equal((await lost.checkout({ durableCheckout: true })).status, 503)\n  assert.equal(lost.calls.filter(call => call.method === 'paymentFetch').length, 1)\n})\n\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-navigation-source-contract.mjs",
+    "profile": "runtime",
+    "beforeHash": "2eb6fafbef209510109d47da77df15cad7ab178dbd7705f646fb30209aa0d53a",
+    "afterHash": "e2c1decabbdb264e7bef1393e2c9e3edcda32e0e4ca8918a3191401113ad5355",
+    "edits": [
+      {
+        "beforeOffset": 655,
+        "afterOffset": 655,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource, stockPurchaseCandidateSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 42600,
+        "afterOffset": 42716,
+        "before": "  if (file === 'app/hub/workspace/page.tsx') return workspaceRewriteDeltas.reduce((text,[before,after]) => replaceOnce(text,before,after,file),workspacePilotDeltas.reduce((text,[before,after]) => replaceOnce(text,before,after,file),lf(historical)))\n",
+        "after": "  if (file === 'app/hub/workspace/page.tsx') return stockPurchaseCandidateSource(file, workspaceRewriteDeltas.reduce((text,[before,after]) => replaceOnce(text,before,after,file),workspacePilotDeltas.reduce((text,[before,after]) => replaceOnce(text,before,after,file),lf(historical))))\n"
+      },
+      {
+        "beforeOffset": 43268,
+        "afterOffset": 43420,
+        "before": "  return pricingCandidateSource(file, file === 'proxy.ts' ? replaceOnce(result, stockBridgeBefore, stockBridgeAfter, file) : result)\n",
+        "after": "  return stockPurchaseCandidateSource(file, pricingCandidateSource(file, file === 'proxy.ts' ? replaceOnce(result, stockBridgeBefore, stockBridgeAfter, file) : result))\n"
+      },
+      {
+        "beforeOffset": 43465,
+        "afterOffset": 43653,
+        "before": "",
+        "after": "  candidate = historicalStockPurchaseSource(file, candidate)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-navigation-source-contract.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "5d29f1cf86287f667f6e061fec75ba9eca31c1359f1a6e3b462666993790cf70",
+    "afterHash": "138f51d9109f0f17c568c063e5dba737849d778799742a02a785e4ef0a27f1d2",
+    "edits": [
+      {
+        "beforeOffset": 40,
+        "afterOffset": 40,
+        "before": "import { hasPricingComposition } from './pricing-source-successor.mjs'\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 2142,
+        "afterOffset": 2071,
+        "before": "  if (hasPricingComposition(file)) assert.throws(() => historicalNavigationSource(file, candidate + '\\n// unauthorized adjacent mutation\\n'))\n  else assert.notEqual(historicalNavigationSource(file, candidate + '\\n// unauthorized adjacent mutation\\n'), historical)\n",
+        "after": "  let mutated = null\n  try { mutated = historicalNavigationSource(file, candidate + '\\n// unauthorized adjacent mutation\\n') } catch { /* Rejection also preserves the frozen contract. */ }\n  assert.notEqual(mutated, historical)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-navigation.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "830de11463f084e9d3aa51206b342ebfa28bd55f5301d7cfce56282e4712b3b7",
+    "afterHash": "6e94a826dd0909efdcf925d3d951eabd7cfac19107c35c71cbf9029cc9a3206e",
+    "edits": [
+      {
+        "beforeOffset": 165,
+        "afterOffset": 165,
+        "before": "",
+        "after": "import { stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 748,
+        "afterOffset": 823,
+        "before": "    require(name) { if (name in dependencies) return dependencies[name]; throw new Error('Unexpected dependency: ' + name) },\n",
+        "after": "    require(name) { if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture; if (name in dependencies) return dependencies[name]; throw new Error('Unexpected dependency: ' + name) },\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-navigation.ts",
+    "profile": "runtime",
+    "beforeHash": "714980d675c7f6ddc7fa26afb60a74d8c889d41ac842491ad1235657dc00c7e4",
+    "afterHash": "cc77d4a94a118ca966310af393e4b17146782638e95f8d016d7828e16831e960",
+    "edits": [
+      {
+        "beforeOffset": 680,
+        "afterOffset": 680,
+        "before": "",
+        "after": "  { publicPath: '/checkout/stock', internalPath: '/hub/checkout/stock' },\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-owned-workspace.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "74bf850f422ba7d69b2b70cf3e27e05bc3c456cf165f7db66c422e64d9bbc130",
+    "afterHash": "0b26cb5d771acf9ed785507f926dd6439e85c2f94e590fe6fb0ad2ef1f30b6ac",
+    "edits": [
+      {
+        "beforeOffset": 5564,
+        "afterOffset": 5564,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-self-payment') return { readStockBillingAccount: async () => ({ status: 'unavailable', workspaces: [] }) }\n"
+      },
+      {
+        "beforeOffset": 5890,
+        "afterOffset": 6029,
+        "before": "    const html = renderToStaticMarkup(await mod.exports.default())\n",
+        "after": "    const html = renderToStaticMarkup(await mod.exports.default({ searchParams: Promise.resolve({}) }))\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-registration.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "9dfaf727a0632875795ca89567dc255fab35aeff021ee3b425c7f154dd5b7989",
+    "afterHash": "17be565eb16153ecdd85ec986110b57d714016eda8b78d574bf683cc1fa2c122",
+    "edits": [
+      {
+        "beforeOffset": 250,
+        "afterOffset": 250,
+        "before": "",
+        "after": "import { stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 1962,
+        "afterOffset": 2037,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture\n"
+      },
+      {
+        "beforeOffset": 8197,
+        "afterOffset": 8348,
+        "before": "test('a confirmed PKCE session enters the account page without trusting next or roles', async () => {\n",
+        "after": "test('a confirmed PKCE session enters the account page without manufacturing roles', async () => {\n"
+      },
+      {
+        "beforeOffset": 8321,
+        "afterOffset": 8469,
+        "before": "  const result = await h.api.finishHubRegistration(new Request('https://hub.example.test/auth/callback?flow=signup&code=one-use-code&next=https://evil.test'))\n",
+        "after": "  const result = await h.api.finishHubRegistration(new Request('https://hub.example.test/auth/callback?flow=signup&code=one-use-code'))\n"
+      },
+      {
+        "beforeOffset": 8773,
+        "afterOffset": 8898,
+        "before": "",
+        "after": "test('registration preserves an approved Stock choice through verification; foreign returns fail before exchange', async () => {\n  const next = '/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001'\n  const h = harness()\n  assert.equal((await h.api.registerHubAccount(form({ next }), '192.0.2.1')).status, 'success')\n  assert.equal(new URL(h.calls.find(call => call[0] === 'signUp')[1].options.emailRedirectTo).searchParams.get('next'), next)\n  const verified = harness()\n  const result = await verified.api.finishHubRegistration(new Request('https://hub.example.test/auth/callback?flow=signup&code=one-use-code&next=' + encodeURIComponent(next)))\n  assert.equal(result.location, 'https://hub.example.test' + next)\n  for (const returnTo of ['https://evil.test', '/hub/account?role=owner', next + '&price=1']) {\n    const invalid = harness()\n    assert.match((await invalid.api.finishHubRegistration(new Request('https://hub.example.test/auth/callback?flow=signup&code=one-use-code&next=' + encodeURIComponent(returnTo)))).location, /verification_failed/)\n    assert.equal(invalid.calls.length, 0)\n  }\n})\n\n"
+      },
+      {
+        "beforeOffset": 11045,
+        "afterOffset": 12284,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-registration.ts",
+    "profile": "runtime",
+    "beforeHash": "82ff9195900876a9fb37ce56f6ca94904f2b8fd2c7a7a10e146a665e315d7ece",
+    "afterHash": "79360517b1eeab21e3fc4d109443c4d816cc8ff3d40f8f66f0943c0b08543396",
+    "edits": [
+      {
+        "beforeOffset": 333,
+        "afterOffset": 333,
+        "before": "",
+        "after": "import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 1194,
+        "afterOffset": 1262,
+        "before": "const optional = ['website', 'cf-turnstile-response']\n",
+        "after": "const optional = ['website', 'cf-turnstile-response', 'next']\n"
+      },
+      {
+        "beforeOffset": 2784,
+        "afterOffset": 2860,
+        "before": "",
+        "after": "  const next = safeStockCheckoutPath(form.get('next'))\n  if (form.has('next') && !next) return { status: 'error', message: 'Pilihan paket tidak valid. Pilih kembali melalui Store.' }\n"
+      },
+      {
+        "beforeOffset": 3730,
+        "afterOffset": 3989,
+        "before": "",
+        "after": "    if (next) callback.searchParams.set('next', next)\n"
+      },
+      {
+        "beforeOffset": 4973,
+        "afterOffset": 5286,
+        "before": "",
+        "after": "  const next = safeStockCheckoutPath(url.searchParams.get('next'))\n"
+      },
+      {
+        "beforeOffset": 5211,
+        "afterOffset": 5591,
+        "before": "  const failed = () => response('/hub/signup?error=verification_failed')\n",
+        "after": "  const failed = () => response('/hub/signup?error=verification_failed' + (next ? `&next=${encodeURIComponent(next)}` : ''))\n"
+      },
+      {
+        "beforeOffset": 5328,
+        "afterOffset": 5760,
+        "before": "  if (!code || code.length > 4096) return failed()\n",
+        "after": "  if (!code || code.length > 4096 || (url.searchParams.has('next') && !next)) return failed()\n"
+      },
+      {
+        "beforeOffset": 6072,
+        "afterOffset": 6547,
+        "before": "    return response('/hub/account')\n",
+        "after": "    return response(next ?? '/hub/account')\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-return-path.ts",
+    "profile": "runtime",
+    "beforeHash": "e3da9964ddada0737916add3f23ac2273450a4194a5f49e592ef9de436e777d6",
+    "afterHash": "f4c739bfb16ad56ad282b74bbd75e2b51fc8bfeda6b97ec279aadd41ecde9b97",
+    "edits": [
+      {
+        "beforeOffset": 0,
+        "afterOffset": 0,
+        "before": "",
+        "after": "import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'\n\n"
+      },
+      {
+        "beforeOffset": 401,
+        "afterOffset": 470,
+        "before": "",
+        "after": "  const checkout = safeStockCheckoutPath(value)\n  if (checkout) return checkout\n\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-signup-ui-source-contract.mjs",
+    "profile": "runtime",
+    "beforeHash": "5d34fb475ac20e8134e1e70ddad6b653240d483e0b0b7991e85427f0d7a1d7be",
+    "afterHash": "d5a9075630755b252a6c9c39712af470feee674efca98e2cbb962ad6309dd204",
+    "edits": [
+      {
+        "beforeOffset": 185,
+        "afterOffset": 185,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource, stockPurchaseCandidateSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 1181,
+        "afterOffset": 1297,
+        "before": "  const after = historicalGoogleSocialUiSource(file, lf(readFileSync(join(root, file), 'utf8')))\n",
+        "after": "  const after = historicalGoogleSocialUiSource(file, historicalStockPurchaseSource(file, lf(readFileSync(join(root, file), 'utf8'))))\n"
+      },
+      {
+        "beforeOffset": 1693,
+        "afterOffset": 1846,
+        "before": "  return change ? replaceOnce(lf(historical), change.before, change.after, file) : historical\n",
+        "after": "  return change ? stockPurchaseCandidateSource(file, replaceOnce(lf(historical), change.before, change.after, file)) : historical\n"
+      },
+      {
+        "beforeOffset": 1849,
+        "afterOffset": 2038,
+        "before": "",
+        "after": "  candidate = historicalStockPurchaseSource(file, candidate)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-signup-ui.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "66ae13ff6a6397615104709197b1b30493c32a4376cae94a616abc222edd309d",
+    "afterHash": "248328f92858431ae6e3abf8f2e3ac8840b89403d50713c67c40420244c34712",
+    "edits": [
+      {
+        "beforeOffset": 165,
+        "afterOffset": 165,
+        "before": "",
+        "after": "import { stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 805,
+        "afterOffset": 880,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-store-ui-source-contract.mjs",
+    "profile": "runtime",
+    "beforeHash": "4953109caec7439f737195f81b33c2e7b10d3e33ba5a08ff36fc45edb3df6fdf",
+    "afterHash": "f83b50995fa4ed4b1c1ac02265e1674a762c5473ba90b924e9c6774694c87378",
+    "edits": [
+      {
+        "beforeOffset": 200,
+        "afterOffset": 200,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource, stockPurchaseCandidateSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 1802,
+        "afterOffset": 1918,
+        "before": "  const after = historicalPricingSource(file, lf(readFileSync(join(root, file), 'utf8')))\n",
+        "after": "  const after = historicalPricingSource(file, historicalStockPurchaseSource(file, lf(readFileSync(join(root, file), 'utf8'))))\n"
+      },
+      {
+        "beforeOffset": 2304,
+        "afterOffset": 2457,
+        "before": "  return change ? pricingCandidateSource(file, replaceOnce(lf(source), change.before, change.after, file)) : source\n",
+        "after": "  return change ? stockPurchaseCandidateSource(file, pricingCandidateSource(file, replaceOnce(lf(source), change.before, change.after, file))) : source\n"
+      },
+      {
+        "beforeOffset": 2481,
+        "afterOffset": 2670,
+        "before": "",
+        "after": "  source = historicalStockPurchaseSource(file, source)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-store-ui.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "7ff0f581f14da05eb78a6f8a2a48814f349c98cb947432d3aab517827bfaeb44",
+    "afterHash": "671d9b8911d75dc56d9b50f0d7195397cca41a3b4dac90bc0bb94b256f52274e",
+    "edits": [
+      {
+        "beforeOffset": 40,
+        "afterOffset": 40,
+        "before": "",
+        "after": "import { hasStockPurchaseSuccessor } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 1316,
+        "afterOffset": 1398,
+        "before": "    if (hasPricingComposition(file)) assert.throws(() => historicalStoreHubUiSource(file, after + '\\n// adjacent change\\n'), file)\n",
+        "after": "    if (hasPricingComposition(file) || hasStockPurchaseSuccessor(file)) assert.throws(() => historicalStoreHubUiSource(file, after + '\\n// adjacent change\\n'), file)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-ui-test-harness.mjs",
+    "profile": "runtime",
+    "beforeHash": "02f32aa1c70bd80a2728babbb0719b0dbc0afeb4f7660d976aa827d5e789a42d",
+    "afterHash": "109f2beceb138e1e0a3debdbdb06a916e443163f2d4a9beb76f6229487c62d71",
+    "edits": [
+      {
+        "beforeOffset": 316,
+        "afterOffset": 316,
+        "before": "",
+        "after": "import { randomUUID } from 'node:crypto'\nimport { stockCatalogFixture, stockPolicyFixture } from './stock-self-payment-unit-harness.mjs'\n"
+      },
+      {
+        "beforeOffset": 870,
+        "afterOffset": 1007,
+        "before": "    vm.runInNewContext(code, { module: mod, exports: mod.exports, URL, require(name) {\n",
+        "after": "    vm.runInNewContext(code, { module: mod, exports: mod.exports, URL, URLSearchParams, require(name) {\n"
+      },
+      {
+        "beforeOffset": 1014,
+        "afterOffset": 1168,
+        "before": "",
+        "after": "      if (name === '../checkout/stock/actions') return { refreshStockInvoiceAction() {} }\n      if (name === 'node:crypto') return { randomUUID }\n      if (name === '@/lib/stock-purchase-policy') return stockPolicyFixture\n      if (name === '@/lib/plan-catalog') return stockCatalogFixture\n      if (name === '@/lib/e1-realm') return { STOCK_E1_APP_ORIGIN: 'https://webzoka-stock-platform.vercel.app' }\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/plan-catalog.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "916110fc8b63fc987e6b0b24cc30e5e59ce3a145d0c5691f94eb54bdf1eaed81",
+    "afterHash": "2f955a2f8dcf4d872f17420079abfb1b3717f8f4fc4980d54a61065b9d7e5dcf",
+    "edits": [
+      {
+        "beforeOffset": 5399,
+        "afterOffset": 5399,
+        "before": "",
+        "after": "\ntest('Stock-only release preserves the inactive LMS offers and legacy LMS annual catalog', () => {\n  const candidate = { exports: {} }\n  vm.runInNewContext(ts.transpileModule(source.replace('STOCK_BASIC_PRO_RELEASE_AUTHORIZED = false', 'STOCK_BASIC_PRO_RELEASE_AUTHORIZED = true'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText,\n    { module: candidate, exports: candidate.exports, process: { env: { STOCK_BASIC_PRO_PRICING_ENABLED: 'true', BASIC_PRO_PRICING_ENABLED: 'true' } } })\n  const lmsLegacy = { ...legacy, id: 'legacy-lms', platform: 'lms' }\n  const catalog = [...rows.map(row => row.platform === 'lms' ? { ...row, is_active: false, is_for_sale: false } : row), lmsLegacy, legacy]\n  assert.equal(candidate.exports.basicProEnabled(undefined, 'stock'), true)\n  assert.equal(candidate.exports.basicProEnabled(undefined, 'lms'), false)\n  const available = candidate.exports.saleablePlans(catalog)\n  assert.deepEqual(Array.from(available.filter(row => row.platform === 'lms'), row => row.id), ['legacy-lms'])\n  assert.deepEqual(Array.from(available.filter(row => row.platform === 'stock'), row => row.id), Array.from(rows.filter(row => row.platform === 'stock'), row => row.id))\n  assert.equal(candidate.exports.purchaseError(lmsLegacy, catalog, lmsLegacy.id, 'yearly'), null)\n})\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/plan-catalog.ts",
+    "profile": "runtime",
+    "beforeHash": "69be6fb42f5683d4147fc2bfaea2a78f726661d19a0c9b1dfbaac7042ab2800c",
+    "afterHash": "efba59b05f570d00649b5f10d639b80edf4fff8bdd397dda98636fe52eff2151",
+    "edits": [
+      {
+        "beforeOffset": 342,
+        "afterOffset": 342,
+        "before": "",
+        "after": "// Stock can be released independently without changing LMS's legacy catalog.\nexport const STOCK_BASIC_PRO_RELEASE_AUTHORIZED = false\n"
+      },
+      {
+        "beforeOffset": 2796,
+        "afterOffset": 2930,
+        "before": "export function basicProEnabled(value = process.env.BASIC_PRO_PRICING_ENABLED): boolean {\n  return BASIC_PRO_RELEASE_AUTHORIZED && value === 'true'\n",
+        "after": "export function basicProEnabled(value = process.env.BASIC_PRO_PRICING_ENABLED, platform?: string): boolean {\n  const authorized = platform === 'stock' ? STOCK_BASIC_PRO_RELEASE_AUTHORIZED : BASIC_PRO_RELEASE_AUTHORIZED\n  const configured = platform === 'stock' ? process.env.STOCK_BASIC_PRO_PRICING_ENABLED : value\n  return authorized && configured === 'true'\n"
+      },
+      {
+        "beforeOffset": 4231,
+        "afterOffset": 4577,
+        "before": "export function saleablePlans<T extends CatalogPlan>(plans: readonly T[], enabled = basicProEnabled()): T[] {\n",
+        "after": "export function saleablePlans<T extends CatalogPlan>(plans: readonly T[], enabled?: boolean): T[] {\n"
+      },
+      {
+        "beforeOffset": 4647,
+        "afterOffset": 4983,
+        "before": "    if (targeted && (enabled || hasNew)) {\n      if (!enabled) continue // Rollback stops new sales; existing plan-ID renewals survive.\n",
+        "after": "    const platformEnabled = enabled ?? basicProEnabled(undefined, platform)\n    if (targeted && (platformEnabled || hasNew)) {\n      if (!platformEnabled) continue // Rollback stops new sales; existing plan-ID renewals survive.\n"
+      },
+      {
+        "beforeOffset": 5364,
+        "afterOffset": 5792,
+        "before": "export function checkoutPlans<T extends CatalogPlan>(plans: readonly T[], currentPlanId: string | null, enabled = basicProEnabled()): T[] {\n",
+        "after": "export function checkoutPlans<T extends CatalogPlan>(plans: readonly T[], currentPlanId: string | null, enabled?: boolean): T[] {\n"
+      },
+      {
+        "beforeOffset": 6176,
+        "afterOffset": 6594,
+        "before": "  enabled = basicProEnabled(),\n",
+        "after": "  enabled?: boolean,\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/pricing-composition.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "172795deceac40cd6312471f46ef894090003d1c176f9138dae81fec3a31d98a",
+    "afterHash": "d5b1f9c8969e13b597eeeea87cb33c5b7d620d074215c806ced6a6a4f252baea",
+    "edits": [
+      {
+        "beforeOffset": 40,
+        "afterOffset": 40,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 1618,
+        "afterOffset": 1704,
+        "before": "  assert.match(source('lib/core-registry-native.test.mjs'), /signupHistoricalBytes\\(path, historicalNavigationBytes\\(path, historicalPricingTestBytes\\(path, readFileSync/)\n",
+        "after": "  const text = source('lib/core-registry-native.test.mjs')\n  assert.match(text, /historicalStockPurchaseSource\\(path, current.toString\\('utf8'\\)\\)/)\n  assert.match(text, /signupHistoricalBytes\\(path, historicalNavigationBytes\\(path, historicalPricingTestBytes\\(path, bytes\\)\\)\\)/)\n"
+      },
+      {
+        "beforeOffset": 2560,
+        "afterOffset": 2755,
+        "before": "  const text = source('lib/hub-navigation-source-contract.mjs')\n",
+        "after": "  const text = historicalStockPurchaseSource('lib/hub-navigation-source-contract.mjs', source('lib/hub-navigation-source-contract.mjs'))\n"
+      },
+      {
+        "beforeOffset": 3268,
+        "afterOffset": 3536,
+        "before": "  const text = source('lib/hub-store-ui-source-contract.mjs')\n",
+        "after": "  const text = historicalStockPurchaseSource('lib/hub-store-ui-source-contract.mjs', source('lib/hub-store-ui-source-contract.mjs'))\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/pricing-source-successor.mjs",
+    "profile": "runtime",
+    "beforeHash": "7286dc9ce8223920df49856f23f9d43ec8310393ac1685a358590b0cc3ab183d",
+    "afterHash": "21b1ddf84e6f1bb4a4596a3e894c9b6df72fbc127a4ea6cb60886a716c3ba821",
+    "edits": [
+      {
+        "beforeOffset": 170,
+        "afterOffset": 170,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource, stockPurchaseCandidateSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 6764,
+        "afterOffset": 6880,
+        "before": "",
+        "after": "  actual = historicalStockPurchaseSource(file, actual)\n"
+      },
+      {
+        "beforeOffset": 7285,
+        "afterOffset": 7456,
+        "before": "",
+        "after": "  candidate = historicalStockPurchaseSource(file, candidate)\n"
+      },
+      {
+        "beforeOffset": 7897,
+        "afterOffset": 8129,
+        "before": "  if (hash(historical) === reviewedOutput(file)) return historical\n",
+        "after": "  if (hash(historical) === reviewedOutput(file)) return stockPurchaseCandidateSource(file, historical)\n"
+      },
+      {
+        "beforeOffset": 8158,
+        "afterOffset": 8426,
+        "before": "  assert.equal(hash(actual), reviewedOutput(file), 'Exact reviewed pricing output: ' + file)\n",
+        "after": "  assert.equal(hash(historicalStockPurchaseSource(file, actual)), reviewedOutput(file), 'Exact reviewed pricing output: ' + file)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/pricing-sync.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "95bc55ddfeaded2e328eb657cb144d2875236da0945b55050c0f04a19d13bed7",
+    "afterHash": "835aef8c1e82885b36ff8af55547a4fa2c7b3bf2e30fa6bf760cbf26b6c631fe",
+    "edits": [
+      {
+        "beforeOffset": 937,
+        "afterOffset": 937,
+        "before": "  const audits = []\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 1287,
+        "afterOffset": 1267,
+        "before": "    query.insert = value => { audits.push({ table, value }); return Promise.resolve({ error: null }) }\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 2394,
+        "afterOffset": 2271,
+        "before": "    console: { error() {}, info() {} }, fetch: async (url, request) => { requests.push({ url, ...request }); return { ok: requests.length === 1, status: requests.length === 1 ? 200 : 409, text: async () => 'synthetic replay' } },\n",
+        "after": "    console: { error() {} }, fetch: async (url, request) => { requests.push({ url, ...request }); return { ok: true } },\n"
+      },
+      {
+        "beforeOffset": 2824,
+        "afterOffset": 2592,
+        "before": "      if (name === '@/lib/billing-sandbox-uat') return { sandboxSyncReplayProbeAllowed: async id => id === tenantId && options.replayProbe === true }\n",
+        "after": "      if (name === '@/lib/stock-paid-activation') return { deliverStockPaidActivation: async () => 'closed' }\n      if (name === '@/lib/billing-sandbox-uat') return { sandboxSyncReplayProbeAllowed: () => false }\n"
+      },
+      {
+        "beforeOffset": 3173,
+        "afterOffset": 3003,
+        "before": "  return { requests, audits, run: () => mod.exports[platform === 'stock' ? 'syncStockTenant' : 'syncLmsTenant'](tenantId, options.event ?? 'offline_test') }\n",
+        "after": "  return { requests, run: () => mod.exports[platform === 'stock' ? 'syncStockTenant' : 'syncLmsTenant'](tenantId, 'offline_test') }\n"
+      },
+      {
+        "beforeOffset": 3333,
+        "afterOffset": 3138,
+        "before": "test('private reconciliation diagnostic replays the exact signed envelope and audits only response codes', async () => {\n  const h = adapter('stock', rows.find(row => row.platform === 'stock'), { event: 'payment_reconciled', replayProbe: true })\n  await h.run()\n  assert.equal(h.requests.length, 2)\n  assert.equal(h.requests[0].body, h.requests[1].body)\n  assert.deepEqual(h.requests[0].headers, h.requests[1].headers)\n  assert.equal(h.audits.length, 1)\n  assert.deepEqual(JSON.parse(JSON.stringify(h.audits[0])), { table: 'subscription_events', value: { tenant_id: tenantId, event_type: 'billing_uat_sync_replay_check', payload: { first_status: 200, replay_status: 409 } } })\n})\ntest('ordinary delivery and non-cohort reconciliation never run the replay diagnostic', async () => {\n  for (const options of [{ event: 'payment_reconciled' }, { event: 'offline_test', replayProbe: true }]) {\n    const h = adapter('stock', rows.find(row => row.platform === 'stock'), options); await h.run(); assert.equal(h.requests.length, 1); assert.equal(h.audits.length, 0)\n  }\n})\n\n",
+        "after": ""
+      }
+    ]
+  },
+  {
+    "file": "lib/security-dependency-successor.mjs",
+    "profile": "runtime",
+    "beforeHash": "986c8d3783ce01c06fec655d980b14c40070c24a4eb24f68c1c90e1da0cdf1b4",
+    "afterHash": "c2560f96d398eb4fddf5b0e302f76aa5a95b5f16b6d19968a671cb441644ff35",
+    "edits": [
+      {
+        "beforeOffset": 187,
+        "afterOffset": 187,
+        "before": "",
+        "after": "import { historicalStockPurchaseSource } from './stock-purchase-source-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 1019,
+        "afterOffset": 1105,
+        "before": "",
+        "after": "  // Only the exact task-branch deployment-disable addition is reversible here.\n  if (path === 'vercel.json') actual = historicalStockPurchaseSource(path, actual)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-active-authorize.ts",
+    "profile": "runtime",
+    "beforeHash": "33083ba2cf01aa23c1b1d8490f9d50333089fba2175213b106205c7143bf373b",
+    "afterHash": "2a7339edc58bcdcf6768be95a82da4e6cf2a4a61fdaf600b84a12a0432094641",
+    "edits": [
+      {
+        "beforeOffset": 423,
+        "afterOffset": 423,
+        "before": "",
+        "after": "import { paidStockSessionAuthority } from '@/lib/stock-paid-session'\nimport { STOCK_PAID_BILLING_RUNTIME_ENABLED } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 837,
+        "afterOffset": 987,
+        "before": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED) || process.env.NEXT_PUBLIC_SUPABASE_URL !== ACTIVE_CORE_REALM) {\n",
+        "after": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED || STOCK_PAID_BILLING_RUNTIME_ENABLED) || process.env.NEXT_PUBLIC_SUPABASE_URL !== ACTIVE_CORE_REALM) {\n"
+      },
+      {
+        "beforeOffset": 1310,
+        "afterOffset": 1498,
+        "before": "    const db = createAdminClient()\n    const result = await db.rpc('core_stock_active_authorize_request', {\n",
+        "after": "    const paid = await paidStockSessionAuthority({ coreSubject: actor.coreSubject, stockSubject: actor.stockSubject,\n      stockSession: actor.stockSessionId, until: actor.until })\n    if (paid.kind === 'denied' || (paid.kind === 'legacy' && !(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED))) return { status: 'denied' }\n    const result = paid.kind === 'paid' ? { data: paid.data, error: null } : await createAdminClient().rpc('core_stock_active_authorize_request', {\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-active-enroll.ts",
+    "profile": "runtime",
+    "beforeHash": "715d999a642e3f9b851fa7efb537e9e2a955fec966fd70b37ff3716ca37b8fd2",
+    "afterHash": "9a171e11deafe251f2db297b3dca06dd34f7a0c4d9a58944786b30fccf6da21d",
+    "edits": [
+      {
+        "beforeOffset": 590,
+        "afterOffset": 590,
+        "before": "",
+        "after": "import { paidStockSessionAuthority } from '@/lib/stock-paid-session'\nimport { STOCK_PAID_BILLING_RUNTIME_ENABLED } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 1054,
+        "afterOffset": 1204,
+        "before": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED) || process.env.NEXT_PUBLIC_SUPABASE_URL !== ACTIVE_CORE_REALM) {\n",
+        "after": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED || STOCK_PAID_BILLING_RUNTIME_ENABLED) || process.env.NEXT_PUBLIC_SUPABASE_URL !== ACTIVE_CORE_REALM) {\n"
+      },
+      {
+        "beforeOffset": 2647,
+        "afterOffset": 2835,
+        "before": "    const db = createAdminClient()\n",
+        "after": ""
+      },
+      {
+        "beforeOffset": 2703,
+        "afterOffset": 2856,
+        "before": "    const result = await db.rpc('core_stock_active_enroll_session', {\n",
+        "after": "    const paid = await paidStockSessionAuthority({ coreSubject: core.subject, stockSubject: stock.stockSubject,\n      stockSession: stock.stockSessionId, until: Math.min(Date.parse(core.until), stock.until) }, {\n      companyId: selected?.companyId ?? null, instanceId: selected?.instanceId ?? null,\n      coreSession: core.session, tokenExpires: (claims.exp as number) * 1000,\n    })\n    if (paid.kind === 'denied' || (paid.kind === 'legacy' && !(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED))) return { status: 'denied' }\n    const result = paid.kind === 'paid' ? { data: paid.data, error: null } : await createAdminClient().rpc('core_stock_active_enroll_session', {\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-active-http.ts",
+    "profile": "runtime",
+    "beforeHash": "78ec1ecfb098a89d305b763a31fd88fb400e319bcbcf26e246a43abab15bbf14",
+    "afterHash": "aac635c543c0706961d80af3dfb799b088d4f135944453a4a1f29ef389f24a22",
+    "edits": [
+      {
+        "beforeOffset": 391,
+        "afterOffset": 391,
+        "before": "",
+        "after": "import { STOCK_PAID_BILLING_RUNTIME_ENABLED } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 1905,
+        "afterOffset": 1986,
+        "before": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED)) return NextResponse.json({ status: 'unavailable' }, { status: 404, headers })\n",
+        "after": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED || STOCK_PAID_BILLING_RUNTIME_ENABLED)) return NextResponse.json({ status: 'unavailable' }, { status: 404, headers })\n"
+      },
+      {
+        "beforeOffset": 4618,
+        "afterOffset": 4737,
+        "before": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED)) return new NextResponse(null, { status: 404, headers: headHeaders })\n",
+        "after": "  if (!(ACTIVE_STOCK_RUNTIME_ENABLED || STOCK_SSO_PILOT_ENABLED || STOCK_PAID_BILLING_RUNTIME_ENABLED)) return new NextResponse(null, { status: 404, headers: headHeaders })\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-active.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "0dc03f4f9d1aa1d8ffecae7aa14bec4a52c56ac509f1714674cb992c5278a07f",
+    "afterHash": "6f82d43f21b083cffe35a968a0cf88b39323d700adfcf078211bab022a6c1e59",
+    "edits": [
+      {
+        "beforeOffset": 1401,
+        "afterOffset": 1401,
+        "before": "    require(name) { assert.ok(Object.hasOwn(dependencies, name), 'Unexpected import: ' + name); return dependencies[name] },\n",
+        "after": "    require(name) {\n      if (name === '@/lib/stock-purchase-policy' && !Object.hasOwn(dependencies, name)) return { STOCK_PAID_BILLING_RUNTIME_ENABLED: false }\n      if (name === '@/lib/stock-paid-session' && !Object.hasOwn(dependencies, name)) return { paidStockSessionAuthority: async () => ({ kind: 'legacy' }) }\n      assert.ok(Object.hasOwn(dependencies, name), 'Unexpected import: ' + name); return dependencies[name]\n    },\n"
+      },
+      {
+        "beforeOffset": 2569,
+        "afterOffset": 2876,
+        "before": "",
+        "after": "    '@/lib/stock-purchase-policy': { STOCK_PAID_BILLING_RUNTIME_ENABLED: options.paid === true },\n    '@/lib/stock-paid-session': { paidStockSessionAuthority: async () => options.paid\n      ? { kind: options.paidDenied ? 'denied' : 'paid', data: authority } : { kind: 'legacy' } },\n"
+      },
+      {
+        "beforeOffset": 10557,
+        "afterOffset": 11146,
+        "before": "function authorizationHarness({ enabled = true, actorChange = {}, rowChange = {}, rpcError = null, envChange = {} } = {}) {\n",
+        "after": "function authorizationHarness({ enabled = true, paid = false, paidDenied = false, actorChange = {}, rowChange = {}, rpcError = null, envChange = {} } = {}) {\n"
+      },
+      {
+        "beforeOffset": 11270,
+        "afterOffset": 11893,
+        "before": "",
+        "after": "    '@/lib/stock-purchase-policy': { STOCK_PAID_BILLING_RUNTIME_ENABLED: paid },\n    '@/lib/stock-paid-session': { paidStockSessionAuthority: async () => paid\n      ? { kind: paidDenied ? 'denied' : 'paid', data: row } : { kind: 'legacy' } },\n"
+      },
+      {
+        "beforeOffset": 11717,
+        "afterOffset": 12583,
+        "before": "",
+        "after": "\ntest('paid enrollment uses its independent gate and never dispatches a legacy enrollment', async () => {\n  const h = enrollmentHarness({ enabled: false, paid: true })\n  assert.equal((await h.run({ nonce: id(3) })).status, 'enrolled')\n  assert.deepEqual(h.calls, [])\n  const denied = enrollmentHarness({ enabled: true, paid: true, paidDenied: true })\n  assert.equal((await denied.run({ nonce: id(3) })).status, 'denied')\n  assert.deepEqual(denied.calls, [])\n})\ntest('paid online decisions retain exact protocol checks without fallback after denial', async () => {\n  const h = authorizationHarness({ enabled: false, paid: true })\n  assert.equal((await h.api.authorizeActiveStockRequest(request, 'synthetic.stock.token')).status, 'authorized')\n  assert.deepEqual(h.calls, ['identity'])\n  for (const options of [{ paidDenied: true }, { rowChange: { coreSubject: id(99) } }, { rowChange: { arbitrary: true } }]) {\n    const denied = authorizationHarness({ enabled: true, paid: true, ...options })\n    assert.equal((await denied.api.authorizeActiveStockRequest(request, 'synthetic.stock.token')).status, 'denied')\n    assert.deepEqual(denied.calls, ['identity'])\n  }\n})\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-price-quotes.ts",
+    "profile": "runtime",
+    "beforeHash": "e36731be912b4a3a45fdf170e8c88c675ec7046e5e7da36ad5e727770acbb5b6",
+    "afterHash": "f9d6b798743e12c6b06b20bb26ff49fbc756f11696caaefc86237db30c2920cb",
+    "edits": [
+      {
+        "beforeOffset": 0,
+        "afterOffset": 0,
+        "before": "import { approvedOffer, BASIC_PRO_VERSION, type CatalogPlan } from '@/lib/plan-catalog'\n",
+        "after": "import { approvedOffer, BASIC_PRO_VERSION, saleablePlans, type CatalogPlan } from '@/lib/plan-catalog'\n"
+      },
+      {
+        "beforeOffset": 913,
+        "afterOffset": 928,
+        "before": "  return { offerVersion: BASIC_PRO_VERSION, salesEnabled: false as const,\n    plans: offers.sort((a, b) => a!.priceMonthly - b!.priceMonthly) }\n",
+        "after": "  return { offerVersion: BASIC_PRO_VERSION, salesEnabled: saleablePlans(plans).length === 2,\n    plans: offers.filter(offer => offer !== null).sort((a, b) => a.priceMonthly - b.priceMonthly) }\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-store-catalog.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "3d50b31a48d8940fa7bc29080c1e31982e6a07ffe6ecc4766f57076f3ae8dc33",
+    "afterHash": "4c68894762d9d30fc974a9bd474d4ca9e7be49250d07bbb85a476fd89dafa110",
+    "edits": [
+      {
+        "beforeOffset": 3132,
+        "afterOffset": 3132,
+        "before": "test('Store route uses price information rather than the saleable onboarding catalog', () => {\n",
+        "after": "test('Store route uses the Company-aware purchase adapter without the legacy onboarding catalog', () => {\n"
+      },
+      {
+        "beforeOffset": 3325,
+        "afterOffset": 3336,
+        "before": "  assert.match(source,/getStockStoreCatalog/); assert.doesNotMatch(source,/getPublicStockPlans|readSaleablePlans/)\n",
+        "after": "  assert.match(source,/readStockPurchaseOffers/); assert.doesNotMatch(source,/getPublicStockPlans|readSaleablePlans/)\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-sync.ts",
+    "profile": "runtime",
+    "beforeHash": "bc2648dceb7795c6e4b816efb2095f0edde837f756411e4c7e82917d0469dff9",
+    "afterHash": "b131ef5865fd4775d76e78b6c633b94e09505017404d13f3cb23220d0e6ddd7d",
+    "edits": [
+      {
+        "beforeOffset": 766,
+        "afterOffset": 766,
+        "before": "",
+        "after": "import { deliverStockPaidActivation } from '@/lib/stock-paid-activation'\n"
+      },
+      {
+        "beforeOffset": 1332,
+        "afterOffset": 1405,
+        "before": "",
+        "after": "  // Payment delivery has its own persisted retry state and cannot depend on the\n  // availability of the legacy entitlement mirror request below.\n  await deliverStockPaidActivation(tenantId)\n"
+      }
+    ]
+  },
+  {
+    "file": "proxy.ts",
+    "profile": "runtime",
+    "beforeHash": "5077a707a15448983c064760648a33e86232ba3d3bdcd04d3e6439773c04febb",
+    "afterHash": "6cda503b6614309869993875c10884bd9304c2aa2c3356d80c4a5294dba62b3a",
+    "edits": [
+      {
+        "beforeOffset": 6207,
+        "afterOffset": 6207,
+        "before": "      if (isOAuthConsent || pathname === '/hub/workspace' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {\n",
+        "after": "      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {\n"
+      }
+    ]
+  },
+  {
+    "file": "vercel.json",
+    "profile": "runtime",
+    "beforeHash": "6d5fce94b7a2175f89feb7f582ccfb2eead58e0889181910820ef4039670130c",
+    "afterHash": "91071df3c521fc117d96f161d17970c18f4f38b6c608c06c5a0c5ff25a995479",
+    "edits": [
+      {
+        "beforeOffset": 27,
+        "afterOffset": 27,
+        "before": "",
+        "after": "  \"git\": {\n    \"deploymentEnabled\": {\n      \"feat/basic-pro-pricing-prep\": false\n    }\n  },\n"
+      }
+    ]
+  }
+]

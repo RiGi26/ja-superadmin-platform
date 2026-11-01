@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { signBillingToken } from '@/lib/billing-link'
 import { syncTenantPortal } from '@/lib/lms-sync'
 import { hubAppUrl } from '@/lib/hub-app-url'
+import { reconcileStockPaidActivations } from '@/lib/stock-paid-activation'
 
 /**
  * GET /api/cron/subscription-lifecycle — Phase 3 (Workstream D). Dijalankan
@@ -45,6 +46,8 @@ export async function GET(request: Request) {
   if (!process.env.CRON_SECRET || auth !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+
+  after(() => reconcileStockPaidActivations())
 
   const db = createAdminClient()
   const now = new Date()

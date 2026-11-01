@@ -2,10 +2,19 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { isSuperadminEmail } from '@/lib/superadmin'
+import { canonicalHubUrl, hubRequestHostname, internalHubPath, publicHubPath } from '@/lib/hub-navigation'
 
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  const hostname = request.nextUrl.hostname.toLowerCase()
+  const hostname = hubRequestHostname(request.nextUrl.hostname, request.headers?.get('host'))
+  const routingUrl = new URL(request.nextUrl)
+  routingUrl.hostname = hostname
+  const canonical = canonicalHubUrl(routingUrl, {
+    production: process.env.VERCEL_ENV === 'production',
+    configuredOrigin: process.env.WEBZOKA_HUB_APP_URL,
+    method: request.method,
+  })
+  if (canonical) return NextResponse.redirect(canonical, 307)
+  const pathname = internalHubPath(request.nextUrl.pathname, hostname)
 
   // Production public-domain routing. Keep the internal superadmin hostname on
   // its existing dashboard surface while the public www hostname opens the
@@ -45,7 +54,7 @@ export async function proxy(request: NextRequest) {
   }
 
   const isHubRoute = pathname === '/hub' || pathname.startsWith('/hub/')
-  const isHubLogin = pathname === '/hub/login' || pathname === '/hub/forgot-password'
+  const isHubLogin = pathname === '/hub/login' || pathname === '/hub/forgot-password' || pathname === '/hub/signup'
   const isOAuthConsent = pathname === '/oauth/consent'
   const isPublicHubExplore =
     (pathname === '/hub' && request.nextUrl.searchParams.get('view') === 'store') ||
@@ -75,6 +84,8 @@ export async function proxy(request: NextRequest) {
     pathname === '/api/billing/cancel-schedule' || // token HMAC (batal downgrade terjadwal)
     pathname === '/api/tenants/provision' || // HMAC self-auth (provisioning lintas-repo)
     pathname.startsWith('/api/public') || // read-only public data (e.g. plan prices)
+    pathname === '/api/stock/active/authorize' || // exact bearer-only Stock bridge; handler verifies native identity
+    pathname === '/api/stock/active/enroll' || // exact reciprocal enrollment; handler verifies both native identities
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {
     return NextResponse.next()
@@ -129,8 +140,8 @@ export async function proxy(request: NextRequest) {
 
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
-      const loginUrl = new URL('/hub/login', request.url)
-      if (isOAuthConsent || pathname === '/hub/workspace') {
+      const loginUrl = new URL(publicHubPath('/hub/login', hostname), routingUrl)
+      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)

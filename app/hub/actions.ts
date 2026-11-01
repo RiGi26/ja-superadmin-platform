@@ -47,7 +47,7 @@ export async function loginToHub(
 
   if (next) redirect(next)
   if (claims.user_role === 'superadmin') redirect('/dashboard')
-  redirect('/hub')
+  redirect('/hub/account')
 }
 
 export async function logoutFromHub() {
@@ -177,5 +177,5 @@ export async function submitHubFirstPurchase(formData: FormData): Promise<never>
   } catch {
     // Existing engine owns invoice/payment recovery. Never retry a financial call here.
   }
-  redirect(destination ?? '/hub?view=billing&purchase=failed')
+  redirect(destination ?? '/hub/billing?purchase=failed')
 }

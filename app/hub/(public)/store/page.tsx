@@ -1,15 +1,15 @@
 import type { Metadata } from 'next'
 import { StoreShowcase } from '../../_components/StoreShowcase'
-import { getPublicStockPlans } from '@/lib/customer-onboarding'
+import { readStockPurchaseOffers } from '@/lib/stock-self-payment'
 
 export const metadata: Metadata = {
   title: 'Webzoka Store | Customer Hub',
-  description: 'Lihat proyek Webzoka yang sudah live dan temukan arah digital yang pas untuk bisnis Anda.',
+  description: 'Jelajahi fitur, paket, dan trial 14 hari Webzoka Stock untuk pesanan, persediaan, dan produksi.',
 }
 
 export const dynamic = 'force-dynamic'
 
 export default async function StorePage() {
-  const plans = await getPublicStockPlans()
-  return <StoreShowcase plans={plans} />
+  const quote = await readStockPurchaseOffers()
+  return <StoreShowcase quote={quote} />
 }

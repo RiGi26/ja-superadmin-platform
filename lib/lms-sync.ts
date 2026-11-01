@@ -16,6 +16,7 @@ import { syncPharmacyTenant } from '@/lib/pharmacy-sync'
 import { syncRentalTenant } from '@/lib/rental-sync'
 import { syncClinicTenant } from '@/lib/clinic-sync'
 import { syncLaundryTenant } from '@/lib/laundry-sync'
+import { approvedOffer, isVersionedPlan } from '@/lib/plan-catalog'
 
 // Core enum tier → LMS plan_tier. LMS portal uses starter/growth/pro (display
 // Starter/Growth/Pro); Core's enterprise → LMS pro, Core's pro → LMS growth.
@@ -48,34 +49,41 @@ export async function syncLmsTenant(tenantId: string, event = 'core_sync'): Prom
   try {
     const db = createAdminClient()
 
-    const { data: tenant } = await db
+    const { data: tenant, error: tenantError } = await db
       .from('tenants')
       .select('id, slug, platform, status, plan_tier')
       .eq('id', tenantId)
       .maybeSingle()
-    if (!tenant || tenant.platform !== 'lms') return // only LMS tenants
+    if (tenantError || !tenant || tenant.id !== tenantId || tenant.platform !== 'lms') return
 
-    const { data: sub } = await db
+    const { data: sub, error: subscriptionError } = await db
       .from('tenant_subscriptions')
       .select('status, plan_id, current_period_end, trial_ends_at')
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle()
+    if (subscriptionError) return
 
     // Resolve the authoritative enum tier from the plan when possible.
     let coreTier = tenant.plan_tier as string
+    let offer: ReturnType<typeof approvedOffer> = null
     if (sub?.plan_id) {
-      const { data: plan } = await db
+      const { data: plan, error: planError } = await db
         .from('subscription_plans')
-        .select('tier')
+        .select('*')
         .eq('id', sub.plan_id)
         .maybeSingle()
+      if (planError || !plan || plan.id !== sub.plan_id || plan.platform !== 'lms') return
       if (plan?.tier) coreTier = plan.tier
+      if (plan && isVersionedPlan(plan)) {
+        offer = approvedOffer(plan)
+        if (!offer) return // Unknown contracts never acquire legacy fallback rights.
+      }
     }
 
-    const lmsTier = CORE_TO_LMS_TIER[coreTier] ?? 'starter'
-    const maxUsers = LMS_TIER_SEATS[lmsTier]
+    const lmsTier = offer?.contract.portal_tier ?? CORE_TO_LMS_TIER[coreTier] ?? 'starter'
+    const maxUsers = offer?.contract.max_active_users ?? LMS_TIER_SEATS[lmsTier]
     const status = sub?.status ?? (tenant.status === 'active' ? 'active' : 'trial')
     const expiresAt = sub?.current_period_end ?? sub?.trial_ends_at ?? null
 
@@ -87,6 +95,8 @@ export async function syncLmsTenant(tenantId: string, event = 'core_sync'): Prom
       linked_tenant_id: tenant.id,
       plan_tier: lmsTier,
       max_active_users: maxUsers,
+      ...(offer ? { offer_version: 'basic-pro-2026-10-v1', plan_id: offer.id, public_tier: offer.publicTier,
+        plan_display_name: offer.name, entitlements: offer.contract.features } : {}),
       status,
       expires_at: expiresAt,
       event,
