@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-01T23:18:49.943Z",
-  "status": "CLOSED_PRODUCTION_FOUNDATION_DEPLOYED_PAID_ACCEPTANCE_PENDING",
+  "recordedAt": "2026-11-01T23:41:06.276Z",
+  "status": "CLOSED_FOUNDATION_INDEX_VERIFIED_EMAIL_VERIFICATION_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -4075,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Resolve the exact additional intent-plan index, controlled fresh-account verification inboxes, finite Company/resource cohort and paid-runtime/pilot-isolation prerequisites, and screenshot evidence before sandbox acceptance. Public sales remain a later gate.",
+  "nextMaterialGate": "Await Owner verification of both requested signup emails in their matching browser contexts, then prove fresh native identities and prepare exact finite-cohort/runtime prerequisites. Public selling remains a later gate.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -5438,9 +5438,9 @@
       "noPolicy": "Intentional deny-all direct table access: forced RLS, postgres-only ACLs and bounded reviewed RPCs.",
       "authenticatedDefiners": "Intentional authenticated interfaces. Exact installed bodies, current native session and Owner/tuple predicates remain mandatory; not a blanket advisor-clean claim.",
       "unusedIndexes": "New and empty tables; indexes retained.",
-      "missingIndex": "Core intents.plan_id FK lacks a covering index. Additional forward index requires the applicable exact-object authority before active acceptance; the three approved proposal bytes are now installed history and remain unchanged."
+      "missingIndex": "RESOLVED: exact proposed index installed under delegated Owner approval; valid/ready covering index verified and task unindexed-FK advisor finding cleared. Original proposal bytes retained unchanged."
     },
-    "sandboxJourneys": "NOT_EXECUTED: source/runtime switches remain off; controlled inbox verification and exact finite fixture/cohort prerequisites are pending.",
+    "sandboxJourneys": "NOT_EXECUTED: two native signup verification requests acknowledged; Owner inbox confirmation and fresh verified session proof pending. Paid runtime, settings and public sales remain closed.",
     "deployments": {
       "stock": {
         "id": "dpl_8D9f94vmFPCyP1umQNZvEN3vnC5x",
@@ -6063,7 +6063,7 @@
       "sessionIsolation": "The original MCP context already had a Core session and was not used as fresh-account evidence. Separate anonymous contexts were created and closed for return-path and Store checks; the existing session was not cleared."
     },
     "indexCorrection": {
-      "status": "PENDING_EXACT_OBJECT_APPROVAL",
+      "status": "INSTALLED_VERIFIED_DO_NOT_REPLAY",
       "file": "docs/pricing/STOCK_SELF_PAYMENT_INTENT_PLAN_INDEX.PROPOSED.sql",
       "sha256": "0ef26405120958d8d3f56ef9478004a6b7c203708dec550f2d3433fa3dde405e",
       "target": "hxhusfkrlafxdnyasmsu",
@@ -6096,7 +6096,29 @@
           }
         ]
       },
-      "applied": false
+      "applied": true,
+      "migration": {
+        "version": "20261101232959",
+        "name": "stock_self_payment_intent_plan_index_20261102"
+      },
+      "authority": "pilihkan yang paling tepat",
+      "decision": "Owner delegated the choice on the exact single-index question; the recommended application was selected.",
+      "verification": {
+        "version": "20261101232959",
+        "name": "stock_self_payment_intent_plan_index_20261102",
+        "sha256": "0ef26405120958d8d3f56ef9478004a6b7c203708dec550f2d3433fa3dde405e",
+        "applied": true,
+        "valid": true,
+        "ready": true,
+        "definition": "CREATE INDEX stock_billing_intent_plan_idx ON stock_billing_private.intents USING btree (plan_id)",
+        "taskUnindexedForeignKeys": 0,
+        "settings": {
+          "enabled": false,
+          "mode": "sandbox"
+        },
+        "intents": 0,
+        "cohort": 0
+      }
     },
     "finalClosedState": {
       "core": {
@@ -6118,6 +6140,44 @@
       },
       "observedAfterHttpAndBrowserSmoke": true
     },
-    "sourceFollowup": "Provider-issued migration history and handoff/index proposal only; deployed application/configuration/proposal bytes remain the exact source refs above. No automatic deployment is triggered by the task branch."
+    "sourceFollowup": "Provider-issued migration history and handoff/index proposal only; deployed application/configuration/proposal bytes remain the exact source refs above. No automatic deployment is triggered by the task branch.",
+    "freshSignup": {
+      "basic": {
+        "tag": "+stock-basic-20261102",
+        "nativeSubmissions": 1,
+        "outcome": "verification_requested"
+      },
+      "pro": {
+        "tag": "+stock-pro-20261102",
+        "nativeSubmissions": 1,
+        "outcome": "verification_requested"
+      },
+      "emailDelivery": "AWAITING_OWNER_CONFIRMATION",
+      "emailVerified": "NOT_PROVEN_YET",
+      "method": "Existing public Hub signup UI in two distinct browser contexts; selected monthly plan retained.",
+      "privacy": "Full inbox addresses and credentials excluded from source/evidence. Credentials remain in ephemeral browser-controller memory only; no saved storage state or browser cookies exported.",
+      "sessions": "Retained for Owner email verification; existing signed-in browser context preserved.",
+      "registrationHarness": "Pre-submission state/global checks sent no request. Basic acknowledgment wait initially observed the empty route announcer; final success heading was then checked without resubmission."
+    },
+    "ownerContinuation20261102": {
+      "inboxChoice": "Owner selected two +aliases of the supplied Gmail and will verify emails.",
+      "indexAnswer": "pilihkan yang paling tepat",
+      "indexInterpretation": "Owner delegated the choice on the exact single-index question; the recommended application was selected."
+    },
+    "finalClosedStateAfterIndex": {
+      "core": {
+        "enabled": false,
+        "mode": "sandbox",
+        "intents": 0,
+        "cohort": 0
+      },
+      "financial": {
+        "publicSales": false,
+        "paidRuntime": false,
+        "paymentRequests": 0,
+        "cohortEnrolled": 0,
+        "activation": false
+      }
+    }
   }
 }
