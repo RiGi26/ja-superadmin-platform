@@ -1,6 +1,6 @@
 # Stock self-payment source review — 1 November 2026
 
-Status: local source verification; managed execution and release acceptance are pending. The approved objective remains purchase through activation. Public sales and new paid-runtime source fuses remain closed. This task has performed only approved read-only provider reviews and local source/test changes.
+Status: source implementation and application CI verified in [Core draft #60](https://github.com/RiGi26/ja-superadmin-platform/pull/60) and [Stock draft #14](https://github.com/RiGi26/webzoka-stock-platform/pull/14). Managed execution and release acceptance are pending. The approved objective remains purchase through activation. Public sales and new paid-runtime source fuses remain closed. The Owner approved source publication and closed Previews; no deployment was created.
 
 ## Review against the approved plan
 
@@ -31,6 +31,8 @@ Status: local source verification; managed execution and release acceptance are 
 
 Static and offline UNIT results are recorded in `stock-self-payment-evidence.json`. They are not managed sandbox acceptance. The full requirement is not complete until exact forward migrations, receiver deployment and synthetic test identities have applicable Owner authority, and both paid journeys pass real HTTP/cookie, managed DB/gateway and desktop/390px browser acceptance. Commercial terms and remaining Stock release/security gates also require current applicability before public selling.
 
-Because authorization origins are fixed and the online Stock database assertion calls the canonical Core endpoint, a hosted sandbox run needs an explicitly reviewed deployment/configuration sequence. An arbitrary Preview URL or alternate Supabase project must not silently substitute for the approved realms. No push, CI run, merge, migration, fixture, payment or deployment was performed by this review.
+Because authorization origins are fixed and the online Stock database assertion calls the canonical Core endpoint, a hosted sandbox run needs an explicitly reviewed deployment/configuration sequence. An arbitrary Preview URL or alternate Supabase project must not silently substitute for the approved realms. Source commits, feature-branch integration, pushes, draft PRs and CI were completed under the explicit source-publication approval. No default-branch merge, managed migration, fixture, payment or deployment was performed.
+
+Final application review references are Core `d3efccb474403a60753e965df853c2ed5fec3388` and Stock `de90ae979c0d5eaef59e80a9b7af5d0307be8309`. Source and PDF jobs pass at those candidates; exact links, remediation history and committed-blob fingerprints are in the handoff and evidence JSON. Historical pricing records and security pins remain unchanged. Development/build-tool dependency alerts are recorded for current release applicability; they were not silently upgraded or marked resolved.
 
 The recommended next gate is an Owner review of the closed-sales receiver rollout and bounded sandbox execution scope. Public sales must stay closed throughout acceptance. Recovery closes only new purchases and retains paid subscriptions, invoices, audits, authorization guards and delivery retries.

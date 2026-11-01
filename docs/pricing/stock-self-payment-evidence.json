@@ -1,7 +1,7 @@
 {
-  "recordedAt": "2026-11-01T15:51:16.168Z",
-  "status": "LOCAL_SOURCE_VERIFIED_MANAGED_ACCEPTANCE_AND_RELEASE_PENDING",
-  "sourceFingerprint": "f9b812055ccf5871625c694b4d65151c83c59cdf762e56581c0df85127163fa9",
+  "recordedAt": "2026-11-01T16:29:04.498Z",
+  "status": "SOURCE_PR_CI_VERIFIED_MANAGED_ACCEPTANCE_AND_RELEASE_PENDING",
+  "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
     "coreMain": "ace57932005735bee6a341f46f0e12bd68560a4f",
@@ -18,14 +18,22 @@
       "types": "PASS",
       "scopedRuntimeLint": "PASS",
       "webpackCompileOnly": "PASS",
-      "compileLog": "runtime-baseline-20261101/core-compile-final.log"
+      "compileLog": "runtime-baseline-20261101/core-compile-final.log",
+      "hostedCiBuild": {
+        "status": "PASS",
+        "scope": "Synthetic validation build in GitHub Actions; not a deployed runtime"
+      }
     },
     "stock": {
       "types": "PASS",
       "scopedRuntimeLint": "PASS",
       "webpackCompileOnly": "PASS",
       "compileLog": "runtime-baseline-20261101/stock-compatible-compile.log",
-      "warning": "Existing middleware convention is deprecated"
+      "warning": "Existing middleware convention is deprecated",
+      "hostedCiBuild": {
+        "status": "PASS",
+        "scope": "Synthetic validation builds in both Stock jobs; not a deployed runtime"
+      }
     },
     "compileCommand": "node node_modules/next/dist/bin/next build --webpack --experimental-build-mode compile",
     "typeCommand": "node node_modules/typescript/bin/tsc --noEmit",
@@ -57,12 +65,28 @@
       "pass": 25,
       "fail": 0,
       "scope": "Disposable in-process PostgreSQL executes the reviewed installed Stock assertion/admission/revocation guards, exact Core OAuth-consent/session helper and actual paid proposals. Only HTTP transport between the disposable databases is synthetic. Includes exact baseline/trigger drift rejection, atomic paid admission, pending acknowledgment denial, live revocation, immutable audit, native identity conflicts and paid server-storage authorization. Not managed Supabase or gateway acceptance."
+    },
+    "stockScriptsCi": {
+      "tests": 284,
+      "pass": 284,
+      "fail": 0,
+      "scope": "282 retained scripts plus two exact applied-pricing-history checks",
+      "ci": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41325064026/job/124903168558"
+    },
+    "pdfBridge": {
+      "scenarios": 35,
+      "pass": 35,
+      "fail": 0,
+      "logFile": "runtime-baseline-20261101/stock-pdf-bridge-regression.log",
+      "level": "LOCAL_RENDERER_AND_MOCKED_ACTION_ROUTE",
+      "ci": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41325064022/job/124903168735",
+      "scope": "Includes paid storage denial before RPC/blob access; original tenant/path/hash/audit controls retained. No provider Storage, DB runtime or browser acceptance."
     }
   },
   "integration": "NOT_EXECUTED: gateway, cross-deployment delivery and recovery acceptance require separate applicable authority",
   "managedDatabaseRuntime": "All approved baseline, Stock dependency and Core active dependency metadata reviews COMPLETE. No migration or behavioral self-payment runtime executed.",
   "hostedBrowserUat": "NOT_EXECUTED: fresh-account purchase, hosted HTTP/cookie and desktop/mobile visual acceptance remain open",
-  "mobileScreenshots": "BLOCKED_TOOL_OUTPUT_ROOT_RESTRICTION",
+  "mobileScreenshots": "NOT_EXECUTED: no retained mobile screenshot; historical local output-root/tool failures require a fresh capability check when hosted UAT is authorized",
   "productionAcceptance": "NOT_EXECUTED; no Production mutation, payment, deployment or sales enablement",
   "rawLogsLocation": "C:/Users/61140/AppData/Local/Temp/Codex/stock-self-payment-20261030/scratchpad",
   "sourceFiles": [
@@ -74,12 +98,12 @@
     {
       "system": "core",
       "file": ".github/workflows/supabase-keepalive.yml",
-      "sha256": "ff003b9025f89dac3c29c2de4ac0df6157ecfece2c704dbae0326d70660f5837"
+      "sha256": "6ec0b6918850ee36be33cb5dbe89e6dca78d53f6289630e14f9805a5a9cfab23"
     },
     {
       "system": "core",
       "file": "app/api/admin/tenants/route.ts",
-      "sha256": "73e10b41ae8d4b5bac25c40cad61f347b56a98c16691fb255fc0cd8bf535e08c"
+      "sha256": "6c51087ddf3923a8e7efb95d80229e52b5e78464cff635fdac0bbc98180c316b"
     },
     {
       "system": "core",
@@ -119,12 +143,12 @@
     {
       "system": "core",
       "file": "app/api/auth/superadmin/route.ts",
-      "sha256": "b59a496f7ef9ef3607cce7618c81183f7f37e74055316edaaf63dba0fc4771f2"
+      "sha256": "5da86e0889c39494090ae2d2f6b60bc650cd9e3e3de157cff9e13a7c5f6728c4"
     },
     {
       "system": "core",
       "file": "app/api/billing/cancel-schedule/route.ts",
-      "sha256": "118ae7d0f8a022dc2c1d07d9211e218572bb06ab550e54d58dfe67f8831b32a7"
+      "sha256": "d40a68e144bb2b2fb05b584e40106b73188fd51104610fb4f32f680349bf196b"
     },
     {
       "system": "core",
@@ -134,22 +158,22 @@
     {
       "system": "core",
       "file": "app/api/billing/checkout/route.ts",
-      "sha256": "2bd3ec60cfb3536ba183542b7e11d3977d6cb7f79db18280a5f548e726baf1a2"
+      "sha256": "54728a4b9300adbf3f67e13e8e979dc91db648f02f4bbcd791b96b853d6d0928"
     },
     {
       "system": "core",
       "file": "app/api/billing/confirm/route.ts",
-      "sha256": "cc51a3d1b35f9d3669041b696002b59bc3cf38caa085847d5c8b62607f4dafe9"
+      "sha256": "ae5f177e5082605c108c4e78332785bd4d4c28f89f52280d51cb7ebc6ea327dd"
     },
     {
       "system": "core",
       "file": "app/api/billing/lifecycle/route.ts",
-      "sha256": "23c59148c8c3c1096e9b7a1c84a9a6cf0512276a9b895805fbb419cd9a0cf228"
+      "sha256": "58eb3e3746947d0c0ce624cd43087783e53249bcbb4a3d92adb9162170512b21"
     },
     {
       "system": "core",
       "file": "app/api/billing/webhook/route.ts",
-      "sha256": "094eab79e8c0fe759c81a29279a49841f152e61aadeff19041d1d6e773d8367b"
+      "sha256": "4a578a498c65136275056af9cef109ff28774a8ef5a15bb9279c3db1abf3724e"
     },
     {
       "system": "core",
@@ -164,12 +188,12 @@
     {
       "system": "core",
       "file": "app/api/public/campaign/route.ts",
-      "sha256": "9711b307c630036541c6bfca0b1c7db33188a3218eb39d1591d9aff3eb999193"
+      "sha256": "4c1c67b1536466745e09b8e5dfb52595259068b6e061c6661413de9f59e16017"
     },
     {
       "system": "core",
       "file": "app/api/public/plans/route.ts",
-      "sha256": "208ca7be8d42d745ec730233417c600252adfa705ad40eb5497060aa146d22e7"
+      "sha256": "c97bb4670c12e6e1010145b1614c8e3e90091ad183b3333595d7dcfe884a99cc"
     },
     {
       "system": "core",
@@ -189,7 +213,7 @@
     {
       "system": "core",
       "file": "app/api/tenants/provision/route.ts",
-      "sha256": "ace55b0d6f75e77a895a66cf0ede92ff8c7e60bfcb3e25553fe43a8447e074cb"
+      "sha256": "be62494530b7d84d1bdc86f99043255c8e059b696911600d5c4ca41142bd9335"
     },
     {
       "system": "core",
@@ -199,7 +223,7 @@
     {
       "system": "core",
       "file": "app/billing/langganan/Checkout.tsx",
-      "sha256": "624a8463ace9f0f54b7c984c22ca83a65229dd6dabdb5ea33b31ea53299266b8"
+      "sha256": "ae4ae0204980ffe19cbb8b76ae42fd84d3340479d08a1d32f67954d710f562b1"
     },
     {
       "system": "core",
@@ -208,18 +232,18 @@
     },
     {
       "system": "core",
-      "file": "app/billing/selesai/page.tsx",
-      "sha256": "649816b07d02517e81e7aaa27ad195a3ff2a257cf04bcdc6ce97023ecc912702"
-    },
-    {
-      "system": "core",
       "file": "app/billing/selesai/Result.tsx",
       "sha256": "b1e6f4f063760c708a482b5282a04d9eb2665aaff9af9a18a4c8b5e3ba197a8a"
     },
     {
       "system": "core",
+      "file": "app/billing/selesai/page.tsx",
+      "sha256": "985540bce42a3c299220e8e828ad886254fe1f9652102829db7dae2954f64497"
+    },
+    {
+      "system": "core",
       "file": "app/dashboard/audit/page.tsx",
-      "sha256": "b192d9b8d0090906dde48be1f652cd8bf2eb8a88ab850c28b0db57b91349e7be"
+      "sha256": "15b90c56bef22fc8a5e89922d395162ea428cba11ec73346f189969346d957ca"
     },
     {
       "system": "core",
@@ -239,142 +263,52 @@
     {
       "system": "core",
       "file": "app/dashboard/layout.tsx",
-      "sha256": "6522a50118d7dced48b4c8900581db10c97d3295841acd03c594f466d5f8de89"
+      "sha256": "017679f5778b80b06a13776e303a625c91999f93c27d7b87fc41ea6f731ac184"
     },
     {
       "system": "core",
       "file": "app/dashboard/leads/page.tsx",
-      "sha256": "6056b0f92f22bed52cea9d09101cd5a9e6ce84eae991d724301d924fb3413db0"
+      "sha256": "fb4a96c298cbe1a797057b09eaafb164af15fff2898179f399ea73f12187aed4"
     },
     {
       "system": "core",
       "file": "app/dashboard/page.tsx",
-      "sha256": "07f987da10c7e8e70949dab4c00e8550f66b4379a41e615c28f2db9fdd892a8e"
+      "sha256": "ffd1fbcb47b21517af87db47ab6f11654abec8978de531d6e01a47d4a927f771"
     },
     {
       "system": "core",
       "file": "app/dashboard/settings/page.tsx",
-      "sha256": "79878c3932b13e706ccac51551b960b41bddfca27170fcaf9835a8700dce43ed"
+      "sha256": "7198ba4f5ee47962fa6bcaab906e2bc8d8475a586c90434427dde00f1bb94297"
     },
     {
       "system": "core",
       "file": "app/dashboard/subscriptions/page.tsx",
-      "sha256": "b18c15fb10c0b5cdadcbbc0c59212a101bad2f542824ac42de726058b7602c6c"
+      "sha256": "b34351fd54b4f215d54fda2922e102f94711a17dcde8fb49ad85af71475b8eea"
     },
     {
       "system": "core",
       "file": "app/dashboard/tenants/[id]/page.tsx",
-      "sha256": "9380fcf2d7c19846aeaaebf20dfa209942a0c4efd7380e5647338d46e65f39be"
+      "sha256": "9de84bd07ceebff07fc641cfec06d2678e66b3a06b1a41b216a1c6505c977a37"
     },
     {
       "system": "core",
       "file": "app/dashboard/tenants/new/page.tsx",
-      "sha256": "80e870bd923381a77a8e7b3e86300721bd5fdc3d6443eface6ceeaea353a2177"
+      "sha256": "9b7de0d994897f447b0ada7d78dad99acd2ba5dd5f1e89d0ecc77c5c811dff4a"
     },
     {
       "system": "core",
       "file": "app/dashboard/tenants/page.tsx",
-      "sha256": "864284b43777569a5a5a9c63b22513d3f016d75aacd520b498df6542c53a90fc"
+      "sha256": "91528a1851acd21b09db3aa7886fdd124d776302485b75280d5981490a007e89"
     },
     {
       "system": "core",
       "file": "app/dashboard/website-orders/page.tsx",
-      "sha256": "5d04b0d8c1c87a976ff9267888c17f5647c9b504f2d42fea0370a9bf26479a8c"
+      "sha256": "4499c2c907195e00935cbcbb3c83d693d567f3021c86ae3b8f6851c9c84632b4"
     },
     {
       "system": "core",
       "file": "app/globals.css",
-      "sha256": "ba273f9f5b3ad2fd3df83eb9ef8d5aaff7ce422f780a21f06d52ff8df5a33e79"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/AccountHub.tsx",
-      "sha256": "9b52a881b830e34cda8c327faf3a9ff8ae035bb6575889d828bd1ab8e8d1aec5"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/E1WorkspaceCandidate.tsx",
-      "sha256": "03d9203eab830e9ff2ce9c658059f98246ddbc552b92364a544d0b32a4a7facd"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/hub-interior.module.css",
-      "sha256": "e6d9763a22f58da33c19cff34c72bb814bacfbecc1e43b8000d4bab7dd74ee89"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/hub-navigation.module.css",
-      "sha256": "67997b9a19bc3f709ee4b445ab3967442d248647ebdb4e34b77d4c1c0096a950"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/HubAuthStory.tsx",
-      "sha256": "2702fc82913739b40e551f400de625de977e0d1e347c06c3a0695f2f4317d942"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/HubNavigation.tsx",
-      "sha256": "c0de2a8b48f8545d98365a224ded2f9a192623fe71c6b2b3103d7280b6c9999c"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/HubShell.tsx",
-      "sha256": "2fa17e9257013f7366b1ae9c18e3e8012b0aeb63b65174ff48a8334e1e58e02d"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/stock-billing.module.css",
-      "sha256": "cf2ec8192f9f8cee6565a6a17ffde70bf4e82234e022490bc72c8a420ae73465"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/StockBillingPanel.tsx",
-      "sha256": "447c1fdc251a789f95b9f620a89a46b33fa5229ac98478dfdac2de8b5f744964"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/StockStoreFront.tsx",
-      "sha256": "a3edfb379de48941faca088250dab2148306df2dd48f66d42e220fe56c8a42fa"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/store-front.module.css",
-      "sha256": "bfb311241a6610a1853d6b29744057d6684ca61847e08f464ccae24e3d341c62"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/StoreFront.tsx",
-      "sha256": "5ad0d70cda350cc30ccde9af49a91f5207fc0a4df0a8cff5641d462a24148cca"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_components/StoreShowcase.tsx",
-      "sha256": "f0a1eb3c0635e8ec03edd0f9fc27615eb4fe38c48733b70758136e5c6e0727ca"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_public/public-content.ts",
-      "sha256": "ca432e7fbc9b50850d25986493ab97d27039b1de84a8d5f1c38fa1aaa38fbc3a"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_public/public-hub.module.css",
-      "sha256": "be0ad1242d39f29e8cc8c93423105febcc628e76d24aea3011f84e6fb03e70f7"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_public/PublicExploreContent.tsx",
-      "sha256": "eca378e25e73f7035651c4a101f34bb8cde65206860e33b4cdd3e5fcd47ebe5c"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_public/PublicExploreNav.tsx",
-      "sha256": "bcf93ae8d3e70088491c20fb1088f1ab2b0219743e3a2b7a23ab20ddbdcdb4df"
-    },
-    {
-      "system": "core",
-      "file": "app/hub/_public/PublicExploreShell.tsx",
-      "sha256": "2aa84d9557c6900173e9955adfe3bbbd1997ddcca35744df7179710884be6472"
+      "sha256": "15fd52bd462719c6469cb5978ece7a907e9558ac22050005abe8b865524e05e1"
     },
     {
       "system": "core",
@@ -403,23 +337,23 @@
     },
     {
       "system": "core",
-      "file": "app/hub/(public)/onboarding/stock/page.tsx",
-      "sha256": "b5feb2805fa30c7df44034d19dd4953abdf2bf81674de9039ac63f2a54831ece"
-    },
-    {
-      "system": "core",
       "file": "app/hub/(public)/onboarding/stock/StockOnboardingForm.tsx",
       "sha256": "f7928ea7833aff249180ab20be3bebabb43296d94eede869ceda9506cb6217a3"
     },
     {
       "system": "core",
-      "file": "app/hub/(public)/onboarding/verify/page.tsx",
-      "sha256": "19b840c40571ddbc57e075e3f7d6c0356b53b6cee31158aa39b618fa69883c83"
+      "file": "app/hub/(public)/onboarding/stock/page.tsx",
+      "sha256": "b5feb2805fa30c7df44034d19dd4953abdf2bf81674de9039ac63f2a54831ece"
     },
     {
       "system": "core",
       "file": "app/hub/(public)/onboarding/verify/VerifyEmailForm.tsx",
       "sha256": "da2991aa7c917f42717c35fd88de51b8acb96176cfd132713828dbdf210d63f4"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/(public)/onboarding/verify/page.tsx",
+      "sha256": "19b840c40571ddbc57e075e3f7d6c0356b53b6cee31158aa39b618fa69883c83"
     },
     {
       "system": "core",
@@ -430,6 +364,96 @@
       "system": "core",
       "file": "app/hub/(public)/store/page.tsx",
       "sha256": "96e97032cac5ee2bfdf5784262182b41d96f9e832675ad2bcf7b5ef0a76fdd35"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/AccountHub.tsx",
+      "sha256": "9b52a881b830e34cda8c327faf3a9ff8ae035bb6575889d828bd1ab8e8d1aec5"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/E1WorkspaceCandidate.tsx",
+      "sha256": "03d9203eab830e9ff2ce9c658059f98246ddbc552b92364a544d0b32a4a7facd"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/HubAuthStory.tsx",
+      "sha256": "2702fc82913739b40e551f400de625de977e0d1e347c06c3a0695f2f4317d942"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/HubNavigation.tsx",
+      "sha256": "c0de2a8b48f8545d98365a224ded2f9a192623fe71c6b2b3103d7280b6c9999c"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/HubShell.tsx",
+      "sha256": "2fa17e9257013f7366b1ae9c18e3e8012b0aeb63b65174ff48a8334e1e58e02d"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/StockBillingPanel.tsx",
+      "sha256": "447c1fdc251a789f95b9f620a89a46b33fa5229ac98478dfdac2de8b5f744964"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/StockStoreFront.tsx",
+      "sha256": "a3edfb379de48941faca088250dab2148306df2dd48f66d42e220fe56c8a42fa"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/StoreFront.tsx",
+      "sha256": "5ad0d70cda350cc30ccde9af49a91f5207fc0a4df0a8cff5641d462a24148cca"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/StoreShowcase.tsx",
+      "sha256": "f0a1eb3c0635e8ec03edd0f9fc27615eb4fe38c48733b70758136e5c6e0727ca"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/hub-interior.module.css",
+      "sha256": "e6d9763a22f58da33c19cff34c72bb814bacfbecc1e43b8000d4bab7dd74ee89"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/hub-navigation.module.css",
+      "sha256": "67997b9a19bc3f709ee4b445ab3967442d248647ebdb4e34b77d4c1c0096a950"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/stock-billing.module.css",
+      "sha256": "cf2ec8192f9f8cee6565a6a17ffde70bf4e82234e022490bc72c8a420ae73465"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_components/store-front.module.css",
+      "sha256": "bfb311241a6610a1853d6b29744057d6684ca61847e08f464ccae24e3d341c62"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_public/PublicExploreContent.tsx",
+      "sha256": "eca378e25e73f7035651c4a101f34bb8cde65206860e33b4cdd3e5fcd47ebe5c"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_public/PublicExploreNav.tsx",
+      "sha256": "bcf93ae8d3e70088491c20fb1088f1ab2b0219743e3a2b7a23ab20ddbdcdb4df"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_public/PublicExploreShell.tsx",
+      "sha256": "2aa84d9557c6900173e9955adfe3bbbd1997ddcca35744df7179710884be6472"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_public/public-content.ts",
+      "sha256": "11a81e47da7bb5b3fcdb952d6e6d49684a9eb29d3b0e23e6d66ae5cc3b1b330d"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/_public/public-hub.module.css",
+      "sha256": "be0ad1242d39f29e8cc8c93423105febcc628e76d24aea3011f84e6fb03e70f7"
     },
     {
       "system": "core",
@@ -453,6 +477,11 @@
     },
     {
       "system": "core",
+      "file": "app/hub/checkout/stock/StockCheckoutView.tsx",
+      "sha256": "8c9724cbdc74bca906492e5f0daa16c4154d0b270ef5300bb2a316596903054e"
+    },
+    {
+      "system": "core",
       "file": "app/hub/checkout/stock/actions.ts",
       "sha256": "ecede7f5ed7db3f0ce81db4dbc00212a7ea254be7a94d5a893e989bec893c05b"
     },
@@ -468,11 +497,6 @@
     },
     {
       "system": "core",
-      "file": "app/hub/checkout/stock/StockCheckoutView.tsx",
-      "sha256": "8c9724cbdc74bca906492e5f0daa16c4154d0b270ef5300bb2a316596903054e"
-    },
-    {
-      "system": "core",
       "file": "app/hub/forgot-password/ForgotPasswordForm.tsx",
       "sha256": "18fa3d468a81adf7f79774e2ef77a4453d87470b8c7048e9e3217fbe4a7f75d5"
     },
@@ -484,7 +508,7 @@
     {
       "system": "core",
       "file": "app/hub/hub.module.css",
-      "sha256": "7a2c53e6c985ddd886d98bf1d70d73f4e14c3bb5ee8e1179df54f523b79769f5"
+      "sha256": "872e5d94f697a17459815e9fd8a71319117e2c0bb7179d0c6553e3bab96969a2"
     },
     {
       "system": "core",
@@ -523,28 +547,28 @@
     },
     {
       "system": "core",
-      "file": "app/hub/onboarding/status/page.tsx",
-      "sha256": "0949df914c199a9a5a28809b91a0427538fa37cccade084d95cd012a62c63550"
-    },
-    {
-      "system": "core",
       "file": "app/hub/onboarding/status/StatusAutoRefresh.tsx",
       "sha256": "e0ea9dba18b14d6527175cddf6deedc7d490184b3129237715a6a197cfaa957e"
     },
     {
       "system": "core",
-      "file": "app/hub/page.tsx",
-      "sha256": "914fc8592b9298129d820534afbc66628a671e1173b3046a799db08ca9ae38fb"
+      "file": "app/hub/onboarding/status/page.tsx",
+      "sha256": "0949df914c199a9a5a28809b91a0427538fa37cccade084d95cd012a62c63550"
     },
     {
       "system": "core",
-      "file": "app/hub/signup/actions.ts",
-      "sha256": "a444d93df1c8a4ae3bb906c8c06e0042b4fb3468569d1ad2b501527fef687ed7"
+      "file": "app/hub/page.tsx",
+      "sha256": "ffae37f433158b4fb4f0a126c50691a75edd3085183bcc55613af4aee00523d9"
     },
     {
       "system": "core",
       "file": "app/hub/signup/HubSignupForm.tsx",
       "sha256": "4466a27af2c53775ba19c5def65a75619bb4a2a9933a1f9e3962b6e09ff357d2"
+    },
+    {
+      "system": "core",
+      "file": "app/hub/signup/actions.ts",
+      "sha256": "a444d93df1c8a4ae3bb906c8c06e0042b4fb3468569d1ad2b501527fef687ed7"
     },
     {
       "system": "core",
@@ -558,13 +582,18 @@
     },
     {
       "system": "core",
+      "file": "app/hub/update-password/UpdatePasswordForm.tsx",
+      "sha256": "db13c3ceef196cc970e289648ac6e549b87856f0b1e0a2f73fac0304255b770d"
+    },
+    {
+      "system": "core",
       "file": "app/hub/update-password/page.tsx",
       "sha256": "111a6f9321994eaa9a951d5e2c3d86020489be0db4c533b8fe59a05018c6146a"
     },
     {
       "system": "core",
-      "file": "app/hub/update-password/UpdatePasswordForm.tsx",
-      "sha256": "db13c3ceef196cc970e289648ac6e549b87856f0b1e0a2f73fac0304255b770d"
+      "file": "app/hub/workspace/WorkspaceView.tsx",
+      "sha256": "3ca06aa04fa50a3258b742806ca3c2fc2afd9adfbf0c700d3851150e232f9289"
     },
     {
       "system": "core",
@@ -583,18 +612,13 @@
     },
     {
       "system": "core",
-      "file": "app/hub/workspace/WorkspaceView.tsx",
-      "sha256": "3ca06aa04fa50a3258b742806ca3c2fc2afd9adfbf0c700d3851150e232f9289"
-    },
-    {
-      "system": "core",
       "file": "app/layout.tsx",
-      "sha256": "4c45ccd1450ab0174d32eecc7506515c4b98b42985947efb60295ad86a1d76a3"
+      "sha256": "d3036075a207c3b0dd6c3501b9a70868790a8cdd9285c3f3a0922cf0aca65362"
     },
     {
       "system": "core",
       "file": "app/login/page.tsx",
-      "sha256": "ace928dba02ed684077eb6d6dba0830b66d4b66b2fde6692cb01164247b51054"
+      "sha256": "0fb17fec9a42e35e650d086789b03b0f8bccbaf085fb3556cec6591925600d3b"
     },
     {
       "system": "core",
@@ -609,12 +633,12 @@
     {
       "system": "core",
       "file": "app/page.tsx",
-      "sha256": "815301eee42457cd688adac282ad36e17d96f26c1c6992b2dad53d474ead16bb"
+      "sha256": "97d2a1a85144f5e9d43f48145134c449f2ee39b8e71df8acc4ca67fa2bd3b3c8"
     },
     {
       "system": "core",
       "file": "app/unauthorized/page.tsx",
-      "sha256": "5ae98293d98ed61019103153d56637e921ef3c8d29bad8a26fdf2c4badcf0055"
+      "sha256": "eab0def45f8127b4d3dd6789226fdb811f95e0795554d73efd4bf83c0243f422"
     },
     {
       "system": "core",
@@ -629,17 +653,17 @@
     {
       "system": "core",
       "file": "lib/auth.ts",
-      "sha256": "672e63c998690f4e1f5a83f7e76089b1d959c205e2e523552d180dde63ca9856"
+      "sha256": "86699ca4b313dd41727be230898f017e1f40e30e96b7f460cdacf38b6de96112"
     },
     {
       "system": "core",
       "file": "lib/billing-email.ts",
-      "sha256": "644185e51173ff024d11f0fe969b19df172d0e283610a65e9912dd774f3e62c9"
+      "sha256": "fdde16a77a6c68425092d0979b9bd48ef3800552a1fd126003604cb8ae24d0de"
     },
     {
       "system": "core",
       "file": "lib/billing-link.ts",
-      "sha256": "464da27bd6aae850b7e2c545776e370097f70529ead649ce48d813ebb1572a8a"
+      "sha256": "17bda44f279fc2a25535db5560466df989883fe991c19fb945e137e11d6f8f39"
     },
     {
       "system": "core",
@@ -669,7 +693,7 @@
     {
       "system": "core",
       "file": "lib/clinic-sync.ts",
-      "sha256": "2947c0ce491959d63f10908e0a038bb07e1f29c3cb07a6e572e0d39b49b8e60c"
+      "sha256": "c400a1c32f94f3b2d829fa7c6c737f86d3bebefa6e7eb721340e21f4dbead22e"
     },
     {
       "system": "core",
@@ -709,7 +733,7 @@
     {
       "system": "core",
       "file": "lib/customer-onboarding.ts",
-      "sha256": "c40bf5cf8050cd9b803e4ab6021e35ce4b851961b3e7472f02d7997606996e7e"
+      "sha256": "5a414524c784722be264aeae7a06de8ee95b7f231e6e867deb6b9967fecc418a"
     },
     {
       "system": "core",
@@ -814,7 +838,7 @@
     {
       "system": "core",
       "file": "lib/hub-billing.ts",
-      "sha256": "3714b5932f988c15fd60b17ec0e5b7fabb3ae458644db9a61d07dbfa3dbdf3f5"
+      "sha256": "ea34e6fd990d0d9f14978d2e5efbad40d4890f26f4b21a2300e5258f9b18861a"
     },
     {
       "system": "core",
@@ -829,7 +853,7 @@
     {
       "system": "core",
       "file": "lib/hub-data.ts",
-      "sha256": "e65286b44a72594c6e50a35b1964e8e0699e53a0a2516fa03119748cbba809b9"
+      "sha256": "8e33db0dc8db8adb91f7e7c343369bcb6a1c230c98dabd4bcc837477d127f737"
     },
     {
       "system": "core",
@@ -874,7 +898,7 @@
     {
       "system": "core",
       "file": "lib/hub-navigation-source-contract.test.mjs",
-      "sha256": "f24c9d878b7e42d9a39d3a8d11c83a201aad7a23f046f7684c2ad2c8731c924a"
+      "sha256": "138f51d9109f0f17c568c063e5dba737849d778799742a02a785e4ef0a27f1d2"
     },
     {
       "system": "core",
@@ -944,12 +968,12 @@
     {
       "system": "core",
       "file": "lib/hub-store-ui-source-contract.mjs",
-      "sha256": "b2f6487fd7b3ec4db61304d2a3b2428ab3aab6c8717335650fba2b767e81b135"
+      "sha256": "f83b50995fa4ed4b1c1ac02265e1674a762c5473ba90b924e9c6774694c87378"
     },
     {
       "system": "core",
       "file": "lib/hub-store-ui.test.mjs",
-      "sha256": "a72049d5921d0148bfaed93c11d08620f1f49723f65867ddb1b7ede6627dfa30"
+      "sha256": "671d9b8911d75dc56d9b50f0d7195397cca41a3b4dac90bc0bb94b256f52274e"
     },
     {
       "system": "core",
@@ -964,12 +988,12 @@
     {
       "system": "core",
       "file": "lib/laundry-sync.ts",
-      "sha256": "eb22ff2f3d36e8627a41d93814c08e3809177ec7d5ab93d933e29845a514ec62"
+      "sha256": "ce07a9979f274700cab3e33b5d1d9fc9ea1df464111bb1135c6793a7796b76ac"
     },
     {
       "system": "core",
       "file": "lib/lms-sync.ts",
-      "sha256": "5903a2bb773731bcad87eaa49942e1f22d352cfa6ac8037f53ed8c40890a321b"
+      "sha256": "a9bbf111e37559ee498ffb0b1b7ec77dfeb49822e648545941010114de6fabf5"
     },
     {
       "system": "core",
@@ -984,12 +1008,12 @@
     {
       "system": "core",
       "file": "lib/midtrans.ts",
-      "sha256": "1f46eca6e4a789d1fea151ea1d12675357d248e993009afd571a7a0fe9113b2e"
+      "sha256": "6705e056be98e55f45d65618a0e60f72ec5182695852095d378bd6d98bd7706c"
     },
     {
       "system": "core",
       "file": "lib/pharmacy-sync.ts",
-      "sha256": "20ac655d592871b3cd3f296fb2f23879c9c912010c722513dd0bd4bd11a6d252"
+      "sha256": "df3f41447931da9e1238865d624b9777214c66c388bd71b13f45a44bfcbb254c"
     },
     {
       "system": "core",
@@ -1009,12 +1033,12 @@
     {
       "system": "core",
       "file": "lib/platform-settings.ts",
-      "sha256": "400733cd56655367dee2a77faeb445aae67aba85c6ac94ced79d3bf2421fe6a8"
+      "sha256": "93a4183cba10b779a5bc69efac2e8dd335f289af9f6c675cae7686ff8928ad36"
     },
     {
       "system": "core",
       "file": "lib/portal-urls.ts",
-      "sha256": "2ad001abeec29d057528d1c809ee0b9e321a6bb349e8eeae6db7e76121f3f26a"
+      "sha256": "4372d984f31fe886130513c5977e2a155e61009203ff53fd498a1fd3878a44c5"
     },
     {
       "system": "core",
@@ -1044,7 +1068,7 @@
     {
       "system": "core",
       "file": "lib/rate-limit.ts",
-      "sha256": "c95fe65c5bd126be7982cc2f7586f09df23f7976d92710cc941c0708376fead8"
+      "sha256": "af08af9f92a62c366084fc69ce72e672e7be0667bdf2f6d8a6568496bbb47501"
     },
     {
       "system": "core",
@@ -1054,7 +1078,7 @@
     {
       "system": "core",
       "file": "lib/rental-sync.ts",
-      "sha256": "f43236d878aaf6d55d8ce0a32455538a5e09558bb1eace6b235f64373c3b00d4"
+      "sha256": "e359f09b78ddb7f4b413caf21ffabb116c45de1d519ddf3a5747befc4549f78f"
     },
     {
       "system": "core",
@@ -1224,12 +1248,12 @@
     {
       "system": "core",
       "file": "lib/supabase/admin.ts",
-      "sha256": "d63592a1421cfcac24ecdb359749306cfa505fa068ae045974f9f6e806f0a661"
+      "sha256": "bf98fb6ee872c1625a709e9aac6ca969fc9f2ca0f6202a6f160ac846e6fa911f"
     },
     {
       "system": "core",
       "file": "lib/supabase/client.ts",
-      "sha256": "4e5bff77c9ef681cc5c0bdbd35ef58c545e703037b5ea605c9c2992e5b38bde8"
+      "sha256": "6c0f12f8a9d9936d394b017a61171b2c905ad02a8c590913966c4e93214820c5"
     },
     {
       "system": "core",
@@ -1239,22 +1263,22 @@
     {
       "system": "core",
       "file": "lib/supabase/server.ts",
-      "sha256": "f002294c8adc8e724531de7cddc369e3b127c661021fa9f48e5980323d9535ae"
+      "sha256": "a73c9ebd66342c62cb717302d3db4586af7e3074398db6a404c66248056962ba"
     },
     {
       "system": "core",
       "file": "lib/supabase/websitebuilder.ts",
-      "sha256": "6ad5e5399e05b19e77950af5fe723e5e94684035aa10ca7e29a0a55466a4a106"
+      "sha256": "827379f0d0cfcaaf5ec4aad4b95c63227402c95ca0677ac0cd91c30783784f90"
     },
     {
       "system": "core",
       "file": "lib/superadmin.ts",
-      "sha256": "bd0d68efa815915d9670d7f72c94049da65f9e781469684b69e945044ba42b13"
+      "sha256": "e9021492d5d37eb753d5ee70c6fa11f1bea0e740586fe68d37272e9a7a41e236"
     },
     {
       "system": "core",
       "file": "lib/utils.ts",
-      "sha256": "74a147991a119f1c4cdc25a4d9b22713632fa32eb136e55ab6939b006d71b9d6"
+      "sha256": "7c8c3dfc0cdd370d44932828eb067ef771c8fe7996693221d5d4b90af6d54f2d"
     },
     {
       "system": "core",
@@ -1274,12 +1298,12 @@
     {
       "system": "core",
       "file": "package-lock.json",
-      "sha256": "329127845e08fffe8dd814089ad31446c8b1262652bebf7bf043c8efaa71f053"
+      "sha256": "30f399ee6eb2ad4b9fd723a73014745fb15498b7184f099bd3ff0f9d4601bb7e"
     },
     {
       "system": "core",
       "file": "package.json",
-      "sha256": "33a80ba52b7cab6c732abd1def1f7a415af288a17e45c582b1e0ed126186dd44"
+      "sha256": "876b38499f0f01aa792e025a53a9f1a4ce1310f36d84a31c77ea58a42f05c9c9"
     },
     {
       "system": "core",
@@ -1289,12 +1313,12 @@
     {
       "system": "core",
       "file": "supabase/core_schema.sql",
-      "sha256": "649409b87fddbfced0b144b2a785d052d3c5450040411422c82b086f0943e9cd"
+      "sha256": "ba87f317a6be825c127943c5d3764d9fcb4f70d9c7f36e2a3c2c71681a5e3b54"
     },
     {
       "system": "core",
       "file": "supabase/migrations/20260524_leads_table.sql",
-      "sha256": "1d5c8b44ee2170fa4a5c9801b483974d00466eb18579b7d8145917797cba933b"
+      "sha256": "b84a7a6b65879ba8642107e25dce8948875d01c0ff5388096a32e3bcde43c0f8"
     },
     {
       "system": "core",
@@ -1304,7 +1328,7 @@
     {
       "system": "core",
       "file": "supabase/migrations/core_db/000_fresh_bootstrap.sql",
-      "sha256": "16e21387ac20b81faeaa785014651e3d62113072472987bc082425dc0017fd70"
+      "sha256": "e1a6b145c07fb0174a87399d31c90806b533e33ecb9990e9b47bb52c1bbbeeb1"
     },
     {
       "system": "core",
@@ -1314,82 +1338,82 @@
     {
       "system": "core",
       "file": "supabase/migrations/core_db/002_seed_plans.sql",
-      "sha256": "9d4507879c8d6d6306cfae1c6ae508ce39d04fdeae1b8da0f0e93e5b2bbac337"
+      "sha256": "286366cc1d8f846983e050bbefcd227c817923a54a7a9db9337812171252c016"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/003_rls_policies.sql",
-      "sha256": "2703affd66ff3b96c12515e0bcb1282931e69718e63505093ab53c14ea813809"
+      "sha256": "62866ef5dc9bb0acc9a723a0091e9702a86191a40efee80fe114f8fe5efba26f"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/004_jwt_hook.sql",
-      "sha256": "32c669d8d92fa57a9e7c27fb533817b64e4d771b7e38da46d4084c11e5bcc0b9"
+      "sha256": "19a0a304fc707e481b316a8e750688b9d63bcf4ab663012a34a1c39d995d50d6"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/005_export_from_old_db.sql",
-      "sha256": "7f8fa990b99881fa637e334ebabcbf4e6b5f727e136e8da23fcbc52a48b0d80d"
+      "sha256": "3c363aadfd7395492b74ea36cb6c05b8ccb69724b4f04c0d8e38834265c27f64"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/006_import_to_core_db.sql",
-      "sha256": "4e7138f2e33514b3a76d8573bf980b0657b1e6f9e9e983b731e539d7cea49855"
+      "sha256": "a08939ccdd8ad9f21facbbe9131393b513d3dac4a74940fe1c34fb809d247d27"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/007_travel_platform_seed.sql",
-      "sha256": "e5a60ca4573ea705a26931e9274000bd8e1ac0f97dfa8b56dc0ae024a854d5f1"
+      "sha256": "9873a44edfd32cf5fc56737b605b8e40b37130557e5c9a03966264809ec0b505"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/008_billing_invoices.sql",
-      "sha256": "9c859f9b09a7aa17f7056d88708c8861fcff7405a29576021400811be031b47c"
+      "sha256": "112a147dd62bbee0101e3396af53724ad87322841c1827932921fad4dd0e49c8"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/009_complete_standalone.sql",
-      "sha256": "6771cc7c42975701ce1a47bf3a582f065ec7239e0a393037d7aa88ce0e819027"
+      "sha256": "83a14dc8d6f3a4c17d1e8a53bd35ebfff5f981d013a2c0364ac4f24f1468af0f"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/010_backfill_real_tenants.sql",
-      "sha256": "7b5279cb0770d50a5aafcf198bc4a5c10f2bcc16770750691351b5be787bbbee"
+      "sha256": "6913a734665df326544e171b62a913dcf1b3ed1d86ff6a072a7339823594da4a"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/011_plans_reconcile_marketing.sql",
-      "sha256": "0a25138c45d463711a4d02c4c4265a1b858493993c5ab8b6b7b295066650b1d8"
+      "sha256": "13ae34eff9b1d3ee9d46d12e47baa0d4932f4c08ecb8853c483fbc4a3c48da5b"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/012_stock_pricing_v2.sql",
-      "sha256": "747f87e7bf776c7888c42b612d9a595fde03421006c1c42813239bdd8b8a4782"
+      "sha256": "d2a2ff763210f973d541a411131c5735ef663416c206f2c577ae7b5477a2eac2"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/013_scheduled_change.sql",
-      "sha256": "415a68b5b5d4f312fd4803502df55433c662e3f9dedd1ed9beb2428bfcab5882"
+      "sha256": "02f28fe77cec25dbe96b5671775894492f273a70bf9e01e77cce9a022c682ab1"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/014_generalize_tiers.sql",
-      "sha256": "62d2ff002d15ed71699c3e6ac7e51255846d775f6656f8c479c8199f6dd6de92"
+      "sha256": "1987ef527d2d7d4728b6d22a99085d94aebc41b99d94ac3fcc7a9f037cd91c0c"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/015_press_prices_2026-07.sql",
-      "sha256": "710b1599ba3328d7ba5469e1b3c6003079802995ebe8329dcd1c2e507b0db005"
+      "sha256": "5fafba8c8f68e8d6bb5e075a9156d7a4edeadebca3bcacec668d17b314c92f24"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/016_promo_campaign.sql",
-      "sha256": "ebb255972ec0055486c2800daa87438557172a5322414f0f96864512cb47c715"
+      "sha256": "115da1f855c176ef207fcefaf4edaa885326c42daf6ad49ced00ae6cd10c93fb"
     },
     {
       "system": "core",
       "file": "supabase/migrations/core_db/017_rename_travel_to_rental.sql",
-      "sha256": "f8865256878227871a87a9bbf39e8c58083ab616ba0eb49923202a6371fb8f86"
+      "sha256": "2149d50260c1aef3783eca9c1a0bb5d7dfe1f3e060d07ed6bcaf7f826086a24d"
     },
     {
       "system": "core",
@@ -1414,22 +1438,22 @@
     {
       "system": "core",
       "file": "supabase/migrations/core_db/20261025034453_h1_g1_core_managed_session_forward.sql",
-      "sha256": "891dc6856f84a72244d410cd061894e5dfcc740a1405b40173e49cf1edb8cfda"
+      "sha256": "6952f10003bff4fccf9af2adf56bc798aa11b5cf0f3fb9483fe4f951afbe62ca"
     },
     {
       "system": "core",
       "file": "tsconfig.json",
-      "sha256": "fbff01604d6cb54694be707f26e7a0eb21a6ef796b888c6a1dab1839fa7c6ccc"
+      "sha256": "be18523b23b78b6e1a876ddd107d330f0168bddf09d751b57e0b5edce69c66f3"
     },
     {
       "system": "core",
       "file": "vercel.json",
-      "sha256": "f2f68933d17633daceeea855cfe613542f870ccfa4ae789b572f130f058f1a78"
+      "sha256": "91071df3c521fc117d96f161d17970c18f4f38b6c608c06c5a0c5ff25a995479"
     },
     {
       "system": "stock",
       "file": ".github/workflows/core-stock-source-validation.yml",
-      "sha256": "4b2391165c53424d7f01809f1939c829740e68a542905ff3705cb84726875e6e"
+      "sha256": "d8a8d37cfd62cc24e8dca24f4aa0ca4ad61ada20a98df4b98f04bb442dafe287"
     },
     {
       "system": "stock",
@@ -1444,7 +1468,7 @@
     {
       "system": "stock",
       "file": ".github/workflows/stock-pdf-font-validation.yml",
-      "sha256": "11e018e123a34c9b865c327aa0252154bc7f57205eca91be1ea46a15cb6b02b5"
+      "sha256": "fc777198b3eaa13b89d990626978da5fa8e8d85505148caf81e500976be539ec"
     },
     {
       "system": "stock",
@@ -1475,6 +1499,61 @@
       "system": "stock",
       "file": "package.json",
       "sha256": "c40987e03d54f21030f416109517fa12e09e7244dbfd699d5d0010c56ee390c9"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/bootstrap-internal-tenant.mjs",
+      "sha256": "601902a271780bcef648e8b4be197afbefa45d55a3124f4a5ed236f243e6197b"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/bootstrap-internal-tenant.spec.mjs",
+      "sha256": "540eb222fe2e12d182da4ef1a7c9911767433e2fa361ce3bc408437fac571bcf"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-company-stock.spec.mjs",
+      "sha256": "68ea53c4a6a1564a9c7239288809a6cf090fa2ace0212722e2f15b27877ac69f"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-native-callback.spec.mjs",
+      "sha256": "506fd6a3746cc26c1a0d8d926839b03c126d3fe5a3098f80b1df19ecbc5e7696"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-native-http.spec.mjs",
+      "sha256": "96c4e147044d53da7cc801b7c4a5726a3ccfc3f46325c25f9812396a8c2525a2"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-quarantine-release.spec.mjs",
+      "sha256": "ed8f1b2ad9787af5943e3cf5b3c8466b66bc997988d6c8667d900b16b4114f51"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-reciprocal.spec.mjs",
+      "sha256": "119c37b8b8d6582af2e4a83541dd072468e547eb24cf2c04e4fd173491c918ab"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/e1-resource-engine.spec.mjs",
+      "sha256": "85396131172111470f0ed62c5c3e6c900dd0e209a860b4d7a7f5fd7cf62e1790"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/installed-pricing-history.spec.mjs",
+      "sha256": "b1499a1cb5b9f7019dd0644d50e788d2b7f25df49a0fa03a9d6b75c54b080ffd"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/security-runtime-dependencies.spec.mjs",
+      "sha256": "a8c72a17f90ee408a807bbc7bc9c768face55101d98fd030fce3fe94738822ed"
+    },
+    {
+      "system": "stock",
+      "file": "scripts/stock-security-context.spec.mjs",
+      "sha256": "ef0ce9da02ddb55f59a5bc194259a5ea162f6139c4327a05b8924e0a2581b016"
     },
     {
       "system": "stock",
@@ -1983,13 +2062,13 @@
     },
     {
       "system": "stock",
-      "file": "src/app/components/ui/table.tsx",
-      "sha256": "a3e576c809ef799953fd8a45fdb1ed72442cbce88f3f8c2b5da2789e10880dcb"
+      "file": "src/app/components/ui/UnderlineTabs.tsx",
+      "sha256": "af6b5ab293102b7b8549ba3e30adfd40816e3264fb912046a8dd46b3289538c8"
     },
     {
       "system": "stock",
-      "file": "src/app/components/ui/UnderlineTabs.tsx",
-      "sha256": "af6b5ab293102b7b8549ba3e30adfd40816e3264fb912046a8dd46b3289538c8"
+      "file": "src/app/components/ui/table.tsx",
+      "sha256": "a3e576c809ef799953fd8a45fdb1ed72442cbce88f3f8c2b5da2789e10880dcb"
     },
     {
       "system": "stock",
@@ -2108,6 +2187,11 @@
     },
     {
       "system": "stock",
+      "file": "src/app/dashboard/produk/ProductPageClient.tsx",
+      "sha256": "a557255000975b57f2a4789ac65a18329631ffe21603dd1c2fe0964218eca4c6"
+    },
+    {
+      "system": "stock",
       "file": "src/app/dashboard/produk/import/page.tsx",
       "sha256": "f18677b64b4fc2eea92b03b07dbd9fbb0849a174c57b3960d662f4d00a4be683"
     },
@@ -2120,11 +2204,6 @@
       "system": "stock",
       "file": "src/app/dashboard/produk/page.tsx",
       "sha256": "637fcc57f4c86ba36c8daa8bca4f5cc589ca0a073479f6af0d6f23d8163d1928"
-    },
-    {
-      "system": "stock",
-      "file": "src/app/dashboard/produk/ProductPageClient.tsx",
-      "sha256": "a557255000975b57f2a4789ac65a18329631ffe21603dd1c2fe0964218eca4c6"
     },
     {
       "system": "stock",
@@ -2218,13 +2297,13 @@
     },
     {
       "system": "stock",
-      "file": "src/app/order/sundolicious/order-form.css",
-      "sha256": "a5575bf0b12ca1cf200747ce3375e35eac40db952b506c224f569e96537fc1ef"
+      "file": "src/app/order/sundolicious/OrderForm.tsx",
+      "sha256": "f61944eaecce56c56a8f713d52970b00e4685025dbf6a263dc71f43d1a8c25f6"
     },
     {
       "system": "stock",
-      "file": "src/app/order/sundolicious/OrderForm.tsx",
-      "sha256": "f61944eaecce56c56a8f713d52970b00e4685025dbf6a263dc71f43d1a8c25f6"
+      "file": "src/app/order/sundolicious/order-form.css",
+      "sha256": "a5575bf0b12ca1cf200747ce3375e35eac40db952b506c224f569e96537fc1ef"
     },
     {
       "system": "stock",
@@ -2268,6 +2347,11 @@
     },
     {
       "system": "stock",
+      "file": "src/components/ImageUploadField.tsx",
+      "sha256": "4790ad931b48beaec5348e955f3dc24127ce99087b207cf9567ed81c79c9cec2"
+    },
+    {
+      "system": "stock",
       "file": "src/components/auth/PortalLoginCard.tsx",
       "sha256": "3d21ef1a5f0294d8c6e8fefdb18758f140411b702b2cd6d09dcf9ba05ef4692e"
     },
@@ -2275,11 +2359,6 @@
       "system": "stock",
       "file": "src/components/auth/PortalRegisterCard.tsx",
       "sha256": "99755777d6dd000dec7b1d84164f19a881ceedd3c75a77d71088630a02154381"
-    },
-    {
-      "system": "stock",
-      "file": "src/components/ImageUploadField.tsx",
-      "sha256": "4790ad931b48beaec5348e955f3dc24127ce99087b207cf9567ed81c79c9cec2"
     },
     {
       "system": "stock",
@@ -2304,12 +2383,12 @@
     {
       "system": "stock",
       "file": "src/lib/billing-offer.test.mjs",
-      "sha256": "93091d35d6065ac78e5a818ee263ad9d39044d6804e3e17e9f7fab7415c06e2e"
+      "sha256": "30218f52838b9b19b8db39b97ffdc0a4942833025c1d345aa6f6cb43c0108520"
     },
     {
       "system": "stock",
       "file": "src/lib/billing-offer.ts",
-      "sha256": "ad94fe6b56f91bfe20bef20143cd2f1c0d09444311b904b36225f3d407afb27b"
+      "sha256": "b6fa26f8ba4519b5db11db820f2b3b370dfb84e9ca5528356bc24db29bd3d523"
     },
     {
       "system": "stock",
@@ -3464,7 +3543,7 @@
     {
       "system": "stock",
       "file": "tests/v2-document-issuance.smoke.cjs",
-      "sha256": "7c4ec3dab3e682547345688e85441e4d26dc3b35d241e7010a2c40d52932b6dd"
+      "sha256": "e72016944cdafd03badde78c765b103d0727c21cd3e73a182ea3463d9e72d5e6"
     },
     {
       "system": "stock",
@@ -3907,7 +3986,7 @@
     "specCompliance": "Source implementation verified against the approved purchase-to-activation plan; managed acceptance remains incomplete",
     "quality": "Fresh scoped STATIC and offline UNIT PASS; installed private access functions and pilot guard body preserved; exact drift checks protect installation",
     "convergence": "NOT_REACHED: complete choose-to-active hosted journey not established",
-    "recommendedGovernanceStatus": "READY_FOR_OWNER_SOURCE_REVIEW_NOT_AUTHORIZED_FOR_MANAGED_EXECUTION_OR_PUBLIC_SALES",
+    "recommendedGovernanceStatus": "SOURCE_PR_CI_COMPLETE_NOT_AUTHORIZED_FOR_MANAGED_EXECUTION_OR_PUBLIC_SALES",
     "findings": [
       "Approved Stock dependency review completed; immutable native admission, live online Core assertions, pilot isolation/revocation and append-only audit are mandatory",
       "Deployed r6 Core/r3 Stock application sources reconciled locally, including monthly-only upgrade correction and existing native/pilot protections",
@@ -3934,17 +4013,12 @@
     "review": "docs/pricing/STOCK_SELF_PAYMENT_BASELINE_REVIEW_20261101.md",
     "metadata": "COMPLETE_APPROVED_READ_ONLY",
     "matchedFunctions": 9,
-    "unreconciledFunctions": [
-      "public.resolve_stock_context",
-      "stock_e1_resource_private.guard_profile",
-      "stock_private.resolve_stock_context_internal"
-    ],
     "followUpProviderExecution": "COMPLETE_APPROVED_STOCK_DEPENDENCY_REVIEW",
     "productionChanged": false,
     "definitionRead": {
       "status": "COMPLETE_APPROVED",
       "file": "../.wt-webzoka-stock-pdf/docs/pricing/STOCK_INSTALLED_GUARDS_20261101.READONLY.json",
-      "finding": "Installed context assertions and bounded pilot activation/revocation were omitted by historical-source receiver; migration now refuses active namespace"
+      "finding": "Initial review found omitted installed context assertions and pilot lifecycle; the current compatible successor preserves those guards and exact preflight checks. See completed dependency review and PostgreSQL UNIT evidence."
     },
     "followUp": {
       "script": "docs/pricing/STOCK_ACTIVE_CONTRACT_REVIEW_READONLY.sql",
@@ -3967,23 +4041,29 @@
       "functions": 17,
       "tables": 9,
       "scope": "Stock authorization/pilot function definitions and schema metadata only; no customer, payment, Auth, settings or session rows"
-    }
+    },
+    "unreconciledFunctionsAtInitialReview": [
+      "public.resolve_stock_context",
+      "stock_e1_resource_private.guard_profile",
+      "stock_private.resolve_stock_context_internal"
+    ]
   },
   "previousVerifiedSourceFingerprint": "90b4c1fcd40486e9072a2e6e9040a1adaeae095a9e659f711d179cbfea762ca7",
-  "fingerprintMethod": "SHA256 of sorted system/file:raw-file-sha256 entries joined by LF. Scope: application, libraries, tests, migrations, workflows, listed root configuration, and the three self-payment proposals. Documentation is excluded to avoid circular evidence hashes.",
+  "fingerprintMethod": "SHA256 of ordinal-sorted system/file:git-blob-sha256 entries joined by LF, without a trailing LF. Exact immutable application refs are in sourcePublication. Scope: application, libraries, scripts, tests, migrations, workflows, listed root configuration and the three self-payment proposals. Other documentation is excluded to avoid circular evidence hashes. Git blob bytes avoid local CRLF differences.",
   "deployedSourceReconciliation20261101": {
     "coreArchiveTreeSha256": "111f5d929fe787fd2012f12e1de5afc8a9e997cd39bb594a3421fcfb0ba14658",
     "stockArchiveTreeSha256": "1e2b9a298d44ae61516b124c680fafa5fc12f59c111d3f8435382350c0019d89",
     "preservedCheckoutCopies": "runtime-baseline-20261101/{core,stock}/preserved",
     "cleanMergeManifest": "runtime-baseline-20261101/applied-clean-merges.json",
     "localOnly": true,
-    "historicalApprovalReusedForPaidActivation": false
+    "historicalApprovalReusedForPaidActivation": false,
+    "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Complete authorized candidate commit/push/draft PR/CI; Production migration/deployment, fixtures and payments remain separate Owner gates",
+  "nextMaterialGate": "Owner authority for the exact coordinated closed-sales receiver deployments, forward database migrations and bounded fresh-fixture sandbox acceptance; public selling remains a later gate",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
-    "status": "IN_PROGRESS",
+    "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
     "taskBranch": "feat/basic-pro-pricing-prep",
     "automaticGitDeployment": "DISABLED_IN_BOTH_SOURCE_CONFIGURATIONS",
     "coreProjectId": "prj_Z8taL31maerKj0AXlz65OBO8Bs6o",
@@ -3993,6 +4073,79 @@
     "unrelatedWorkExcluded": [
       "Core .gitignore changes",
       "docs/security/h1-g1-e1-isolated-ci.zip"
+    ],
+    "core": {
+      "repository": "RiGi26/ja-superadmin-platform",
+      "applicationRef": "d3efccb474403a60753e965df853c2ed5fec3388",
+      "tree": "cd6a9f25b9beefb4e4d5f9d1caf07b30590a664d",
+      "mainReviewed": "ace57932005735bee6a341f46f0e12bd68560a4f",
+      "draftPr": "https://github.com/RiGi26/ja-superadmin-platform/pull/60",
+      "sourceCi": {
+        "status": "PASS",
+        "run": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41323920776/job/124899762293"
+      },
+      "featureIntegration": "Main was integrated into the feature branch only; the reviewed application tree remained identical to commit 5f9b03f"
+    },
+    "stock": {
+      "repository": "RiGi26/webzoka-stock-platform",
+      "applicationRef": "de90ae979c0d5eaef59e80a9b7af5d0307be8309",
+      "tree": "83d497c6e328ef86ef56c445725a2d7a3077c42b",
+      "mainReviewed": "0cb0298da1062f8047aee1a6074706a6da047466",
+      "draftPr": "https://github.com/RiGi26/webzoka-stock-platform/pull/14",
+      "pairedCoreRef": "d3efccb474403a60753e965df853c2ed5fec3388",
+      "sourceCi": {
+        "status": "PASS",
+        "run": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41325064026/job/124903168558",
+        "scripts": 284,
+        "modules": 96,
+        "postgresql": 25,
+        "failures": 0
+      },
+      "pdfCi": {
+        "status": "PASS",
+        "run": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41325064022/job/124903168735"
+      }
+    },
+    "documentationUpdate": "A subsequent Core handoff/evidence-only commit records these immutable application references. It must not alter application, workflow, test, configuration or SQL bytes; final PR-head CI is checked separately. Stock CI continues to pin the unchanged Core application reference.",
+    "preview": {
+      "status": "NOT_CREATED",
+      "reason": "Automatic Git deployment is disabled for the task branch in both committed configurations; no CLI deployment was performed"
+    },
+    "defaultBranchMerge": "NOT_PERFORMED",
+    "remediatedCiFindings": [
+      {
+        "run": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41324462912/job/124901384089",
+        "result": "FAIL",
+        "cause": "PDF issuance harness lacked the newly imported paid-storage guard mock",
+        "resolution": "Explicit guard mock and denial scenarios in de90ae9; current-head PDF and source jobs PASS"
+      }
+    ],
+    "branchDeploymentMetadata": {
+      "stock": "No deployments found",
+      "method": "Read-only Vercel list for each exact existing project, scoped to rigi26s-projects and githubCommitRef=feat/basic-pro-pricing-prep",
+      "core": "No deployments found",
+      "checkedAt": "2026-11-01T16:30:26.6716317Z"
+    }
+  },
+  "previousWorkspaceSnapshot": {
+    "sourceFingerprint": "f9b812055ccf5871625c694b4d65151c83c59cdf762e56581c0df85127163fa9",
+    "recordedAt": "2026-11-01T15:51:16.168Z",
+    "files": 683,
+    "method": "SHA256 of sorted system/file:raw-file-sha256 entries joined by LF. Scope: application, libraries, tests, migrations, workflows, listed root configuration, and the three self-payment proposals. Documentation is excluded to avoid circular evidence hashes.",
+    "applicability": "Historical local raw-byte snapshot before final CI wiring; not the published Git candidate fingerprint"
+  },
+  "releaseDependencyReview": {
+    "status": "CURRENT_APPLICABILITY_RECORDED_NOT_REMEDIATED",
+    "repository": "RiGi26/webzoka-stock-platform",
+    "observations": [
+      "zod 4.4.3 is dev-only through eslint-plugin-react-hooks 7.1.1 / zod-validation-error 4.0.2; no application import found",
+      "Root PostCSS 8.5.15 is dev-only through @tailwindcss/postcss 4.3.1; Next bundled PostCSS 8.5.23 is a separate patched runtime copy",
+      "No demonstrated self-payment runtime path. Development/build-tool advisories remain open for release review; no unrelated dependency upgrade was made"
+    ],
+    "advisories": [
+      "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+      "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
+      "https://github.com/advisories/GHSA-r28c-9q8g-f849"
     ]
   }
 }
