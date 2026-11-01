@@ -1,6 +1,43 @@
 # Stock self-payment implementation and acceptance
 
-Status: application source publication and CI are complete in two draft PRs. Managed sandbox acceptance and release remain pending. The receiver successor preserves the reviewed installed access contract. Public sales remain closed. No Production deployment, provider SQL write, customer-account creation or gateway payment has occurred. Source checks do not prove the complete hosted purchase journey.
+Status, 2 November: the Owner's “oke go a head” continues the named closed-sales rollout gate. All three reviewed forward migrations are installed in the fixed Production Core/Stock projects with disabled sandbox settings. Exact-source Stock and Core deployments are promoted and Ready. Public sales, paid-runtime source switches and sandbox cohorts remain closed. No fixture account, invoice, payment or activation was created by this rollout. Production has changed at the closed database and application levels; the complete hosted purchase journey remains unverified.
+
+## Closed rollout — 2 November 2026
+
+The preceding handoff named coordinated closed-sales receiver deployment, exact forward migrations and bounded sandbox acceptance as the next gate. The Owner then instructed “oke go a head.” Execution uses that authority for the three reviewed migrations and exact-source Stock-before-Core deployments in the two existing projects, with no default-branch merge, public sales, real charge, existing customer mutation or secret export. Sandbox activation still requires established fresh-fixture identity and isolation; a controlled verification inbox choice is pending.
+
+Fresh preflight confirmed both PR heads and passing CI, unchanged default branches and Production aliases, Vercel account/team/project identity, and exact Core/Stock database URLs. Repeating the approved metadata reviews returned the identical Core 17-function contract and Stock eight-function/five-table private contract, with matching wrappers. Exact read-only installation preflights passed before DDL.
+
+| Database | Provider-issued migration | Result |
+| --- | --- | --- |
+| Core `hxhusfkrlafxdnyasmsu` | `20261101224842_stock_self_payment_core_closed_20261102` | Installed unchanged from reviewed proposal; disabled sandbox settings |
+| Core `hxhusfkrlafxdnyasmsu` | `20261101224847_stock_paid_active_core_closed_20261102` | Installed unchanged; paid-session tables empty |
+| Stock `oyyfcmlquqfrdoffkgsd` | `20261101224850_stock_self_payment_receiver_closed_20261102` | Installed unchanged; receipts and write permits empty |
+
+Managed read-back verified all 36 installed function bodies against committed proposal bodies, 11 forced-RLS private tables, expected restricted function grants, enabled audit/history triggers, and unchanged eight private Stock active-access functions. Both settings rows are `enabled=false`, `payment_mode='sandbox'`. New task tables are empty. Both Stock offers retain exact monthly prices and remain inactive/not for sale. This is **DB RUNTIME PASS for closed installation only**; paid behavior remains NOT_EXECUTED.
+
+Security advisors identify the intentional deny-all private tables and authenticated `SECURITY DEFINER` read/context interfaces. Their exact reviewed native-session, Owner and resource predicates and direct-access restrictions remain required. New unused indexes are retained. Performance advisor also found the new Core `intents.plan_id` foreign key lacks a covering index. That additive forward correction remains pending applicable exact-object authority before active acceptance; the three installed proposal bytes are historical and will not be rewritten. No blanket advisor-clean or security-release PASS is claimed.
+
+Exact source export verified 474 Stock files at `de90ae979c0d5eaef59e80a9b7af5d0307be8309` and 417 Core files at `e06640ab3bda598100368db46aabd696ac0fad4c`. An initial Core archive comparison caught local CRLF conversion before upload; exporting with `core.autocrlf=false` preserved every Git blob byte. Failed exports remain in task scratch. Only non-secret existing Vercel project binding metadata was added outside the source tree. Unrelated Core `.gitignore` work and the isolated-CI archive are excluded.
+
+| Application | Promoted Production deployment | Verified alias |
+| --- | --- | --- |
+| Stock | `dpl_8D9f94vmFPCyP1umQNZvEN3vnC5x`, `https://webzoka-stock-platform-2p4im8c5b-rigi26s-projects.vercel.app` | `webzoka-stock-platform.vercel.app` |
+| Core | `dpl_39hnnjYRQvDqhiGe4b9kUMEwv8ji`, `https://ja-superadmin-platform-9vch4y9xr-rigi26s-projects.vercel.app` | `hub.webzoka.com` |
+
+Both were staged with Production configuration and automatic alias assignment skipped. Existing Vercel protection blocked anonymous staged access; no protection setting or bypass credential was changed. Stock was promoted first, then its public receiver returned `503 {"error":"activation_closed"}` and login returned 200. Core was promoted afterward. Read-only inspection confirmed both canonical aliases resolve to the Ready candidates above. Default branches remain unmerged.
+
+Anonymous HTTP smoke passes **12/12**: closed Stock receiver, Stock login, exact closed quotes on Core and Hub, Basic/Pro sign-in continuations, and authentication gating for invalid selectors. The initial run had six incorrect expectations that page validation preceded proxy authentication. Source confirmed the proxy runs first. That failed run is retained as `closed-http-smoke-initial.json`; only the harness expectation was corrected, with authenticated selector/financial denial explicitly remaining NOT_EXECUTED.
+
+Separate anonymous browser contexts verify **9/9** login continuations: Basic/Pro survive; annual, price, unknown-plan, foreign-platform, invalid-Company, duplicate-plan and external returns are discarded before signup continuation. Contexts were closed after use. The original browser context already had a Core session, was not treated as a fresh fixture and was not cleared. Store DOM checks at 1440×1000 and 390×844 show the two approved prices, 48px consultation controls, closed-sales notice and no purchase controls or horizontal overflow. Stock login DOM checks at both sizes show no horizontal overflow; mobile inputs use 16px text and controls meet the measured 44px minimum. These are navigation/DOM results, not visual acceptance.
+
+Fresh screenshot attempts on 2 November failed because Playwright rejects the required Temp path as outside its allowed roots. The alternate browser reported `Local browser use is disabled in Work settings`. No path restriction, protection setting or local setting was bypassed. Desktop/mobile screenshots and the full paid journey remain open.
+
+Post-smoke database read-back confirms disabled sandbox settings and zero task intents, billing accounts, cohort rows, deliveries, events, paid sessions, receipts and write permits. The additional index correction is reviewable in `STOCK_SELF_PAYMENT_INTENT_PLAN_INDEX.PROPOSED.sql` (SHA256 `0ef26405120958d8d3f56ef9478004a6b7c203708dec550f2d3433fa3dde405e`). Four disposable PostgreSQL checks pass: closed/empty install, rejection when enabled, rejection with an intent row, and rejection without replacing an existing index. It has not been applied; the extra exact-object approval is pending. The controlled verification-inbox question is also pending.
+
+Current detailed metadata, advisor findings and archive manifests are in the existing task scratchpad under `closed-rollout-20261102`; the adjacent evidence JSON retains the durable summary. Sandbox gateway, fresh-account operational access and full browser/mobile acceptance remain NOT_EXECUTED. Migration-history/evidence commits after the deployed refs do not change the running application bytes or Stock's paired Core application pin.
+
+## Source phase — completed 1 November 2026
 
 Source-publication authority: the Owner selected **“Approve source PR/CI and closed Previews”** on 1 November 2026. Both application candidates now have passing exact-source CI: [Core #60](https://github.com/RiGi26/ja-superadmin-platform/pull/60) and [Stock #14](https://github.com/RiGi26/webzoka-stock-platform/pull/14). Automatic Git deployments were disabled for `feat/basic-pro-pricing-prep` in both committed configurations before push. [Vercel's branch deployment configuration](https://vercel.com/docs/project-configuration/git-configuration) documents this behavior. No Preview was created, and no default branch was merged. No Production deployment, database write, fixture or payment authority follows from this source-publication approval.
 
@@ -77,7 +114,7 @@ The helper still uses the existing fixed Core realm and Hub origin. A different 
 
 ## SQL proposals and authority
 
-No proposed SQL has been applied by this task. Files are executable review inputs, not evidence of installed database state.
+At the 1 November source gate, these files were review inputs only. The three self-payment proposals were installed unchanged on 2 November, as recorded above and in the provider-issued source migration files. They are now retained installation history and must not be replayed. The additional intent-plan index proposal remains unapplied.
 
 | File | Exact target | Scope |
 | --- | --- | --- |
@@ -88,11 +125,11 @@ No proposed SQL has been applied by this task. Files are executable review input
 | Core `STOCK_PAID_ACTIVE_CORE.PROPOSED.sql` | Core only | New immutable, revocable paid-session enrollment and append-only audit; current Owner, paid receipt and live Core-session checks; no replacement of pilot or existing-business authority |
 | Stock `STOCK_SELF_PAYMENT_RECEIVER.PROPOSED.sql` | Stock only | New private receipt/write-permit/settings objects; atomic paid admission/activation/context/restriction and server storage-bridge RPCs; exact baseline checks; preserved pilot guard and online assertion |
 
-The forward proposals fail on missing prerequisite objects or conflicting installed schema. They do not rewrite Registry origins or legacy subscription contracts. Inspect the SQL object inventory and candidate source fingerprint before authorizing any migration. Source push/CI authority has been exercised. Managed SQL writes, sandbox fixtures, payment activation and Production deployment remain outside that approval; completed exact read-only reviews grant no additional SQL scope.
+The installed forward proposals failed closed on missing prerequisite objects or conflicting installed schema. They do not rewrite Registry origins or legacy subscription contracts. The source-publication approval did not grant runtime authority; the subsequent 2 November go-ahead supplies the bounded closed-rollout authority recorded above. It does not authorize unrelated SQL objects, public sales, real charges, existing-customer changes or secret export. The additional index object is separately pending; completed exact read-only reviews retain their original scope.
 
 The historical `E1_QUARANTINE_PUBLIC_RELEASE_20261026.md` explicitly excluded billing/payment activation and active Stock access, and prohibited profile reactivation/test entitlements during that quarantine release. Its runtime approval is not reused for this paid flow. New acceptance authority must explicitly cover receipt-driven initial activation of approved fresh sandbox fixtures. Direct profile reactivation or manual test entitlement insertion is not part of this implementation.
 
-## Evidence levels
+## Evidence levels — updated 2 November
 
 Fresh final command results and source hashes are recorded in the adjacent evidence JSON. Evidence types are distinct:
 
@@ -102,20 +139,21 @@ Fresh final command results and source hashes are recorded in the adjacent evide
 | UNIT — PASS | Core: 1,229 local checks. Stock: 96 module and 284 script CI checks; 35 local PDF/action/download scenarios. Actual TypeScript modules, rendered React views, shared billing engine, native callback/CSRF behavior, signatures, request-correlated online decisions and negative controls; no provider requests occur. Historical source pins and adjacent-mutation rejection remain intact. |
 | PostgreSQL UNIT — PASS | 25 checks execute the actual proposals with the reviewed installed Stock assertion, native admission/revocation guards, exact Core OAuth-consent/session helper, ACL/RLS and rollback probes. Only cross-database HTTP transport is synthetic. Checks cover acknowledgment/enrollment requirements, live Owner/consent revocation, unavailable Core, idempotent admission/audit, identity conflicts and exact baseline/trigger drift rejection. This is not managed Supabase DB runtime or gateway integration. |
 | INTEGRATION — NOT_EXECUTED | Real Midtrans sandbox, cross-deployment delivery and hosted recovery require applicable execution authority. |
-| DB RUNTIME — NOT_EXECUTED (behavior) | All approved baseline, Stock dependency and Core active dependency metadata reads completed on 1 November. Managed self-payment migrations and behavioral compatibility tests have not been executed. |
-| BROWSER UAT — NOT_EXECUTED (hosted) | Hosted customer journey has not been executed. Historical local inert fixtures were inspected at 1440×1000 and 390×844; checkout showed no horizontal overflow and a 51px payment button; paid-pending showed no payment button. The mobile Company selector used a 16px font and 48px control; payment remained absent until a Company was selected. This is synthetic rendering evidence only. |
-| PRODUCTION — NOT_EXECUTED | No write, migration, deployment, real payment or sales activation. Read-only deployment metadata is not Production acceptance. |
+| DB RUNTIME — PASS (closed installation only) | Three exact migrations installed; 36 function bodies, 11 forced-RLS private tables, restricted grants, retained guards and disabled/empty task state verified. Paid activation and operational behavior remain NOT_EXECUTED. The additional intent index is pending; four disposable checks do not establish its managed installation. |
+| HTTP SMOKE — PASS (anonymous only) | 12/12 checks on the promoted applications; closed activation, public login/quotes and sign-in gating. Authenticated financial negatives remain NOT_EXECUTED. Initial harness failure and corrected scope are retained above. |
+| BROWSER UAT — PARTIAL | Nine anonymous return checks and public Store DOM at desktop/390px pass, with Stock login DOM checks. Fresh paid journeys remain NOT_EXECUTED. Desktop/mobile screenshot capture is BLOCKED by the fresh tool errors above; no visual/mobile acceptance claim is made. |
+| PRODUCTION — CLOSED FOUNDATION VERIFIED | Three disabled migrations and exact-source Stock/Core deployments are installed/promoted at the recorded IDs. No test account, charge, paid activation or sales enablement was performed by this rollout. Full commercial paid acceptance is NOT_EXECUTED. |
 
 The 30 October local screenshot attempt was blocked because Playwright rejected the required Temp destination, and computer-use initialization failed with `failed to write kernel assets ... os error 3`. Those are historical tool observations, not a fresh diagnosis of current capability. No alternate path bypassed the restriction. No mobile screenshot was retained; mobile visual acceptance and full hosted browser UAT remain open and require a fresh capability check within their authorized scope.
 
-## Remaining acceptance and release gates
+## Remaining acceptance and release gates — updated 2 November
 
-1. Both dependency reviews and the local receiver successor are complete. Review the exact forward object inventory, candidate fingerprint and installation preconditions before authorizing a managed migration. Preserve online authorization, pilot lifecycle, native mapping, revocation and audit; do not replay the installed atomic payment proposal.
-2. Review and authorize the exact forward objects and safe fixture scope in a named environment. Deploy reviewed receivers before enabling the corresponding sender/runtime gates. Verify actual candidate source provenance and release protections before deployment. The passing draft source PRs do not authorize merging or deploying them.
+1. The three disabled migrations and closed Stock/Core deployments are complete. Resolve the additional intent-plan covering index under its exact-object boundary. Preserve online authorization, pilot lifecycle, native mapping, revocation and audit; do not replay any installed proposal or historical migration.
+2. Establish controlled verification inboxes and the exact fresh synthetic Company/resource/native identity cohort before sandbox activation. Confirm sandbox provider mode and fixed-origin compatibility without exporting secrets. Verify contained pilot-mode retirement/current applicability before enabling the independently gated paid path; preserve all retained pilot and existing-business history. Public catalog gates remain closed.
 3. Complete both fresh verified-account journeys, Company preparation, sandbox payment, activation, Stock access and authorized invoice history. Enroll only the exact approved synthetic Company/resource identities; retire cohort eligibility afterward while retaining audit and paid records.
 4. Run real HTTP/cookie and browser checks at desktop and 390px, including recovery, cancellation, expiry, duplicates, forged callbacks, amount/mode mismatch, Owner/member revocation and cross-tenant denial. Verify actual Basic inventory operations, Pro purchasing/finance, one/three seats, excluded features, legacy annual renewals and unchanged LMS behavior.
 5. Confirm applicable customer terms before public selling: final tax/setup treatment, cancellation/refund policy, support and usage commitments, actual trial scope, privacy/terms links, provider readiness and the recovery timing above. This implementation does not invent or approve commercial/legal terms.
-6. Authorize Stock sales separately only after the security, commercial and runtime gates pass. Do not activate LMS offers as part of this release.
+6. Resolve the fresh screenshot output/capture limitation through an authorized tool path before claiming visual/mobile acceptance. Authorize Stock sales separately only after security, commercial and runtime gates pass. Do not activate LMS offers as part of this release.
 
 Current dependency applicability was checked after GitHub reported three Stock alerts: dev-only Zod 4.4.3 through the ESLint toolchain, and root PostCSS 8.5.15 through Tailwind's build tooling. Next's separate bundled PostCSS is 8.5.23. No application imports or demonstrated self-payment runtime path were found. The development/build-tool advisories remain open for release review; no unrelated dependency upgrade was made. Details and advisory links are in `stock-self-payment-evidence.json`. This is an applicability observation, not a dependency-security PASS.
 

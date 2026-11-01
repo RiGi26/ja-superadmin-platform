@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-01T16:29:04.498Z",
-  "status": "SOURCE_PR_CI_VERIFIED_MANAGED_ACCEPTANCE_AND_RELEASE_PENDING",
+  "recordedAt": "2026-11-01T23:18:49.943Z",
+  "status": "CLOSED_PRODUCTION_FOUNDATION_DEPLOYED_PAID_ACCEPTANCE_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -12,7 +12,7 @@
     "stockNext": "16.4.1",
     "node": "v22.22.0"
   },
-  "productionChanged": false,
+  "productionChanged": true,
   "static": {
     "core": {
       "types": "PASS",
@@ -83,11 +83,11 @@
       "scope": "Includes paid storage denial before RPC/blob access; original tenant/path/hash/audit controls retained. No provider Storage, DB runtime or browser acceptance."
     }
   },
-  "integration": "NOT_EXECUTED: gateway, cross-deployment delivery and recovery acceptance require separate applicable authority",
-  "managedDatabaseRuntime": "All approved baseline, Stock dependency and Core active dependency metadata reviews COMPLETE. No migration or behavioral self-payment runtime executed.",
-  "hostedBrowserUat": "NOT_EXECUTED: fresh-account purchase, hosted HTTP/cookie and desktop/mobile visual acceptance remain open",
-  "mobileScreenshots": "NOT_EXECUTED: no retained mobile screenshot; historical local output-root/tool failures require a fresh capability check when hosted UAT is authorized",
-  "productionAcceptance": "NOT_EXECUTED; no Production mutation, payment, deployment or sales enablement",
+  "integration": "NOT_EXECUTED: real sandbox gateway, cross-deployment paid delivery/recovery and operational paid sessions still require established verified fixture and finite runtime prerequisites.",
+  "managedDatabaseRuntime": "PASS for exact closed installation, function-body/ACL/forced-RLS verification and empty task state after smoke checks. Paid behavior NOT_EXECUTED.",
+  "hostedBrowserUat": "PARTIAL: nine anonymous return-path checks and Store DOM at desktop/390px pass; Stock login DOM checked. Fresh paid journeys NOT_EXECUTED; screenshots BLOCKED by allowed-root restriction and disabled alternate local browser.",
+  "mobileScreenshots": "BLOCKED_20261102: Playwright rejects required Temp path as outside allowed roots; alternate browser reports Local browser use is disabled in Work settings. No path or protection restriction was bypassed.",
+  "productionAcceptance": "CLOSED_FOUNDATION_ONLY: three disabled migrations and exact-source Stock/Core deployments verified. Public sales, paid runtime and real charges remain off; full paid acceptance is not claimed.",
   "rawLogsLocation": "C:/Users/61140/AppData/Local/Temp/Codex/stock-self-payment-20261030/scratchpad",
   "sourceFiles": [
     {
@@ -3566,7 +3566,6 @@
       "system": "core",
       "file": "docs/pricing/STOCK_SELF_PAYMENT_CORE.PROPOSED.sql",
       "sha256": "891e3520bac6d24afa0e57627ae6c697742f60b50952105e1c89d517aac220e7",
-      "migrationReady": false,
       "objects": [
         {
           "kind": "SCHEMA",
@@ -3798,13 +3797,18 @@
           "name": "public.stock_billing_paid_access_context",
           "replaces": false
         }
-      ]
+      ],
+      "migrationReadyAtSourceReview": false,
+      "installation": {
+        "status": "INSTALLED_DISABLED_DO_NOT_REPLAY",
+        "version": "20261101224842",
+        "name": "stock_self_payment_core_closed_20261102"
+      }
     },
     {
       "system": "core",
       "file": "docs/pricing/STOCK_PAID_ACTIVE_CORE.PROPOSED.sql",
       "sha256": "e380d741c06ce36780db099061b1818a60e46b6752a3d7b2c26377d916ebde1a",
-      "migrationReady": false,
       "objects": [
         {
           "kind": "TABLE",
@@ -3881,13 +3885,18 @@
           "name": "public.stock_billing_active_authorize",
           "replaces": false
         }
-      ]
+      ],
+      "migrationReadyAtSourceReview": false,
+      "installation": {
+        "status": "INSTALLED_DISABLED_DO_NOT_REPLAY",
+        "version": "20261101224847",
+        "name": "stock_paid_active_core_closed_20261102"
+      }
     },
     {
       "system": "stock",
       "file": "docs/pricing/STOCK_SELF_PAYMENT_RECEIVER.PROPOSED.sql",
       "sha256": "580246a6785ba35cda202903c92559398971f5bfd39326da0e8b43c5b000b595",
-      "migrationReady": false,
       "objects": [
         {
           "kind": "SCHEMA",
@@ -3979,14 +3988,20 @@
           "name": "public.stock_billing_storage_bridge_allowed",
           "replaces": false
         }
-      ]
+      ],
+      "migrationReadyAtSourceReview": false,
+      "installation": {
+        "status": "INSTALLED_DISABLED_DO_NOT_REPLAY",
+        "version": "20261101224850",
+        "name": "stock_self_payment_receiver_closed_20261102"
+      }
     }
   ],
   "review": {
     "specCompliance": "Source implementation verified against the approved purchase-to-activation plan; managed acceptance remains incomplete",
     "quality": "Fresh scoped STATIC and offline UNIT PASS; installed private access functions and pilot guard body preserved; exact drift checks protect installation",
     "convergence": "NOT_REACHED: complete choose-to-active hosted journey not established",
-    "recommendedGovernanceStatus": "SOURCE_PR_CI_COMPLETE_NOT_AUTHORIZED_FOR_MANAGED_EXECUTION_OR_PUBLIC_SALES",
+    "recommendedGovernanceStatus": "CLOSED_FOUNDATION_DEPLOYED_PAID_ACCEPTANCE_PENDING",
     "findings": [
       "Approved Stock dependency review completed; immutable native admission, live online Core assertions, pilot isolation/revocation and append-only audit are mandatory",
       "Deployed r6 Core/r3 Stock application sources reconciled locally, including monthly-only upgrade correction and existing native/pilot protections",
@@ -4060,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Owner authority for the exact coordinated closed-sales receiver deployments, forward database migrations and bounded fresh-fixture sandbox acceptance; public selling remains a later gate",
+  "nextMaterialGate": "Resolve the exact additional intent-plan index, controlled fresh-account verification inboxes, finite Company/resource cohort and paid-runtime/pilot-isolation prerequisites, and screenshot evidence before sandbox acceptance. Public sales remain a later gate.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -4147,5 +4162,1962 @@
       "https://github.com/advisories/GHSA-fxqj-rqcc-2cmp",
       "https://github.com/advisories/GHSA-r28c-9q8g-f849"
     ]
+  },
+  "closedRollout20261102": {
+    "date": "2026-11-02",
+    "authority": {
+      "ownerMessage": "oke go a head",
+      "context": "Continuation of the next gate named in the preceding handoff: reviewed closed-sales receiver deployment, forward migrations and sandbox acceptance.",
+      "limits": "Three reviewed forward migration files and exact-source closed Stock/Core deployments. No default-branch merge, public sales, real charges, existing customer mutation or secret export. Fixture email verification/isolation must be established before sandbox activation."
+    },
+    "productionChanged": true,
+    "phase": "CLOSED_DATABASE_AND_APPLICATION_ROLLOUT_COMPLETE_PAID_ACCEPTANCE_PENDING",
+    "sourceRefs": {
+      "core": "e06640ab3bda598100368db46aabd696ac0fad4c",
+      "stock": "de90ae979c0d5eaef59e80a9b7af5d0307be8309"
+    },
+    "migrations": {
+      "core": [
+        {
+          "version": "20261101224842",
+          "name": "stock_self_payment_core_closed_20261102"
+        },
+        {
+          "version": "20261101224847",
+          "name": "stock_paid_active_core_closed_20261102"
+        }
+      ],
+      "stock": [
+        {
+          "version": "20261101224850",
+          "name": "stock_self_payment_receiver_closed_20261102"
+        }
+      ]
+    },
+    "readback": {
+      "core": {
+        "offers": [
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "price": 149000,
+            "active": false,
+            "forSale": false,
+            "periods": [
+              "monthly"
+            ]
+          },
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "price": 359000,
+            "active": false,
+            "forSale": false,
+            "periods": [
+              "monthly"
+            ]
+          }
+        ],
+        "tables": [
+          {
+            "rls": true,
+            "name": "accounts",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "active_sessions",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "deliveries",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "events",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "intents",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "sandbox_cohort",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "session_events",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "settings",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          }
+        ],
+        "settings": {
+          "enabled": false,
+          "paymentMode": "sandbox"
+        },
+        "triggers": [
+          {
+            "name": "stock_billing_invoice_guard",
+            "table": "subscription_invoices",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_issued_invoice_guard",
+            "table": "subscription_invoices",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_payment_outbox",
+            "table": "subscription_invoices",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_subscription_guard",
+            "table": "tenant_subscriptions",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_account_identity",
+            "table": "accounts",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_account_no_delete",
+            "table": "accounts",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_session_audit",
+            "table": "active_sessions",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_session_identity",
+            "table": "active_sessions",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_session_no_delete",
+            "table": "active_sessions",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_delivery_identity",
+            "table": "deliveries",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_delivery_no_delete",
+            "table": "deliveries",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_event_immutable",
+            "table": "events",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_cohort_identity",
+            "table": "sandbox_cohort",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_cohort_no_delete",
+            "table": "sandbox_cohort",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_billing_session_event_immutable",
+            "table": "session_events",
+            "schema": "stock_billing_private",
+            "enabled": "O"
+          }
+        ],
+        "functions": [
+          {
+            "args": "p_invoice uuid, p_receipt jsonb",
+            "name": "stock_billing_ack_activation",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "f13caf7b822a52d7c94b7cf6ca434fe3",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_core_subject uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone",
+            "name": "stock_billing_active_authorize",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "65c6582bf666470c2696aa331163c8c1",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_core_subject uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone, p_company uuid, p_instance uuid, p_core_session uuid, p_core_token_expires timestamp with time zone",
+            "name": "stock_billing_active_enroll",
+            "config": [
+              "search_path=\"\"",
+              "lock_timeout=1s"
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "ed9ef0ae53ff8b9e3ec63c0e008d7853",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_core_subject uuid, p_stock_subject uuid",
+            "name": "stock_billing_active_is_managed",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "270234364580759c8d0bfe520d01a018",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_tenant uuid",
+            "name": "stock_billing_claim_activation",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "952845331596833b7323ce449d498557",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_tenant uuid",
+            "name": "stock_billing_is_managed",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "a20b90d80fde441599fb9f9831b0ea3e",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "stock_billing_owned_workspaces",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "8434fd60bb4ed50a389d098003b272c2",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_company uuid, p_reservation uuid",
+            "name": "stock_billing_paid_access_context",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "fe5963aaaa7966d12490c3245a085182",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "stock_billing_pending_tenants",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "c487f3d3bf287a407ab932b160045b91",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_actor uuid, p_session uuid, p_auth_until timestamp with time zone, p_company uuid, p_reservation uuid, p_plan uuid",
+            "name": "stock_billing_prepare_account",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "4bb2cb561d0da61acfc1313f42744f3f",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "stock_billing_read_intent",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "44a631147b585c8a6c8b38cc6ea6203a",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_actor uuid, p_session uuid, p_auth_until timestamp with time zone, p_plan uuid, p_company uuid",
+            "name": "stock_billing_remember_intent",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "116c90180512c6c12687394982371762",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_tenant uuid, p_plan uuid",
+            "name": "stock_billing_sandbox_allowed",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "9a4f41871c4c62ca1fa0326c17e27737",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_plan uuid",
+            "name": "approved_plan",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "966ec88b22ae0e975f6cc9961000cf7b",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "audit_active_session",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "473f70e15e6c8746cc47880e040be6b5",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_company uuid, p_actor uuid",
+            "name": "current_owner",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "4132c87f721105380bfb7329ad19e042",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_core uuid, p_stock uuid, p_core_session uuid",
+            "name": "current_paid_authority",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "2fdaf4d77d005dc5303803c5c7a7eb6c",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "guard_active_session",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "2bd13ef53ccc6294bf90985250eddc17",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "guard_cohort",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "72201304570d8f40b3f05d10d439d444",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": false
+          },
+          {
+            "args": "",
+            "name": "guard_identity",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "c26a932e7db25a895d1dab9638134ae7",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": false
+          },
+          {
+            "args": "",
+            "name": "guard_invoice",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "35eb85a994a0e4a9c63f583715737c71",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "guard_issued_invoice",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "f8beecce16d6915e520cf4bfdd4468ae",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "guard_subscription",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "b10e089630b8b6b963f78aa7046eb74c",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "immutable",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "a5be8ba25c9652d70e0df59648d134cb",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": false
+          },
+          {
+            "args": "p_core uuid, p_stock uuid",
+            "name": "paid_creation_allowed",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "fbbf304020bfdc67b83e4d8f67f8d862",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "queue_activation",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "f8672c0ef93c6104db9fbe9beb3d62ce",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_actor uuid, p_session uuid, p_until timestamp with time zone",
+            "name": "require_service_actor",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_billing_private",
+            "bodyHash": "3a79b67fb287e7bbf28f18a9ea67662f",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          }
+        ],
+        "newTableCounts": {
+          "cohort": 0,
+          "events": 0,
+          "intents": 0,
+          "accounts": 0,
+          "sessions": 0,
+          "deliveries": 0,
+          "sessionEvents": 0
+        }
+      },
+      "stock": {
+        "tables": [
+          {
+            "rls": true,
+            "name": "receipts",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "settings",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          },
+          {
+            "rls": true,
+            "name": "write_permits",
+            "owner": "postgres",
+            "grants": "{postgres=arwdDxtm/postgres}",
+            "forcedRls": true
+          }
+        ],
+        "settings": {
+          "enabled": false,
+          "paymentMode": "sandbox"
+        },
+        "triggers": [
+          {
+            "name": "trg_audit_event_immutable",
+            "table": "audit_event",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "trg_audit_user_profile_change",
+            "table": "user_profile",
+            "schema": "public",
+            "enabled": "O"
+          },
+          {
+            "name": "active_stock_no_audit_edit",
+            "table": "audit",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "pilot_e1_history",
+            "table": "e1_pilot",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "pilot_e1_no_truncate",
+            "table": "e1_pilot",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "active_stock_no_subject_truncate",
+            "table": "subjects",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "active_stock_subject_audit",
+            "table": "subjects",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "active_stock_subject_guard",
+            "table": "subjects",
+            "schema": "stock_active_private",
+            "enabled": "O"
+          },
+          {
+            "name": "stock_paid_receipt_immutable",
+            "table": "receipts",
+            "schema": "stock_paid_private",
+            "enabled": "O"
+          }
+        ],
+        "functions": [
+          {
+            "args": "",
+            "name": "resolve_stock_context",
+            "config": [
+              "search_path=pg_catalog",
+              "row_security=on"
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "ddcf6ee220a4e63d7d80e3cbc3f6127f",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_payload jsonb",
+            "name": "stock_billing_activate_paid",
+            "config": [
+              "search_path=\"\"",
+              "lock_timeout=1s",
+              "statement_timeout=10s"
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "26bed046a9d78c77dd67f23d1b0a0c2c",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_company uuid, p_reservation uuid",
+            "name": "stock_billing_paid_context",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "964f482bf783b7d86279ddbf5f7381cc",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "stock_billing_storage_bridge_allowed",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,authenticated=X/postgres}",
+            "schema": "public",
+            "bodyHash": "5338f6ec89784aaf6343b966ea096004",
+            "anonExecute": false,
+            "authExecute": true,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "p_tenant uuid, p_body jsonb",
+            "name": "stock_billing_sync_restriction",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres,service_role=X/postgres}",
+            "schema": "public",
+            "bodyHash": "c3340eb07e4561dc12efb2e88fef4c34",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": true,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "guard_profile",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_e1_resource_private",
+            "bodyHash": "2b79cae8a822a1e955f2250b955dce34",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "immutable",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_paid_private",
+            "bodyHash": "d3f31c6950cf040074f306b74ee538ee",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": false
+          },
+          {
+            "args": "",
+            "name": "resolve_stock_context",
+            "config": [
+              "search_path=\"\""
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_paid_private",
+            "bodyHash": "ead7da922adbfbc7f0579ab3bf29cd9d",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          },
+          {
+            "args": "",
+            "name": "resolve_stock_context_internal",
+            "config": [
+              "search_path=pg_catalog",
+              "row_security=on"
+            ],
+            "grants": "{postgres=X/postgres}",
+            "schema": "stock_private",
+            "bodyHash": "ddcf6ee220a4e63d7d80e3cbc3f6127f",
+            "anonExecute": false,
+            "authExecute": false,
+            "serviceExecute": false,
+            "securityDefiner": true
+          }
+        ],
+        "newTableCounts": {
+          "receipts": 0,
+          "writePermits": 0
+        },
+        "privateActiveHashes": [
+          {
+            "hash": "ea6214f3e5eb4b8c31aa72b4df20e1ff",
+            "name": "assert_current"
+          },
+          {
+            "hash": "9b2432b82d92ee121c6b50ea16628f7a",
+            "name": "b64url"
+          },
+          {
+            "hash": "d02625cb86df3def9d10b133a1e9df0e",
+            "name": "e1_history"
+          },
+          {
+            "hash": "0c980ed42fe6e65ef2ab5dfd97d47908",
+            "name": "immutable_audit"
+          },
+          {
+            "hash": "d98ccd0abf49fc45776ea8e6b76341bf",
+            "name": "online_decision"
+          },
+          {
+            "hash": "d9140c12fac8fdbe5c9529576d7e40e1",
+            "name": "original_e1_stage"
+          },
+          {
+            "hash": "43d9ca958e9a0128bf671db1d1c0b0eb",
+            "name": "subject_audit"
+          },
+          {
+            "hash": "03d4afb24b12919a8b2ce5425ae00200",
+            "name": "subject_guard"
+          }
+        ]
+      }
+    },
+    "advisors": [
+      {
+        "system": "core",
+        "kind": "security",
+        "lints": [
+          {
+            "name": "rls_enabled_no_policy",
+            "title": "RLS Enabled No Policy",
+            "level": "INFO",
+            "facing": "EXTERNAL",
+            "categories": [
+              "SECURITY"
+            ],
+            "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+            "count": 26,
+            "findings": [
+              {
+                "detail": "Table \\`stock_billing_private.accounts\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "accounts",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.active_sessions\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "active_sessions",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.deliveries\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "deliveries",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.events\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.intents\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "intents",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.sandbox_cohort\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "sandbox_cohort",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.session_events\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "session_events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Table \\`stock_billing_private.settings\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "settings",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              }
+            ]
+          },
+          {
+            "name": "authenticated_security_definer_function_executable",
+            "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+            "level": "WARN",
+            "facing": "EXTERNAL",
+            "categories": [
+              "SECURITY"
+            ],
+            "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+            "count": 9,
+            "findings": [
+              {
+                "detail": "Function `public.stock_billing_owned_workspaces()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/stock_billing_owned_workspaces`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+                "metadata": {
+                  "name": "stock_billing_owned_workspaces",
+                  "schema": "public",
+                  "language": "sql",
+                  "arguments": "",
+                  "security_definer": true
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Function `public.stock_billing_paid_access_context(p_company uuid, p_reservation uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/stock_billing_paid_access_context`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+                "metadata": {
+                  "name": "stock_billing_paid_access_context",
+                  "schema": "public",
+                  "language": "sql",
+                  "arguments": "p_company uuid, p_reservation uuid",
+                  "security_definer": true
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              },
+              {
+                "detail": "Function `public.stock_billing_read_intent()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/stock_billing_read_intent`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+                "metadata": {
+                  "name": "stock_billing_read_intent",
+                  "schema": "public",
+                  "language": "sql",
+                  "arguments": "",
+                  "security_definer": true
+                },
+                "observed_at": "2026-11-01T22:50:52.993Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "system": "stock",
+        "kind": "security",
+        "lints": [
+          {
+            "name": "rls_enabled_no_policy",
+            "title": "RLS Enabled No Policy",
+            "level": "INFO",
+            "facing": "EXTERNAL",
+            "categories": [
+              "SECURITY"
+            ],
+            "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+            "count": 20,
+            "findings": [
+              {
+                "detail": "Table \\`stock_paid_private.receipts\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "receipts",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.940Z"
+              },
+              {
+                "detail": "Table \\`stock_paid_private.settings\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "settings",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.940Z"
+              },
+              {
+                "detail": "Table \\`stock_paid_private.write_permits\\` has RLS enabled, but no policies exist",
+                "metadata": {
+                  "name": "write_permits",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:52.940Z"
+              }
+            ]
+          },
+          {
+            "name": "authenticated_security_definer_function_executable",
+            "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+            "level": "WARN",
+            "facing": "EXTERNAL",
+            "categories": [
+              "SECURITY"
+            ],
+            "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+            "count": 17,
+            "findings": [
+              {
+                "detail": "Function `public.stock_billing_paid_context(p_company uuid, p_reservation uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/stock_billing_paid_context`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+                "metadata": {
+                  "name": "stock_billing_paid_context",
+                  "schema": "public",
+                  "language": "plpgsql",
+                  "arguments": "p_company uuid, p_reservation uuid",
+                  "security_definer": true
+                },
+                "observed_at": "2026-11-01T22:50:52.940Z"
+              },
+              {
+                "detail": "Function `public.stock_billing_storage_bridge_allowed()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/stock_billing_storage_bridge_allowed`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+                "metadata": {
+                  "name": "stock_billing_storage_bridge_allowed",
+                  "schema": "public",
+                  "language": "plpgsql",
+                  "arguments": "",
+                  "security_definer": true
+                },
+                "observed_at": "2026-11-01T22:50:52.940Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "system": "core",
+        "kind": "performance",
+        "lints": [
+          {
+            "name": "unindexed_foreign_keys",
+            "title": "Unindexed foreign keys",
+            "level": "INFO",
+            "facing": "EXTERNAL",
+            "categories": [
+              "PERFORMANCE"
+            ],
+            "description": "Identifies foreign key constraints without a covering index, which can impact database performance.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
+            "count": 8,
+            "findings": [
+              {
+                "detail": "Table \\`stock_billing_private.intents\\` has a foreign key \\`intents_plan_id_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+                "metadata": {
+                  "name": "intents",
+                  "type": "table",
+                  "schema": "stock_billing_private",
+                  "fkey_name": "intents_plan_id_fkey",
+                  "fkey_columns": [
+                    2
+                  ]
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              }
+            ]
+          },
+          {
+            "name": "unused_index",
+            "title": "Unused Index",
+            "level": "INFO",
+            "facing": "EXTERNAL",
+            "categories": [
+              "PERFORMANCE"
+            ],
+            "description": "Detects if an index has never been used and may be a candidate for removal.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index",
+            "count": 26,
+            "findings": [
+              {
+                "detail": "Index \\`stock_billing_account_owner_idx\\` on table \\`stock_billing_private.accounts\\` has not been used",
+                "metadata": {
+                  "name": "accounts",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_intent_company_idx\\` on table \\`stock_billing_private.intents\\` has not been used",
+                "metadata": {
+                  "name": "intents",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_active_subject_idx\\` on table \\`stock_billing_private.active_sessions\\` has not been used",
+                "metadata": {
+                  "name": "active_sessions",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_delivery_pending_idx\\` on table \\`stock_billing_private.deliveries\\` has not been used",
+                "metadata": {
+                  "name": "deliveries",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_delivery_plan_idx\\` on table \\`stock_billing_private.deliveries\\` has not been used",
+                "metadata": {
+                  "name": "deliveries",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_event_company_idx\\` on table \\`stock_billing_private.events\\` has not been used",
+                "metadata": {
+                  "name": "events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_event_actor_idx\\` on table \\`stock_billing_private.events\\` has not been used",
+                "metadata": {
+                  "name": "events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_event_invoice_idx\\` on table \\`stock_billing_private.events\\` has not been used",
+                "metadata": {
+                  "name": "events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_session_event_session_idx\\` on table \\`stock_billing_private.session_events\\` has not been used",
+                "metadata": {
+                  "name": "session_events",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              },
+              {
+                "detail": "Index \\`stock_billing_active_company_idx\\` on table \\`stock_billing_private.active_sessions\\` has not been used",
+                "metadata": {
+                  "name": "active_sessions",
+                  "type": "table",
+                  "schema": "stock_billing_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.160Z"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "system": "stock",
+        "kind": "performance",
+        "lints": [
+          {
+            "name": "unused_index",
+            "title": "Unused Index",
+            "level": "INFO",
+            "facing": "EXTERNAL",
+            "categories": [
+              "PERFORMANCE"
+            ],
+            "description": "Detects if an index has never been used and may be a candidate for removal.",
+            "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index",
+            "count": 115,
+            "findings": [
+              {
+                "detail": "Index \\`stock_paid_receipt_reservation_idx\\` on table \\`stock_paid_private.receipts\\` has not been used",
+                "metadata": {
+                  "name": "receipts",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.096Z"
+              },
+              {
+                "detail": "Index \\`stock_paid_receipt_tenant_idx\\` on table \\`stock_paid_private.receipts\\` has not been used",
+                "metadata": {
+                  "name": "receipts",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.096Z"
+              },
+              {
+                "detail": "Index \\`stock_paid_receipt_profile_idx\\` on table \\`stock_paid_private.receipts\\` has not been used",
+                "metadata": {
+                  "name": "receipts",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.096Z"
+              },
+              {
+                "detail": "Index \\`stock_paid_permit_profile_idx\\` on table \\`stock_paid_private.write_permits\\` has not been used",
+                "metadata": {
+                  "name": "write_permits",
+                  "type": "table",
+                  "schema": "stock_paid_private"
+                },
+                "observed_at": "2026-11-01T22:50:53.096Z"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "interpretation": {
+      "noPolicy": "Intentional deny-all direct table access: forced RLS, postgres-only ACLs and bounded reviewed RPCs.",
+      "authenticatedDefiners": "Intentional authenticated interfaces. Exact installed bodies, current native session and Owner/tuple predicates remain mandatory; not a blanket advisor-clean claim.",
+      "unusedIndexes": "New and empty tables; indexes retained.",
+      "missingIndex": "Core intents.plan_id FK lacks a covering index. Additional forward index requires the applicable exact-object authority before active acceptance; the three approved proposal bytes are now installed history and remain unchanged."
+    },
+    "sandboxJourneys": "NOT_EXECUTED: source/runtime switches remain off; controlled inbox verification and exact finite fixture/cohort prerequisites are pending.",
+    "deployments": {
+      "stock": {
+        "id": "dpl_8D9f94vmFPCyP1umQNZvEN3vnC5x",
+        "target": "production",
+        "state": "READY",
+        "source": "de90ae979c0d5eaef59e80a9b7af5d0307be8309",
+        "url": "https://webzoka-stock-platform-2p4im8c5b-rigi26s-projects.vercel.app",
+        "alias": "https://webzoka-stock-platform.vercel.app",
+        "aliasVerified": true
+      },
+      "core": {
+        "id": "dpl_39hnnjYRQvDqhiGe4b9kUMEwv8ji",
+        "target": "production",
+        "state": "READY",
+        "source": "e06640ab3bda598100368db46aabd696ac0fad4c",
+        "url": "https://ja-superadmin-platform-9vch4y9xr-rigi26s-projects.vercel.app",
+        "alias": "https://hub.webzoka.com",
+        "aliasVerified": true
+      },
+      "sequence": "Stock staged without alias, promoted, public closed receiver/login checked; then Core staged and promoted. Both canonical aliases were inspected afterward.",
+      "recoveryTargets": {
+        "core": "dpl_66HhhsgPQD3p6jgPTa5ryJ6aBTKA",
+        "stock": "dpl_BPPdu9YKqWpPhVDerk2brgji1EFC"
+      },
+      "defaultBranchMerge": "NOT_PERFORMED",
+      "protectionChange": "NONE",
+      "bypassCredentialCreation": "NONE",
+      "environmentValueExport": "NONE"
+    },
+    "installationVerification": {
+      "level": "DB RUNTIME — CLOSED INSTALLATION ONLY",
+      "functionBodies": 36,
+      "results": [
+        {
+          "system": "core",
+          "function": "stock_billing_private.immutable",
+          "bodyHash": "a5be8ba25c9652d70e0df59648d134cb",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_cohort",
+          "bodyHash": "72201304570d8f40b3f05d10d439d444",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_identity",
+          "bodyHash": "c26a932e7db25a895d1dab9638134ae7",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.current_owner",
+          "bodyHash": "4132c87f721105380bfb7329ad19e042",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.approved_plan",
+          "bodyHash": "966ec88b22ae0e975f6cc9961000cf7b",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.paid_creation_allowed",
+          "bodyHash": "fbbf304020bfdc67b83e4d8f67f8d862",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.require_service_actor",
+          "bodyHash": "3a79b67fb287e7bbf28f18a9ea67662f",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_sandbox_allowed",
+          "bodyHash": "9a4f41871c4c62ca1fa0326c17e27737",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_remember_intent",
+          "bodyHash": "116c90180512c6c12687394982371762",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_read_intent",
+          "bodyHash": "44a631147b585c8a6c8b38cc6ea6203a",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_prepare_account",
+          "bodyHash": "4bb2cb561d0da61acfc1313f42744f3f",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_subscription",
+          "bodyHash": "b10e089630b8b6b963f78aa7046eb74c",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_invoice",
+          "bodyHash": "35eb85a994a0e4a9c63f583715737c71",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_issued_invoice",
+          "bodyHash": "f8beecce16d6915e520cf4bfdd4468ae",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.queue_activation",
+          "bodyHash": "f8672c0ef93c6104db9fbe9beb3d62ce",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_owned_workspaces",
+          "bodyHash": "8434fd60bb4ed50a389d098003b272c2",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_claim_activation",
+          "bodyHash": "952845331596833b7323ce449d498557",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_ack_activation",
+          "bodyHash": "f13caf7b822a52d7c94b7cf6ca434fe3",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_pending_tenants",
+          "bodyHash": "c487f3d3bf287a407ab932b160045b91",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_is_managed",
+          "bodyHash": "a20b90d80fde441599fb9f9831b0ea3e",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_paid_access_context",
+          "bodyHash": "fe5963aaaa7966d12490c3245a085182",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.guard_active_session",
+          "bodyHash": "2bd13ef53ccc6294bf90985250eddc17",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.audit_active_session",
+          "bodyHash": "473f70e15e6c8746cc47880e040be6b5",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "stock_billing_private.current_paid_authority",
+          "bodyHash": "2fdaf4d77d005dc5303803c5c7a7eb6c",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_active_is_managed",
+          "bodyHash": "270234364580759c8d0bfe520d01a018",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_active_enroll",
+          "bodyHash": "ed9ef0ae53ff8b9e3ec63c0e008d7853",
+          "status": "PASS"
+        },
+        {
+          "system": "core",
+          "function": "public.stock_billing_active_authorize",
+          "bodyHash": "65c6582bf666470c2696aa331163c8c1",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "stock_paid_private.immutable",
+          "bodyHash": "d3f31c6950cf040074f306b74ee538ee",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "stock_e1_resource_private.guard_profile",
+          "bodyHash": "2b79cae8a822a1e955f2250b955dce34",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "public.stock_billing_activate_paid",
+          "bodyHash": "26bed046a9d78c77dd67f23d1b0a0c2c",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "stock_paid_private.resolve_stock_context",
+          "bodyHash": "ead7da922adbfbc7f0579ab3bf29cd9d",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "stock_private.resolve_stock_context_internal",
+          "bodyHash": "ddcf6ee220a4e63d7d80e3cbc3f6127f",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "public.resolve_stock_context",
+          "bodyHash": "ddcf6ee220a4e63d7d80e3cbc3f6127f",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "public.stock_billing_paid_context",
+          "bodyHash": "964f482bf783b7d86279ddbf5f7381cc",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "public.stock_billing_sync_restriction",
+          "bodyHash": "c3340eb07e4561dc12efb2e88fef4c34",
+          "status": "PASS"
+        },
+        {
+          "system": "stock",
+          "function": "public.stock_billing_storage_bridge_allowed",
+          "bodyHash": "5338f6ec89784aaf6343b966ea096004",
+          "status": "PASS"
+        }
+      ],
+      "settings": "DISABLED_SANDBOX",
+      "newTables": 11,
+      "forcedRls": "PASS",
+      "grants": "PASS",
+      "enabledTriggers": "PASS",
+      "emptyTaskData": "PASS",
+      "stockPrivateGuardsPreserved": "PASS",
+      "offersClosed": "PASS",
+      "paidBehavior": "NOT_EXECUTED"
+    },
+    "archives": [
+      {
+        "system": "stock",
+        "ref": "de90ae979c0d5eaef59e80a9b7af5d0307be8309",
+        "tree": "83d497c6e328ef86ef56c445725a2d7a3077c42b",
+        "archive": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-self-payment-20261030\\scratchpad\\closed-rollout-20261102\\stock-source-lf.zip",
+        "destination": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-self-payment-20261030\\scratchpad\\closed-rollout-20261102\\stock-source-lf",
+        "projectId": "prj_nTIID94EysP6VzpfeprqiK78ouN2",
+        "extraFile": ".vercel/project.json (non-secret existing project binding only)",
+        "verifiedFiles": 474
+      },
+      {
+        "system": "core",
+        "ref": "e06640ab3bda598100368db46aabd696ac0fad4c",
+        "tree": "4169132bfded225f1e57488bb45d8d4b1a1f2b2c",
+        "archive": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-self-payment-20261030\\scratchpad\\closed-rollout-20261102\\core-source-lf.zip",
+        "destination": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-self-payment-20261030\\scratchpad\\closed-rollout-20261102\\core-source-lf",
+        "projectId": "prj_Z8taL31maerKj0AXlz65OBO8Bs6o",
+        "extraFile": ".vercel/project.json (non-secret existing project binding only)",
+        "verifiedFiles": 417
+      }
+    ],
+    "http": {
+      "level": "ANONYMOUS_HTTP_CLOSED_ROLLOUT_SMOKE",
+      "recordedAt": "2026-11-01T23:12:49.254Z",
+      "pass": 12,
+      "fail": 0,
+      "authenticatedPurchaseJourney": "NOT_EXECUTED",
+      "authenticatedSelectorValidation": "NOT_EXECUTED",
+      "initialFailure": "closed-http-smoke-initial.json: six expectations incorrectly assumed page validation ran before proxy authentication; source confirmed TEST_HARNESS_DEFECT. No application change.",
+      "results": [
+        {
+          "name": "Stock receiver closed",
+          "url": "https://webzoka-stock-platform.vercel.app/api/billing/activate",
+          "method": "POST",
+          "status": 503,
+          "location": null,
+          "body": {
+            "error": "activation_closed"
+          },
+          "result": "PASS"
+        },
+        {
+          "name": "Stock login public",
+          "url": "https://webzoka-stock-platform.vercel.app/login",
+          "method": "GET",
+          "status": 200,
+          "location": null,
+          "result": "PASS"
+        },
+        {
+          "name": "Core quotes closed",
+          "url": "https://ja-superadmin-platform.vercel.app/api/public/stock-price-quotes",
+          "method": "GET",
+          "status": 200,
+          "location": null,
+          "body": {
+            "offerVersion": "basic-pro-2026-10-v1",
+            "salesEnabled": false,
+            "plans": [
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "platform": "stock",
+                "tier": "starter",
+                "tierDisplayName": "Basic",
+                "priceMonthly": 149000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "basic",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "1 akun operator aktif",
+                  "Pesanan dan katalog",
+                  "Invoice dan label pengiriman",
+                  "Stok, lot, opname, dan pemantauan kedaluwarsa"
+                ]
+              },
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+                "platform": "stock",
+                "tier": "pro",
+                "tierDisplayName": "Pro",
+                "priceMonthly": 359000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "pro",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "3 akun operator aktif",
+                  "Semua fitur Basic",
+                  "Pemasok dan purchase order",
+                  "Laporan keuangan dan arus kas"
+                ]
+              }
+            ]
+          },
+          "result": "PASS"
+        },
+        {
+          "name": "Hub quotes closed",
+          "url": "https://hub.webzoka.com/api/public/stock-price-quotes",
+          "method": "GET",
+          "status": 200,
+          "location": null,
+          "body": {
+            "offerVersion": "basic-pro-2026-10-v1",
+            "salesEnabled": false,
+            "plans": [
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "platform": "stock",
+                "tier": "starter",
+                "tierDisplayName": "Basic",
+                "priceMonthly": 149000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "basic",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "1 akun operator aktif",
+                  "Pesanan dan katalog",
+                  "Invoice dan label pengiriman",
+                  "Stok, lot, opname, dan pemantauan kedaluwarsa"
+                ]
+              },
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+                "platform": "stock",
+                "tier": "pro",
+                "tierDisplayName": "Pro",
+                "priceMonthly": 359000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "pro",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "3 akun operator aktif",
+                  "Semua fitur Basic",
+                  "Pemasok dan purchase order",
+                  "Laporan keuangan dan arus kas"
+                ]
+              }
+            ]
+          },
+          "result": "PASS"
+        },
+        {
+          "name": "Basic preserved through sign-in",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+          "result": "PASS"
+        },
+        {
+          "name": "Pro preserved through sign-in",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "result": "PASS"
+        },
+        {
+          "name": "Unknown plan gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=not-a-plan",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3Dnot-a-plan",
+          "result": "PASS"
+        },
+        {
+          "name": "Annual selector gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&period=annual",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26period%3Dannual",
+          "result": "PASS"
+        },
+        {
+          "name": "Price selector gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&amount=1",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26amount%3D1",
+          "result": "PASS"
+        },
+        {
+          "name": "Foreign platform gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a1001",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a1001",
+          "result": "PASS"
+        },
+        {
+          "name": "Invalid Company gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&company=not-a-company",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26company%3Dnot-a-company",
+          "result": "PASS"
+        },
+        {
+          "name": "Duplicate plan gated before anonymous access",
+          "url": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "method": "GET",
+          "status": 307,
+          "location": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26plan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "result": "PASS"
+        }
+      ]
+    },
+    "browser": {
+      "status": "PARTIAL_DOM_AND_NAVIGATION_ONLY",
+      "returnChecks": {
+        "pass": 9,
+        "fail": 0,
+        "results": [
+          {
+            "name": "basic",
+            "url": "https://hub.webzoka.com/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "next": "/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "signup": "/hub/signup?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "result": "PASS"
+          },
+          {
+            "name": "pro",
+            "url": "https://hub.webzoka.com/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "next": "/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "signup": "/hub/signup?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "result": "PASS"
+          },
+          {
+            "name": "annual",
+            "url": "https://hub.webzoka.com/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26period%3Dannual",
+            "next": null,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "name": "price",
+            "url": "https://hub.webzoka.com/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001%26amount%3D1",
+            "next": null,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "name": "unknown",
+            "url": "https://hub.webzoka.com/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3Dnot-a-plan",
+            "next": null,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "name": "external",
+            "url": "https://hub.webzoka.com/login?next=https%3A%2F%2Fexample.com%2Fcheckout",
+            "next": null,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "type": "rejectedContinuation",
+            "next": "/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a1001",
+            "hiddenNextAbsent": true,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "type": "rejectedContinuation",
+            "next": "/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&company=not-a-company",
+            "hiddenNextAbsent": true,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          },
+          {
+            "type": "rejectedContinuation",
+            "next": "/hub/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "hiddenNextAbsent": true,
+            "signup": "/hub/signup",
+            "result": "PASS"
+          }
+        ]
+      },
+      "store": [
+        {
+          "type": "publicStore",
+          "url": "https://hub.webzoka.com/store#stock-packages",
+          "width": 1440,
+          "height": 1000,
+          "scrollWidth": 1425,
+          "hasBasicPrice": true,
+          "hasProPrice": true,
+          "consultation": [
+            {
+              "text": "Konsultasi paket Basic\n— membuka WhatsApp di tab baru",
+              "height": 48,
+              "width": 464.8000183105469
+            },
+            {
+              "text": "Konsultasi paket Pro\n— membuka WhatsApp di tab baru",
+              "height": 48,
+              "width": 464.8000183105469
+            }
+          ],
+          "paidCtas": [],
+          "hasClosedNotice": true
+        },
+        {
+          "type": "publicStore",
+          "url": "https://hub.webzoka.com/store#stock-packages",
+          "width": 390,
+          "height": 844,
+          "scrollWidth": 375,
+          "hasBasicPrice": true,
+          "hasProPrice": true,
+          "consultation": [
+            {
+              "text": "Konsultasi paket Basic\n— membuka WhatsApp di tab baru",
+              "height": 48,
+              "width": 295.6000061035156
+            },
+            {
+              "text": "Konsultasi paket Pro\n— membuka WhatsApp di tab baru",
+              "height": 48,
+              "width": 295.6000061035156
+            }
+          ],
+          "paidCtas": [],
+          "hasClosedNotice": true
+        }
+      ],
+      "stockLogin": {
+        "desktop": {
+          "width": 1440,
+          "scrollWidth": 1440
+        },
+        "mobile": {
+          "width": 390,
+          "scrollWidth": 390,
+          "inputFontSize": "16px",
+          "inputHeight": 53.6,
+          "revealButtonSize": 44,
+          "loginButtonHeight": 54.625
+        }
+      },
+      "screenshots": {
+        "status": "BLOCKED",
+        "playwright": "Temp scratch path rejected as outside allowed roots; root/alternate-path restriction was not bypassed",
+        "alternateBrowser": "Local browser use is disabled in Work settings"
+      },
+      "freshVerifiedPurchaseJourney": "NOT_EXECUTED",
+      "sessionIsolation": "The original MCP context already had a Core session and was not used as fresh-account evidence. Separate anonymous contexts were created and closed for return-path and Store checks; the existing session was not cleared."
+    },
+    "indexCorrection": {
+      "status": "PENDING_EXACT_OBJECT_APPROVAL",
+      "file": "docs/pricing/STOCK_SELF_PAYMENT_INTENT_PLAN_INDEX.PROPOSED.sql",
+      "sha256": "0ef26405120958d8d3f56ef9478004a6b7c203708dec550f2d3433fa3dde405e",
+      "target": "hxhusfkrlafxdnyasmsu",
+      "object": "stock_billing_private.stock_billing_intent_plan_idx",
+      "probe": {
+        "level": "DISPOSABLE_POSTGRESQL_UNIT",
+        "pass": 4,
+        "fail": 0,
+        "managedExecution": "NOT_EXECUTED",
+        "results": [
+          {
+            "scenario": "closed-empty",
+            "result": "PASS",
+            "expected": "creates covering index"
+          },
+          {
+            "scenario": "enabled",
+            "result": "PASS",
+            "expected": "rejects without new index or overwrite"
+          },
+          {
+            "scenario": "nonempty",
+            "result": "PASS",
+            "expected": "rejects without new index or overwrite"
+          },
+          {
+            "scenario": "existing-index",
+            "result": "PASS",
+            "expected": "rejects without new index or overwrite"
+          }
+        ]
+      },
+      "applied": false
+    },
+    "finalClosedState": {
+      "core": {
+        "enabled": false,
+        "mode": "sandbox",
+        "intents": 0,
+        "accounts": 0,
+        "cohort": 0,
+        "deliveries": 0,
+        "events": 0,
+        "sessions": 0,
+        "sessionEvents": 0
+      },
+      "stock": {
+        "enabled": false,
+        "mode": "sandbox",
+        "receipts": 0,
+        "writePermits": 0
+      },
+      "observedAfterHttpAndBrowserSmoke": true
+    },
+    "sourceFollowup": "Provider-issued migration history and handoff/index proposal only; deployed application/configuration/proposal bytes remain the exact source refs above. No automatic deployment is triggered by the task branch."
   }
 }
