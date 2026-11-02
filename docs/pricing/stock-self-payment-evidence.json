@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-02T02:31:21.744Z",
-  "status": "CLOSED_AUTHENTICATED_CHECKOUT_VERIFIED_PRO_RECOVERY_PENDING",
+  "recordedAt": "2026-11-02T12:56:19.221Z",
+  "status": "BOTH_FIXTURE_SIGNINS_VERIFIED_PRO_WORKSPACE_RESERVED_READINESS_REVIEW_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -4075,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Recover and verify the same Pro fixture after provider throttling permits, then establish exact Company/resource identity, pilot retirement and sandbox prerequisites before runtime enablement. Public sales remain closed.",
+  "nextMaterialGate": "Approve the exact read-only readiness SQL and three named non-secret provider switches, then prepare controlled runtime enablement using verified mode/isolation evidence. No payment enablement is authorized by those reads.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -6521,5 +6521,96 @@
     "companyCohortInvoicePaymentActivationCreated": false,
     "providerSettingsChanged": false,
     "productionDeploymentChanged": false
+  },
+  "proRecoveryRetry20261102": {
+    "authority": "Owner asked whether recovery after cooldown could now be run; earlier normal recovery authority remains applicable.",
+    "requestStartedAt": "2026-11-02T02:52:30.566Z",
+    "checkedAt": "2026-11-02T02:53:39.127Z",
+    "normalRequestCount": 1,
+    "fixtureTag": "+stock-pro-20261102",
+    "sameBrowserAndMailboxIdentity": true,
+    "genericAcknowledgment": true,
+    "scopedSearchAfterOneRefresh": "Only the older signup confirmation conversation; no recovery email observed.",
+    "providerLogQuery": false,
+    "currentRateLimitDiagnosis": "UNCONFIRMED; prior approved window recorded a rate limit.",
+    "settingsChanged": false,
+    "credentialOrFinancialActions": false,
+    "conservativeNextAttemptWib": "After 10:15 on 2 November; exact provider quota/reset unknown."
+  },
+  "proRecoveryDelivered20261102": {
+    "authority": "Owner go ahead; existing same-account normal recovery authorization",
+    "requestStartedAt": "2026-11-02T07:38:57.024Z",
+    "receivedWib": "14:38",
+    "fixtureTag": "+stock-pro-20261102",
+    "initialOpenPasswordPageIdentity": "Basic, confirmed through native Account; not used as Pro proof",
+    "singleNormalRequest": true,
+    "mailboxIdentityMatched": true,
+    "exactProRecipientMatched": true,
+    "expectedCoreRecoveryAndHubCallbackVerified": true,
+    "newPasswordFormRendered": true,
+    "nativeAccountIdentity": "Stock Sandbox Pro 20261102",
+    "nativeAccountVerifiedEmailDisplayed": true,
+    "passwordEntry": "OWNER_REPORTED_SAVED",
+    "passwordSignIn": "PASS",
+    "screenshot": "Session scratchpad: closed-rollout-20261102/pro-password-handoff-1438.jpg; empty form only",
+    "providerLogQueryOrAuthSql": false,
+    "sourceOrEvidenceContainsRecoveryUrlOrToken": false,
+    "newCredentialEnteredByAgent": false,
+    "companyCohortInvoicePaymentActivationCreated": false,
+    "deploymentMigrationOrProviderSettingsChanged": false,
+    "publicSalesAndPaidRuntime": "CLOSED",
+    "savedResultPath": "/hub/login?message=password_updated",
+    "checkoutPlan": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+    "checkoutReturnPreserved": true,
+    "signInHandoffScreenshot": "Session scratchpad: closed-rollout-20261102/pro-checkout-signin-handoff.jpg"
+  },
+  "proWorkspaceContinuation20261102": {
+    "authority": "Approved purchase-to-activation task and fresh-fixture workspace preparation; Owner reports Pro signed in successfully.",
+    "fixtureTag": "+stock-pro-20261102",
+    "passwordSignIn": "PASS",
+    "nativeAccountIdentity": "Stock Sandbox Pro 20261102",
+    "verifiedEmailDisplayed": true,
+    "selectedProPriceMonthly": 359000,
+    "selectedProOperatorsDisplayed": 3,
+    "paymentControlPresent": false,
+    "workspace": {
+      "method": "One normal guarded E1 new-workspace form submission",
+      "name": "Stock Sandbox Pro 20261102",
+      "companyId": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+      "reservationId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+      "commandId": "234cc0a8-3bed-40c5-a12d-99655f2c8b7b",
+      "result": "Workspace tersedia, Stock belum aktif",
+      "sameSelectorReload": "PASS",
+      "replacementCreated": false,
+      "stockConnection": "BLOCKED_BY_CLOSED_PAID_RUNTIME_ORIGIN_GATE",
+      "oauthConsentReached": false,
+      "directManagedSqlRead": "NOT_EXECUTED"
+    },
+    "gateEvidence": {
+      "source": "Stock src/lib/e1-native-http.ts: Hub origin requires paid runtime enabled",
+      "sourceFlag": false,
+      "focusedCommand": "node --test --test-name-pattern='native start permits exactly' src/lib/stock-paid.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "scope": "Exact Hub closed/open and forged-origin controls; no provider access",
+      "remediation": "NONE; retained release protection"
+    },
+    "browserReconnect": {
+      "oldIdUnavailable": "2",
+      "currentIabId": "4",
+      "authenticatedReservationRetained": true
+    },
+    "screenshots": [
+      "pro-authenticated-closed-checkout.jpg",
+      "pro-workspace-reserved.jpg",
+      "pro-stock-connection-closed.jpg",
+      "pro-workspace-reserved-verified.jpg"
+    ],
+    "productionChanges": "One new synthetic Core Company/reservation and native ownership/audit through the normal application",
+    "financialMutations": false,
+    "deploymentMigrationOrProviderSettingsChanged": false,
+    "basicWorkspaceCreated": false,
+    "publicSalesAndPaidRuntime": "CLOSED",
+    "newReadinessScope": "PENDING_OWNER_APPROVAL; two exact SQL files and three named non-secret provider switches only"
   }
 }
