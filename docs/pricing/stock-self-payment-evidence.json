@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-01T23:41:06.276Z",
-  "status": "CLOSED_FOUNDATION_INDEX_VERIFIED_EMAIL_VERIFICATION_PENDING",
+  "recordedAt": "2026-11-02T02:01:04.902Z",
+  "status": "CLOSED_CHECKOUT_CORRECTION_DEPLOYED_FIXTURE_RECOVERY_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -4075,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Await Owner verification of both requested signup emails in their matching browser contexts, then prove fresh native identities and prepare exact finite-cohort/runtime prerequisites. Public selling remains a later gate.",
+  "nextMaterialGate": "Recover the same fixture sessions through Owner-approved normal recovery, retest authenticated checkout and complete Pro confirmation before finite-cohort/paid-runtime acceptance. Public sales remain closed.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -6179,5 +6179,64 @@
         "activation": false
       }
     }
+  },
+  "verifiedAccountContinuation20261102": {
+    "authority": [
+      "Both verified",
+      "continue",
+      "Approve two-fixture status check",
+      "Cannot find Pro email"
+    ],
+    "fixtureReadScope": "Two exact fixture emails only; grouped label/count, email confirmation, active ban/deletion flags and creation time. No passwords, tokens, sessions or identity payloads.",
+    "fixtureStatus": {
+      "basic": {
+        "count": 1,
+        "confirmed": true,
+        "activeBan": false,
+        "deleted": false,
+        "createdAt": "2026-11-01T23:36:52.084761Z",
+        "protectedAccountRendered": true
+      },
+      "pro": {
+        "count": 1,
+        "confirmed": false,
+        "activeBan": false,
+        "deleted": false,
+        "createdAt": "2026-11-01T23:37:42.863161Z",
+        "nativeLogin": "GENERIC_REJECTION"
+      }
+    },
+    "defect": {
+      "cause": "Framework host-match rewrite adds host query rejected by strict checkout allowlist",
+      "correction": "Reuse existing hubE1RewriteQuery before validation; financial and foreign selectors still deny",
+      "regressionBefore": "FAIL: REDIRECT:/hub/store#stock-packages",
+      "focusedPass": 9,
+      "focusedFail": 0,
+      "types": "PASS",
+      "scopedLint": "PASS",
+      "source": "3b32a44f763bab6df52719d61d879455f28a0f53",
+      "ci": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41375012572/job/125053232642"
+    },
+    "deployment": {
+      "id": "dpl_4hikyTtzpJ2azxAUf3PWiXQoQWc3",
+      "url": "https://ja-superadmin-platform-4b3azfvsq-rigi26s-projects.vercel.app",
+      "state": "PRODUCTION_READY_PROMOTED",
+      "verifiedSourceFiles": 422,
+      "anonymousHttpPass": 12,
+      "anonymousHttpFail": 0,
+      "authenticatedRetest": "NOT_EXECUTED_AFTER_CONTEXT_LOSS"
+    },
+    "browserLoss": {
+      "error": "Target page, context or browser has been closed",
+      "freshContexts": 1,
+      "retainedFixtures": 0,
+      "page": "about:blank",
+      "credentialsPersisted": false,
+      "resendSubmitted": false,
+      "passwordReset": false,
+      "replacementAccounts": false,
+      "nextStep": "Owner normal recovery choice pending; user enters passwords privately"
+    },
+    "boundaries": "No Company, cohort, invoice, charge or paid activation. Public sales and paid-runtime switches remain off."
   }
 }
