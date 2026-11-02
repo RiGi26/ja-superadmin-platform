@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-02T02:01:04.902Z",
-  "status": "CLOSED_CHECKOUT_CORRECTION_DEPLOYED_FIXTURE_RECOVERY_PENDING",
+  "recordedAt": "2026-11-02T02:31:21.744Z",
+  "status": "CLOSED_AUTHENTICATED_CHECKOUT_VERIFIED_PRO_RECOVERY_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -4075,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Recover the same fixture sessions through Owner-approved normal recovery, retest authenticated checkout and complete Pro confirmation before finite-cohort/paid-runtime acceptance. Public sales remain closed.",
+  "nextMaterialGate": "Recover and verify the same Pro fixture after provider throttling permits, then establish exact Company/resource identity, pilot retirement and sandbox prerequisites before runtime enablement. Public sales remain closed.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -6238,5 +6238,288 @@
       "nextStep": "Owner normal recovery choice pending; user enters passwords privately"
     },
     "boundaries": "No Company, cohort, invoice, charge or paid activation. Public sales and paid-runtime switches remain off."
+  },
+  "mailboxRecoveryContinuation20261102": {
+    "date": "2026-11-02",
+    "timezone": "Asia/Jakarta",
+    "authority": [
+      "Use normal account recovery for both",
+      "Approve recovery aggregate checks",
+      "Owner opened supplied Gmail in Codex browser",
+      "continue"
+    ],
+    "logReview": {
+      "target": "hxhusfkrlafxdnyasmsu",
+      "windowStart": "2026-11-02T01:06:18.000Z",
+      "windowEnd": "2026-11-02T02:06:18.000Z",
+      "recoveryHttp": [
+        {
+          "status": 200,
+          "events": 1
+        }
+      ],
+      "authCategories": [
+        {
+          "category": "other_recovery_event",
+          "events": 1
+        }
+      ],
+      "scope": "The two exact approved aggregate queries, executed once; no raw logs or customer fields.",
+      "limit": "Does not identify a fixture or prove inbox delivery; no matched errors does not prove absence of errors."
+    },
+    "mailbox": {
+      "browser": "Owner supplied in-app Gmail tab",
+      "accountMatched": true,
+      "browserAccess": "AVAILABLE_ON_CONTINUATION",
+      "baseRecovery": {
+        "receivedWib": "09:05",
+        "recipient": "Base account, not a test alias"
+      },
+      "confirmations": {
+        "basic": {
+          "receivedWib": "06:36",
+          "fixtureTag": "+stock-basic-20261102"
+        },
+        "pro": {
+          "receivedWib": "06:37",
+          "fixtureTag": "+stock-pro-20261102",
+          "body": "Trimmed in grouped conversation"
+        },
+        "confirmationLinkConsumed": false
+      }
+    },
+    "basicRecovery": {
+      "requestCount": 1,
+      "method": "Normal Hub password-recovery form in the same in-app browser",
+      "fixtureTag": "+stock-basic-20261102",
+      "receivedWib": "09:13",
+      "recipientMatched": true,
+      "expectedCoreAndCallbackVerified": true,
+      "finalPath": "/update-password",
+      "emptyPasswordFormRendered": true,
+      "status": "OWNER_PASSWORD_ENTRY_PENDING",
+      "newCredentialEnteredByAgent": false,
+      "tokensOrRecoveryUrlsPersisted": false,
+      "screenshot": "Session scratchpad: closed-rollout-20261102/basic-password-handoff.jpg; empty fields only"
+    },
+    "proRecovery": "NOT_STARTED_WHILE_BASIC_HANDOFF_PENDING",
+    "acceptance": {
+      "basicDeliveryAndPasswordForm": "BROWSER_UAT_PASS",
+      "basicPasswordSaved": "NOT_EXECUTED",
+      "authenticatedCheckoutRetest": "NOT_EXECUTED",
+      "proConfirmationAndRecovery": "NOT_EXECUTED",
+      "paidJourneys": "NOT_EXECUTED"
+    },
+    "mutations": "One authorized Basic recovery request and link consumption; no application/provider settings, Company, cohort, invoice, payment or activation change."
+  },
+  "basicSavedProRecoveryContinuation20261102": {
+    "date": "2026-11-02",
+    "timezone": "Asia/Jakarta",
+    "authority": [
+      "Basic password saved",
+      "Approve fresh recovery counts"
+    ],
+    "basicRecovery": {
+      "ownerReportedSaved": true,
+      "retainedTabPath": "/hub/login?message=password_updated",
+      "evidenceLevel": "Owner report and browser tab metadata; fresh authenticated session remains unverified",
+      "newCredentialReadOrEnteredByAgent": false
+    },
+    "browser": {
+      "retainedUserTabReadError": "browser.user is unavailable",
+      "sameBrowserInventoryWorks": true,
+      "newAgentTabsWork": true,
+      "browserOrRealmSubstituted": false
+    },
+    "proRecovery": {
+      "fixtureTag": "+stock-pro-20261102",
+      "normalRequestCount": 1,
+      "genericAcknowledgment": true,
+      "scopedMailboxSearch": "Only older grouped confirmation conversation; no recovery message observed after one refresh",
+      "repeatSend": false,
+      "confirmed": "NOT_RETESTED"
+    },
+    "approvedRecoveryAggregates": {
+      "target": "hxhusfkrlafxdnyasmsu",
+      "windowStart": "2026-11-02T01:21:19.000Z",
+      "windowEnd": "2026-11-02T02:21:19.000Z",
+      "querySource": "STOCK_RECOVERY_DELIVERY_READONLY.sql; unchanged two statements",
+      "executionsPerStatement": 1,
+      "http": [
+        {
+          "status": 200,
+          "events": 2
+        },
+        {
+          "status": 429,
+          "events": 1
+        }
+      ],
+      "auth": [
+        {
+          "category": "other_recovery_event",
+          "events": 2
+        },
+        {
+          "category": "rate_limit",
+          "events": 1
+        }
+      ],
+      "interpretation": "A recovery rate limit is confirmed. Consistent with the new Pro request, but aggregate does not identify its recipient.",
+      "rawLogsRead": false,
+      "quotaOrRetryAfterRead": false,
+      "providerSettingsChanged": false
+    },
+    "basicCheckout": {
+      "planId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+      "signInRendered": true,
+      "approvedReturnPathRetained": true,
+      "emailFilledByAgent": true,
+      "privateOwnerSignIn": "PENDING",
+      "screenshot": "Session scratchpad: closed-rollout-20261102/basic-checkout-login-handoff.jpg"
+    },
+    "paymentAndActivation": "NOT_EXECUTED",
+    "financialMutations": false,
+    "deploymentOrProviderSettingChanges": false
+  },
+  "authenticatedClosedCheckout20261102": {
+    "date": "2026-11-02",
+    "authority": "Owner recovered Basic credential privately and reported Signed in successfully",
+    "origin": "https://hub.webzoka.com",
+    "actor": "Fresh verified Basic fixture; same session for both offer displays",
+    "protectedPageRendered": true,
+    "deployedApplicationSource": "3b32a44f763bab6df52719d61d879455f28a0f53",
+    "checkoutRedirectSymptom": "NOT_REPRODUCED_AFTER_FIX",
+    "basic": {
+      "priceMonthly": 149000,
+      "activeOperatorsDisplayed": 1,
+      "paymentControlPresent": false
+    },
+    "pro": {
+      "priceMonthly": 359000,
+      "activeOperatorsDisplayed": 3,
+      "purchasingFinanceDisplayed": true,
+      "paymentControlPresent": false,
+      "freshProAccount": false
+    },
+    "workspace": {
+      "status": "Source fuse intentionally returns unavailable before DB access",
+      "runtimeEnabled": false,
+      "preparation": "NOT_EXECUTED"
+    },
+    "selectorChecks": [
+      {
+        "case": "annual",
+        "finalUrl": "https://hub.webzoka.com/store#stock-packages",
+        "heading": "Kelola pesanandan stok dalamsatu tempat.",
+        "deniedToStore": true,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "PASS"
+      },
+      {
+        "case": "price",
+        "finalUrl": "https://hub.webzoka.com/store#stock-packages",
+        "heading": "Kelola pesanandan stok dalamsatu tempat.",
+        "deniedToStore": true,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "PASS"
+      },
+      {
+        "case": "duplicate-plan",
+        "finalUrl": "https://hub.webzoka.com/store#stock-packages",
+        "heading": "Kelola pesanandan stok dalamsatu tempat.",
+        "deniedToStore": true,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "PASS"
+      },
+      {
+        "case": "foreign-rewrite-host",
+        "finalUrl": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001&host=evil.invalid",
+        "heading": "Paket Stock untuk usaha Anda",
+        "deniedToStore": false,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "OBSERVED_FRAMEWORK_NORMALIZATION",
+        "rejectionProven": false
+      },
+      {
+        "case": "lms-plan",
+        "finalUrl": "https://hub.webzoka.com/store#stock-packages",
+        "heading": "Kelola pesanandan stok dalamsatu tempat.",
+        "deniedToStore": true,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "PASS"
+      },
+      {
+        "case": "invalid-company",
+        "finalUrl": "https://hub.webzoka.com/store#stock-packages",
+        "heading": "Kelola pesanandan stok dalamsatu tempat.",
+        "deniedToStore": true,
+        "initialHarnessExpectedInternalPathOnly": true,
+        "status": "PASS"
+      }
+    ],
+    "selectorHarness": "Initial internal-only path expectation retained separately; canonical public Store redirects correctly classified. Extra host case is an observation, not a rejection PASS.",
+    "domViewports": [
+      {
+        "plan": "Basic",
+        "heading": "Paket Stock untuk usaha Anda",
+        "height": 1000,
+        "paymentButtons": [],
+        "scrollWidth": 1440,
+        "summary": "Ringkasan paketStock BasicRp 149.000per bulan1 akun operator aktifPesanan dan katalogInvoice dan label pengirimanStok, lot, opname, dan pemantauan kedaluwarsaTotal pembayaran bulananRp 149.000Pembayaran dilakukan secara manual. Tidak ada debit otomatis. Langganan dimulai setelah pembayaran terverifikasi; trial 14 hari ditangani terpisah oleh tim.",
+        "width": 1440
+      },
+      {
+        "plan": "Basic",
+        "heading": "Paket Stock untuk usaha Anda",
+        "height": 844,
+        "paymentButtons": 0,
+        "scrollWidth": 375,
+        "width": 390
+      },
+      {
+        "plan": "Pro",
+        "actor": "Same Basic fixture session; not fresh Pro-account acceptance",
+        "height": 1000,
+        "paymentButtons": 0,
+        "scrollWidth": 1440,
+        "summary": "Ringkasan paketStock ProRp 359.000per bulan3 akun operator aktifSemua fitur BasicPemasok dan purchase orderLaporan keuangan dan arus kasTotal pembayaran bulananRp 359.000Pembayaran dilakukan secara manual. Tidak ada debit otomatis. Langganan dimulai setelah pembayaran terverifikasi; trial 14 hari ditangani terpisah oleh tim.",
+        "width": 1440
+      },
+      {
+        "plan": "Pro",
+        "actor": "Same Basic fixture session; not fresh Pro-account acceptance",
+        "height": 844,
+        "paymentButtons": 0,
+        "scrollWidth": 375,
+        "summary": "Ringkasan paketStock ProRp 359.000per bulan3 akun operator aktifSemua fitur BasicPemasok dan purchase orderLaporan keuangan dan arus kasTotal pembayaran bulananRp 359.000Pembayaran dilakukan secara manual. Tidak ada debit otomatis. Langganan dimulai setelah pembayaran terverifikasi; trial 14 hari ditangani terpisah oleh tim.",
+        "width": 390
+      }
+    ],
+    "screenshots": {
+      "fullPageCapture": "BLOCKED: Unable to capture screenshot",
+      "viewportCapture": "AVAILABLE",
+      "initialRapidResizeFrames": "Mixed clipped dimensions; not accepted as viewport proof",
+      "settledDesktop": {
+        "scratchFile": "basic-closed-checkout-desktop-stable.jpg",
+        "width": 1440,
+        "height": 1000
+      },
+      "settledMobile": {
+        "scratchFile": "basic-closed-checkout-mobile-stable.jpg",
+        "width": 375,
+        "height": 811,
+        "domWidth": 390,
+        "domHeight": 844
+      },
+      "exact390PixelCapture": "NOT_PROVEN",
+      "overrideRestored": true
+    },
+    "evidenceLevel": "BROWSER UAT PASS for authenticated closed page/offer display and five selector redirects; partial visual evidence",
+    "paidAcceptance": "NOT_EXECUTED",
+    "authenticatedHttpAndVercelUat": "NOT_EXECUTED",
+    "companyCohortInvoicePaymentActivationCreated": false,
+    "providerSettingsChanged": false,
+    "productionDeploymentChanged": false
   }
 }
