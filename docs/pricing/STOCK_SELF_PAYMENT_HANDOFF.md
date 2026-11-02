@@ -2,6 +2,14 @@
 
 Status, 2 November: the three reviewed forward migrations and the additionally approved intent-plan index are installed in the fixed Production Core/Stock projects with disabled sandbox settings. Exact-source Stock and Core deployments are promoted and Ready. Two fresh native signup requests reached the verification acknowledgment; Owner email verification is pending. Public sales, paid-runtime source switches and sandbox cohorts remain closed. No Company, invoice, charge or activation was created during this signup stage. The complete hosted purchase journey remains unverified.
 
+## Verified-account continuation and checkout correction
+
+The Owner reported both emails verified and requested continuation. Basic subsequently signed in with its retained random credential and rendered the protected Account page, whose server helper checks current `getUser()` and `email_confirmed_at`. Pro's one normal login attempt returned the generic rejection; a read-only check restricted to the two fixture Auth status records is pending approval. No password reset, re-registration, Auth-admin confirmation or alternative identity was attempted.
+
+The Basic session reproduced a separate application defect: both public and internal checkout paths redirected to Store instead of rendering the selected package. Host-matched rewrites append the framework `host` value to server query parameters. Checkout's strict key allowlist rejected that routing value. The existing workspace page already uses `hubE1RewriteQuery` to remove only the exact framework value on the canonical Hub host. Checkout now reuses that helper before strict validation, without widening its financial/Company selectors or enabling paid runtime.
+
+The actual page regression failed before the fix with `REDIRECT:/hub/store#stock-packages`, then passed. Focused checks pass 9/9, including retained rejection of foreign/repeated host values, duplicate plans, price and annual fields before Auth access. Types/scoped lint and final-source CI are checked before publishing the correction; hosted verification is recorded separately. Basic and Pro browser contexts remain isolated and retained. No Company, cohort, payment or activation was created by this diagnosis.
+
 ## Index correction and verification requests — 2 November continuation
 
 The Owner selected two Gmail +aliases for fresh Basic/Pro sandbox accounts and will verify the emails. On the exact additional-index question, the Owner answered “pilihkan yang paling tepat,” delegating the choice. The recommended application of the unchanged reviewed SQL was selected; this did not grant sales, runtime or data enablement.

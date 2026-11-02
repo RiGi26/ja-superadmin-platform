@@ -1,4 +1,6 @@
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import { hubE1RewriteQuery } from '@/lib/hub-e1-rewrite-query'
 import { createClient } from '@/lib/supabase/server'
 import { readStockBillingAccount, readStockPurchaseIntent, readStockPurchaseOffers } from '@/lib/stock-self-payment'
 import { stockPlanId, stockCompanyId, stockCheckoutPath } from '@/lib/stock-purchase-policy'
@@ -10,7 +12,7 @@ export const metadata = { title: 'Pilih Paket Stock | Webzoka', referrer: 'stric
 export default async function StockCheckoutPage({ searchParams }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
-  const query = await searchParams
+  const query = hubE1RewriteQuery(await searchParams, (await headers()).get('host'))
   if (Object.keys(query).some(key => !['plan', 'company', 'result'].includes(key)) ||
       Object.values(query).some(value => Array.isArray(value)) ||
       (query.plan !== undefined && !stockPlanId(query.plan)) || (query.company !== undefined && !stockCompanyId(query.company))) {
