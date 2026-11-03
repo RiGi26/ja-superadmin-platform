@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-03T02:01:54.879Z",
+  "recordedAt": "2026-11-03T02:13:01.052Z",
   "status": "FULL_BASIC_PRO_RETAINED_PREPARATION_CANDIDATE_UNDEPLOYED",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
@@ -6743,7 +6743,53 @@
       "coreTypesAndScopedLint": "PASS exit 0",
       "stockTypesAndScopedLint": "PASS exit 0"
     },
-    "finalSourceCi": "PENDING_PUBLICATION",
+    "applicationCandidates": {
+      "core": "f25f2764433471cb251f5bb67c3764ed9990345c",
+      "stock": "6f02d63df65d1f3770f46e965eb8acc301025e9c"
+    },
+    "finalSourceCi": {
+      "core": {
+        "status": "PASS",
+        "run": 41563612890,
+        "job": 125679735319
+      },
+      "initialStock": {
+        "status": "FAIL",
+        "run": 41563639267,
+        "fail": 7,
+        "cancelled": 51,
+        "classification": "TEST_HARNESS_DEFECT",
+        "cause": "Unpaid reciprocal fixture omitted the paid-status lookup newly reached by the enabled preparation source gate."
+      },
+      "correctedStock": {
+        "status": "PENDING",
+        "localReciprocal": {
+          "pass": 60,
+          "fail": 0
+        },
+        "localAllScripts": {
+          "pass": 286,
+          "fail": 0,
+          "cancelled": 0
+        },
+        "canonicalLiveChecks": "https://github.com/RiGi26/webzoka-stock-platform/pull/14/checks"
+      }
+    },
+    "successorDesign": {
+      "path": "docs/pricing/STOCK_MULTI_WORKSPACE_TEAM_SUCCESSOR_20261103.md",
+      "status": "DESIGN_REVIEW_INPUT_NOT_IMPLEMENTED"
+    },
+    "specReview": {
+      "fullPlan": "REVIEW_REQUIRED",
+      "quality": "NOT_REACHED_FOR_FULL_PLAN",
+      "convergence": "REVIEW_REQUIRED",
+      "findings": [
+        "Multiple-workspace identity successor not implemented.",
+        "Verified three-operator lifecycle not implemented.",
+        "Managed sandbox payment/activation and complete hosted acceptance not executed.",
+        "Production preparation execution not authorized."
+      ]
+    },
     "deploymentProposal": "docs/pricing/STOCK_WORKSPACE_PREPARATION_GATE_20261102.md",
     "remainingFullPlanGaps": [
       "Multiple workspaces per native identity: E1 origin/binding subject uniqueness and single-membership Owner predicate need a reviewed successor.",

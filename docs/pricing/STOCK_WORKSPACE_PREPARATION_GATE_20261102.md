@@ -19,9 +19,13 @@ The candidate changes only the two new Stock preparation/runtime source flags to
 - Core `lib/stock-purchase-policy.ts`: `STOCK_PAID_BILLING_RUNTIME_ENABLED`.
 - Stock `src/lib/stock-paid-policy.ts`: `STOCK_PAID_ACTIVATION_RUNTIME_ENABLED`.
 
+Exact application candidates: Core `f25f2764433471cb251f5bb67c3764ed9990345c`; Stock `6f02d63df65d1f3770f46e965eb8acc301025e9c`. Later documentation-only evidence commits do not replace these execution targets. The paired Stock source workflow checks out that immutable Core candidate. Both task branches keep automatic Vercel deployment disabled.
+
 Their current-release assertions are updated for this preparation candidate. Core asserts both public catalog release flags remain false and a closed catalog cannot purchase. Stock asserts the general active-access gate and default pilot mode remain false. Historical source pins, installed migrations, function bodies, identity rules and negative authorization/signature/amount checks remain unchanged.
 
 Local verification: Core full UNIT 1231/1231, Stock module UNIT 96/96, disposable PostgreSQL UNIT 38/38, and both repositories' types/scoped lint exit 0. A focused disabled-receiver rerun after stronger delivery-deadline assertions passes 1/1. Final-source hosted CI must pass before deployment; these local checks do not establish managed Auth, payment integration, concurrency or hosted UAT acceptance.
+
+Core candidate CI [41563612890](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41563612890/job/125679735319) passes. The initial Stock candidate's source CI found unpaid reciprocal fixtures missing the newly reached paid-status lookup. A focused reproduction confirmed the test-harness defect; explicit unpaid lookup plus unavailable/malformed denial controls now pass all 60 reciprocal and 286 script UNIT checks. Stock `6f02d63` contains that test-only correction; final hosted checks on its existing draft PR remain a mandatory execution precondition. The failed run is retained in the handoff.
 
 These source flags alone do not authorize payment or activation. The preparation deployment must explicitly force `BILLING_SANDBOX_UAT_ENABLED=false` in Core and `STOCK_SSO_PILOT_ENABLED=false` in both applications, for both build and runtime. No project-level environment setting or secret is changed. Core and Stock public catalog release flags and both managed offers remain closed.
 

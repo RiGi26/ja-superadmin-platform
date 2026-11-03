@@ -1,0 +1,71 @@
+# Stock multiple-workspace and operator successor
+
+Status: source-backed design for review, not an implemented or approved security-contract replacement. No runtime, SQL, provider or email action is authorized by this document. The Owner explicitly retained the full Basic + Pro acceptance scope on 3 November. The inactive-workspace preparation candidate remains independent and cannot satisfy the requirements below.
+
+## Required result
+
+One verified Core customer can select an independently authorized Company × Stock workspace. Financial actions still require its current Owner. Basic admits one active operator; Pro admits three, including the Owner. Additional operators sign in with their own verified native identities and receive only their current operational role. A package, browser selector, invitation address, invoice or payment receipt never establishes ownership or a session grant.
+
+## Verified source constraints
+
+| Boundary | Current source evidence | Consequence |
+| --- | --- | --- |
+| E1 origin | Core `supabase/migrations/core_db/20261023112244_h1_g1_e1_core_production.sql`, `core_e1_resource_private.origins.core_subject UNIQUE` | A second E1 origin for the same customer is impossible. |
+| E1 reciprocal binding | Core `docs/security/E1_RESOURCE_ISOLATION.PROPOSED.sql`, globally unique `stock_bindings.stock_subject` | A second workspace cannot reuse the customer's same native Stock identity. |
+| Protected Company graph | Installed E1 `guard_graph` refuses additional membership/claim mutations involving a protected Company or subject | Removing one unique constraint would not safely enable another workspace or team membership. |
+| Purchase authority | Core `docs/pricing/STOCK_SELF_PAYMENT_CORE.PROPOSED.sql`, `current_owner` requires exactly one Company membership; account reservation FK targets v1 origins | A UI list cannot establish multi-workspace billing authority. |
+| Stock canonical profile | Stock `docs/security/H1_G1_CANONICAL_RLS_FORWARD.PROPOSED.sql` preserves `user_profile_one_subject` and the installed managed-session kernel | A second active profile must not be selected with `LIMIT 1`, metadata or a default tenant. |
+| Team creation | Stock `src/app/actions/tim.ts`, `createUserProfile` always returns `TEAM_ACCOUNT_CREATION_UNAVAILABLE` | Three-seat capacity is not a working invitation/provisioning lifecycle. |
+| Paid online authority | Core `docs/pricing/STOCK_PAID_ACTIVE_CORE.PROPOSED.sql` binds paid authority to the original Owner and reciprocal native subject | Adding a profile alone cannot authorize a federated teammate. |
+| Existing seat evidence | Stock `supabase/tests/stock-self-payment.test.mjs` inserts synthetic staff through its privileged disposable fixture | It proves seat/entitlement guards only, not verified operator registration, sign-in or protected operations. |
+
+These are source facts. No additional managed definitions, Auth rows, settings, customer rows or logs were queried for this design. Historical managed deployment evidence remains separately scoped in the handoff.
+
+## Recommended successor
+
+Use versioned Company × portal memberships and explicit per-session workspace selection, with one native identity pair reusable across authorized workspaces. Keep original birth records, invoices and append-only audit intact. Do not solve this by creating another login per workspace, copying an Owner's identity, removing current-session checks or enabling the disabled team function.
+
+### Company origins and financial authority
+
+Add a versioned resource-origin/binding path with uniqueness on Company/reservation, billing tenant and Stock tenant, and on each member's profile within its workspace. Native subject uniqueness becomes an identity-pair rule, rather than a global one-workspace rule: a Stock subject cannot map to another Core subject. The same verified pair may have several independently admitted workspace memberships. Original v1 origins/bindings remain immutable and are not rewritten or automatically adopted.
+
+Resolve exactly one authoritative origin version for every Company/reservation. Duplicate or overlapping v1/v2 records deny rather than choosing a preferred row. Existing v1 ownership remains valid only under its installed contract until an explicit reviewed successor route applies. A forward financial-adapter change must replace the v1-only reservation FK and derivation together with equivalent Company × Stock referential checks, so a browser can never pair an unrelated Company, reservation or billing tenant. Reuse the existing invoice, Midtrans, payment-commit and activation-outbox engine; do not create a second billing engine or migrate legacy plans.
+
+New E1 admission creates a genuinely new Company, explicit Owner membership, reservation and audit event atomically from the current verified native customer. Existing memberships are not evidence of ownership of a different Company, but must be checked for legacy conflicts, disputed identity, pending recovery and origin inconsistencies. An existing/legacy/contested Company attachment, ownership change or recovery still requires independent Company × portal control proof and two distinct currently authorized Core operators with no self-approval. Valid creation of another genuinely new Company must not acquire that E2/E3 requirement merely because the customer already owns a different Company.
+
+Forward graph guards may permit only exact successor operations through private transaction-bound write permits and audited functions, with fresh verified actor/session deadlines and existing Registry fences. Permits are inaccessible to browser roles and cannot be caller-settable GUCs. Existing Company/Owner/profile identity cannot be reparented or resurrected. Tuple-scoped `current_owner` replaces subject-wide membership-count inference only for explicitly successor-managed resources; it still requires the current active Company membership, matching native identity, correct portal mapping, no pilot conflict and live session. A member or Stock administrator never gains billing authority from operational role.
+
+### Workspace selection and Stock data boundary
+
+Retain stable `user_profile` row identities and tenant IDs. Each additional successor membership requires a new exact profile, not moving an existing row. Replacing global `user_profile_one_subject` with a composite subject/tenant constraint requires a forward, reviewed guard and resolver transition: legacy/non-successor users retain the single-profile contract; additional rows are possible only through the trusted versioned lifecycle. Preserve the original primary profile, E1 birth tuple, profile identity guard, audit FK relationships and quarantine protections.
+
+Before allowing multiple rows, inventory every resolver, Auth hook, team/profile lookup and business RLS helper that assumes one profile. The canonical resolver must select the profile from a private workspace selection bound to the current managed Stock session and verified Company/reservation membership. Missing, revoked, ambiguous or stale selection denies; there is no first-row fallback. A browser selector requests a switch but grants no authority. A switch reauthenticates the same native identity pair, verifies current Company membership and paid resource, correlates exact profile/tenant/membership revisions, and commits only the selected session context. Other sessions do not inherit it. SSR caches remain per request.
+
+Use a distinct versioned online request/decision protocol carrying Company, instance, profile, membership ID/revision and role correlation in addition to both sessions, subject pair, tenant, method, path, nonce and at most five-second request lifetime. A response is a single in-flight decision, not a reusable access lease. Core verifies current membership, live sessions, native OAuth consent and the subscription/resource on every protected request. Stock independently verifies the exact local profile, selected session, entitlement and request. Tenant JWT metadata remains non-authoritative; a mismatched legacy cache cannot be silently reinterpreted as a new membership. Auth-hook/cache transition must be explicit and tested before switching users.
+
+Classify retained successor history before legacy or pilot handling, including inactive/revoked membership. A failed, unavailable or denied successor lookup never falls through to an older authorization engine. Storage and Realtime keep their current restrictions; no service-role data proxy may bypass the request-bound decision. Selection, membership and subscription changes must affect subsequent protected operations, not just navigation.
+
+### Verified operator invitations
+
+Provide a new invitation lifecycle instead of re-enabling `createUserProfile` or using Auth-admin `email_confirm=true`. The current verified Company Owner creates a narrowly scoped invitation for that paid workspace and explicit operational role, after current ownership and subscription checks. Financial authority remains Owner-only. Invitation creation records its Company/reservation, role, expiry, issuer and durable idempotency key in private tables with an append-only event; any opaque secret is hashed at rest and excluded from logs/evidence. The address identifies the intended verified recipient and is not itself an authorization proof.
+
+Acceptance requires a normal verified Core customer and the matching native Stock identity through the approved OAuth transport, with action-time consent handled normally. Do not auto-link matching emails, use another account's session, assign editable metadata, set a password for another person or silently attach an existing local-only Stock identity. An identity conflict denies and uses the protected linking/recovery procedure. Creating or recovering a different account is not a workaround.
+
+Under the same canonical tenant lock used by seat mutations, recheck Owner authority, subscription, invitation state/expiry, recipient identity and available seats. Basic's Owner consumes its one seat; Pro's Owner plus two accepted active operators consumes three. Active memberships and unexpired reservations must not oversubscribe capacity. Use a durable reservation and idempotent provisioning/outbox sequence: Core authorization and inactive Stock membership first, reciprocal acknowledgment next, operational activation only after both exact identities/memberships are verified. Lost responses reuse the reservation; rejection/expiry releases a reservation through an audited transition, not deleting history. Lock ordering, deadline-after-wait checks and concurrent accept/revoke/renewal behavior require actual concurrent PostgreSQL evidence.
+
+An invited Core member receives an operational Company × Stock membership, not ownership. Core changes that affect a protected Company must use the narrow successor graph-permit path; an invitation never bypasses E2/E3 ownership recovery. The paid Owner's current authority and member's current membership both remain part of operational authorization. Revocation is monotonic and audited; reinvitation does not resurrect a revoked profile/session or reuse a consumed invitation. Role/status updates retain the existing reason, last-admin and append-only-audit protections. Excluded modules stay denied even to an operational admin.
+
+No invitations or additional test-account emails are sent during source design/review. The Owner's existing recipient authority covers the two Basic/Pro aliases only; testing additional operators needs an approved recipient/fixture scope before sending email or creating managed records.
+
+## Implementation and acceptance order
+
+1. Inventory exact affected source assumptions and forward object contracts in both existing repositories. Keep installed migrations and historical source/security pins unchanged. Add closed successor gates and negative controls before any routing can select v2.
+2. Implement and execute disposable actual-SQL tests for new admission, tuple ownership, identity-pair uniqueness, reciprocal mapping, audited invitations, seat reservations, revocation and payment/activation compatibility. Verify private schemas, forced RLS, least privilege, indexed FKs and fail-closed version classification. Existing v1, legacy annual and LMS regressions remain required.
+3. Exercise concurrent acceptance/switch/revocation under an explicitly authorized compatible isolated PostgreSQL environment. Synthetic PGlite or mock HTTP success alone cannot satisfy this level or managed Auth evidence.
+4. Review forward contract diffs against the installed protection guarantees, including all one-profile call sites and direct PostgREST, Storage and Realtime paths. Publish through existing draft PRs and CI. No default-branch merge or deployment follows from source PASS.
+5. Request exact migration/deployment/read/fixture authority only for the concrete reviewed successor. Deploy receivers before senders with public sales closed and activation/payment scopes independently controlled. Do not use the preparation proposal as authority for this successor.
+6. Complete both fresh purchases, multi-workspace selector/switch negatives, Owner-only finance, three independent Pro operators, Basic extra-seat denial, revocation during a request, cancellation/expiry, payment/activation recovery, invoice history and desktop/exact-390px HTTP/browser acceptance. Keep evidence levels separate. Close new purchases on recovery while preserving paid records, invoices, audit and activation retries.
+
+## Current disposition
+
+The full plan is retained. Multiple-workspace and real-operator acceptance are NOT_EXECUTED and the successor is NOT_IMPLEMENTED. No existing protection is removed, no scope is narrowed, and no public-sales, financial or security-release readiness is claimed. The immediate independently reviewable runtime step remains inactive preparation of the two existing fresh fixtures, under its separate exact deployment/SQL proposal. This document adds no Production authority.
