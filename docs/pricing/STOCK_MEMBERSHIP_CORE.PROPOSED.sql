@@ -153,6 +153,10 @@ BEGIN
  JOIN public.company_portal_instances pi ON pi.id=r.instance_id AND pi.company_id=r.company_id AND pi.portal_type='stock'
  JOIN stock_membership_private.memberships m ON m.company_id=r.company_id
  JOIN stock_membership_private.identity_pairs ip ON ip.id=m.pair_id AND ip.revoked_at IS NULL
+ JOIN auth.users member_user ON member_user.id=m.core_subject
+   AND member_user.deleted_at IS NULL AND member_user.email_confirmed_at IS NOT NULL
+   AND member_user.email_confirmed_at<=clock_timestamp()
+   AND (member_user.banned_until IS NULL OR member_user.banned_until<=clock_timestamp())
  JOIN public.company_memberships cm ON cm.id=m.id AND cm.company_id=m.company_id
    AND cm.core_auth_user_id=m.core_subject AND cm.status='active'
  JOIN stock_membership_private.memberships om ON om.id=r.owner_membership_id AND om.company_id=r.company_id AND om.revoked_at IS NULL AND om.role='admin'
