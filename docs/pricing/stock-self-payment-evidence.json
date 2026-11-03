@@ -7420,6 +7420,7 @@
     "workspace": "Stock Sandbox Basic 20261102; prepared workspace message visible",
     "offer": "Basic Rp149000 monthly; expected package limits visible",
     "proOffer": "Pro Rp359000 monthly, three-seat limit and listed features rendered in same session; this is display evidence only",
+    "billingView": "Signed-in account view reports not subscribed and no Stock invoices",
     "paymentAction": "NOT_ATTEMPTED; purchase-unavailable message shown and payment button disabled",
     "viewport": "Browser capture available; exact desktop and 390px sizes not established",
     "browserRestoredTo": "Basic checkout",
