@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-03T02:13:01.052Z",
+  "recordedAt": "2026-11-03T02:17:52.209Z",
   "status": "FULL_BASIC_PRO_RETAINED_PREPARATION_CANDIDATE_UNDEPLOYED",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
@@ -6762,7 +6762,15 @@
         "cause": "Unpaid reciprocal fixture omitted the paid-status lookup newly reached by the enabled preparation source gate."
       },
       "correctedStock": {
-        "status": "PENDING",
+        "status": "PASS",
+        "sourceRun": 41564619596,
+        "sourceJob": 125683023086,
+        "pdfRun": 41564619763,
+        "pdfJob": 125683023578,
+        "scriptChecks": 286,
+        "moduleChecks": 96,
+        "disposablePostgresChecks": 38,
+        "typesLintBuild": "PASS",
         "localReciprocal": {
           "pass": 60,
           "fail": 0
@@ -6773,6 +6781,12 @@
           "cancelled": 0
         },
         "canonicalLiveChecks": "https://github.com/RiGi26/webzoka-stock-platform/pull/14/checks"
+      },
+      "coreDocumentationFollowup": {
+        "head": "a69c2a98eddaffe53eb45f7bed4b2f8a3a19d27e",
+        "status": "PASS",
+        "run": 41564849325,
+        "job": 125683788431
       }
     },
     "successorDesign": {
@@ -6798,6 +6812,13 @@
       "Commercial terms and remaining Stock security/release gates remain unresolved."
     ],
     "protectedIdentityOrTeamRulesChanged": false,
+    "preparationRouteAudience": "Application-wide guarded eligibility; not a two-account preparation access allowlist. Agent test mutations remain limited to the two approved fixtures.",
+    "productionMetadataReadback": {
+      "coreDeployment": "dpl_4hikyTtzpJ2azxAUf3PWiXQoQWc3",
+      "stockDeployment": "dpl_8D9f94vmFPCyP1umQNZvEN3vnC5x",
+      "bothReady": true,
+      "defaultBranchHeadsUnchanged": true
+    },
     "productionMutationsDuringCandidatePreparation": false,
     "financialMutations": false
   }
