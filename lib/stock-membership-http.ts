@@ -61,3 +61,34 @@ export async function handleStockMembershipCoreRequest(request: NextRequest) {
     return NextResponse.json({ status: 'denied' }, { status: 403, headers })
   }
 }
+
+/** Database-side online checks use a bodyless request, matching the installed
+ * private HTTP transport's bounded decision-header convention. This is still
+ * the independent closed v2 receiver; no v1 receiver or gate is changed.
+ */
+export async function handleStockMembershipCoreHead(request: NextRequest) {
+  const headHeaders = { ...headers, Vary: 'Authorization, X-Webzoka-Stock-Request' }
+  const respond = (status: number, decision?: unknown) => new Response(null, {
+    status, headers: decision === undefined ? headHeaders : { ...headHeaders,
+      'X-Webzoka-Stock-Decision': Buffer.from(JSON.stringify(decision)).toString('base64url') },
+  })
+  if (!STOCK_MEMBERSHIP_RUNTIME_ENABLED) return respond(404)
+  try {
+    const url = new URL(request.url)
+    const authorization = request.headers.get('authorization') ?? ''
+    const token = authorization.startsWith('Bearer ') ? authorization.slice(7) : ''
+    const encoded = request.headers.get('x-webzoka-stock-request') ?? ''
+    const length = request.headers.get('content-length')
+    if (request.method !== 'HEAD' || url.origin !== ACTIVE_CORE_ORIGIN || url.pathname !== PATH || url.search ||
+        request.headers.has('cookie') || request.headers.has('origin') || request.body !== null ||
+        (length !== null && length !== '0') || !jwt.test(token) || token.length > 8192 ||
+        encoded.length > 2731 || !/^[A-Za-z0-9_-]+$/.test(encoded)) return respond(403)
+    const bytes = Buffer.from(encoded, 'base64url')
+    if (bytes.length > MAX_BODY_BYTES || bytes.toString('base64url') !== encoded) return respond(403)
+    const input = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
+    const result = await authorizeStockMembershipRequest(input, token)
+    if (result.status !== 'authorized') return respond(result.status === 'blocked' ? 503 : 403)
+    if (Buffer.byteLength(JSON.stringify(result.decision), 'utf8') > 3072) return respond(403)
+    return respond(200, result.decision)
+  } catch { return respond(403) }
+}
