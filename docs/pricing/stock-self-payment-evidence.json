@@ -7412,5 +7412,16 @@
       "Initial test lint: VM variable named module; renamed containers in five new loaders, no suppression",
       "Historical Stock PDF attempt1 failed; same-source retry passed; not a diagnosed font fix"
     ]
+  },
+  "authenticatedCheckoutObservation20261103": {
+    "status": "OBSERVED_SALES_CLOSED",
+    "target": "https://hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+    "account": "Previously approved Basic sandbox fixture; signed-in state read only",
+    "workspace": "Stock Sandbox Basic 20261102; prepared workspace message visible",
+    "offer": "Basic Rp149000 monthly; expected package limits visible",
+    "paymentAction": "NOT_ATTEMPTED; purchase-unavailable message shown and payment button disabled",
+    "viewport": "Browser capture available; exact desktop and 390px sizes not established",
+    "productionChanged": false,
+    "acceptance": "NOT_PASSED; Pro, Midtrans, activation and invoice history remain unverified"
   }
 }

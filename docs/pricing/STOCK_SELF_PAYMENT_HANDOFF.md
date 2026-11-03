@@ -307,7 +307,11 @@ The installed forward proposals failed closed on missing prerequisite objects or
 
 The historical `E1_QUARANTINE_PUBLIC_RELEASE_20261026.md` explicitly excluded billing/payment activation and active Stock access, and prohibited profile reactivation/test entitlements during that quarantine release. Its runtime approval is not reused for this paid flow. New acceptance authority must explicitly cover receipt-driven initial activation of approved fresh sandbox fixtures. Direct profile reactivation or manual test entitlement insertion is not part of this implementation.
 
-## Evidence levels — updated 2 November
+## Fresh authenticated browser observation — 3 November
+
+The Owner re-enabled Codex local browser access. A fresh read-only observation of the already-signed-in Basic sandbox account at `hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001` shows the prepared workspace `Stock Sandbox Basic 20261102`, the approved Basic monthly price of Rp149,000, and the expected package limits. The page explicitly says new self-purchase is not open; `Lanjutkan ke pembayaran` is disabled. No payment action was attempted. This confirms the currently deployed sales gate remains closed and the Basic purchase journey is not accepted. The capture was not an exact 390px viewport, so it is not mobile UAT evidence. Pro, desktop-sized browser UAT, Midtrans, activation and invoice-history acceptance remain unverified.
+
+## Evidence levels — updated 3 November
 
 Fresh final command results and source hashes are recorded in the adjacent evidence JSON. Evidence types are distinct:
 
