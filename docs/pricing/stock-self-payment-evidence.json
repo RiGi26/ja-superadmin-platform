@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-03T02:17:52.209Z",
-  "status": "FULL_BASIC_PRO_RETAINED_PREPARATION_CANDIDATE_UNDEPLOYED",
+  "recordedAt": "2026-11-03T03:04:21.368Z",
+  "status": "INACTIVE_PREPARATION_ROLLED_OUT_PRO_PREPARED_NATIVE_IDENTITY_FK_CORRECTION_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -6706,8 +6706,8 @@
   "preparationCandidate20261103": {
     "sourcePublicationAuthority": "Approve source PR/CI and closed Previews",
     "ownerScopeAnswer": "Keep full Basic + Pro plan (Recommended)",
-    "deployed": false,
-    "productionExecutionAuthorized": false,
+    "deployed": true,
+    "productionExecutionAuthorized": true,
     "gates": {
       "sourceCorePaidRuntime": true,
       "sourceStockPaidRuntime": true,
@@ -6820,6 +6820,154 @@
       "defaultBranchHeadsUnchanged": true
     },
     "productionMutationsDuringCandidatePreparation": false,
-    "financialMutations": false
+    "financialMutations": false,
+    "authorizationUpdate": "Owner: Approve inactive workspace rollout; exact unchanged proposal and two application SHAs."
+  },
+  "inactivePreparationRollout20261103": {
+    "authority": "Owner: Approve inactive workspace rollout",
+    "productionChanged": true,
+    "archives": {
+      "stockFiles": 478,
+      "coreFiles": 427,
+      "byteVerified": true,
+      "manifest": "inactive-preparation-20261103/archive-manifest.json"
+    },
+    "stock": {
+      "source": "6f02d63df65d1f3770f46e965eb8acc301025e9c",
+      "deployment": "dpl_2UT9SMMDa9mHosAVJChzPafrPdqc",
+      "url": "https://webzoka-stock-platform-foib6fknc-rigi26s-projects.vercel.app",
+      "ready": true,
+      "promotedFirst": true,
+      "canonicalAliasVerified": true,
+      "loginStatus": 200,
+      "unsignedActivationStatus": 401,
+      "unsignedActivationError": "invalid_signature"
+    },
+    "core": {
+      "source": "f25f2764433471cb251f5bb67c3764ed9990345c",
+      "deployment": "dpl_8rpHkeXfrRoNxAwK9vjcJWKbVskn",
+      "url": "https://ja-superadmin-platform-m6emo28pf-rigi26s-projects.vercel.app",
+      "ready": true,
+      "promotedAfterStock": true,
+      "canonicalAliasVerified": true,
+      "preparationSettingEnabled": true,
+      "exactEnableSqlSha256": "fad425bae9c14e2baf2f19c4d5681f99f09133cd3e1e50d87aea51f9d084c004"
+    },
+    "gates": {
+      "engineMode": "sandbox",
+      "corePreparationMode": "sandbox",
+      "bothPublicOffersClosed": true,
+      "coreSandboxCheckoutBuildAndRuntime": false,
+      "bothPilotBuildAndRuntime": false,
+      "stockPrivateReceiver": false,
+      "existingStockActiveDatabaseGate": false,
+      "cohortEnrolled": false
+    },
+    "changesExcluded": {
+      "projectEnvironmentSettings": false,
+      "secretValuesReadOrExported": false,
+      "defaultBranchMerge": false,
+      "newWorktree": false,
+      "newDependency": false,
+      "workstationRuntimeInstall": false,
+      "financialMutation": false
+    },
+    "pro": {
+      "fixture": "Pro",
+      "companyId": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+      "reservationId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+      "coreTenantId": "871aadb3-b581-456b-a2f5-076f90d16564",
+      "freshVerifiedOwner": true,
+      "initialContinuationSubmission": "FAIL result=unavailable",
+      "ownerActionTimeConsentReply": "Lanjut ke Webzoka Stock",
+      "nativeConnection": "PASS_QUARANTINED_INACTIVE",
+      "normalReturnToCanonicalHub": "PASS",
+      "managedBindingExists": true,
+      "managedResourcePrepared": true,
+      "pilotHistory": false,
+      "matchingPaidReceipts": 0,
+      "paymentButton": "PRESENT_BUT_DISABLED",
+      "replacementCompanyCreated": false
+    },
+    "basic": {
+      "proSignedOutNormally": true,
+      "signInReturnPlan": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+      "emailEnteredByAgent": true,
+      "passwordCleared": true,
+      "privateOwnerSignIn": "PENDING",
+      "companyCreated": false
+    },
+    "nativeIdentityDefect": {
+      "additionalReadAuthority": "Owner delegated best decision on exact STOCK_NATIVE_OWNER_FK_READONLY.sql; selected scoped reads only.",
+      "readSha256": "2cd43915850ca0e624407a35ce695c08bb0a4526a06d4818d60b223f819bffc4",
+      "fixtureCounts": [
+        {
+          "fixture": "Basic",
+          "authRecords": 1,
+          "verified": true,
+          "legacyProfiles": 0,
+          "intents": 0
+        },
+        {
+          "fixture": "Pro",
+          "authRecords": 1,
+          "verified": true,
+          "legacyProfiles": 0,
+          "intents": 0
+        }
+      ],
+      "managedOwnerFksTarget": "public.users",
+      "localActualSqlReproduction": "23503 intents_owner_id_fkey; legacy-only disposable diagnostic control succeeds",
+      "dependentAuditFailure": "Actual account-preparation UNIT exposes events_actor_id_fkey; complete proposal corrects three references.",
+      "forwardProposal": "docs/pricing/STOCK_NATIVE_OWNER_FK_FORWARD.PROPOSED.sql",
+      "postcheckProposal": "docs/pricing/STOCK_NATIVE_OWNER_FK_POSTCHECK_READONLY.sql",
+      "gate": "docs/pricing/STOCK_NATIVE_OWNER_FK_GATE_20261103.md",
+      "authorized": false,
+      "applied": false,
+      "focusedUnit": {
+        "pass": 8,
+        "fail": 0,
+        "log": "inactive-preparation-20261103/native-owner-fk-correction-tests-third.log"
+      },
+      "fullPostgresUnit": {
+        "pass": 46,
+        "fail": 0,
+        "log": "inactive-preparation-20261103/native-owner-full-postgres.log"
+      },
+      "priorRuns": [
+        {
+          "pass": 6,
+          "fail": 2,
+          "classification": "TEST_HARNESS_DEFECT: closed purchase guard and unqualified private index"
+        },
+        {
+          "pass": 7,
+          "fail": 1,
+          "classification": "APPLICATION_DEFECT: additional legacy audit-actor FK"
+        }
+      ],
+      "hostedCi": "PENDING_SOURCE_PUBLICATION"
+    },
+    "validation": {
+      "sourceStaticUnit": "PASS for exact deployed candidates; native FK correction local PostgreSQL only",
+      "managedReadiness": "PASS exact approved scopes",
+      "proInactiveBrowserUat": "PASS",
+      "packageContinuation": "FAIL_PENDING_FK_CORRECTION",
+      "basicPreparation": "NOT_EXECUTED_PENDING_PRIVATE_SIGNIN",
+      "paidIntegration": "NOT_EXECUTED",
+      "paidDbRuntime": "NOT_EXECUTED",
+      "completeDesktop390BrowserUat": "NOT_EXECUTED",
+      "productionPurchaseAcceptance": "NOT_EXECUTED"
+    },
+    "evidenceScratch": [
+      "approved-preflight.json",
+      "approved-enablement-results.json",
+      "pro-prepared-readback.json",
+      "native-owner-fk-readback.json",
+      "pro-native-consent.png",
+      "pro-quarantine-confirmed.png",
+      "pro-prepared-payment-disabled.png",
+      "basic-signin-preparation-handoff.png"
+    ]
   }
 }

@@ -1,6 +1,6 @@
 # Stock inactive-workspace preparation rollout
 
-Status: proposed, not authorized or deployed. This is the same approved Stock self-payment objective. The separate read-only readiness approval has been executed; it does not authorize the changes below.
+Status, 3 November: the Owner approved this exact scope through “Approve inactive workspace rollout.” Stock and Core candidates were deployed/promoted in the order below, and the exact Core preparation setting change committed. Pro is prepared in quarantine; Basic preparation remains pending. A separate native-identity FK correction is proposed in `STOCK_NATIVE_OWNER_FK_GATE_20261103.md` and is not authorized by this rollout approval. Payment, paid activation and public sales remain excluded.
 
 Update, 3 November: the Owner explicitly retained the full Basic + Pro plan. This preparation phase does not reduce that acceptance scope. Existing one-workspace-per-native-identity constraints and disabled team-account creation require a secure reviewed successor before multiple-workspace and three-operator acceptance can pass; they are not changed by this candidate.
 
