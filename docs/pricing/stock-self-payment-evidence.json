@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-03T05:57:48.097Z",
+  "recordedAt": "2026-11-03T06:05:39.446Z",
   "status": "CLOSED_MEMBERSHIP_WIRE_FOUNDATION_SOURCE_ONLY_NAVIGATION_DEPLOYMENT_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
@@ -7355,6 +7355,15 @@
       "authorizer": {
         "pass": 19,
         "fail": 0
+      },
+      "fullCi": {
+        "head": "0ae7ddd82cbc9c8c34197c2947371e798b625da1",
+        "status": "PASS",
+        "unit": {
+          "pass": 1307,
+          "fail": 0
+        },
+        "url": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41587189185/job/125755326767"
       }
     },
     "stock": {
@@ -7365,6 +7374,12 @@
       "crossRepositoryComposition": {
         "pass": 12,
         "fail": 0
+      },
+      "fullCi": {
+        "head": "09a84ca3b18aa69a6a87ab707072efd23c83611d",
+        "status": "PASS",
+        "source": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41587272640/job/125755573598",
+        "pdf": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41587272662/job/125755573700"
       }
     },
     "unitScope": "Synthetic native identity and SQL observations; no network, managed Auth, installed SQL/RLS, concurrency or operational admission",
@@ -7374,10 +7389,7 @@
     "existingGuardsChanged": false,
     "productionChanged": false,
     "providerDataOrSqlRead": false,
-    "testsPending": [
-      "types/lint",
-      "full CI"
-    ],
+    "testsPending": [],
     "remaining": [
       "private membership and selected-session SQL",
       "graph permits",
@@ -7385,6 +7397,19 @@
       "verified invitations and locked seats",
       "native multi-workspace/three-operator acceptance"
     ],
-    "paidAcceptance": "NOT_EXECUTED"
+    "paidAcceptance": "NOT_EXECUTED",
+    "static": {
+      "coreTypes": "PASS",
+      "stockTypes": "PASS",
+      "coreScopedLint": "PASS",
+      "stockScopedLint": "PASS",
+      "whitespace": "PASS",
+      "peerProtocolSha256": "48dbe2deaba71c2d64099f24c2510d03ed0f16aca398837a7df57174d76cde28"
+    },
+    "failuresRetained": [
+      "Initial protocol test: module absent before implementation",
+      "Initial test lint: VM variable named module; renamed containers in five new loaders, no suppression",
+      "Historical Stock PDF attempt1 failed; same-source retry passed; not a diagnosed font fix"
+    ]
   }
 }
