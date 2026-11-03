@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-11-03T06:05:39.446Z",
-  "status": "CLOSED_MEMBERSHIP_WIRE_FOUNDATION_SOURCE_ONLY_NAVIGATION_DEPLOYMENT_PENDING",
+  "status": "CLOSED_NAVIGATION_ROLLOUT_LIVE_BROWSER_UAT_BLOCKED_V2_RECEIVER_SOURCE_ONLY",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -7346,7 +7346,7 @@
     "recordedAt": "2026-11-03T05:57:48.097Z",
     "status": "SOURCE_WIRE_FOUNDATION_IMPLEMENTED_CLOSED",
     "browser": "BLOCKED: Local browser use is disabled in Work settings",
-    "deployment": "Core-only navigation candidate66a7efe pending exact Owner approval",
+    "deployment": "Core-only navigation candidate66a7efe promoted as dpl_7tYb2D8CLXVNKkeGP8vtAWHPpX8Y; v2 receiver is not deployed",
     "core": {
       "protocol": {
         "pass": 55,
@@ -7384,7 +7384,8 @@
     },
     "unitScope": "Synthetic native identity and SQL observations; no network, managed Auth, installed SQL/RLS, concurrency or operational admission",
     "runtimeGate": false,
-    "runtimeCallers": 0,
+    "runtimeCallers": 1,
+    "productionRouteDeployed": false,
     "rpcsInstalled": false,
     "existingGuardsChanged": false,
     "productionChanged": false,
