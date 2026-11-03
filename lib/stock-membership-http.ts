@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { ACTIVE_CORE_ORIGIN } from '@/lib/stock-active-protocol'
 import { authorizeStockMembershipRequest } from '@/lib/stock-membership-authorize'
 import { STOCK_MEMBERSHIP_RUNTIME_ENABLED } from '@/lib/stock-membership-protocol'
+import { selectStockMembershipSession } from '@/lib/stock-membership-select'
 
 const PATH = '/api/stock/membership/authorize'
 const MAX_BODY_BYTES = 2048
@@ -38,7 +39,7 @@ async function readBody(request: NextRequest) {
 
 /** Dedicated closed v2 receiver. It is independent from the v1/pilot flags and
  * never accepts cookies or browser-originated authority. */
-export async function handleStockMembershipCoreRequest(request: NextRequest) {
+export async function handleStockMembershipCoreRequest(request: NextRequest, operation: 'authorize' | 'select' = 'authorize') {
   if (!STOCK_MEMBERSHIP_RUNTIME_ENABLED) {
     return NextResponse.json({ status: 'unavailable' }, { status: 404, headers })
   }
@@ -46,14 +47,23 @@ export async function handleStockMembershipCoreRequest(request: NextRequest) {
   const authorization = request.headers.get('authorization') ?? ''
   const token = authorization.startsWith('Bearer ') ? authorization.slice(7) : ''
   const length = request.headers.get('content-length')
-  if (request.method !== 'POST' || url.origin !== ACTIVE_CORE_ORIGIN || url.pathname !== PATH || url.search ||
+  const coreToken = request.headers.get('x-webzoka-core-provider') ?? ''
+  if (request.method !== 'POST' || url.origin !== ACTIVE_CORE_ORIGIN || url.pathname !== '/api/stock/membership/' + operation || url.search ||
       request.headers.has('cookie') || request.headers.has('origin') || !jwt.test(token) || token.length > 8192 ||
+      (operation === 'select' ? !jwt.test(coreToken) || coreToken.length > 8192 : coreToken !== '') ||
       !/^application\/json(?:;\s*charset=utf-8)?$/i.test(request.headers.get('content-type') ?? '') ||
       (length !== null && (!/^\d{1,4}$/.test(length) || Number(length) > MAX_BODY_BYTES))) {
     return NextResponse.json({ status: 'denied' }, { status: 403, headers })
   }
   try {
     const input = await readBody(request)
+    if (operation === 'select') {
+      const selected = await selectStockMembershipSession(input, token, coreToken)
+      return NextResponse.json(selected.status === 'selected' ? selected : { status: selected.status }, {
+        status: selected.status === 'selected' ? 200 : selected.status === 'denied' ? 403 : 503,
+        headers: { ...headers, Vary: 'Authorization, X-Webzoka-Core-Provider' },
+      })
+    }
     const result = await authorizeStockMembershipRequest(input, token)
     if (result.status === 'authorized') return NextResponse.json(result.decision, { status: 200, headers })
     return NextResponse.json({ status: 'denied' }, { status: result.status === 'blocked' ? 503 : 403, headers })
@@ -81,6 +91,7 @@ export async function handleStockMembershipCoreHead(request: NextRequest) {
     const length = request.headers.get('content-length')
     if (request.method !== 'HEAD' || url.origin !== ACTIVE_CORE_ORIGIN || url.pathname !== PATH || url.search ||
         request.headers.has('cookie') || request.headers.has('origin') || request.body !== null ||
+        request.headers.has('x-webzoka-core-provider') ||
         (length !== null && length !== '0') || !jwt.test(token) || token.length > 8192 ||
         encoded.length > 2731 || !/^[A-Za-z0-9_-]+$/.test(encoded)) return respond(403)
     const bytes = Buffer.from(encoded, 'base64url')

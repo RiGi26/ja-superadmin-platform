@@ -67,18 +67,28 @@ ALTER TABLE stock_membership_private.resources ADD CONSTRAINT stock_membership_r
  DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX stock_membership_resource_owner_idx ON stock_membership_private.resources(owner_membership_id, company_id);
 
--- Session rows are created only by the future verified reciprocal enrollment
--- lifecycle. The online reader cannot create, refresh, or switch a session.
+-- A session has one immutable identity pair. Workspace choices append revisions
+-- under the Registry fence; neither a retry nor a switch extends its lifetime.
 CREATE TABLE stock_membership_private.sessions (
  stock_session uuid PRIMARY KEY,
- membership_id uuid NOT NULL REFERENCES stock_membership_private.memberships(id) ON DELETE RESTRICT,
+ pair_id uuid NOT NULL REFERENCES stock_membership_private.identity_pairs(id) ON DELETE RESTRICT,
  core_session uuid NOT NULL,
  expires_at timestamptz NOT NULL,
  created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
  revoked_at timestamptz,
  CHECK(expires_at > created_at AND expires_at <= created_at + interval '1 hour')
 );
-CREATE INDEX stock_membership_session_member_idx ON stock_membership_private.sessions(membership_id);
+CREATE INDEX stock_membership_session_pair_idx ON stock_membership_private.sessions(pair_id);
+CREATE TABLE stock_membership_private.selections (
+ stock_session uuid NOT NULL REFERENCES stock_membership_private.sessions(stock_session) ON DELETE RESTRICT,
+ revision bigint NOT NULL CHECK(revision BETWEEN 1 AND 9007199254740991),
+ command_id uuid NOT NULL,
+ membership_id uuid NOT NULL REFERENCES stock_membership_private.memberships(id) ON DELETE RESTRICT,
+ created_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+ PRIMARY KEY(stock_session,revision),
+ UNIQUE(stock_session,command_id)
+);
+CREATE INDEX stock_membership_selection_member_idx ON stock_membership_private.selections(membership_id);
 CREATE TABLE stock_membership_private.events (
  id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
  relation_name text NOT NULL,
@@ -106,8 +116,15 @@ BEGIN
  VALUES(TG_TABLE_NAME,coalesce(to_jsonb(NEW)->>'id',to_jsonb(NEW)->>'company_id',to_jsonb(NEW)->>'stock_session'),TG_OP);
  RETURN NEW;
 END $fn$;
+CREATE FUNCTION stock_membership_private.lock_registry() RETURNS trigger
+LANGUAGE plpgsql SET search_path='' AS $fn$
+BEGIN
+ IF NOT pg_try_advisory_xact_lock(hashtextextended('core_registry_writes',0))
+ THEN RAISE EXCEPTION USING ERRCODE='55P03',MESSAGE='STOCK_MEMBERSHIP_BUSY_REAUTHENTICATE'; END IF;
+ RETURN NULL;
+END $fn$;
 DO $security$ DECLARE n text; BEGIN
- FOREACH n IN ARRAY ARRAY['settings','identity_pairs','resources','memberships','sessions','events'] LOOP
+ FOREACH n IN ARRAY ARRAY['settings','identity_pairs','resources','memberships','sessions','selections','events'] LOOP
    EXECUTE format('ALTER TABLE stock_membership_private.%I ENABLE ROW LEVEL SECURITY',n);
    EXECUTE format('ALTER TABLE stock_membership_private.%I FORCE ROW LEVEL SECURITY',n);
  END LOOP;
@@ -117,6 +134,15 @@ DO $security$ DECLARE n text; BEGIN
    EXECUTE format('CREATE TRIGGER membership_audit AFTER INSERT OR UPDATE ON stock_membership_private.%I FOR EACH ROW EXECUTE FUNCTION stock_membership_private.audit()',n);
  END LOOP;
 END $security$;
+DO $fences$ DECLARE n text; BEGIN
+ FOREACH n IN ARRAY ARRAY['identity_pairs','resources','memberships','sessions','selections'] LOOP
+   EXECUTE format('CREATE TRIGGER membership_registry_fence BEFORE INSERT OR UPDATE OR DELETE OR TRUNCATE ON stock_membership_private.%I FOR EACH STATEMENT EXECUTE FUNCTION stock_membership_private.lock_registry()',n);
+ END LOOP;
+END $fences$;
+CREATE TRIGGER membership_selection_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON stock_membership_private.selections
+ FOR EACH STATEMENT EXECUTE FUNCTION stock_membership_private.immutable();
+CREATE TRIGGER membership_selection_audit AFTER INSERT ON stock_membership_private.selections
+ FOR EACH ROW EXECUTE FUNCTION stock_membership_private.audit();
 CREATE TRIGGER membership_events_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON stock_membership_private.events
  FOR EACH STATEMENT EXECUTE FUNCTION stock_membership_private.immutable();
 
@@ -132,7 +158,7 @@ END $fn$;
 
 CREATE FUNCTION public.core_stock_membership_authorize_request(
  p_company uuid,p_instance uuid,p_profile uuid,p_membership uuid,p_membership_revision bigint,
- p_stock_subject uuid,p_stock_session uuid,p_core_subject uuid,p_verified_until timestamptz) RETURNS jsonb
+ p_stock_subject uuid,p_stock_session uuid,p_core_subject uuid,p_verified_until timestamptz,p_selection_revision bigint) RETURNS jsonb
 LANGUAGE plpgsql VOLATILE SECURITY DEFINER SET search_path='' AS $fn$
 DECLARE result jsonb;
 BEGIN
@@ -145,7 +171,7 @@ BEGIN
    'companyId',r.company_id,'companyRevision',c.revision,
    'coreSessionId',ss.core_session,'coreSubject',m.core_subject,'coreTenantId',r.core_tenant_id,
    'instanceId',r.instance_id,'stockTenantId',r.stock_tenant_id,'profileId',m.profile_id,
-   'membershipId',m.id,'membershipRevision',m.revision,'role',m.role,
+   'membershipId',m.id,'membershipRevision',m.revision,'selectionRevision',selection.revision,'role',m.role,
    'ownerMembershipId',om.id,'ownerMembershipRevision',om.revision)
  INTO STRICT result
  FROM stock_membership_private.resources r
@@ -167,8 +193,12 @@ BEGIN
    AND (owner_user.banned_until IS NULL OR owner_user.banned_until<=clock_timestamp())
  JOIN public.company_memberships oc ON oc.id=om.id AND oc.company_id=r.company_id
    AND oc.core_auth_user_id=om.core_subject AND oc.role='owner' AND oc.status='active'
- JOIN stock_membership_private.sessions ss ON ss.membership_id=m.id AND ss.stock_session=p_stock_session
+ JOIN stock_membership_private.sessions ss ON ss.pair_id=m.pair_id AND ss.stock_session=p_stock_session
    AND ss.revoked_at IS NULL AND ss.expires_at>clock_timestamp()
+ JOIN stock_membership_private.selections selection ON selection.stock_session=ss.stock_session
+   AND selection.membership_id=m.id AND selection.revision=p_selection_revision
+   AND NOT EXISTS(SELECT 1 FROM stock_membership_private.selections newer
+     WHERE newer.stock_session=ss.stock_session AND newer.revision>selection.revision)
  JOIN public.tenants t ON t.id=r.core_tenant_id AND t.platform='stock' AND t.status='active' AND t.owner_user_id=om.core_subject
  JOIN stock_billing_private.accounts ba ON ba.company_id=r.company_id AND ba.reservation_id=r.instance_id
    AND ba.tenant_id=r.core_tenant_id AND ba.owner_id=om.core_subject
@@ -193,12 +223,72 @@ BEGIN
  RETURN result;
 END $fn$;
 
+-- Called only after both native identities have been verified by the trusted
+-- bridge. A selector can choose an already admitted membership, never create it.
+CREATE FUNCTION public.core_stock_membership_select_session(
+ p_core_subject uuid,p_core_session uuid,p_stock_subject uuid,p_stock_session uuid,
+ p_verified_until timestamptz,p_core_token_expires timestamptz,p_company uuid,p_instance uuid,
+ p_command uuid,p_expected_revision bigint) RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER SET search_path='' SET lock_timeout='1ms' AS $fn$
+DECLARE m stock_membership_private.memberships%ROWTYPE;
+ s stock_membership_private.sessions%ROWTYPE;
+ previous stock_membership_private.selections%ROWTYPE;
+ replay stock_membership_private.selections%ROWTYPE;
+ latest bigint; result jsonb;
+BEGIN
+ IF auth.role() IS DISTINCT FROM 'service_role' OR p_core_subject IS NULL OR p_core_session IS NULL
+   OR p_stock_subject IS NULL OR p_stock_session IS NULL OR p_command IS NULL
+   OR p_verified_until IS NULL OR p_verified_until<=clock_timestamp()
+   OR p_verified_until>clock_timestamp()+interval '30 seconds'
+   OR p_core_token_expires IS NULL OR p_core_token_expires<=clock_timestamp()
+   OR p_expected_revision IS NULL OR p_expected_revision NOT BETWEEN 0 AND 9007199254740990
+   OR NOT EXISTS(SELECT 1 FROM stock_membership_private.settings WHERE singleton AND enabled)
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SELECTION_DENIED'; END IF;
+ IF NOT pg_try_advisory_xact_lock(hashtextextended('core_registry_writes',0))
+ THEN RAISE EXCEPTION USING ERRCODE='55P03',MESSAGE='STOCK_MEMBERSHIP_BUSY_REAUTHENTICATE'; END IF;
+ IF p_verified_until<=clock_timestamp()
+   OR NOT core_registry_private.active_stock_core_session_live(p_core_subject,p_core_session)
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SELECTION_DENIED'; END IF;
+ SELECT member.* INTO STRICT m FROM stock_membership_private.memberships member
+   JOIN stock_membership_private.resources r ON r.company_id=member.company_id AND r.revoked_at IS NULL
+   JOIN stock_membership_private.identity_pairs pair ON pair.id=member.pair_id AND pair.revoked_at IS NULL
+   WHERE member.company_id=p_company AND r.instance_id=p_instance AND member.core_subject=p_core_subject
+     AND member.stock_subject=p_stock_subject AND member.revoked_at IS NULL;
+ INSERT INTO stock_membership_private.sessions(stock_session,pair_id,core_session,expires_at)
+   VALUES(p_stock_session,m.pair_id,p_core_session,least(p_core_token_expires,clock_timestamp()+interval '1 hour'))
+   ON CONFLICT DO NOTHING;
+ SELECT * INTO STRICT s FROM stock_membership_private.sessions WHERE stock_session=p_stock_session FOR UPDATE NOWAIT;
+ IF s.pair_id<>m.pair_id OR s.core_session<>p_core_session OR s.revoked_at IS NOT NULL OR s.expires_at<=clock_timestamp()
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SESSION_CONFLICT'; END IF;
+ SELECT * INTO previous FROM stock_membership_private.selections WHERE stock_session=p_stock_session ORDER BY revision DESC LIMIT 1;
+ latest:=coalesce(previous.revision,0);
+ SELECT * INTO replay FROM stock_membership_private.selections WHERE stock_session=p_stock_session AND command_id=p_command;
+ IF FOUND THEN
+   IF replay.membership_id<>m.id OR replay.revision<>p_expected_revision+1 OR replay.revision<>latest
+   THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SELECTION_REPLAY_CONFLICT'; END IF;
+ ELSE
+   IF latest<>p_expected_revision THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SELECTION_STALE'; END IF;
+   latest:=latest+1;
+   INSERT INTO stock_membership_private.selections(stock_session,revision,command_id,membership_id)
+     VALUES(p_stock_session,latest,p_command,m.id);
+ END IF;
+ -- Re-read current paid, Owner and native-session authority after the lock and
+ -- selection append. Any failure rolls back the session, selection and audit.
+ result:=public.core_stock_membership_authorize_request(p_company,p_instance,m.profile_id,m.id,m.revision,
+   p_stock_subject,p_stock_session,p_core_subject,p_verified_until,latest);
+ IF p_verified_until<=clock_timestamp() OR p_core_token_expires<=clock_timestamp()
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_SELECTION_DENIED'; END IF;
+ RETURN result;
+END $fn$;
+
 REVOKE ALL ON ALL TABLES IN SCHEMA stock_membership_private FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON ALL SEQUENCES IN SCHEMA stock_membership_private FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON ALL FUNCTIONS IN SCHEMA stock_membership_private FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON FUNCTION public.core_stock_membership_is_managed(uuid,uuid),
- public.core_stock_membership_authorize_request(uuid,uuid,uuid,uuid,bigint,uuid,uuid,uuid,timestamptz)
+ public.core_stock_membership_authorize_request(uuid,uuid,uuid,uuid,bigint,uuid,uuid,uuid,timestamptz,bigint),
+ public.core_stock_membership_select_session(uuid,uuid,uuid,uuid,timestamptz,timestamptz,uuid,uuid,uuid,bigint)
  FROM PUBLIC,anon,authenticated,service_role;
 GRANT EXECUTE ON FUNCTION public.core_stock_membership_is_managed(uuid,uuid),
- public.core_stock_membership_authorize_request(uuid,uuid,uuid,uuid,bigint,uuid,uuid,uuid,timestamptz) TO service_role;
+ public.core_stock_membership_authorize_request(uuid,uuid,uuid,uuid,bigint,uuid,uuid,uuid,timestamptz,bigint),
+ public.core_stock_membership_select_session(uuid,uuid,uuid,uuid,timestamptz,timestamptz,uuid,uuid,uuid,bigint) TO service_role;
 COMMIT;

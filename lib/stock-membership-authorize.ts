@@ -8,7 +8,7 @@ import { STOCK_MEMBERSHIP_RUNTIME_ENABLED, parseStockMembershipRequest,
 
 const authorityKeys = ['bindingId', 'bindingRevision', 'companyId', 'companyRevision',
   'coreSessionId', 'coreSubject', 'coreTenantId', 'instanceId', 'stockTenantId',
-  'profileId', 'membershipId', 'membershipRevision', 'role',
+  'profileId', 'membershipId', 'membershipRevision', 'selectionRevision', 'role',
   'ownerMembershipId', 'ownerMembershipRevision'].sort().join(',')
 
 /** Closed successor composition, not installed authority. No HTTP route calls
@@ -38,6 +38,7 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
       p_company: request.companyId, p_instance: request.instanceId,
       p_profile: request.profileId, p_membership: request.membershipId,
       p_membership_revision: request.membershipRevision,
+      p_selection_revision: request.selectionRevision,
       p_stock_subject: actor.stockSubject, p_stock_session: actor.stockSessionId,
       p_core_subject: actor.coreSubject, p_verified_until: new Date(actor.until).toISOString(),
     }).abortSignal(AbortSignal.timeout(2500))
@@ -49,10 +50,8 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
     const decision = parseStockMembershipDecision({
       ...result.data, version: 2, stockSubject: actor.stockSubject, stockSessionId: actor.stockSessionId,
       method: request.method, path: request.path, nonce: request.nonce,
-      // This is request correlation, not Core authority over Stock selection.
-      // Stock's canonical DB boundary must independently compare its current
-      // selected-session revision before admitting the operation.
-      selectionRevision: request.selectionRevision,
+      // Core returns its current selection revision. Stock must independently
+      // compare the matching local selection before admitting the operation.
       issuedAt, expiresAt: Math.min(issuedAt + ACTIVE_REQUEST_MAX_MS, actor.until),
     }, request, issuedAt)
     if (decision.coreSubject !== actor.coreSubject) return { status: 'denied' }
