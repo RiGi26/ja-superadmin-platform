@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-03T04:24:46.229Z",
-  "status": "NATIVE_FK_MANAGED_PASS_PRO_PARTIAL_UAT_BILLING_NAVIGATION_FAIL_BASIC_PRIVATE_RESET_PENDING",
+  "recordedAt": "2026-11-03T04:57:26.211Z",
+  "status": "BOTH_INACTIVE_WORKSPACES_PREPARED_NATIVE_INTENT_VERIFIED_NAVIGATION_SOURCE_CANDIDATE",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -7217,5 +7217,101 @@
     "productionChanges": "Normal sign-in/sign-out/recovery state only; no deployment, SQL mutation or financial mutation",
     "paidAcceptance": "NOT_EXECUTED",
     "evidenceDirectory": "inactive-preparation-20261103"
+  },
+  "basicPreparation20261103": {
+    "recordedAt": "2026-11-03T04:57:26.211Z",
+    "authority": "Approve inactive workspace rollout; Approve two-workspace readiness reads; normal private recovery and action-time Basic consent",
+    "basicCompanyId": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+    "basicReservationId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+    "basicCommandId": "32f33774-e449-470e-ab04-349ad5c4767f",
+    "passwordUpdate": "Owner saved privately; confirmation and normal sign-in verified",
+    "savedIntent": "PASS: Basic intent exists with zero legacy profiles; saved plan matches after SSO and normal checkout return without URL plan",
+    "firstConsent": "FAIL: decision_failed after waiting; exact provider reason not established",
+    "freshConsent": "PASS: Owner confirmed fresh request; normal callback and Core status both quarantined",
+    "coreQuerySha256": "64f051744a68e69cb9f1a76643cc1372102aa3b06b3f51e3392a3e4cd12582ef",
+    "stockQuerySha256": "ac787329002902fd0726e6556917b944c67f157980918c20ca79e81c325759bf",
+    "coreRows": [
+      {
+        "fixture": "Basic",
+        "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+        "reservation_id": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+        "core_tenant_id": "55f50424-6663-440f-8001-0e77af2b1d35",
+        "stock_tenant_id": "900376ee-8003-4c20-807e-e4ff50f2be06",
+        "profile_id": "94387c2e-3491-4254-9392-6010eddcbb8b",
+        "current_owner": true,
+        "verified_fixture": true,
+        "no_core_pilot_history": true,
+        "current_saved_plan_matches": true,
+        "billing_account_exists": false
+      },
+      {
+        "fixture": "Pro",
+        "company_id": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+        "reservation_id": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+        "core_tenant_id": "871aadb3-b581-456b-a2f5-076f90d16564",
+        "stock_tenant_id": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
+        "profile_id": "8022b87c-6e70-42bf-b3e0-a2658720229a",
+        "current_owner": true,
+        "verified_fixture": true,
+        "no_core_pilot_history": true,
+        "current_saved_plan_matches": null,
+        "billing_account_exists": false
+      }
+    ],
+    "stockRows": [
+      {
+        "fixture": "Basic",
+        "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+        "reservation_id": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+        "core_tenant_id": "55f50424-6663-440f-8001-0e77af2b1d35",
+        "stock_tenant_id": "900376ee-8003-4c20-807e-e4ff50f2be06",
+        "profile_id": "94387c2e-3491-4254-9392-6010eddcbb8b",
+        "matching_inactive_profile": true,
+        "verified_stock_fixture": true,
+        "retained_pilot_history": false,
+        "matching_paid_receipts": 0
+      },
+      {
+        "fixture": "Pro",
+        "company_id": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+        "reservation_id": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+        "core_tenant_id": "871aadb3-b581-456b-a2f5-076f90d16564",
+        "stock_tenant_id": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
+        "profile_id": "8022b87c-6e70-42bf-b3e0-a2658720229a",
+        "matching_inactive_profile": true,
+        "verified_stock_fixture": true,
+        "retained_pilot_history": false,
+        "matching_paid_receipts": 0
+      }
+    ],
+    "browser": "PASS: prepared Basic monthly 149000, disabled payment, own billing has no subscription/invoices; three authenticated GET-selector checks reject foreign company/annual/duplicate plan without exposing Pro or enabling payment",
+    "viewport": "BLOCKED: requested 1440x900 and 390x844 did not apply; DOM remains 430x668; current checkout capture415x644. No exact desktop/390px Basic PASS.",
+    "productionChanged": "Normal Owner password save/Auth sign-in, Basic intent, new E1 Company/reservation and reciprocal inactive Stock resource/binding/audit only. Managed readiness queries read-only. No new application deployment, migration, financial record, cohort or paid activation.",
+    "navigationCandidate": {
+      "state": "SOURCE_ONLY_NOT_DEPLOYED",
+      "initialFocused": {
+        "pass": 0,
+        "fail": 2
+      },
+      "afterFixFocused": {
+        "pass": 2,
+        "fail": 0
+      },
+      "initialFullLocal": {
+        "pass": 1232,
+        "fail": 1,
+        "reason": "Exact AccountHub successor delta needed updating"
+      },
+      "finalAffected": {
+        "pass": 7,
+        "fail": 0
+      },
+      "types": "PASS",
+      "scopedLint": "PASS",
+      "frozenBaselineHash": "0f37bb33703d3704d4d2456fb7bc2f9931bf076e16378ed4e20cce7d89132401",
+      "finalFullCi": "PENDING"
+    },
+    "paidAcceptance": "NOT_EXECUTED",
+    "fullPlanSuccessor": "NOT_IMPLEMENTED: multi-workspace and three independent Pro operators remain required"
   }
 }

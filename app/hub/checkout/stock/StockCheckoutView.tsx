@@ -23,7 +23,7 @@ export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessR
   const available = salesEnabled || renewing
   const canPay = available && accessReady && selected?.stockTenantId && !paid
   return <main className={styles.page} lang="id"><div className={styles.container}>
-    <nav className={styles.nav} aria-label="Customer Hub"><Link href="/hub/account" className={styles.brand}>webzoka</Link><Link href="/hub/account?view=billing">Tagihan & paket</Link></nav>
+    <nav className={styles.nav} aria-label="Customer Hub"><Link href="/hub/account" className={styles.brand}>webzoka</Link><a href="/hub/account?view=billing">Tagihan & paket</a></nav>
     <header className={styles.heading}><h1>Paket Stock untuk usaha Anda</h1><p>Periksa usaha dan paket sebelum melanjutkan pembayaran.</p></header>
     {sandbox && <p className={styles.notice} role="status">Mode uji Sandbox. Pembayaran ini tidak menagih uang nyata.</p>}
     {!plan ? <section className={styles.panel}><h2>Pilih paket Stock</h2><p>Pilih Basic atau Pro melalui Store untuk melanjutkan.</p><Link className={styles.primary} href="/hub/store#stock-packages">Lihat paket Stock</Link></section> : <div className={styles.grid}>
@@ -37,7 +37,7 @@ export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessR
         </> : <>
           {workspaces.length > 1 && <form method="get" action="/hub/checkout/stock" className={styles.selector}><input type="hidden" name="plan" value={plan.id} /><label htmlFor="stock-company">Pilih usaha</label><select id="stock-company" name="company" required defaultValue={selected?.companyId ?? ''}><option value="" disabled>Pilih usaha milik Anda</option>{workspaces.map(item => <option key={item.companyId} value={item.companyId}>{item.companyName}</option>)}</select><button className={styles.secondary}>Gunakan usaha ini</button></form>}
           {selected && <><p className={styles.business}>{selected.companyName}</p>
-            {paid ? <div className={styles.notice} role="status"><h3>{selected.activation === 'active' ? 'Stock sudah aktif' : 'Pembayaran diterima, aktivasi diproses'}</h3><p>{selected.activation === 'active' ? 'Kelola akses dan tagihan melalui Customer Hub.' : 'Tidak perlu membayar lagi. Status akan diperbarui setelah koneksi Stock terkonfirmasi.'}</p><Link className={styles.secondary} href="/hub/account?view=billing">Periksa Tagihan</Link></div>
+            {paid ? <div className={styles.notice} role="status"><h3>{selected.activation === 'active' ? 'Stock sudah aktif' : 'Pembayaran diterima, aktivasi diproses'}</h3><p>{selected.activation === 'active' ? 'Kelola akses dan tagihan melalui Customer Hub.' : 'Tidak perlu membayar lagi. Status akan diperbarui setelah koneksi Stock terkonfirmasi.'}</p><a className={styles.secondary} href="/hub/account?view=billing">Periksa Tagihan</a></div>
             : !selected.stockTenantId ? <><p>Sambungkan akun Stock untuk menyiapkan workspace sebelum pembayaran.</p><form action={prepareStockWorkspace}><input type="hidden" name="plan" value={plan.id} /><input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary}>Selesaikan penyambungan Stock</button></form></>
             : <><p>Workspace Stock siap menerima aktivasi setelah pembayaran terverifikasi.</p><form action={submitStockPayment}><input type="hidden" name="plan" value={plan.id} /><input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary} disabled={!canPay}>Lanjutkan ke pembayaran</button></form></>}
           </>}
