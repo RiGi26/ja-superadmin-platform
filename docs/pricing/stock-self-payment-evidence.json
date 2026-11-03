@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-03T04:57:26.211Z",
+  "recordedAt": "2026-11-03T05:03:43.152Z",
   "status": "BOTH_INACTIVE_WORKSPACES_PREPARED_NATIVE_INTENT_VERIFIED_NAVIGATION_SOURCE_CANDIDATE",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
@@ -7309,9 +7309,37 @@
       "types": "PASS",
       "scopedLint": "PASS",
       "frozenBaselineHash": "0f37bb33703d3704d4d2456fb7bc2f9931bf076e16378ed4e20cce7d89132401",
-      "finalFullCi": "PENDING"
+      "finalFullCi": {
+        "recordedAt": "2026-11-03T05:03:43.152Z",
+        "candidate": "66a7efebb95fff144b834be9d6a141818713e1b0",
+        "url": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41581154524",
+        "status": "PASS",
+        "appDeployment": "NOT_AUTHORIZED",
+        "gate": "docs/pricing/STOCK_ACCOUNT_NAVIGATION_GATE_20261103.md"
+      }
     },
     "paidAcceptance": "NOT_EXECUTED",
-    "fullPlanSuccessor": "NOT_IMPLEMENTED: multi-workspace and three independent Pro operators remain required"
+    "fullPlanSuccessor": "NOT_IMPLEMENTED: multi-workspace and three independent Pro operators remain required",
+    "stockSourceCi": {
+      "sha": "573742d8c98d9889ae6dd84f3adb69942fe33836",
+      "status": "PASS",
+      "url": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41581161099/job/125736073200"
+    },
+    "stockPdfCi": {
+      "sha": "573742d8c98d9889ae6dd84f3adb69942fe33836",
+      "firstAttempt": "FAIL",
+      "url": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41581161026/job/125736073210",
+      "failedStep": "npm run build",
+      "error": "Turbopack Google Noto Sans JP font resolution; next/font/google queries have exactly one entry; 372 repeated errors",
+      "passedBeforeFailure": [
+        "types",
+        "document tests",
+        "PDF tests",
+        "issuance smoke",
+        "pricing history"
+      ],
+      "comparison": "Source validation workflow builds the same Stock SHA successfully. Both workflows use Node 22 and next build with no font mocks; directory, synthetic app URL and workflow setup differ. Exact cause not established.",
+      "retry": "Same-source failed-job retry requested; no source/dependency/assertion change"
+    }
   }
 }
