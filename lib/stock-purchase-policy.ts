@@ -1,8 +1,9 @@
 import { APPROVED_OFFERS } from '@/lib/plan-catalog'
 
-// Deployment of the adapter does not authorize paid Stock membership activation.
-// This source fuse is independent of the catalog's new-sales switch.
-export const STOCK_PAID_BILLING_RUNTIME_ENABLED = false
+// Workspace-preparation candidate; deployment requires explicit Owner authority.
+// Public offers stay closed. The reviewed preparation rollout forces sandbox
+// checkout off, enrolls no cohort and keeps Stock's private receiver disabled.
+export const STOCK_PAID_BILLING_RUNTIME_ENABLED = true
 
 export function stockPurchaseAvailable(catalogSalesEnabled: boolean): boolean {
   return STOCK_PAID_BILLING_RUNTIME_ENABLED && catalogSalesEnabled

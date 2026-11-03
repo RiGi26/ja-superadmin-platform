@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-02T12:56:19.221Z",
-  "status": "BOTH_FIXTURE_SIGNINS_VERIFIED_PRO_WORKSPACE_RESERVED_READINESS_REVIEW_PENDING",
+  "recordedAt": "2026-11-03T02:01:54.879Z",
+  "status": "FULL_BASIC_PRO_RETAINED_PREPARATION_CANDIDATE_UNDEPLOYED",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -4075,7 +4075,7 @@
     "sourcePublication": "Recovered application overlays are included in the two draft PRs; this does not establish managed runtime compatibility"
   },
   "reviewArtifact": "docs/pricing/STOCK_SELF_PAYMENT_REVIEW_20261101.md",
-  "nextMaterialGate": "Approve the exact read-only readiness SQL and three named non-secret provider switches, then prepare controlled runtime enablement using verified mode/isolation evidence. No payment enablement is authorized by those reads.",
+  "nextMaterialGate": "Explicit Owner approval for the reviewed workspace-only Core/Stock rollout, guarded Core preparation setting and Stock postcheck; no payment or cohort enablement.",
   "sourcePublication": {
     "authority": "Owner explicitly selected Approve source PR/CI and closed Previews on 1 November 2026",
     "status": "COMPLETE_APPLICATION_SOURCE_PR_CI",
@@ -6611,6 +6611,148 @@
     "deploymentMigrationOrProviderSettingsChanged": false,
     "basicWorkspaceCreated": false,
     "publicSalesAndPaidRuntime": "CLOSED",
-    "newReadinessScope": "PENDING_OWNER_APPROVAL; two exact SQL files and three named non-secret provider switches only"
+    "newReadinessScope": "APPROVED_AND_EXECUTED; exact seven SELECTs and three non-secret switches only"
+  },
+  "readinessReview20261102": {
+    "authorization": "Approve readiness reads",
+    "coreTarget": "hxhusfkrlafxdnyasmsu",
+    "stockTarget": "oyyfcmlquqfrdoffkgsd",
+    "queryHashes": {
+      "core": "1cf22181af7691acf52f18065ae81d8454c241e4b67ab0ac8693ba5364d5dd6a",
+      "stock": "ae756fa38d485c6a29c0916202b37a744e9287e78422cb4620de03d22dc13aca"
+    },
+    "results": {
+      "core_0": [
+        {
+          "matching_settings": 1,
+          "engine_is_sandbox": true
+        }
+      ],
+      "core_1": [
+        {
+          "enabled": false,
+          "feature_is_sandbox": true
+        }
+      ],
+      "core_2": [
+        {
+          "offer": "Basic",
+          "approved_contract": true,
+          "is_active": false,
+          "is_for_sale": false
+        },
+        {
+          "offer": "Pro",
+          "approved_contract": true,
+          "is_active": false,
+          "is_for_sale": false
+        }
+      ],
+      "core_3": [
+        {
+          "fixture": "Pro",
+          "company_id": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+          "reservation_id": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+          "core_tenant_id": "871aadb3-b581-456b-a2f5-076f90d16564",
+          "current_owner": true,
+          "verified_fixture": true,
+          "no_core_pilot_history": true,
+          "stock_binding_exists": false
+        }
+      ],
+      "stock_0": [
+        {
+          "enabled": false,
+          "receiver_is_sandbox": true
+        }
+      ],
+      "stock_1": [
+        {
+          "resource_prepared": false,
+          "retained_pilot_history": false
+        }
+      ],
+      "stock_2": [
+        {
+          "matching_paid_receipts": 0
+        }
+      ]
+    },
+    "provider": {
+      "identity": "rigi26 / rigi26s-projects",
+      "coreProject": "prj_Z8taL31maerKj0AXlz65OBO8Bs6o",
+      "stockProject": "prj_nTIID94EysP6VzpfeprqiK78ouN2",
+      "coreSandboxSwitch": {
+        "key": "BILLING_SANDBOX_UAT_ENABLED",
+        "project": "NOT_CONFIGURED",
+        "linkedShared": "NOT_CONFIGURED"
+      },
+      "corePilot": {
+        "key": "STOCK_SSO_PILOT_ENABLED",
+        "project": "NOT_CONFIGURED",
+        "linkedShared": "NOT_CONFIGURED"
+      },
+      "stockPilot": {
+        "key": "STOCK_SSO_PILOT_ENABLED",
+        "project": "NOT_CONFIGURED",
+        "linkedShared": "NOT_CONFIGURED"
+      },
+      "valuesRevealed": false,
+      "fullEnvironmentExport": false,
+      "deploymentOverrides": "NOT_EXPORTED_OR_INSPECTED",
+      "changes": false
+    }
+  },
+  "preparationCandidate20261103": {
+    "sourcePublicationAuthority": "Approve source PR/CI and closed Previews",
+    "ownerScopeAnswer": "Keep full Basic + Pro plan (Recommended)",
+    "deployed": false,
+    "productionExecutionAuthorized": false,
+    "gates": {
+      "sourceCorePaidRuntime": true,
+      "sourceStockPaidRuntime": true,
+      "publicCatalogReleaseFlags": false,
+      "proposedCoreSandboxCheckoutOverride": false,
+      "proposedPilotOverrides": false,
+      "stockPrivateReceiverEnabled": false,
+      "cohortEnrollmentProposed": false
+    },
+    "localChecks": {
+      "coreFullUnit": {
+        "pass": 1231,
+        "fail": 0,
+        "log": "closed-rollout-20261102/preparation-core-full.log"
+      },
+      "stockModuleUnit": {
+        "pass": 96,
+        "fail": 0,
+        "log": "closed-rollout-20261102/preparation-stock-full.log"
+      },
+      "disposablePostgresUnit": {
+        "pass": 38,
+        "fail": 0,
+        "preparationCases": 12,
+        "managedRuntimeProof": false,
+        "log": "closed-rollout-20261102/preparation-postgres-unit.log"
+      },
+      "finalDisabledReceiverFocusedUnit": {
+        "pass": 1,
+        "fail": 0,
+        "strengthenedExpiryAssertions": true
+      },
+      "coreTypesAndScopedLint": "PASS exit 0",
+      "stockTypesAndScopedLint": "PASS exit 0"
+    },
+    "finalSourceCi": "PENDING_PUBLICATION",
+    "deploymentProposal": "docs/pricing/STOCK_WORKSPACE_PREPARATION_GATE_20261102.md",
+    "remainingFullPlanGaps": [
+      "Multiple workspaces per native identity: E1 origin/binding subject uniqueness and single-membership Owner predicate need a reviewed successor.",
+      "Pro three real operators: team creation is unconditionally disabled and paid online authority is currently Owner-bound.",
+      "Managed payment/activation/recovery, authorized HTTP and desktop/exact-390px browser acceptance remain unexecuted.",
+      "Commercial terms and remaining Stock security/release gates remain unresolved."
+    ],
+    "protectedIdentityOrTeamRulesChanged": false,
+    "productionMutationsDuringCandidatePreparation": false,
+    "financialMutations": false
   }
 }
