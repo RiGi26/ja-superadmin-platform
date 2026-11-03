@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { StockBillingWorkspace } from '@/lib/stock-self-payment'
-import { prepareStockWorkspace, submitStockPayment } from './actions'
+import { prepareStockWorkspace, prepareStockMembership, submitStockPayment } from './actions'
+import { ACTIVE_STOCK_ORIGIN } from '@/lib/stock-active-protocol'
+import type { StockWorkspaceChoice } from '@/lib/stock-membership-protocol'
 import styles from './checkout.module.css'
 
 type Plan = { id: string; tierDisplayName: string; priceMonthly: number; features: readonly string[] }
@@ -13,15 +15,17 @@ const errors: Record<string, string> = {
   unavailable: 'Pembayaran belum dapat dilanjutkan. Periksa status terbaru atau hubungi bantuan.',
 }
 
-export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessReady, workspaces, selected, result }: {
+export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessReady, workspaces, selected, result,
+  preparationRequired = false, membershipPreparation = null }: {
   plan: Plan | null; salesEnabled: boolean; accessReady: boolean; workspaces: StockBillingWorkspace[];
   selected: StockBillingWorkspace | null; result: string | null;
   sandbox?: boolean;
+  preparationRequired?: boolean; membershipPreparation?: StockWorkspaceChoice | null;
 }) {
   const paid = selected?.activation === 'pending' || selected?.activation === 'active'
   const renewing = selected && plan && selected.subscription?.planId === plan.id && (selected.hasPaidContract || selected.invoices.some(invoice => invoice.planId === plan.id && ['unpaid', 'awaiting_payment'].includes(invoice.status)))
   const available = salesEnabled || renewing
-  const canPay = available && accessReady && selected?.stockTenantId && !paid
+  const canPay = available && accessReady && selected?.stockTenantId && !paid && !preparationRequired
   return <main className={styles.page} lang="id"><div className={styles.container}>
     <nav className={styles.nav} aria-label="Customer Hub"><Link href="/hub/account" className={styles.brand}>webzoka</Link><a href="/hub/account?view=billing">Tagihan & paket</a></nav>
     <header className={styles.heading}><h1>Paket Stock untuk usaha Anda</h1><p>Periksa usaha dan paket sebelum melanjutkan pembayaran.</p></header>
@@ -39,6 +43,16 @@ export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessR
           {selected && <><p className={styles.business}>{selected.companyName}</p>
             {paid ? <div className={styles.notice} role="status"><h3>{selected.activation === 'active' ? 'Stock sudah aktif' : 'Pembayaran diterima, aktivasi diproses'}</h3><p>{selected.activation === 'active' ? 'Kelola akses dan tagihan melalui Customer Hub.' : 'Tidak perlu membayar lagi. Status akan diperbarui setelah koneksi Stock terkonfirmasi.'}</p><a className={styles.secondary} href="/hub/account?view=billing">Periksa Tagihan</a></div>
             : !selected.stockTenantId ? <><p>Sambungkan akun Stock untuk menyiapkan workspace sebelum pembayaran.</p><form action={prepareStockWorkspace}><input type="hidden" name="plan" value={plan.id} /><input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary}>Selesaikan penyambungan Stock</button></form></>
+            : preparationRequired ? <><p>Konfirmasi workspace dan akun Stock sebelum membuat tagihan. Langkah ini belum mengaktifkan langganan.</p>
+              {membershipPreparation ? <form method="post" action={ACTIVE_STOCK_ORIGIN + '/api/auth/stock-membership/start'}>
+                <input type="hidden" name="commandId" value={membershipPreparation.commandId} />
+                <input type="hidden" name="companyId" value={membershipPreparation.companyId} />
+                <input type="hidden" name="reservationId" value={membershipPreparation.instanceId} />
+                <button className={styles.primary}>Konfirmasi koneksi Stock</button>
+              </form> : <form action={prepareStockMembership}><input type="hidden" name="plan" value={plan.id} />
+                <input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary}>Verifikasi workspace Stock</button>
+              </form>}
+            </>
             : <><p>Workspace Stock siap menerima aktivasi setelah pembayaran terverifikasi.</p><form action={submitStockPayment}><input type="hidden" name="plan" value={plan.id} /><input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary} disabled={!canPay}>Lanjutkan ke pembayaran</button></form></>}
           </>}
         </>}

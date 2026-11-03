@@ -11,6 +11,8 @@ import { selfServiceChange } from '@/lib/billing'
 import { issueStockBillingAuthority } from '@/lib/stock-billing-authority'
 import { sandboxPurchaseAllowed } from '@/lib/billing-sandbox-uat'
 import { STOCK_PAID_BILLING_RUNTIME_ENABLED, stockPurchaseAvailable, stockPlanId, stockCompanyId, safeStockPaymentRedirect } from '@/lib/stock-purchase-policy'
+import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
+import { stockMembershipPurchaseReady } from '@/lib/stock-membership-purchase'
 
 const uuid = z.uuid()
 const date = z.iso.datetime({ offset: true })
@@ -143,6 +145,8 @@ export async function startStockPurchase(input: { plan: unknown; company: unknow
     if (purchaseError(sandbox ? { ...plan, is_active: true, is_for_sale: true } : plan, purchaseRows, ownedContract, 'monthly', sandbox ? true : undefined)) return { status: 'closed' }
     if (workspace.subscription && workspace.subscription.planId !== planId) return { status: 'denied' }
     if (workspace.invoices.some(row => ['unpaid', 'awaiting_payment'].includes(row.status) && row.planId !== planId)) return { status: 'pending' }
+    if (STOCK_MEMBERSHIP_PREPARATION_ENABLED && !workspace.hasPaidContract &&
+        !(await stockMembershipPurchaseReady(client, companyId))) return { status: 'preparation_required' }
 
     let latest = await verifyNativeCoreSession(client)
     if (!latest.customer || latest.subject !== actor.subject || latest.session !== actor.session) return { status: 'denied' }

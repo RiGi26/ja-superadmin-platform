@@ -8,9 +8,16 @@ import { isActiveStockUuid, parseActiveStockDecision, parseActiveStockRequest,
   type ActiveStockSelector } from './stock-active-protocol'
 
 export const STOCK_MEMBERSHIP_RUNTIME_ENABLED = false
+export const STOCK_MEMBERSHIP_PREPARATION_ENABLED = false
 
 type MemberRole = 'admin' | 'staff' | 'produksi'
 export type StockWorkspaceChoice = ActiveStockSelector & Readonly<{ commandId: string }>
+export type StockMembershipPreparation = StockWorkspaceChoice & Readonly<{
+  version: 2; status: 'prepared'; accessGranted: false; role: 'admin';
+  bindingId: string; bindingRevision: 1; companyRevision: number;
+  coreSubject: string; coreTenantId: string; stockSubject: string; stockTenantId: string;
+  ownerMembershipId: string; profileId: string; membershipRevision: 1;
+}>
 type Selection = ActiveStockSelector & Readonly<{
   stockTenantId: string; profileId: string; membershipId: string;
   membershipRevision: number; selectionRevision: number; role: MemberRole
@@ -59,6 +66,27 @@ export function parseStockWorkspaceChoice(value: unknown): StockWorkspaceChoice 
       !isActiveStockUuid(value.commandId)) throw new Error('STOCK_WORKSPACE_CHOICE_DENIED')
   const selected = parseActiveStockSelector({ companyId: value.companyId, instanceId: value.instanceId })
   return Object.freeze({ ...selected, commandId: value.commandId })
+}
+
+/** Inactive admission receipt from the trusted Core transport only. Parsing
+ * never authenticates its issuer or authorizes a payment or portal operation.
+ */
+export function parseStockMembershipPreparation(value: unknown): StockMembershipPreparation {
+  const keys = ['accessGranted','bindingId','bindingRevision','commandId','companyId','companyRevision',
+    'coreSubject','coreTenantId','instanceId','membershipRevision','ownerMembershipId','profileId',
+    'role','status','stockSubject','stockTenantId','version'].sort().join(',')
+  if (!record(value) || Object.keys(value).sort().join(',') !== keys || value.version !== 2 ||
+      value.status !== 'prepared' || value.accessGranted !== false || value.role !== 'admin' ||
+      value.bindingRevision !== 1 || value.membershipRevision !== 1 || value.bindingId !== value.instanceId ||
+      !Number.isSafeInteger(value.companyRevision) || (value.companyRevision as number) < 0 ||
+      !['bindingId','coreSubject','coreTenantId','stockSubject','stockTenantId','ownerMembershipId','profileId']
+        .every(key => isActiveStockUuid(value[key]))) throw new Error('STOCK_MEMBERSHIP_PREPARATION_DENIED')
+  const selected = parseStockWorkspaceChoice({ commandId: value.commandId, companyId: value.companyId, instanceId: value.instanceId })
+  return Object.freeze({ ...selected, version: 2, status: 'prepared', accessGranted: false, role: 'admin',
+    bindingId: value.bindingId as string, bindingRevision: 1, companyRevision: value.companyRevision as number,
+    coreSubject: value.coreSubject as string, coreTenantId: value.coreTenantId as string,
+    stockSubject: value.stockSubject as string, stockTenantId: value.stockTenantId as string,
+    ownerMembershipId: value.ownerMembershipId as string, profileId: value.profileId as string, membershipRevision: 1 })
 }
 
 /** This request is assembled at the protected data boundary from its selected

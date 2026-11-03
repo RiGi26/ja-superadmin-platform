@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyNativeCoreSession } from '@/lib/core-registry-native'
 import { STOCK_PAID_BILLING_RUNTIME_ENABLED, stockPlanId } from '@/lib/stock-purchase-policy'
+import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
+import { stockMembershipPurchaseReady } from '@/lib/stock-membership-purchase'
 
 export type StockBillingAuthority = Readonly<{ kind: 'stock_company_purchase' }>
 type Proof = { companyId: string; tenantId: string; planId: string; subject: string; session: string; until: number }
@@ -32,8 +34,10 @@ export async function issueStockBillingAuthority(input: unknown): Promise<StockB
     if (!actor.customer) return null
     const owned = await client.rpc('stock_billing_owned_workspaces')
     const rows = context.safeParse(owned.data)
-    if (owned.error || !rows.success || !rows.data.some(row => row.companyId === parsed.data.companyId &&
-        row.coreTenantId === parsed.data.tenantId && row.ownerId === actor.subject && row.stockTenantId !== null)) return null
+    const workspace = rows.success && rows.data.find(row => row.companyId === parsed.data.companyId &&
+      row.coreTenantId === parsed.data.tenantId && row.ownerId === actor.subject && row.stockTenantId !== null)
+    if (owned.error || !workspace || (STOCK_MEMBERSHIP_PREPARATION_ENABLED && workspace.hasPaidContract !== true &&
+        !(await stockMembershipPurchaseReady(client, parsed.data.companyId)))) return null
     const latest = await verifyNativeCoreSession(client)
     if (!latest.customer || latest.subject !== actor.subject || latest.session !== actor.session || Date.parse(latest.until) <= Date.now()) return null
     const authority: StockBillingAuthority = Object.freeze({ kind: 'stock_company_purchase' })
@@ -75,8 +79,10 @@ export async function stockBillingOperationError(tenantId: string, planId?: stri
     }
     const owned = await client.rpc('stock_billing_owned_workspaces')
     const rows = context.safeParse(owned.data)
-    if (!owned.error && rows.success && rows.data.some(row => row.companyId === proof.companyId &&
-        row.coreTenantId === tenantId && row.ownerId === proof.subject && row.stockTenantId !== null)) return null
+    const workspace = rows.success && rows.data.find(row => row.companyId === proof.companyId &&
+      row.coreTenantId === tenantId && row.ownerId === proof.subject && row.stockTenantId !== null)
+    if (!owned.error && workspace && (!STOCK_MEMBERSHIP_PREPARATION_ENABLED || workspace.hasPaidContract === true ||
+        await stockMembershipPurchaseReady(client, proof.companyId))) return null
   } catch { /* Revocation or an unavailable provider never grants billing access. */ }
   return { ok: false as const, status: 403, error: 'Sesi Owner berubah. Masuk kembali melalui Customer Hub.' }
 }

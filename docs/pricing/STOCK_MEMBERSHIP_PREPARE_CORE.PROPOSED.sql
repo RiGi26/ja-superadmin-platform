@@ -119,4 +119,85 @@ END $fn$;
 REVOKE ALL ON stock_membership_private.preparation_settings,stock_membership_private.prepared_owners FROM PUBLIC,anon,authenticated,service_role;
 REVOKE ALL ON FUNCTION public.core_stock_membership_prepare_owner(uuid,uuid,uuid,uuid,timestamptz,uuid,uuid,uuid) FROM PUBLIC,anon,authenticated,service_role;
 GRANT EXECUTE ON FUNCTION public.core_stock_membership_prepare_owner(uuid,uuid,uuid,uuid,timestamptz,uuid,uuid,uuid) TO service_role;
+
+CREATE TABLE stock_membership_private.preparation_confirmations(
+ company_id uuid PRIMARY KEY REFERENCES stock_membership_private.prepared_owners(company_id) ON DELETE RESTRICT,
+ command_id uuid NOT NULL,
+ confirmed_at timestamptz NOT NULL DEFAULT clock_timestamp()
+);
+ALTER TABLE stock_membership_private.preparation_confirmations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE stock_membership_private.preparation_confirmations FORCE ROW LEVEL SECURITY;
+CREATE TRIGGER membership_confirmation_immutable BEFORE UPDATE OR DELETE OR TRUNCATE ON stock_membership_private.preparation_confirmations
+ FOR EACH STATEMENT EXECUTE FUNCTION stock_membership_private.immutable();
+CREATE TRIGGER membership_confirmation_fence BEFORE INSERT ON stock_membership_private.preparation_confirmations
+ FOR EACH STATEMENT EXECUTE FUNCTION stock_membership_private.lock_registry();
+CREATE TRIGGER membership_confirmation_audit AFTER INSERT ON stock_membership_private.preparation_confirmations
+ FOR EACH ROW EXECUTE FUNCTION stock_membership_private.audit();
+REVOKE ALL ON stock_membership_private.preparation_confirmations FROM PUBLIC,anon,authenticated,service_role;
+
+CREATE FUNCTION public.core_stock_membership_confirm_owner(p_core_subject uuid,p_core_session uuid,
+ p_stock_subject uuid,p_stock_session uuid,p_verified_until timestamptz,p_company uuid,p_instance uuid,p_command uuid,p_stock_receipt jsonb)
+RETURNS jsonb LANGUAGE plpgsql SECURITY DEFINER SET search_path='' SET lock_timeout='1ms' AS $fn$
+DECLARE current_receipt jsonb;
+BEGIN
+ -- Same exact Owner/resource validation and global mutation fence as admission.
+ current_receipt:=public.core_stock_membership_prepare_owner(p_core_subject,p_core_session,p_stock_subject,
+   p_stock_session,p_verified_until,p_company,p_instance,p_command);
+ IF current_receipt IS DISTINCT FROM p_stock_receipt
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_RECIPROCAL_PREPARATION_DENIED'; END IF;
+ INSERT INTO stock_membership_private.preparation_confirmations(company_id,command_id)
+   VALUES(p_company,p_command) ON CONFLICT(company_id) DO NOTHING;
+ IF NOT EXISTS(SELECT 1 FROM stock_membership_private.preparation_confirmations WHERE company_id=p_company AND command_id=p_command)
+   OR p_verified_until<=clock_timestamp()
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_RECIPROCAL_PREPARATION_DENIED'; END IF;
+ RETURN jsonb_build_object('status','confirmed','companyId',p_company,'instanceId',p_instance,'commandId',p_command,'accessGranted',false);
+END $fn$;
+REVOKE ALL ON FUNCTION public.core_stock_membership_confirm_owner(uuid,uuid,uuid,uuid,timestamptz,uuid,uuid,uuid,jsonb) FROM PUBLIC,anon,authenticated,service_role;
+GRANT EXECUTE ON FUNCTION public.core_stock_membership_confirm_owner(uuid,uuid,uuid,uuid,timestamptz,uuid,uuid,uuid,jsonb) TO service_role;
+
+-- A partially completed callback can never issue an invoice. This additional
+-- guard affects only admitted v2 resources; existing billing guards still apply.
+CREATE FUNCTION stock_membership_private.preparation_ready(p_company uuid) RETURNS boolean
+LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $fn$
+ SELECT EXISTS(SELECT 1 FROM stock_membership_private.resources r
+ JOIN stock_membership_private.prepared_owners p ON p.company_id=r.company_id
+ JOIN stock_membership_private.preparation_confirmations c ON c.company_id=p.company_id AND c.command_id=p.command_id
+ JOIN stock_membership_private.memberships m ON m.id=r.owner_membership_id AND m.company_id=r.company_id AND m.revoked_at IS NULL
+ JOIN stock_membership_private.identity_pairs ip ON ip.id=m.pair_id AND ip.revoked_at IS NULL
+ JOIN public.companies company ON company.id=r.company_id AND company.status='active'
+   AND company.revision=(p.result->>'companyRevision')::bigint
+ WHERE r.company_id=p_company AND r.revoked_at IS NULL)
+$fn$;
+REVOKE ALL ON FUNCTION stock_membership_private.preparation_ready(uuid) FROM PUBLIC,anon,authenticated,service_role;
+CREATE FUNCTION public.core_stock_membership_purchase_readiness(p_company uuid) RETURNS jsonb
+LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $fn$
+BEGIN
+ IF auth.role() IS DISTINCT FROM 'authenticated' OR NOT public.core_registry_session_is_live()
+   OR NOT stock_billing_private.current_owner(p_company,auth.uid())
+ THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_PREPARATION_DENIED'; END IF;
+ RETURN jsonb_build_object('companyId',p_company,'ready',stock_membership_private.preparation_ready(p_company));
+END $fn$;
+REVOKE ALL ON FUNCTION public.core_stock_membership_purchase_readiness(uuid) FROM PUBLIC,anon,authenticated,service_role;
+GRANT EXECUTE ON FUNCTION public.core_stock_membership_purchase_readiness(uuid) TO authenticated;
+
+CREATE FUNCTION stock_membership_private.guard_prepared_purchase() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $fn$
+DECLARE company uuid;
+BEGIN
+ SELECT company_id INTO company FROM stock_membership_private.resources WHERE core_tenant_id=NEW.tenant_id;
+ IF FOUND THEN
+   IF NOT pg_try_advisory_xact_lock(hashtextextended('core_registry_writes',0))
+   THEN RAISE EXCEPTION USING ERRCODE='55P03',MESSAGE='STOCK_MEMBERSHIP_BUSY_REAUTHENTICATE'; END IF;
+   IF NOT stock_membership_private.preparation_ready(company)
+   THEN RAISE EXCEPTION 'STOCK_MEMBERSHIP_RECIPROCAL_PREPARATION_REQUIRED'; END IF;
+ END IF;
+ RETURN NEW;
+END $fn$;
+REVOKE ALL ON FUNCTION stock_membership_private.guard_prepared_purchase() FROM PUBLIC,anon,authenticated,service_role;
+-- Sort before the existing billing row guards: Registry fence precedes the
+-- invoice's tenant lock and is held through the financial transaction commit.
+CREATE TRIGGER stock_00_membership_prepared_invoice_guard BEFORE INSERT ON public.subscription_invoices
+ FOR EACH ROW EXECUTE FUNCTION stock_membership_private.guard_prepared_purchase();
+CREATE TRIGGER stock_00_membership_prepared_subscription_guard BEFORE INSERT ON public.tenant_subscriptions
+ FOR EACH ROW EXECUTE FUNCTION stock_membership_private.guard_prepared_purchase();
 COMMIT;

@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { rememberStockPurchase, startStockPurchase } from '@/lib/stock-self-payment'
 import { stockCheckoutPath, stockPlanId, stockCompanyId } from '@/lib/stock-purchase-policy'
 import { refreshStockInvoice } from '@/lib/stock-invoice-recovery'
+import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
 
 function selection(form: FormData) {
   if ([...form.keys()].some(key => !['plan', 'company'].includes(key) && !key.startsWith('$ACTION_')) ||
@@ -31,6 +32,14 @@ export async function submitStockPayment(form: FormData): Promise<never> {
   if (result.status === 'checkout') redirect(result.redirectUrl)
   if (result.status === 'paid') redirect('/hub/account?view=billing')
   redirect(stockCheckoutPath(selected.plan, selected.company) + `&result=${result.status}`)
+}
+
+export async function prepareStockMembership(form: FormData): Promise<never> {
+  const selected = selection(form)
+  if (!selected?.company) redirect('/hub/store#stock-packages')
+  if (!STOCK_MEMBERSHIP_PREPARATION_ENABLED) redirect(stockCheckoutPath(selected.plan, selected.company) + '&result=closed')
+  const intent = await rememberStockPurchase(selected.plan, selected.company)
+  redirect(stockCheckoutPath(selected.plan, selected.company) + (!intent ? '&result=unavailable' : ''))
 }
 
 export async function refreshStockInvoiceAction(form: FormData): Promise<never> {
