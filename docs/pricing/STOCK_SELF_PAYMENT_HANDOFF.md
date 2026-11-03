@@ -309,7 +309,7 @@ The historical `E1_QUARANTINE_PUBLIC_RELEASE_20261026.md` explicitly excluded bi
 
 ## Fresh authenticated browser observation — 3 November
 
-The Owner re-enabled Codex local browser access. A fresh read-only observation of the already-signed-in Basic sandbox account at `hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001` shows the prepared workspace `Stock Sandbox Basic 20261102`, the approved Basic monthly price of Rp149,000, and the expected package limits. The page explicitly says new self-purchase is not open; `Lanjutkan ke pembayaran` is disabled. No payment action was attempted. This confirms the currently deployed sales gate remains closed and the Basic purchase journey is not accepted. The capture was not an exact 390px viewport, so it is not mobile UAT evidence. Pro, desktop-sized browser UAT, Midtrans, activation and invoice-history acceptance remain unverified.
+The Owner re-enabled Codex local browser access. A fresh read-only observation of the already-signed-in Basic sandbox account at `hub.webzoka.com/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001` shows the prepared workspace `Stock Sandbox Basic 20261102`, approved Basic monthly price Rp149,000 and its package limits. Selecting the approved Pro plan in the same session displays Rp359,000 monthly, three seats, and Pro features. Both views explicitly say new self-purchase is not open; `Lanjutkan ke pembayaran` is disabled. No payment action was attempted. This confirms offer presentation, not Pro team access or purchase acceptance. The capture was not an exact 390px viewport, so it is not mobile UAT evidence. Desktop-sized browser UAT, Midtrans, activation and invoice-history acceptance remain unverified.
 
 ## Evidence levels — updated 3 November
 

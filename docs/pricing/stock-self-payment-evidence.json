@@ -7419,9 +7419,11 @@
     "account": "Previously approved Basic sandbox fixture; signed-in state read only",
     "workspace": "Stock Sandbox Basic 20261102; prepared workspace message visible",
     "offer": "Basic Rp149000 monthly; expected package limits visible",
+    "proOffer": "Pro Rp359000 monthly, three-seat limit and listed features rendered in same session; this is display evidence only",
     "paymentAction": "NOT_ATTEMPTED; purchase-unavailable message shown and payment button disabled",
     "viewport": "Browser capture available; exact desktop and 390px sizes not established",
+    "browserRestoredTo": "Basic checkout",
     "productionChanged": false,
-    "acceptance": "NOT_PASSED; Pro, Midtrans, activation and invoice history remain unverified"
+    "acceptance": "NOT_PASSED; Pro team access, Midtrans, activation and invoice history remain unverified"
   }
 }
