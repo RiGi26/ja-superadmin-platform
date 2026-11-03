@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-11-03T03:04:21.368Z",
+  "recordedAt": "2026-11-03T03:52:10.856Z",
   "status": "INACTIVE_PREPARATION_ROLLED_OUT_PRO_PREPARED_NATIVE_IDENTITY_FK_CORRECTION_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
@@ -6946,7 +6946,32 @@
           "classification": "APPLICATION_DEFECT: additional legacy audit-actor FK"
         }
       ],
-      "hostedCi": "PENDING_SOURCE_PUBLICATION"
+      "hostedCi": {
+        "core": {
+          "source": "86b9adb7a54c691b73524a564a34f45680f15c2e",
+          "run": 41570056928,
+          "job": 125700595866,
+          "status": "PASS"
+        },
+        "stock": {
+          "source": "a9e0e746bcea9a26a3f54a00a86357fbafa6d9da",
+          "run": 41570409995,
+          "job": 125701907968,
+          "pdfRun": 41570410001,
+          "pdfJob": 125701796716,
+          "status": "PASS"
+        },
+        "lateRollbackFollowup": {
+          "source": "ed4e6536e30a06c667ca94fa6d19feacaef75295",
+          "focusedUnit": {
+            "pass": 1,
+            "fail": 0
+          },
+          "scope": "Third ALTER fails after two changes; transaction restores all three original references and preserves audit row.",
+          "canonicalChecks": "https://github.com/RiGi26/webzoka-stock-platform/pull/14/checks"
+        }
+      },
+      "migrationApproval": "PENDING_EXACT_THREE_FK_QUESTION; no answer inferred from continue"
     },
     "validation": {
       "sourceStaticUnit": "PASS for exact deployed candidates; native FK correction local PostgreSQL only",
@@ -6968,6 +6993,19 @@
       "pro-quarantine-confirmed.png",
       "pro-prepared-payment-disabled.png",
       "basic-signin-preparation-handoff.png"
-    ]
+    ],
+    "anonymousHttpSmoke": {
+      "pass": 12,
+      "fail": 0,
+      "log": "inactive-preparation-20261103/closed-http-smoke.json"
+    },
+    "latestContinuation": {
+      "browserAttempt": "BLOCKED: Local browser use is disabled in Work settings",
+      "basicSignIn": "UNVERIFIED",
+      "additionalProductionMutations": false,
+      "deployedApplicationCodeChanged": false,
+      "alternateAutomationUsed": false,
+      "sourcePublication": "Existing draft PR/CI authority reused; tests and evidence only"
+    }
   }
 }
