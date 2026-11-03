@@ -13,9 +13,17 @@ type Enrollment = { companyId: string | null; instanceId: string | null; coreSes
 export async function paidStockSessionAuthority(identity: Identity, enrollment?: Enrollment): Promise<
   { kind: 'legacy' } | { kind: 'paid'; data: unknown } | { kind: 'denied' }
 > {
-  if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return { kind: 'legacy' }
   try {
+    if (!Number.isFinite(identity.until) || identity.until <= Date.now()) return { kind: 'denied' }
     const db = createAdminClient()
+    // Admission can precede payment and reciprocal completion. Retained v2
+    // history must never enter this v1 engine, even when its paid flag closes.
+    // Install the membership reader before deploying/enabling this caller.
+    const membership = await db.rpc('core_stock_membership_is_managed', {
+      p_core_subject: identity.coreSubject, p_stock_subject: identity.stockSubject,
+    }).abortSignal(AbortSignal.timeout(2500))
+    if (membership.error || membership.data !== false || identity.until <= Date.now()) return { kind: 'denied' }
+    if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return { kind: 'legacy' }
     const classified = await db.rpc('stock_billing_active_is_managed', {
       p_core_subject: identity.coreSubject, p_stock_subject: identity.stockSubject,
     }).abortSignal(AbortSignal.timeout(2500))
