@@ -1,0 +1,109 @@
+/** V2 wire validation only. Parsed values are never native identity, ownership,
+ * membership, paid entitlement or an access grant. No live route selects v2 yet.
+ * Its issuer/DB integration must verify current native sessions, retained history,
+ * Company/resource mapping, paid contract and both Owner/member revisions.
+ */
+import { isActiveStockUuid, parseActiveStockDecision, parseActiveStockRequest,
+  parseActiveStockSelector, type ActiveStockDecision, type ActiveStockRequest,
+  type ActiveStockSelector } from './stock-active-protocol'
+
+export const STOCK_MEMBERSHIP_RUNTIME_ENABLED = false
+
+type MemberRole = 'admin' | 'staff' | 'produksi'
+export type StockWorkspaceChoice = ActiveStockSelector & Readonly<{ commandId: string }>
+type Selection = ActiveStockSelector & Readonly<{
+  stockTenantId: string; profileId: string; membershipId: string;
+  membershipRevision: number; selectionRevision: number; role: MemberRole
+}>
+export type StockMembershipRequest = ActiveStockRequest & Selection & Readonly<{ version: 2 }>
+export type StockMembershipDecision = Omit<ActiveStockDecision, 'version'> & Selection & Readonly<{
+  version: 2; ownerMembershipId: string; ownerMembershipRevision: number
+}>
+
+const selectionKeys = ['companyId', 'instanceId', 'stockTenantId', 'profileId',
+  'membershipId', 'membershipRevision', 'selectionRevision', 'role'] as const
+const baseRequestKeys = ['stockSubject', 'stockSessionId', 'method', 'path', 'nonce'] as const
+const baseDecisionKeys = ['bindingId', 'bindingRevision', 'companyRevision',
+  'coreSubject', 'coreSessionId', 'coreTenantId', 'issuedAt', 'expiresAt'] as const
+const requestKeys = [...selectionKeys, ...baseRequestKeys, 'version'].sort().join(',')
+const decisionKeys = [...selectionKeys, ...baseRequestKeys, ...baseDecisionKeys,
+  'version', 'ownerMembershipId', 'ownerMembershipRevision'].sort().join(',')
+
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+function positiveRevision(value: unknown): value is number {
+  return Number.isSafeInteger(value) && (value as number) > 0
+}
+function select(value: Record<string, unknown>): Selection {
+  const selected = parseActiveStockSelector({ companyId: value.companyId, instanceId: value.instanceId })
+  if (!isActiveStockUuid(value.stockTenantId) || !isActiveStockUuid(value.profileId) ||
+      !isActiveStockUuid(value.membershipId) || !positiveRevision(value.membershipRevision) ||
+      !positiveRevision(value.selectionRevision) || !['admin', 'staff', 'produksi'].includes(value.role as string)) {
+    throw new Error('STOCK_MEMBERSHIP_SELECTION_DENIED')
+  }
+  return Object.freeze({ ...selected, stockTenantId: value.stockTenantId, profileId: value.profileId,
+    membershipId: value.membershipId, membershipRevision: value.membershipRevision,
+    selectionRevision: value.selectionRevision, role: value.role as MemberRole })
+}
+function request(value: Record<string, unknown>): ActiveStockRequest {
+  return parseActiveStockRequest({ stockSubject: value.stockSubject, stockSessionId: value.stockSessionId,
+    method: value.method, path: value.path, nonce: value.nonce })
+}
+
+/** A browser may ask for a workspace and an idempotent command. The server must
+ * derive the tenant/profile/member/role from the current managed session.
+ */
+export function parseStockWorkspaceChoice(value: unknown): StockWorkspaceChoice {
+  if (!record(value) || Object.keys(value).sort().join(',') !== 'commandId,companyId,instanceId' ||
+      !isActiveStockUuid(value.commandId)) throw new Error('STOCK_WORKSPACE_CHOICE_DENIED')
+  const selected = parseActiveStockSelector({ companyId: value.companyId, instanceId: value.instanceId })
+  return Object.freeze({ ...selected, commandId: value.commandId })
+}
+
+/** This request is assembled at the protected data boundary from its selected
+ * session context. Parsing it does not make browser-supplied membership trusted.
+ */
+export function parseStockMembershipRequest(value: unknown): StockMembershipRequest {
+  if (!record(value) || Object.keys(value).sort().join(',') !== requestKeys || value.version !== 2) {
+    throw new Error('STOCK_MEMBERSHIP_REQUEST_DENIED')
+  }
+  return Object.freeze({ ...request(value), ...select(value), version: 2 })
+}
+
+/** Compare the exact online decision with this in-flight selected membership.
+ * The existing v1 parser supplies the same strict path, nonce/session and clock
+ * limits. Constructing its projection here never admits a v1 response as v2.
+ * Operational role carries no permission to pay or manage subscriptions.
+ */
+export function parseStockMembershipDecision(value: unknown, expected: StockMembershipRequest,
+  now = Date.now()): StockMembershipDecision {
+  expected = parseStockMembershipRequest(expected)
+  if (!record(value) || Object.keys(value).sort().join(',') !== decisionKeys || value.version !== 2 ||
+      !isActiveStockUuid(value.ownerMembershipId) || !positiveRevision(value.ownerMembershipRevision)) {
+    throw new Error('STOCK_MEMBERSHIP_DECISION_DENIED')
+  }
+  const selected = select(value)
+  if (selectionKeys.some(key => selected[key] !== expected[key])) {
+    throw new Error('STOCK_MEMBERSHIP_DECISION_DENIED')
+  }
+  const observed = parseActiveStockDecision({
+    ...request(value), version: 1, companyId: selected.companyId, instanceId: selected.instanceId,
+    stockTenantId: selected.stockTenantId, bindingId: value.bindingId,
+    bindingRevision: value.bindingRevision, companyRevision: value.companyRevision,
+    coreSubject: value.coreSubject, coreSessionId: value.coreSessionId, coreTenantId: value.coreTenantId,
+    issuedAt: value.issuedAt, expiresAt: value.expiresAt,
+  }, request(expected), now)
+  return Object.freeze({ ...observed, ...selected, version: 2,
+    ownerMembershipId: value.ownerMembershipId, ownerMembershipRevision: value.ownerMembershipRevision })
+}
+
+/** Input must be the exact result of an authoritative retained-history lookup,
+ * including revoked/inactive history. Errors or missing/malformed results deny.
+ * A disabled successor cannot send its existing subjects to an older engine.
+ */
+export function stockMembershipRoute(retainedHistory: unknown,
+  enabled = STOCK_MEMBERSHIP_RUNTIME_ENABLED): 'legacy' | 'membership' | 'denied' {
+  if (retainedHistory === false) return 'legacy'
+  return retainedHistory === true && enabled === true ? 'membership' : 'denied'
+}

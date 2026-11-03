@@ -1,6 +1,16 @@
 # Stock multiple-workspace and operator successor
 
-Status: source-backed design for review, not an implemented or approved security-contract replacement. No runtime, SQL, provider or email action is authorized by this document. The Owner explicitly retained the full Basic + Pro acceptance scope on 3 November. The inactive-workspace preparation candidate remains independent and cannot satisfy the requirements below.
+Status: source-backed design with the closed wire-validation foundation implemented locally for review. The complete successor and security-contract replacement are not implemented or approved for runtime. No SQL, provider, email or deployment action is authorized by this document. The Owner explicitly retained the full Basic + Pro acceptance scope on 3 November. Inactive workspace preparation remains independent and cannot satisfy the requirements below.
+
+## Implemented closed foundation — 3 November continuation
+
+Core and Stock contain matching v2 codecs in their respective stock-membership-protocol.ts modules. Workspace selection carries only Company, instance and idempotent-command selectors. The protected request additionally correlates the native Stock session, selected profile, tenant, membership ID/revision, selection revision, role, method/path and nonce. The response retains current Company/binding and Owner-membership revisions and the existing maximum five-second in-flight lifetime. Unknown/financial fields, substituted workspace/profile/session/role, stale revisions, incompatible v1 payloads and expired responses deny. Protocol modules match byte-for-byte; parsing establishes no native identity, ownership or access.
+
+Core's stock-membership-authorize.ts reuses the existing native verifier, classifies retained history without fallback, and requires exact current-authority fields from dedicated RPCs. Stock's stock-membership-request.ts uses the fixed Core origin, a bounded response, no cookies/cache/redirects, strict UTF-8 and exact request correlation. Both source gates remain false. No live HTTP route, callback, resolver, RLS helper, financial guard or team action imports these adapters. No new RPC is installed; the named RPCs require the private schema/session/graph/paid-Owner contract below. No live behavior selects this code.
+
+Offline UNIT: Core protocol 55/55 and authorizer 19/19; Stock protocol/transport 86/86; cross-repository adapter/transport composition 12/12 with synthetic native and SQL observations. These do not prove managed Auth, SQL/RLS, concurrency, switching, invitations, operator admission or paid access. The initial protocol test fails before its module exists and passes after implementation. Existing v1 source and installed migrations are unchanged. Full checks are tracked in the existing PRs.
+
+Next source work remains private membership/selection SQL, forward guard/resolver contracts, verified invitations/seat reservations and actual-SQL tests. No one-profile constraint, identity/graph guard or team-creation block is removed. Additional recipients, provider/SQL/runtime actions and release require their applicable authority.
 
 ## Required result
 

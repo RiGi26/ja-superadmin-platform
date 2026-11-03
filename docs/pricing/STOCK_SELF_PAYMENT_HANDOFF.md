@@ -1,5 +1,15 @@
 # Stock self-payment implementation and acceptance
 
+### Closed membership wire foundation — 3 November, latest continuation
+
+Current browser observation again returns “Local browser use is disabled in Work settings”; browser retest is BLOCKED by that setting. No alternate browser control or settings workaround was used. The exact Core-only navigation rollout approval remains pending. Core #60 head 23b949b and Stock #14 head 573742d were freshly rechecked green; Stock's prior PDF failure and successful unchanged retry remain classified separately in the PR. No deployment, SQL query/write, managed data mutation, financial action or email occurred in this source continuation.
+
+Within the retained full-plan source scope, a closed v2 membership protocol and online composition are implemented in both repositories. Workspace choices carry only selectors; protected requests correlate native session, Company/instance, profile/tenant, membership and selected-session revisions, operational role, current Owner-membership revision, method/path/nonce and the same five-second lifetime. Financial fields, another session/workspace/profile, stale revisions, v1 substitution and unknown retained-history classification deny. The existing native verifier is reused. Stock fixes the Core origin, denies redirects/non-JSON/oversize/invalid UTF-8, and never uses cached or legacy fallback. Both source gates remain false; no live route, callback, resolver, RLS or team/financial entrypoint calls the adapters. Dedicated RPC names are contract inputs for future implementation, not installed functions.
+
+Focused offline UNIT: Core protocol 55/55; Core authorizer 19/19; Stock protocol/transport 86/86; cross-repository composition 12/12 with synthetic native and SQL observations. Initial protocol run failed because the module did not yet exist, then passes after implementation. Types/lint and final-source CI are reported separately once complete. No dependencies or workstation runtimes were added. Installed migrations, native Auth kernels, one-profile/origin uniqueness, current v1/pilot/paid authorization, append-only audit and team creation block are unchanged.
+
+This is a source foundation, not complete multi-workspace/operator functionality. Private membership/selected-session SQL, audited graph permits, forward RLS/resolver changes, verified invitations, locked seat reservations and real concurrent/native acceptance remain unimplemented/unverified. Full Basic + Pro acceptance is retained; payment/public-sales/commercial/security gates remain closed. Production changed in this continuation: NO.
+
 ### Both inactive workspaces prepared; navigation source candidate — 3 November, current
 
 Core candidate `66a7efebb95fff144b834be9d6a141818713e1b0` passes full [CI](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41581154524), including the corrected exact source contract, complete unit suite, types, lint and build. Application-only deployment remains unapproved; its concrete bounded scope is `STOCK_ACCOUNT_NAVIGATION_GATE_20261103.md`. No new Production deployment is inferred from this source PASS.

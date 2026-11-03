@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-03T05:03:43.152Z",
-  "status": "BOTH_INACTIVE_WORKSPACES_PREPARED_NATIVE_INTENT_VERIFIED_NAVIGATION_SOURCE_CANDIDATE",
+  "recordedAt": "2026-11-03T05:57:48.097Z",
+  "status": "CLOSED_MEMBERSHIP_WIRE_FOUNDATION_SOURCE_ONLY_NAVIGATION_DEPLOYMENT_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -7341,5 +7341,50 @@
       "comparison": "Source validation workflow builds the same Stock SHA successfully. Both workflows use Node 22 and next build with no font mocks; directory, synthetic app URL and workflow setup differ. Exact cause not established.",
       "retry": "Same-source failed-job retry requested; no source/dependency/assertion change"
     }
+  },
+  "membershipFoundation20261103": {
+    "recordedAt": "2026-11-03T05:57:48.097Z",
+    "status": "SOURCE_WIRE_FOUNDATION_IMPLEMENTED_CLOSED",
+    "browser": "BLOCKED: Local browser use is disabled in Work settings",
+    "deployment": "Core-only navigation candidate66a7efe pending exact Owner approval",
+    "core": {
+      "protocol": {
+        "pass": 55,
+        "fail": 0
+      },
+      "authorizer": {
+        "pass": 19,
+        "fail": 0
+      }
+    },
+    "stock": {
+      "protocolAndTransport": {
+        "pass": 86,
+        "fail": 0
+      },
+      "crossRepositoryComposition": {
+        "pass": 12,
+        "fail": 0
+      }
+    },
+    "unitScope": "Synthetic native identity and SQL observations; no network, managed Auth, installed SQL/RLS, concurrency or operational admission",
+    "runtimeGate": false,
+    "runtimeCallers": 0,
+    "rpcsInstalled": false,
+    "existingGuardsChanged": false,
+    "productionChanged": false,
+    "providerDataOrSqlRead": false,
+    "testsPending": [
+      "types/lint",
+      "full CI"
+    ],
+    "remaining": [
+      "private membership and selected-session SQL",
+      "graph permits",
+      "forward canonical resolver/RLS",
+      "verified invitations and locked seats",
+      "native multi-workspace/three-operator acceptance"
+    ],
+    "paidAcceptance": "NOT_EXECUTED"
   }
 }
