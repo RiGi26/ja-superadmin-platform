@@ -1,6 +1,8 @@
 # Stock native customer identity FK correction
 
-Status: proposed forward migration and read-only postcheck, not authorized or applied. This is a same-objective correction discovered during the Owner-approved inactive-workspace rollout. No new deployment, payment, cohort or public-sales authority is requested here.
+Status, 3 November: Owner approved the next gates and restored browser access. The exact correction was installed on Core `hxhusfkrlafxdnyasmsu` as provider-issued migration `20261103040648_stock_billing_native_identity_foreign_keys`. Both schema postchecks pass: all three references target native `auth.users(id)`, remain validated and indexed, retain `ON DELETE RESTRICT`, forced RLS, private grants and the append-only event trigger. This changes Production database constraints only; application deployments, payment, cohort and public-sales gates remain unchanged and closed.
+
+The post-DDL performance advisor reports only unused indexes within `stock_billing_private`; no missing covering-index finding applies to the corrected constraints. Those indexes are retained because this is a new, closed-sales feature. Browser access is restored; normal private Pro sign-in is pending before the package-continuation retest. Managed schema PASS does not establish browser or paid acceptance. The original proposal and authorization scope below remain historical review evidence.
 
 ## Confirmed problem
 
