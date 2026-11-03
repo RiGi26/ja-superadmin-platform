@@ -1,6 +1,6 @@
 {
-  "recordedAt": "2026-11-03T04:08:10.454Z",
-  "status": "NATIVE_IDENTITY_FK_CORRECTED_MANAGED_SCHEMA_PASS_BROWSER_RETEST_PENDING",
+  "recordedAt": "2026-11-03T04:24:46.229Z",
+  "status": "NATIVE_FK_MANAGED_PASS_PRO_PARTIAL_UAT_BILLING_NAVIGATION_FAIL_BASIC_PRIVATE_RESET_PENDING",
   "sourceFingerprint": "f445b3b1111ef437a9869095777e180fecf5d3aa64bc7599985b1aef7032f20d",
   "baseline": {
     "coreHead": "4e4937ca55fada4856a2c10551a4f3c01e212045",
@@ -7165,5 +7165,57 @@
     "financialWrites": false,
     "applicationDeployment": false,
     "browser": "Restored; Pro normal private sign-in requested."
+  },
+  "proBrowserRetest20261103": {
+    "fixtureIdentity": "PASS: native verified Pro Owner with existing quarantined workspace",
+    "checkout": "PASS: Pro monthly IDR 359000, prepared resource, closed offer and disabled payment",
+    "savedIntentRetest": "NOT_EXECUTED: existing bound Pro workspace does not render preparation action; Basic normal preparation pending",
+    "billingFullRequest": "PASS: authorized Pro workspace, not subscribed, no invoices",
+    "clientBillingNavigation": {
+      "status": "FAIL",
+      "attempts": 2,
+      "observed": "URL changes to /account?view=billing but home content remains; full reload renders billing",
+      "firstBrokenBoundary": "Client navigation across canonical redirect",
+      "rootCause": "NOT_ESTABLISHED",
+      "fix": "NONE"
+    },
+    "screenshots": {
+      "billingDesktop": [
+        1440,
+        900
+      ],
+      "billingMobile": [
+        390,
+        843
+      ],
+      "checkoutDesktop": [
+        1440,
+        900
+      ],
+      "checkoutMobile": [
+        375,
+        811
+      ]
+    },
+    "mobileDomViewport": [
+      390,
+      844
+    ],
+    "exact390CheckoutScreenshot": "NOT_EXECUTED",
+    "sourceCi": {
+      "sha": "a061a385ffded0facdd88d74dc92d72549829adf",
+      "status": "PASS",
+      "url": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/41576502115/job/125721120205"
+    },
+    "basic": {
+      "signIn": "FAIL: normal invalid-credentials response; Owner does not know current password",
+      "recovery": "Matching email delivered, normal reset page ready, private password save pending",
+      "requestsSent": 1,
+      "passwordsReadOrStored": false,
+      "companyCreated": false
+    },
+    "productionChanges": "Normal sign-in/sign-out/recovery state only; no deployment, SQL mutation or financial mutation",
+    "paidAcceptance": "NOT_EXECUTED",
+    "evidenceDirectory": "inactive-preparation-20261103"
   }
 }
