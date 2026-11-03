@@ -3,6 +3,7 @@ import { Box, Check, Plus, ReceiptText, ShieldCheck, UserRound } from 'lucide-re
 import { stockCheckoutPath } from '@/lib/stock-purchase-policy'
 import { HubNavigation, type HubNavigationItem } from './HubNavigation'
 import styles from './store-front.module.css'
+import purchaseStyles from './stock-purchase-controls.module.css'
 
 export type StockStoreQuote = { salesEnabled: boolean; plans: readonly {
   id: string; tierDisplayName: string; publicTier: string; priceMonthly: number; features: readonly string[]
@@ -45,7 +46,10 @@ export function StockStoreFront({ quote }: { quote: StockStoreQuote | null }) {
       <section id="stock-packages" className={styles.section} aria-labelledby="plans-title"><div className={styles.heading}><div><p className={styles.eyebrow}>Paket Webzoka Stock</p><h2 id="plans-title">Pilih paket sesuai<br />kebutuhan tim Anda.</h2></div></div><div className={`${styles.trial} ${styles.purchaseTrial}`}><ShieldCheck aria-hidden="true" /><div><strong>Trial 14 hari terpisah dari paket berbayar.</strong><p>Tanpa kartu kredit dan tanpa tagihan otomatis. Hubungi tim Webzoka untuk memulai.</p></div></div>
         {plans.length === 2 ? <div className={`${styles.plans} ${styles.twoPlans}`}>{plans.map(plan => <article className={`${styles.plan} ${plan.publicTier === 'pro' ? styles.featuredPlan : ''}`} key={plan.id}>
           <p className={styles.purpose}>{plan.publicTier === 'pro' ? 'Pembelian & keuangan' : 'Pesanan & persediaan'}</p><h3>{plan.tierDisplayName}</h3><p className={styles.planIntro}>{plan.publicTier === 'pro' ? 'Untuk tiga akun operator aktif dengan kebutuhan pembelian dan laporan keuangan.' : 'Untuk satu akun operator aktif yang mengelola pesanan, katalog, dan stok.'}</p><p className={styles.price}>{money(plan.priceMonthly)}<small>/ bulan</small></p>
-          {salesEnabled ? <><Link className={plan.publicTier === 'pro' ? styles.primary : styles.secondary} href={stockCheckoutPath(plan.id)}>Pilih {plan.tierDisplayName}</Link><a className={styles.consultationLink} href={help} target="_blank" rel="noopener noreferrer">Konsultasi paket {plan.tierDisplayName}<span className={styles.srOnly}> — membuka WhatsApp di tab baru</span></a></> : <a className={plan.publicTier === 'pro' ? styles.primary : styles.secondary} href={help} target="_blank" rel="noopener noreferrer">Konsultasi paket {plan.tierDisplayName}<span className={styles.srOnly}> — membuka WhatsApp di tab baru</span></a>}
+          {salesEnabled
+            ? <Link className={plan.publicTier === 'pro' ? styles.primary : styles.secondary} href={stockCheckoutPath(plan.id)}>Pilih {plan.tierDisplayName}</Link>
+            : <><button className={`${styles.secondary} ${purchaseStyles.purchaseUnavailable}`} type="button" disabled aria-describedby={`stock-purchase-${plan.id}`}>Pilih {plan.tierDisplayName}</button><p className={purchaseStyles.purchaseAvailability} id={`stock-purchase-${plan.id}`}>Langganan mandiri belum dibuka.</p></>}
+          <a className={styles.consultationLink} href={help} target="_blank" rel="noopener noreferrer">Konsultasi paket {plan.tierDisplayName}<span className={styles.srOnly}> — membuka WhatsApp di tab baru</span></a>
           <div className={styles.planFeatures}><p>Yang termasuk:</p><ul>{plan.features.map(feature => <li key={feature}><Check aria-hidden="true" /><span>{feature}</span></li>)}</ul></div>
         </article>)}</div> : <p className={styles.unavailable} role="status">Harga paket belum dapat diverifikasi. Hubungi tim Webzoka untuk informasi paket.</p>}
         <p className={styles.note}><strong>{salesEnabled ? 'Pembayaran bulanan tanpa debit otomatis.' : 'Pembelian mandiri paket baru belum dibuka.'}</strong> Harga di atas berlaku per bulan; pembayaran tahunan tidak tersedia untuk paket ini.</p>
