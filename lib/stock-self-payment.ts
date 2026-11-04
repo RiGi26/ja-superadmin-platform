@@ -22,6 +22,8 @@ const invoice = z.object({ id: uuid, planId: uuid, amount: z.number().int().posi
 export const stockBillingWorkspace = z.object({
   companyId: uuid, companyName: z.string().min(2).max(100), reservationId: uuid,
   coreTenantId: uuid, ownerId: uuid, stockTenantId: uuid.nullable(),
+  // The installed reader predates the workspace successor and omits this field.
+  accessProtocol: z.enum(['legacy', 'membership']).optional(),
   activation: z.enum(['not_started', 'pending', 'active', 'suspended']),
   hasPaidContract: z.boolean(),
   subscription: z.object({ planId: uuid, status: z.string(), expiresAt: date.nullable() }).strict().nullable(),

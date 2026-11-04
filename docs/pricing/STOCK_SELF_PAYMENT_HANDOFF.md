@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Native selected workspace entry — 4 November continuation
+
+Billing now classifies activated workspaces by the exact Company and reservation. A genuine v2 origin or a legacy origin admitted to v2 uses the dedicated selection route when the closed runtime fuse is enabled. Existing readers without the successor field and legacy-only activated rows keep the installed entry path. The v2 form posts only Company, reservation and a server-issued command to Stock’s pinned Vercel origin.
+
+Stock isolates selection PKCE and continuation cookies from preparation and legacy SSO. It exchanges a fresh native code, checks both current native identities and the v2 token claim, commits the same selection command in Core and Stock, and confirms the exact local canonical context before writing sanitized Stock session cookies. Each fresh browser authorization starts at revision zero. A failed or uncertain attempt keeps the previous browser session and returns to Hub billing, where the Owner can select the workspace and obtain fresh authorization. Hosted Auth must still prove fresh session issuance, allowlisted callback handling, and expired-session recovery.
+
+Remaining source work includes checkout creation, real operator invitation and seat admission, signed revision delivery and revocation, and document/upload boundary review. The overlap case where an existing legacy-only paid Stock identity also acquires v2 membership requires an explicit regression before release because the Stock Auth hook classifies managed identities by subject. Managed and hosted acceptance gates remain closed.
+
 ### Reciprocal v2 provisioning and tuple-aware billing — 4 November continuation
 
 This continuation extends the closed v2 birth checkpoint, preserving Basic/Pro, multi-workspace and verified-operator scope. Core's new `STOCK_WORKSPACE_BILLING_FORWARD.PROPOSED.sql` reads both immutable origin versions through private views, fences exact Company × Stock mappings when replacing v1-only foreign keys, and derives current Owner authority from the exact workspace membership and unrevoked identity pair. Existing catalog, monthly invoice guards, verified payment commit, gateway-mode checks and persisted activation outbox remain shared. Issued invoice mode is never rewritten. Legacy v1 origin history and existing managed migrations are unchanged.

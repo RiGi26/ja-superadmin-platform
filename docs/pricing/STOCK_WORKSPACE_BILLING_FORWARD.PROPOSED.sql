@@ -247,6 +247,8 @@ END $fn$;
 CREATE OR REPLACE FUNCTION public.stock_billing_owned_workspaces() RETURNS jsonb LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $fn$
  SELECT coalesce(jsonb_agg(jsonb_build_object('companyId',o.company_id,'companyName',c.display_name,'reservationId',o.reservation_id,
    'coreTenantId',o.core_tenant_id,'ownerId',o.core_subject,'stockTenantId',coalesce(b.stock_tenant_id,(SELECT stock_tenant_id FROM stock_workspace_private.origins WHERE company_id=o.company_id)),
+   'accessProtocol',CASE WHEN o.origin_version=2 OR EXISTS(SELECT 1 FROM stock_membership_private.resources r
+     WHERE r.company_id=o.company_id AND r.instance_id=o.reservation_id) THEN 'membership' ELSE 'legacy' END,
    'hasPaidContract',EXISTS(SELECT 1 FROM public.subscription_invoices paid WHERE paid.tenant_id=a.tenant_id AND paid.plan_id=s.plan_id AND paid.status='paid'),
    'activation',CASE WHEN d.invoice_id IS NOT NULL AND (s.status<>'active' OR s.current_period_end<=clock_timestamp()) THEN 'suspended'
      WHEN d.state='active' THEN 'active' WHEN d.state='pending' THEN 'pending' ELSE 'not_started' END,
