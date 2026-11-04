@@ -141,6 +141,13 @@ ALTER TABLE stock_billing_private.sandbox_cohort DROP CONSTRAINT sandbox_cohort_
 
 -- Exact adaptations of existing readers/writers follow. Financial engines,
 -- invoice identities, verified atomic commit and outbox semantics stay shared.
+CREATE FUNCTION stock_workspace_private.billing_session_live(p_actor uuid,p_session uuid) RETURNS boolean
+LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path='' AS $fn$
+ SELECT EXISTS(SELECT 1 FROM auth.sessions s JOIN auth.users u ON u.id=s.user_id
+   WHERE s.id=p_session AND s.user_id=p_actor AND (s.not_after IS NULL OR s.not_after>clock_timestamp())
+     AND u.deleted_at IS NULL AND u.is_anonymous IS FALSE AND u.email_confirmed_at<=clock_timestamp()
+     AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp()))
+$fn$;
 
 CREATE OR REPLACE FUNCTION public.stock_billing_sandbox_allowed(p_tenant uuid,p_plan uuid) RETURNS boolean
 LANGUAGE sql STABLE SECURITY DEFINER SET search_path='' AS $fn$
@@ -206,6 +213,7 @@ BEGIN
  IF NEW.scheduled_plan_id IS NOT NULL OR (TG_OP='UPDATE' AND (NEW.tenant_id IS DISTINCT FROM OLD.tenant_id OR NEW.plan_id IS DISTINCT FROM OLD.plan_id))
  THEN RAISE EXCEPTION 'STOCK_BILLING_CONTRACT_IMMUTABLE'; END IF;
  IF TG_OP='INSERT' AND (auth.role() IS DISTINCT FROM 'service_role' OR a.auth_until<=clock_timestamp()
+   OR NOT stock_workspace_private.billing_session_live(a.owner_id,a.session_id)
    OR NOT stock_billing_private.current_owner(a.company_id,a.owner_id) OR NOT stock_billing_private.approved_plan(NEW.plan_id)
    OR NEW.status<>'unpaid') THEN RAISE EXCEPTION 'STOCK_BILLING_SUBSCRIPTION_DENIED'; END IF;
  RETURN NEW;
@@ -223,6 +231,7 @@ BEGIN
  IF NOT pg_catalog.pg_try_advisory_xact_lock(pg_catalog.hashtextextended('stock_billing:'||a.tenant_id::text,0)) THEN RAISE EXCEPTION 'STOCK_BILLING_BUSY'; END IF;
  SELECT * INTO STRICT p FROM public.subscription_plans WHERE id=NEW.plan_id;
  IF auth.role() IS DISTINCT FROM 'service_role' OR a.auth_until<=clock_timestamp() OR NOT stock_billing_private.current_owner(a.company_id,a.owner_id)
+   OR NOT stock_workspace_private.billing_session_live(a.owner_id,a.session_id)
    OR NOT stock_billing_private.approved_plan(NEW.plan_id) OR NEW.period<>'monthly' OR NEW.amount<>p.price_monthly OR NEW.change_type<>'renew'
    OR NOT EXISTS(SELECT 1 FROM stock_billing_private.settings WHERE singleton AND enabled AND payment_mode=NEW.midtrans_mode)
    OR NOT EXISTS(SELECT 1 FROM public.tenant_subscriptions WHERE id=NEW.subscription_id AND tenant_id=NEW.tenant_id AND plan_id=NEW.plan_id)
