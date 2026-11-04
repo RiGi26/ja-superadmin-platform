@@ -21,15 +21,28 @@ export function stockCompanyId(value: unknown): string | null {
   return typeof value === 'string' && uuid.test(value) ? value.toLowerCase() : null
 }
 
-export function stockCheckoutPath(plan: string, company?: string): string {
-  const id = stockPlanId(plan)
-  if (!id || (company !== undefined && !stockCompanyId(company))) throw new Error('INVALID_STOCK_SELECTION')
-  const query = new URLSearchParams({ plan: id })
-  if (company) query.set('company', stockCompanyId(company)!)
-  return `/hub/checkout/stock?${query}`
+export function stockCheckoutPath(plan: string | null, company?: string): string {
+  const planId = stockPlanId(plan)
+  const companyId = stockCompanyId(company)
+  if ((plan !== null && !planId) || (company !== undefined && !companyId)) throw new Error('INVALID_STOCK_SELECTION')
+  const query = new URLSearchParams()
+  if (planId) query.set('plan', planId)
+  if (companyId) query.set('company', companyId)
+  return query.size > 0 ? `/hub/checkout/stock?${query}` : '/hub/checkout/stock'
 }
 
-/** A continuation contains selectors only, never a price, token, or tenant grant. */
+export function stockWorkspaceCreationPath(plan: string, command: string): string {
+  const id = stockCompanyId(command)
+  if (!id) throw new Error('INVALID_STOCK_WORKSPACE_COMMAND')
+  return stockCheckoutPath(plan) + '&creation=' + id
+}
+
+const checkoutNotices = new Set([
+  'closed', 'denied', 'preparation_required', 'pending', 'unavailable',
+  'workspace_denied', 'workspace_unconfirmed', 'workspace_reserved',
+])
+
+/** A continuation contains selectors only. Known display notices are discarded. */
 export function safeStockCheckoutPath(value: unknown): string | null {
   if (typeof value !== 'string' || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return null
   try {
@@ -37,11 +50,19 @@ export function safeStockCheckoutPath(value: unknown): string | null {
     if (url.origin !== 'https://hub.webzoka.com' || url.hash ||
         !['/hub/checkout/stock', '/checkout/stock'].includes(url.pathname)) return null
     if (!url.search) return '/hub/checkout/stock'
-    if ([...url.searchParams.keys()].some(key => !['plan', 'company'].includes(key)) ||
-        url.searchParams.getAll('plan').length !== 1 || url.searchParams.getAll('company').length > 1) return null
+    if ([...url.searchParams.keys()].some(key => !['plan', 'company', 'creation', 'result'].includes(key)) ||
+        url.searchParams.getAll('plan').length > 1 || url.searchParams.getAll('company').length > 1) return null
+    const notices = url.searchParams.getAll('result')
+    if (notices.length > 1 || (notices.length === 1 && !checkoutNotices.has(notices[0]))) return null
     const plan = stockPlanId(url.searchParams.get('plan'))
+    if (url.searchParams.has('plan') && !plan) return null
+    if (url.searchParams.has('creation')) {
+      const command = stockCompanyId(url.searchParams.get('creation'))
+      return plan && command && url.searchParams.getAll('creation').length === 1 && !url.searchParams.has('company')
+        ? stockWorkspaceCreationPath(plan, command) : null
+    }
     const company = url.searchParams.has('company') ? stockCompanyId(url.searchParams.get('company')) : undefined
-    return plan && company !== null ? stockCheckoutPath(plan, company) : null
+    return company !== null && (plan || company) ? stockCheckoutPath(plan, company) : null
   } catch { return null }
 }
 

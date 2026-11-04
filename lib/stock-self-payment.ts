@@ -150,8 +150,9 @@ export async function startStockPurchase(input: { plan: unknown; company: unknow
     if (purchaseError(sandbox ? { ...plan, is_active: true, is_for_sale: true } : plan, purchaseRows, ownedContract, 'monthly', sandbox ? true : undefined)) return { status: 'closed' }
     if (workspace.subscription && workspace.subscription.planId !== planId) return { status: 'denied' }
     if (workspace.invoices.some(row => ['unpaid', 'awaiting_payment'].includes(row.status) && row.planId !== planId)) return { status: 'pending' }
-    if (STOCK_MEMBERSHIP_PREPARATION_ENABLED && !workspace.hasPaidContract &&
-        !(await stockMembershipPurchaseReady(client, companyId))) return { status: 'preparation_required' }
+    if (!workspace.hasPaidContract &&
+        (workspace.accessProtocol === 'membership' || STOCK_MEMBERSHIP_PREPARATION_ENABLED) &&
+        (!STOCK_MEMBERSHIP_PREPARATION_ENABLED || !(await stockMembershipPurchaseReady(client, companyId)))) return { status: 'preparation_required' }
 
     let latest = await verifyNativeCoreSession(client)
     if (!latest.customer || latest.subject !== actor.subject || latest.session !== actor.session) return { status: 'denied' }

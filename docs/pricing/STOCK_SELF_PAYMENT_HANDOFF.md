@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Fresh workspace creation in checkout
+
+Checkout now offers a separate creation form to eligible verified customers when the creation, membership preparation, and billing runtime gates permit it. Its return URL carries only the approved plan and a creation command, mutually exclusive with an existing Company selector. Login and email verification preserve that command. An uncertain response returns to the same command, and a confirmed reservation returns to the exact Company for reciprocal preparation. The creation adapter accepts only the new business name and command. It derives identity from the current Core session and reuses the atomic Company, Owner, reservation, and audit operation. A lost intent response can be recovered from the reserved Company's checkout. The Company-only return from Stock preparation also survives login and reloads only that Company's saved plan.
+
+Membership workspaces require confirmed reciprocal readiness before a new charge. The creation and preparation fuses remain closed in source, and sandbox and public sales retain their independent gates. Hosted browser verification, including 390px, and the five approved sandbox scenarios remain required. Verified operator invitations, seat admission, lifecycle revision delivery, mixed legacy/v2 access, and document and upload authorization remain open.
+
+Stock's release candidate now overrides the existing Tailwind PostCSS dependency to 8.5.23 and the existing Zod peer dependency to 4.6.6. The lockfile deduplicates PostCSS with the already-patched Next.js copy and retains the same application dependency set. A source check covers every locked copy. These patches address the tracked findings in candidate source. GitHub's alerts track the default branch. [Zod advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5) [PostCSS advisory](https://github.com/advisories/GHSA-fxqj-rqcc-2cmp) [Earlier PostCSS advisory](https://github.com/advisories/GHSA-r28c-9q8g-f849)
+
 ### Native selected workspace entry — 4 November continuation
 
 Billing now classifies activated workspaces by the exact Company and reservation. A genuine v2 origin or a legacy origin admitted to v2 uses the dedicated selection route when the closed runtime fuse is enabled. Existing readers without the successor field and legacy-only activated rows keep the installed entry path. The v2 form posts only Company, reservation and a server-issued command to Stock’s pinned Vercel origin.

@@ -5,10 +5,14 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyNativeCoreSession } from '@/lib/core-registry-native'
 import { CORE_E1_ORIGIN } from '@/lib/e1-realm'
+import { STOCK_PAID_BILLING_RUNTIME_ENABLED } from '@/lib/stock-purchase-policy'
+import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
 
 // Independent source fuse. Enabling this requires the complete reciprocal
 // provisioning/selection successor, reviewed migrations and rollout authority.
 export const STOCK_WORKSPACE_CREATION_ENABLED = false
+export const STOCK_CHECKOUT_WORKSPACE_CREATION_ENABLED = STOCK_WORKSPACE_CREATION_ENABLED &&
+  STOCK_MEMBERSHIP_PREPARATION_ENABLED && STOCK_PAID_BILLING_RUNTIME_ENABLED
 const uuid=z.uuid().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/)
 const request=z.object({commandId:uuid,companyName:z.string().trim().min(2).max(100).regex(/^[^\p{Cc}]+$/u)}).strict()
 const receipt=z.object({companyId:uuid,eventId:uuid,eventHash:z.string().regex(/^[0-9a-f]{64}$/),revision:z.literal(0)}).strict()

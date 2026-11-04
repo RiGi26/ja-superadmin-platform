@@ -2,9 +2,10 @@
 
 import { redirect } from 'next/navigation'
 import { rememberStockPurchase, startStockPurchase, readStockBillingAccount } from '@/lib/stock-self-payment'
-import { stockCheckoutPath, stockPlanId, stockCompanyId } from '@/lib/stock-purchase-policy'
+import { stockCheckoutPath, stockPlanId, stockCompanyId, stockWorkspaceCreationPath } from '@/lib/stock-purchase-policy'
 import { refreshStockInvoice } from '@/lib/stock-invoice-recovery'
 import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
+import { createStockWorkspace, STOCK_CHECKOUT_WORKSPACE_CREATION_ENABLED } from '@/lib/stock-workspace-create'
 
 function selection(form: FormData) {
   if ([...form.keys()].some(key => !['plan', 'company'].includes(key) && !key.startsWith('$ACTION_')) ||
@@ -12,6 +13,25 @@ function selection(form: FormData) {
   const plan = stockPlanId(form.get('plan'))
   const company = form.has('company') ? stockCompanyId(form.get('company')) : undefined
   return plan && company !== null ? { plan, company } : null
+}
+
+export async function createCheckoutStockWorkspace(form: FormData): Promise<never> {
+  const fields = [...form.keys()].filter(key => !key.startsWith('$ACTION_')).sort().join(',')
+  const plan = stockPlanId(form.get('plan'))
+  const commandId = stockCompanyId(form.get('creation'))
+  if (fields !== 'companyName,creation,plan' || !plan || !commandId) redirect('/hub/store#stock-packages')
+  const retry = stockWorkspaceCreationPath(plan, commandId)
+  if (!STOCK_CHECKOUT_WORKSPACE_CREATION_ENABLED) redirect(retry + '&result=closed')
+
+  const result = await createStockWorkspace({ commandId, companyName: form.get('companyName') })
+  if (result.status !== 'reserved') {
+    const status = result.status === 'closed' ? 'closed' : 'workspace_' + result.status
+    redirect(retry + '&result=' + status)
+  }
+  const { companyId, instanceId } = result.workspace
+  const intent = await rememberStockPurchase(plan, companyId)
+  const ready = intent?.companyId === companyId && intent.reservationId === instanceId
+  redirect(stockCheckoutPath(plan, companyId) + (ready ? '' : '&result=workspace_reserved'))
 }
 
 export async function prepareStockWorkspace(form: FormData): Promise<never> {
