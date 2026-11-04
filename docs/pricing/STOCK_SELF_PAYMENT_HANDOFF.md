@@ -1,5 +1,15 @@
 # Stock self-payment implementation and acceptance
 
+### Owner invitation controls and recoverable email delivery
+
+The closed Core team page now selects an exact Company and retains its invitation command through login and retries. Verified Owners can choose an operational role, reserve a paid seat, inspect recent invitations, cancel pending invitations, and recover an uncertain delivery using the original command even when that reservation occupies the last seat. The selected Company remains explicit. Neither operators nor this page receive billing authority.
+
+Delivery uses the existing Resend integration. A domain-separated HMAC with the existing provisioning key derives the same 32-byte capability for the exact Owner, Company, instance, command, recipient, and role. The database retains its digest. The raw capability appears only in the invitation email's Stock fragment link. An immutable private snapshot freezes the recipient, Company name, role, and deadline for provider-idempotent retries; an append-only provider acknowledgment prevents a confirmed delivery from being resent. Rotation of the provisioning key during an unresolved invitation changes its digest and fails the original command closed; retain the key through invitation expiry or cancel and issue a new command. No provider key or raw capability is returned by the Owner action.
+
+`STOCK_OPERATOR_MAIL_CORE.PROPOSED.sql` is an uninstalled forward proposal after operator admission. It grants bounded delivery only to the service bridge and the current Owner view only to authenticated customers, with forced RLS, immutable history, and Registry audit. Source fuses remain false. Local tests exercise mocked provider acceptance with a lost response, a lost database acknowledgment, native-session expiry, foreign selectors, seat denial, login return preservation, and recovery after the last seat is reserved. Disposable SQL verifies the actual mail snapshot and receipt functions, their access restrictions, and Owner-only visibility. The final paired source checks and hosted delivery acceptance remain distinct.
+
+Remaining source work includes operator workspace entry, signed lifecycle revisions, role/revocation controls and delivery, canceled-stage cleanup, document/upload boundary review, and mixed legacy/v2 access. No real email, managed migration, deployment, account operation, payment, or sales enablement was performed in this continuation. Hosted desktop and exact-390px UAT, five bounded sandbox purchases, real operators, and separately authorized Production acceptance remain open.
+
 ### Operator admission through local activation
 
 The private Core commit handler now rereads the recipient's staged Stock receipt with the verified bearer token before calling the Registry commit. The Stock callback accepts that exact admission and activates the local profile, identity pair, membership, and append-only audit through one consumed profile permit. It rechecks the currently paid Pro workspace and Owner and enforces the three-seat local limit under the profile transaction fence. Activation returns no selected-session grant. Reopening the original invitation recovers Core's committed admission with the same native identity pair and can finish or replay Stock activation after a lost response. A committed admission can recover after its original invitation deadline. Uncommitted expired invitations retain their existing denial.
@@ -8,7 +18,7 @@ Disposable SQL now exercises two Pro operators with distinct native identities, 
 
 Paired CI exposed the operator guard being added too early to the workspace-birth proposal. The operator extension now installs in its own prerequisite-checked commit proposal, which pins the prior guard definition. The minimal birth regression again rejects direct and legacy mutations with its original scoped protection. Full reviewed source must still pass paired CI at the latest commits.
 
-Remaining source work includes Owner invitation creation, cancellation UI and email delivery, operator workspace entry controls, signed revisions and role/revocation delivery, canceled-stage cleanup, current profile/document/upload lookups, and mixed legacy/v2 access. Managed runtime, real operators, hosted desktop and exact-390px UAT, five sandbox purchases, and separately authorized live acceptance remain open.
+The newer Owner-control and delivery continuation above extends this checkpoint. Remaining source work includes operator workspace entry controls, signed revisions and role/revocation delivery, canceled-stage cleanup, current profile/document/upload lookups, and mixed legacy/v2 access. Managed runtime, real operators, hosted desktop and exact-390px UAT, five sandbox purchases, and separately authorized live acceptance remain open.
 
 ### Reciprocal Stock operator staging and Core admission
 

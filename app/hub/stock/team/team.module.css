@@ -1,0 +1,41 @@
+.page {
+  min-height: 100dvh;
+  padding: 24px 16px max(36px, env(safe-area-inset-bottom));
+  color: #14213a;
+  background: #f5f7fb;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.container { max-width: 1040px; min-width: 0; margin: auto; }
+.nav { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 28px; }
+.nav a { display: flex; align-items: center; min-height: 44px; color: #165ac5; }
+.page h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.25; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+.panel { min-width: 0; background: white; border: 1px solid #dce3ee; border-radius: 16px; padding: 24px 20px; overflow-wrap: anywhere; }
+.panel h2 { font-size: 20px; margin: 0 0 16px; }
+.form { display: grid; gap: 12px; }
+.form label { font-weight: 600; }
+.form input:not([type=hidden]), .form select {
+  box-sizing: border-box; min-width: 0; width: 100%; min-height: 48px; padding: 10px 12px;
+  font: inherit; color: inherit; background: white; border: 1px solid #a9b7cc; border-radius: 8px;
+}
+.form p { margin: 0 0 8px; font-size: 14px; }
+.primary, .secondary {
+  box-sizing: border-box; display: flex; align-items: center; justify-content: center; width: 100%;
+  min-height: 48px; padding: 10px 16px; border: 1px solid #1762da; border-radius: 8px;
+  font: inherit; font-weight: 600; cursor: pointer; text-decoration: none;
+}
+.primary { background: #1762da; color: white; }
+.primary:disabled { background: #e6ebf3; color: #526278; border-color: #c3ccdb; cursor: default; }
+.secondary { color: #165ac5; background: white; margin-top: 16px; }
+.notice { border: 1px solid #cbdcf7; border-radius: 8px; padding: 16px; background: #f0f5ff; }
+.list { padding: 0; margin: 0; list-style: none; }
+.list li { display: grid; gap: 6px; padding: 20px 0; border-top: 1px solid #dce3ee; }
+.list li:first-child { border-top: 0; padding-top: 0; }
+.list span { color: #526278; font-size: 14px; }
+.page a:focus-visible, .page button:focus-visible, .page input:focus-visible, .page select:focus-visible { outline: 3px solid #1762da; outline-offset: 4px; }
+@media (min-width: 768px) {
+  .page { padding: 32px 24px 48px; }
+  .grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .panel { padding: 28px; }
+}

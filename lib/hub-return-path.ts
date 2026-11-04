@@ -1,4 +1,4 @@
-import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'
+import { safeStockCheckoutPath, safeStockOperatorReturnPath } from '@/lib/stock-purchase-policy'
 
 export function normalizeAuthorizationId(value: string | null | undefined) {
   if (!value) return null
@@ -12,6 +12,8 @@ export function safeHubReturnPath(value: string | null | undefined) {
     return null
   }
 
+  const operator = safeStockOperatorReturnPath(value)
+  if (operator) return operator
   const checkout = safeStockCheckoutPath(value)
   if (checkout) return checkout
 

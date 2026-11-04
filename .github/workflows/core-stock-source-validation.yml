@@ -39,7 +39,7 @@ jobs:
       - run: npx --no-install eslint app/hub/workspace app/hub/signup app/hub/account app/hub/login app/hub/actions.ts app/hub/_public/PublicExploreNav.tsx app/hub/_public/PublicExploreContent.tsx app/auth/callback/route.ts lib/hub-registration.ts lib/hub-registration.test.mjs lib/hub-session.ts lib/hub-account.ts lib/hub-owned-workspace.ts lib/hub-owned-workspace.test.mjs lib/hub-signup-source-contract.mjs lib/hub-signup-source-contract.test.mjs lib/hub-e1-workspace.ts lib/e1-quarantine-release.ts lib/core-company.ts lib/core-registry-native.ts lib/e1-stock-binding.ts lib/registry-mutation-binding.ts lib/e1-realm.ts lib/hub-return-path.ts proxy.ts app/api/auth/e1/stock/quarantine/route.ts
       - run: npm run build
       - name: Lint Stock purchase and active-access adapters
-        run: npx --no-install eslint app/hub/checkout app/hub/_components/StockBillingPanel.tsx app/hub/_components/StockStoreFront.tsx app/api/stock app/api/public/stock-price-quotes lib/stock-*.ts lib/billing-sandbox-uat.ts lib/verified-subscription-payment.ts
+        run: npx --no-install eslint app/hub/checkout app/hub/stock app/hub/_components/StockBillingPanel.tsx app/hub/_components/StockStoreFront.tsx app/api/stock app/api/public/stock-price-quotes lib/stock-*.ts lib/billing-sandbox-uat.ts lib/verified-subscription-payment.ts
       - name: Check successor whitespace against the installed security baseline
         env:
           SOURCE_BASE_SHA: e92e74bb4536e8f7344c3c376fd02a1d35797756

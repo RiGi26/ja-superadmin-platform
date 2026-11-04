@@ -1648,5 +1648,67 @@
         "after": "      '/api/stock/membership/commit',\n"
       }
     ]
+  },
+  {
+    "file": "lib/hub-navigation.ts",
+    "profile": "runtime",
+    "beforeHash": "cc77d4a94a118ca966310af393e4b17146782638e95f8d016d7828e16831e960",
+    "afterHash": "12697c0e4b24a4c2890f65e503ffe7da6193a7c1e7f27577bbfcc08f2c0a163c",
+    "edits": [
+      {
+        "beforeOffset": 754,
+        "afterOffset": 754,
+        "before": "",
+        "after": "  { publicPath: '/stock/team', internalPath: '/hub/stock/team' },\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-return-path.ts",
+    "profile": "runtime",
+    "beforeHash": "f4c739bfb16ad56ad282b74bbd75e2b51fc8bfeda6b97ec279aadd41ecde9b97",
+    "afterHash": "08461be7b43d0787be1ed6f09a01de9f7530bfd15f7d3276115377e8ef1a8a3d",
+    "edits": [
+      {
+        "beforeOffset": 0,
+        "afterOffset": 0,
+        "before": "import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'\n",
+        "after": "import { safeStockCheckoutPath, safeStockOperatorReturnPath } from '@/lib/stock-purchase-policy'\n"
+      },
+      {
+        "beforeOffset": 470,
+        "afterOffset": 499,
+        "before": "",
+        "after": "  const operator = safeStockOperatorReturnPath(value)\n  if (operator) return operator\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-ui-test-harness.mjs",
+    "profile": "runtime",
+    "beforeHash": "f7a97c09400bd0a2d3aec351f1b59737d162923ee34fc2a639a42c2ac4aa5f9a",
+    "afterHash": "80605dae31596a5c91fd7e1f1fbf5273b737ac144d49e924363ffd44954fb430",
+    "edits": [
+      {
+        "beforeOffset": 1458,
+        "afterOffset": 1458,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-operator-protocol') return { STOCK_OPERATOR_INVITATION_ENABLED: false }\n"
+      }
+    ]
+  },
+  {
+    "file": "proxy.ts",
+    "profile": "runtime",
+    "beforeHash": "f2eeb70b632b7080220e5406d3bce51e636e87bbe31a0c769bcb05187cae67d3",
+    "afterHash": "5b084266aaf0c3b68f62a30a8418aa02b611ea02adfb5a28a37622d5505c8505",
+    "edits": [
+      {
+        "beforeOffset": 6569,
+        "afterOffset": 6569,
+        "before": "      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {\n",
+        "after": "      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || pathname === '/hub/stock/team' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {\n"
+      }
+    ]
   }
 ]

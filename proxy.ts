@@ -149,7 +149,7 @@ export async function proxy(request: NextRequest) {
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
       const loginUrl = new URL(publicHubPath('/hub/login', hostname), routingUrl)
-      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
+      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || pathname === '/hub/stock/team' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)

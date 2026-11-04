@@ -76,3 +76,29 @@ export function safeStockPaymentRedirect(value: unknown, mode: unknown): string 
     return url.href
   } catch { return null }
 }
+
+export function stockOperatorPath(company: string, command?: string): string {
+  const companyId = stockCompanyId(company)
+  const commandId = stockCompanyId(command)
+  if (!companyId || (command !== undefined && !commandId)) throw new Error('INVALID_STOCK_OPERATOR_SELECTION')
+  const query = new URLSearchParams({ company: companyId })
+  if (commandId) query.set('command', commandId)
+  return '/hub/stock/team?' + query.toString()
+}
+
+export function safeStockOperatorReturnPath(value: string): string | null {
+  if (!value.startsWith('/') || value.startsWith('//') || value.includes('\\')) return null
+  try {
+    const url = new URL(value, 'https://hub.webzoka.com')
+    if (url.origin !== 'https://hub.webzoka.com' || url.hash ||
+        !['/stock/team', '/hub/stock/team'].includes(url.pathname) ||
+        [...url.searchParams.keys()].some(key => !['company','command','result'].includes(key)) ||
+        url.searchParams.getAll('company').length !== 1 || url.searchParams.getAll('command').length > 1 ||
+        url.searchParams.getAll('result').length > 1) return null
+    const company = stockCompanyId(url.searchParams.get('company'))
+    const command = url.searchParams.has('command') ? stockCompanyId(url.searchParams.get('command')) : undefined
+    const result = url.searchParams.get('result')
+    if (result && !['sent','closed','denied','unconfirmed','full','duplicate','activated','canceled','expired'].includes(result)) return null
+    return company && command !== null ? stockOperatorPath(company, command) : null
+  } catch { return null }
+}
