@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Native operator invitation claim
+
+The closed Stock invitation landing expects a 32-byte random capability in the email-link fragment. It clears the fragment before an explicit sign-in submission. Stock hashes the capability at its same-origin start route, stores only the proof digest in an isolated short-lived continuation, and uses a separate PKCE namespace and callback. The pinned Stock server sends the digest and both native credentials to the private Core claim receiver. Core verifies the pair, checks the recipient's exact live native Stock session through the authenticated Stock reader, and uses the invitation ID as the durable claim command. The existing Core reservation function binds the verified email and enforces capacity. The response is an inactive claim or exact terminal state.
+
+An offline proxy regression reproduced a login redirect for the existing cookie-free v2 membership endpoints. Core now forwards the five exact paths on the pinned Hub host to their own native credential handlers. Adjacent and foreign-host paths retain their existing gates. The Stock service worker bypasses the invitation landing so stale offline content cannot offer an invitation form.
+
+The callback clears its continuation and verifier and preserves existing browser authentication cookies. An uncertain response can be recovered by reopening the original link with the same verified account. The exact Stock callback path must be approved in the native Auth configuration during rollout. Owner invitation delivery, reciprocal inactive membership provisioning, activation, and role or revocation updates still require source work. The transport tests use synthetic Auth and the database tests use disposable identities. Hosted native signup, browser and operator acceptance remain pending.
+
 ### Pro operator reservation and verified claim foundation
 
 The closed Core proposal adds append-only invitation, claim, and closure records. An exact verified Owner session and acknowledged paid Company × Stock contract are required to reserve a seat. The Registry transaction lock counts the Owner, current operators, and every unexpired reservation, including claimed invitations. Basic has one seat total and Pro has three. Replays preserve the invitation, role, and 24-hour deadline. The database stores email and invitation digests. An operator must match the verified Core email and live Stock OAuth consent. The trusted application bridge still needs to verify the reciprocal Stock native session before it calls the service-only claim function.

@@ -86,6 +86,13 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith('/api/public') || // read-only public data (e.g. plan prices)
     pathname === '/api/stock/active/authorize' || // exact bearer-only Stock bridge; handler verifies native identity
     pathname === '/api/stock/active/enroll' || // exact reciprocal enrollment; handler verifies both native identities
+    (hostname === 'hub.webzoka.com' && [
+      '/api/stock/membership/authorize',
+      '/api/stock/membership/prepare',
+      '/api/stock/membership/confirm',
+      '/api/stock/membership/select',
+      '/api/stock/membership/claim',
+    ].includes(pathname)) || // exact native membership handlers own bearer verification
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {
     return NextResponse.next()

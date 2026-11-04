@@ -6,7 +6,7 @@ import { ACTIVE_STOCK_REALM, isActiveStockUuid, activeStockSessionMode } from '@
 /** Verified native identity observation. Live Stock database-session and local
  * canonical membership checks remain mandatory at the protected data boundary.
  */
-export async function verifyStockIdentityForCoreBridge(token: string) {
+export async function verifyStockIdentityForCoreBridge(token: string, options: { requireLiveOperatorSession?: boolean } = {}) {
   const key = process.env.STOCK_SUPABASE_PUBLISHABLE_KEY
   if (!key || typeof token !== 'string' || token.length > 8192 ||
       !/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(token)) throw new Error('ACTIVE_STOCK_IDENTITY_DENIED')
@@ -34,8 +34,15 @@ export async function verifyStockIdentityForCoreBridge(token: string) {
   const linked = user.identities?.filter(item => item.provider === 'custom:webzoka') ?? []
   if (linked.length !== 1 || linked[0].user_id !== user.id ||
       !isActiveStockUuid(linked[0].identity_data?.sub)) throw new Error('ACTIVE_STOCK_IDENTITY_DENIED')
+  const coreSubject = linked[0].identity_data!.sub as string
+  if (options.requireLiveOperatorSession) {
+    const live = await client.rpc('stock_operator_native_session_live', { p_core_subject: coreSubject })
+      .setHeader('Authorization', `Bearer ${token}`)
+      .abortSignal(AbortSignal.timeout(2500))
+    if (live.error || live.data !== true) throw new Error('ACTIVE_STOCK_IDENTITY_DENIED')
+  }
   const until = Math.min((claims.exp as number) * 1000, started + 30_000)
   if (until <= Date.now()) throw new Error('ACTIVE_STOCK_IDENTITY_DENIED')
   return Object.freeze({ stockSubject: user.id, stockSessionId: claims.session_id,
-    coreSubject: linked[0].identity_data!.sub as string, until })
+    coreSubject, until })
 }

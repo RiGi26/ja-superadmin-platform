@@ -1588,5 +1588,51 @@
         "after": "      if (name === '@/lib/stock-membership-protocol') return { STOCK_MEMBERSHIP_RUNTIME_ENABLED: false }\n"
       }
     ]
+  },
+  {
+    "file": "proxy.ts",
+    "profile": "runtime",
+    "beforeHash": "6cda503b6614309869993875c10884bd9304c2aa2c3356d80c4a5294dba62b3a",
+    "afterHash": "7e510afff9c346feb8a3510a151203eaee7fb003319935ca2918e0d9cbea5f90",
+    "edits": [
+      {
+        "beforeOffset": 4392,
+        "afterOffset": 4392,
+        "before": "",
+        "after": "    (hostname === 'hub.webzoka.com' && [\n      '/api/stock/membership/authorize',\n      '/api/stock/membership/prepare',\n      '/api/stock/membership/confirm',\n      '/api/stock/membership/select',\n      '/api/stock/membership/claim',\n    ].includes(pathname)) || // exact native membership handlers own bearer verification\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/stock-active.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "6f82d43f21b083cffe35a968a0cf88b39323d700adfcf078211bab022a6c1e59",
+    "afterHash": "3d6f055c3551b98d58d6e24ee2865eeecd8cdc97dc57c174554cd9297066f116",
+    "edits": [
+      {
+        "beforeOffset": 8628,
+        "afterOffset": 8628,
+        "before": "function identityHarness(changes = {}) {\n",
+        "after": "function identityHarness(changes = {}, session = {}) {\n"
+      },
+      {
+        "beforeOffset": 8927,
+        "afterOffset": 8941,
+        "before": "  const fetch = async input => {\n",
+        "after": "  const fetch = async (input, init) => {\n"
+      },
+      {
+        "beforeOffset": 9010,
+        "afterOffset": 9032,
+        "before": "",
+        "after": "    if (url === protocol.ACTIVE_STOCK_REALM + '/rest/v1/rpc/stock_operator_native_session_live') {\n      assert.equal(new Headers(init.headers).get('authorization'), 'Bearer ' + session.token)\n      assert.deepEqual(JSON.parse(init.body), { p_core_subject: id(7) })\n      return Response.json(session.live)\n    }\n"
+      },
+      {
+        "beforeOffset": 10445,
+        "afterOffset": 10780,
+        "before": "",
+        "after": "test('operator identity uses its explicit native token for the Stock live-session reader', async () => {\n  const signed = await token()\n  const alive = identityHarness({}, { token: signed, live: true })\n  assert.equal((await alive.api.verifyStockIdentityForCoreBridge(signed, { requireLiveOperatorSession: true })).coreSubject, id(7))\n  assert.ok(alive.calls.at(-1).endsWith('/rpc/stock_operator_native_session_live'))\n  const revoked = identityHarness({}, { token: signed, live: false })\n  await assert.rejects(revoked.api.verifyStockIdentityForCoreBridge(signed, { requireLiveOperatorSession: true }), /IDENTITY_DENIED/)\n})\n"
+      }
+    ]
   }
 ]
