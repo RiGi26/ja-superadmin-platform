@@ -60,6 +60,30 @@ export async function prepareStockMembershipOwner(input: unknown, stockToken: st
     }
     const until = await current()
     const db = createAdminClient()
+    // Exact origin lookup, independently of browser selectors or cached tenant
+    // metadata. Missing/unknown reader results cannot fall through to v1.
+    const origin = await db.rpc('core_stock_workspace_is_v2', {
+      p_company: selected.companyId, p_instance: selected.instanceId,
+    }).abortSignal(AbortSignal.timeout(2500))
+    if (origin.error || typeof origin.data !== 'boolean') return { status: 'denied' }
+    if (origin.data) {
+      const verifiedUntil = await current()
+      attempted = true
+      const prepared = await db.rpc('core_stock_workspace_prepare_owner', {
+        p_core_subject: first.core.subject, p_core_session: first.core.session,
+        p_stock_subject: first.stock.stockSubject, p_stock_session: first.stock.stockSessionId,
+        p_verified_until: new Date(verifiedUntil).toISOString(),
+        p_company: selected.companyId, p_instance: selected.instanceId, p_command: selected.commandId,
+      }).abortSignal(AbortSignal.timeout(2500))
+      if (prepared.error) return { status: 'unconfirmed' }
+      const receipt = parseStockMembershipPreparation(prepared.data)
+      if (receipt.originVersion !== 2 || receipt.commandId !== selected.commandId || receipt.companyId !== selected.companyId ||
+          receipt.instanceId !== selected.instanceId || receipt.coreSubject !== first.core.subject || receipt.stockSubject !== first.stock.stockSubject) {
+        return { status: 'unconfirmed' }
+      }
+      await current()
+      return { status: 'prepared', receipt }
+    }
     attempted = true
     const account = await db.rpc('stock_billing_prepare_account', {
       p_actor: first.core.subject, p_session: first.core.session, p_auth_until: new Date(until).toISOString(),
@@ -117,7 +141,7 @@ export async function confirmStockMembershipOwner(input: unknown, stockToken: st
         nativeStock.stockSubject !== receipt.stockSubject || !Number.isFinite(until) || until <= Date.now()) {
       return { status: 'unconfirmed' as const }
     }
-    const saved = await createAdminClient().rpc('core_stock_membership_confirm_owner', {
+    const saved = await createAdminClient().rpc(receipt.originVersion === 2 ? 'core_stock_workspace_confirm_owner' : 'core_stock_membership_confirm_owner', {
       p_core_subject: core.subject, p_core_session: core.session,
       p_stock_subject: nativeStock.stockSubject, p_stock_session: nativeStock.stockSessionId,
       p_verified_until: new Date(until).toISOString(), p_company: receipt.companyId,

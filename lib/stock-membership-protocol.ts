@@ -17,6 +17,7 @@ export type StockMembershipPreparation = StockWorkspaceChoice & Readonly<{
   bindingId: string; bindingRevision: 1; companyRevision: number;
   coreSubject: string; coreTenantId: string; stockSubject: string; stockTenantId: string;
   ownerMembershipId: string; profileId: string; membershipRevision: 1;
+  originVersion?: 2; companyName?: string; stockAuditEventId?: string;
 }>
 type Selection = ActiveStockSelector & Readonly<{
   stockTenantId: string; profileId: string; membershipId: string;
@@ -72,21 +73,29 @@ export function parseStockWorkspaceChoice(value: unknown): StockWorkspaceChoice 
  * never authenticates its issuer or authorizes a payment or portal operation.
  */
 export function parseStockMembershipPreparation(value: unknown): StockMembershipPreparation {
-  const keys = ['accessGranted','bindingId','bindingRevision','commandId','companyId','companyRevision',
+  const fields = ['accessGranted','bindingId','bindingRevision','commandId','companyId','companyRevision',
     'coreSubject','coreTenantId','instanceId','membershipRevision','ownerMembershipId','profileId',
-    'role','status','stockSubject','stockTenantId','version'].sort().join(',')
+    'role','status','stockSubject','stockTenantId','version']
+  const fresh = record(value) && value.originVersion === 2
+  if (fresh) fields.push('originVersion','companyName','stockAuditEventId')
+  const keys = fields.sort().join(',')
   if (!record(value) || Object.keys(value).sort().join(',') !== keys || value.version !== 2 ||
       value.status !== 'prepared' || value.accessGranted !== false || value.role !== 'admin' ||
       value.bindingRevision !== 1 || value.membershipRevision !== 1 || value.bindingId !== value.instanceId ||
       !Number.isSafeInteger(value.companyRevision) || (value.companyRevision as number) < 0 ||
       !['bindingId','coreSubject','coreTenantId','stockSubject','stockTenantId','ownerMembershipId','profileId']
         .every(key => isActiveStockUuid(value[key]))) throw new Error('STOCK_MEMBERSHIP_PREPARATION_DENIED')
+  if (fresh && (typeof value.companyName !== 'string' || value.companyName.length < 2 || value.companyName.length > 100 ||
+      value.companyName.trim() !== value.companyName || /\p{Cc}/u.test(value.companyName) || !isActiveStockUuid(value.stockAuditEventId))) {
+    throw new Error('STOCK_MEMBERSHIP_PREPARATION_DENIED')
+  }
   const selected = parseStockWorkspaceChoice({ commandId: value.commandId, companyId: value.companyId, instanceId: value.instanceId })
   return Object.freeze({ ...selected, version: 2, status: 'prepared', accessGranted: false, role: 'admin',
     bindingId: value.bindingId as string, bindingRevision: 1, companyRevision: value.companyRevision as number,
     coreSubject: value.coreSubject as string, coreTenantId: value.coreTenantId as string,
     stockSubject: value.stockSubject as string, stockTenantId: value.stockTenantId as string,
-    ownerMembershipId: value.ownerMembershipId as string, profileId: value.profileId as string, membershipRevision: 1 })
+    ownerMembershipId: value.ownerMembershipId as string, profileId: value.profileId as string, membershipRevision: 1,
+    ...(fresh ? { originVersion: 2 as const, companyName: value.companyName as string, stockAuditEventId: value.stockAuditEventId as string } : {}) })
 }
 
 /** This request is assembled at the protected data boundary from its selected
