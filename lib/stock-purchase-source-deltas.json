@@ -1574,5 +1574,19 @@
         "after": "\ntest('approved Stock invoices keep issued mode across a global-mode change and insertion race', async () => {\n  for(const race of [false,true]) {\n    const live={id:'issued-stock-invoice',redirect_url:'https://sandbox.example.invalid/existing',amount:149000,midtrans_mode:'production'}\n    const h=engine({plan:approved,catalog:approvedRows,enabled:true,currentMode:'sandbox',invoiceConflict:race,\n      subscriptions:[success({...existing,plan_id:approved.id})],\n      liveInvoices:race?[null,live]:[live]})\n    const result=await h.checkout({durableCheckout:true})\n    assert.equal(result.ok,true);assert.equal(result.reused,true);assert.equal(result.invoiceId,live.id)\n    assert.equal(h.calls.filter(call=>call.method==='paymentFetch').length,0)\n  }\n})\n\ntest('unavailable Stock mode cannot leave a subscription or invoice stub', async () => {\n  const h=engine({plan:approved,catalog:approvedRows,enabled:true,modeUnavailable:true})\n  await assert.rejects(h.checkout({durableCheckout:true}),/STOCK_PAYMENT_MODE_UNAVAILABLE/)\n  assert.equal(h.calls.some(hasMutation),false)\n  assert.equal(h.calls.some(call=>call.method==='paymentFetch'),false)\n})\n"
       }
     ]
+  },
+  {
+    "file": "lib/hub-ui-test-harness.mjs",
+    "profile": "runtime",
+    "beforeHash": "109f2beceb138e1e0a3debdbdb06a916e443163f2d4a9beb76f6229487c62d71",
+    "afterHash": "f7a97c09400bd0a2d3aec351f1b59737d162923ee34fc2a639a42c2ac4aa5f9a",
+    "edits": [
+      {
+        "beforeOffset": 1458,
+        "afterOffset": 1458,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-membership-protocol') return { STOCK_MEMBERSHIP_RUNTIME_ENABLED: false }\n"
+      }
+    ]
   }
 ]
