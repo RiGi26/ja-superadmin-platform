@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Stock font build recovery
+
+The paired Stock build at `60a95fb416f71cfcf17d11d87bc262ca50d2acb8` failed twice in Next 16.4.1's Google font resolver with `next/font/google queries have exactly one entry` ([retained CI attempts](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41807314592)). The same commit's independent PDF build passed; this did not establish a reproducible paired build. A fresh request using the original family names and weights returned 124 extensionless Noto Sans JP font URLs, matching the response shape documented in [Next issue 99114](https://github.com/vercel/next.js/issues/99114).
+
+Stock candidate `189b91e23b92bfe8936362b01368fe0ca112abad` stores the two existing font families locally. It preserves all 392 provider face declarations, Unicode ranges, selected weights, swap behavior, the two Latin preloads and the locked Next fallback metrics. The 128 WOFF2 assets total 5,650,104 bytes; browser subset loading remains controlled by the retained Unicode ranges. Provider CSS, source and asset hashes, provenance and OFL notices are retained with the assets. Two source checks verify the bytes, full face preservation and absence of a Google loader or remote font URL in the application stylesheet. This adds no dependency or runtime installation. Types and scoped lint pass locally. Fresh paired build and hosted visual acceptance remain separate requirements; the latest PR checks provide their current source status.
+
+No fonts were deployed, and no mobile or pixel-equivalence claim is made from source checks. Desktop and exact-390px UAT must cover the delivered local fonts along with the customer journey. Production changed NO.
+
 ### Operational workspace discovery and entry
 
 The Hub Systems view now reads current operational memberships independently from Owner billing. Its authenticated discovery RPC returns only the current user's admitted Company, instance, membership and role, with a live native Core session, active Registry membership, unrevoked identity pair, current verified account and consent, active Owner, paid receipt and seat capacity. The list grants no access. Each workspace posts an explicit selector into the existing reciprocal native selection flow, which verifies and commits both selections before operational access. Owners retain their existing billing workspace controls. Operational roles receive no invoice history, invitation management or financial mutation controls from this list.
