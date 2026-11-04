@@ -92,6 +92,7 @@ export async function proxy(request: NextRequest) {
       '/api/stock/membership/confirm',
       '/api/stock/membership/select',
       '/api/stock/membership/claim',
+      '/api/stock/membership/commit',
     ].includes(pathname)) || // exact native membership handlers own bearer verification
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {

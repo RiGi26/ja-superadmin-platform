@@ -6,9 +6,76 @@ DO $preflight$ BEGIN
  IF current_user<>'postgres'
    OR to_regprocedure('stock_membership_private.operator_invitation_fence(timestamptz)') IS NULL
    OR to_regclass('stock_workspace_private.graph_permits') IS NULL
+   OR md5(pg_get_functiondef(to_regprocedure('core_e1_resource_private.guard_graph()')))
+       IS DISTINCT FROM '173504a475a8f99f88b50595a1f73b5a'
    OR to_regprocedure('public.core_stock_operator_commit(uuid,uuid,uuid,uuid,timestamptz,uuid,jsonb)') IS NOT NULL
  THEN RAISE EXCEPTION 'STOCK_OPERATOR_COMMIT_BASELINE_DENIED'; END IF;
 END $preflight$;
+CREATE OR REPLACE FUNCTION core_e1_resource_private.guard_graph() RETURNS trigger
+LANGUAGE plpgsql SECURITY DEFINER SET search_path='' AS $fn$
+DECLARE prior jsonb := CASE WHEN TG_OP='INSERT' THEN '{}'::jsonb ELSE to_jsonb(OLD) END;
+ next_row jsonb := CASE WHEN TG_OP='DELETE' THEN '{}'::jsonb ELSE to_jsonb(NEW) END;
+ o core_e1_resource_private.origins%ROWTYPE; company uuid;
+BEGIN
+ IF stock_workspace_private.graph_permitted(TG_TABLE_NAME,TG_OP,prior,next_row) THEN RETURN NEW; END IF;
+ company:=CASE WHEN TG_TABLE_NAME='companies' THEN coalesce((next_row->>'id')::uuid,(prior->>'id')::uuid)
+   ELSE coalesce((next_row->>'company_id')::uuid,(prior->>'company_id')::uuid) END;
+ IF EXISTS(SELECT 1 FROM stock_workspace_private.origins WHERE company_id=company)
+   OR EXISTS(SELECT 1 FROM stock_membership_private.resources WHERE company_id=company)
+   OR EXISTS(SELECT 1 FROM stock_workspace_private.origins WHERE company_id=(prior->>'company_id')::uuid)
+   OR EXISTS(SELECT 1 FROM stock_membership_private.resources WHERE company_id=(prior->>'company_id')::uuid)
+   OR (TG_TABLE_NAME='companies' AND EXISTS(SELECT 1 FROM stock_workspace_private.origins WHERE company_id=(prior->>'id')::uuid))
+   OR (TG_TABLE_NAME='companies' AND EXISTS(SELECT 1 FROM stock_membership_private.resources WHERE company_id=(prior->>'id')::uuid))
+ THEN
+   -- The birth's native append-only audit may advance only audit_head, with
+   -- its exact new event chained to the previous hash. No legacy E1 action.
+   IF TG_TABLE_NAME='companies' AND TG_OP='UPDATE' AND (next_row-'audit_head')=(prior-'audit_head')
+     AND EXISTS(SELECT 1 FROM stock_workspace_private.origins v JOIN core_registry_private.events e
+       ON e.company_id=v.company_id AND e.actor_id=v.core_subject AND e.command_id=v.command_id
+       WHERE v.company_id=company AND e.action='v2.stock.create' AND e.previous_hash=prior->>'audit_head'
+         AND e.event_hash=next_row->>'audit_head')
+   THEN RETURN NEW; END IF;
+   -- Operator admission has its own exact scoped member insert. Only the
+   -- chained event for that member may move the Company's audit head.
+   IF TG_TABLE_NAME='companies' AND TG_OP='UPDATE' AND (next_row-'audit_head')=(prior-'audit_head')
+     AND EXISTS(SELECT 1 FROM core_registry_private.events e
+       JOIN stock_membership_private.memberships m ON m.company_id=e.company_id AND m.core_subject=e.actor_id
+         AND m.id::text=(e.canonical_payload::jsonb->'after'->>'membershipId') AND m.revoked_at IS NULL AND m.revision=1
+       JOIN stock_membership_private.resources r ON r.company_id=m.company_id AND r.owner_membership_id<>m.id
+         AND r.instance_id::text=(e.canonical_payload::jsonb->'after'->>'instanceId')
+       WHERE e.company_id=company AND e.action='v2.stock.operator.admit'
+         AND e.previous_hash=prior->>'audit_head' AND e.event_hash=next_row->>'audit_head'
+         AND e.command_id::text=(e.canonical_payload::jsonb->'after'->>'inviteId')
+         AND m.profile_id::text=(e.canonical_payload::jsonb->'after'->>'profileId')
+         AND m.role=(e.canonical_payload::jsonb->'after'->>'role'))
+   THEN RETURN NEW; END IF;
+   RAISE EXCEPTION 'STOCK_WORKSPACE_SCOPED_MUTATION_REQUIRED';
+ END IF;
+ -- Replacing the global index does not admit legacy multi-membership writers.
+ IF TG_TABLE_NAME='company_memberships' AND TG_OP IN ('INSERT','UPDATE') AND next_row->>'status'='active'
+   AND EXISTS(SELECT 1 FROM public.company_memberships m WHERE m.core_auth_user_id=(next_row->>'core_auth_user_id')::uuid
+     AND m.status='active' AND m.id<>(next_row->>'id')::uuid)
+ THEN RAISE EXCEPTION 'STOCK_WORKSPACE_LEGACY_MEMBERSHIP_PROTECTED'; END IF;
+ SELECT * INTO o FROM core_e1_resource_private.origins WHERE
+   company_id IN ((prior->>'company_id')::uuid,(next_row->>'company_id')::uuid)
+   OR (TG_TABLE_NAME='companies' AND company_id IN ((prior->>'id')::uuid,(next_row->>'id')::uuid))
+   OR (TG_TABLE_NAME='company_memberships' AND core_subject IN
+     ((prior->>'core_auth_user_id')::uuid,(next_row->>'core_auth_user_id')::uuid))
+   OR (TG_TABLE_NAME='owner_claims' AND core_subject IN
+     ((prior->>'target_user_id')::uuid,(next_row->>'target_user_id')::uuid)) LIMIT 1;
+ IF FOUND THEN
+   IF TG_TABLE_NAME='owner_claims' THEN RAISE EXCEPTION 'E1_CLAIM_REQUIRES_SCOPED_RECOVERY'; END IF;
+   IF TG_TABLE_NAME='companies' AND TG_OP='UPDATE' AND (next_row-'audit_head')=(prior-'audit_head')
+     AND EXISTS(SELECT 1 FROM core_registry_private.events e WHERE e.company_id=o.company_id
+       AND e.actor_id=o.core_subject AND e.previous_hash=prior->>'audit_head'
+       AND e.event_hash=next_row->>'audit_head' AND e.action IN ('e1.stock.admit','e1.stock.stage','e1.stock.bind','e1.stock.checkout'))
+   THEN RETURN NEW; END IF;
+   RAISE EXCEPTION 'E1_PROTECTED_GRAPH';
+ END IF;
+ IF TG_OP='DELETE' THEN RETURN OLD; END IF;
+ RETURN NEW;
+END $fn$;
+
 CREATE TABLE stock_membership_private.operator_commit_settings(
  singleton boolean PRIMARY KEY DEFAULT true CHECK(singleton),enabled boolean NOT NULL DEFAULT false
 );

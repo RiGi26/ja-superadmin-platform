@@ -1,12 +1,22 @@
 # Stock self-payment implementation and acceptance
 
+### Operator admission through local activation
+
+The private Core commit handler now rereads the recipient's staged Stock receipt with the verified bearer token before calling the Registry commit. The Stock callback accepts that exact admission and activates the local profile, identity pair, membership, and append-only audit through one consumed profile permit. It rechecks the currently paid Pro workspace and Owner and enforces the three-seat local limit under the profile transaction fence. Activation returns no selected-session grant. Reopening the original invitation recovers Core's committed admission with the same native identity pair and can finish or replay Stock activation after a lost response. A committed admission can recover after its original invitation deadline. Uncommitted expired invitations retain their existing denial.
+
+Disposable SQL now exercises two Pro operators with distinct native identities, their assigned staff and production roles, exact canonical profile selection, denial of a foreign Basic workspace, and no Owner billing access. This is synthetic native-identity evidence. It does not satisfy the required real signup and operator acceptance. Concurrent admission and activation replay are added to PostgreSQL 17 CI.
+
+Paired CI exposed the operator guard being added too early to the workspace-birth proposal. The operator extension now installs in its own prerequisite-checked commit proposal, which pins the prior guard definition. The minimal birth regression again rejects direct and legacy mutations with its original scoped protection. Full reviewed source must still pass paired CI at the latest commits.
+
+Remaining source work includes Owner invitation creation, cancellation UI and email delivery, operator workspace entry controls, signed revisions and role/revocation delivery, canceled-stage cleanup, current profile/document/upload lookups, and mixed legacy/v2 access. Managed runtime, real operators, hosted desktop and exact-390px UAT, five sandbox purchases, and separately authorized live acceptance remain open.
+
 ### Reciprocal Stock operator staging and Core admission
 
 The closed callback now stages the inactive Stock profile after Core verifies the invitation and recipient. Stock rechecks the native session and linked Core identity, the exact Pro paid resource, its Owner profile, and the receipt-bound entitlement. It writes the exact profile through a consumed row-image permit and commits its immutable stage and audit together. The authenticated Stock reader returns the staged receipt only to the currently verified recipient. The callback reports verification after an exact committed Stock receipt and still keeps existing authentication cookies.
 
 The Core commit proposal accepts an independently authenticated Stock receipt and matches it against the retained claim under the Registry lock. It converts one reserved seat to one operational membership, maps that person to Registry member and preserves Owner-only billing, appends the scoped Company audit event, and retains the Company's existing revision. The same committed receipt can be recovered using fresh native credentials. It grants no Stock session. Disposable SQL covers rejection of a foreign or modified receipt, both audit rollbacks, idempotency, Owner-only billing, and an inactive Stock profile after Core admission.
 
-The private application bridge still needs to perform the authenticated Stock read and call the Core commit. Stock activation, signed lifecycle revisions and revocation, invitation delivery and Owner controls remain open. No managed migration, provider configuration, live email, payment or deployment is authorized by these proposals.
+The private application bridge and Stock activation are extended by the continuation above. Signed lifecycle revisions and revocation, invitation delivery and Owner controls remain open. No managed migration, provider configuration, live email, payment or deployment is authorized by these proposals.
 
 ### Native operator invitation claim
 

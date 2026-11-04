@@ -1634,5 +1634,19 @@
         "after": "test('operator identity uses its explicit native token for the Stock live-session reader', async () => {\n  const signed = await token()\n  const alive = identityHarness({}, { token: signed, live: true })\n  assert.equal((await alive.api.verifyStockIdentityForCoreBridge(signed, { requireLiveOperatorSession: true })).coreSubject, id(7))\n  assert.ok(alive.calls.at(-1).endsWith('/rpc/stock_operator_native_session_live'))\n  const revoked = identityHarness({}, { token: signed, live: false })\n  await assert.rejects(revoked.api.verifyStockIdentityForCoreBridge(signed, { requireLiveOperatorSession: true }), /IDENTITY_DENIED/)\n})\n"
       }
     ]
+  },
+  {
+    "file": "proxy.ts",
+    "profile": "runtime",
+    "beforeHash": "7e510afff9c346feb8a3510a151203eaee7fb003319935ca2918e0d9cbea5f90",
+    "afterHash": "f2eeb70b632b7080220e5406d3bce51e636e87bbe31a0c769bcb05187cae67d3",
+    "edits": [
+      {
+        "beforeOffset": 4627,
+        "afterOffset": 4627,
+        "before": "",
+        "after": "      '/api/stock/membership/commit',\n"
+      }
+    ]
   }
 ]

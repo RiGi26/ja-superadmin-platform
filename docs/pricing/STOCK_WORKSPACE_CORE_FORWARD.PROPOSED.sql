@@ -128,20 +128,6 @@ BEGIN
        WHERE v.company_id=company AND e.action='v2.stock.create' AND e.previous_hash=prior->>'audit_head'
          AND e.event_hash=next_row->>'audit_head')
    THEN RETURN NEW; END IF;
-   -- Operator admission has its own exact scoped member insert. Only the
-   -- chained event for that member may move the Company's audit head.
-   IF TG_TABLE_NAME='companies' AND TG_OP='UPDATE' AND (next_row-'audit_head')=(prior-'audit_head')
-     AND EXISTS(SELECT 1 FROM core_registry_private.events e
-       JOIN stock_membership_private.memberships m ON m.company_id=e.company_id AND m.core_subject=e.actor_id
-         AND m.id::text=(e.canonical_payload::jsonb->'after'->>'membershipId') AND m.revoked_at IS NULL AND m.revision=1
-       JOIN stock_membership_private.resources r ON r.company_id=m.company_id AND r.owner_membership_id<>m.id
-         AND r.instance_id::text=(e.canonical_payload::jsonb->'after'->>'instanceId')
-       WHERE e.company_id=company AND e.action='v2.stock.operator.admit'
-         AND e.previous_hash=prior->>'audit_head' AND e.event_hash=next_row->>'audit_head'
-         AND e.command_id::text=(e.canonical_payload::jsonb->'after'->>'inviteId')
-         AND m.profile_id::text=(e.canonical_payload::jsonb->'after'->>'profileId')
-         AND m.role=(e.canonical_payload::jsonb->'after'->>'role'))
-   THEN RETURN NEW; END IF;
    RAISE EXCEPTION 'STOCK_WORKSPACE_SCOPED_MUTATION_REQUIRED';
  END IF;
  -- Replacing the global index does not admit legacy multi-membership writers.
