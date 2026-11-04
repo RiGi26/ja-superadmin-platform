@@ -101,7 +101,7 @@ export async function prepareStockMembershipOwner(input: unknown, stockToken: st
     }).abortSignal(AbortSignal.timeout(2500))
     if (prepared.error) return { status: 'unconfirmed' }
     const receipt = parseStockMembershipPreparation(prepared.data)
-    if (receipt.commandId !== selected.commandId || receipt.companyId !== selected.companyId ||
+    if (receipt.originVersion !== undefined || receipt.commandId !== selected.commandId || receipt.companyId !== selected.companyId ||
         receipt.instanceId !== selected.instanceId || receipt.coreSubject !== first.core.subject ||
         receipt.stockSubject !== first.stock.stockSubject || receipt.coreTenantId !== account.data.tenantId) {
       return { status: 'unconfirmed' }

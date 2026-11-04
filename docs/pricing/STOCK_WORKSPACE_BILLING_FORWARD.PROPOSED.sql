@@ -147,6 +147,7 @@ LANGUAGE sql VOLATILE SECURITY DEFINER SET search_path='' AS $fn$
    WHERE s.id=p_session AND s.user_id=p_actor AND (s.not_after IS NULL OR s.not_after>clock_timestamp())
      AND u.deleted_at IS NULL AND u.is_anonymous IS FALSE AND u.email_confirmed_at<=clock_timestamp()
      AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp()))
+   AND core_registry_private.active_stock_core_session_live(p_actor,p_session)
 $fn$;
 
 CREATE OR REPLACE FUNCTION public.stock_billing_sandbox_allowed(p_tenant uuid,p_plan uuid) RETURNS boolean
