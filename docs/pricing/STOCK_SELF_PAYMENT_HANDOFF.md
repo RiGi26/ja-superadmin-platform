@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Pro operator reservation and verified claim foundation
+
+The closed Core proposal adds append-only invitation, claim, and closure records. An exact verified Owner session and acknowledged paid Company × Stock contract are required to reserve a seat. The Registry transaction lock counts the Owner, current operators, and every unexpired reservation, including claimed invitations. Basic has one seat total and Pro has three. Replays preserve the invitation, role, and 24-hour deadline. The database stores email and invitation digests. An operator must match the verified Core email and live Stock OAuth consent. The trusted application bridge still needs to verify the reciprocal Stock native session before it calls the service-only claim function.
+
+A claim reserves stable membership and profile IDs. Public and private operational membership, profile, billing, and entitlement rows receive no writes at that stage. Owner cancellation frees the reservation and retains the claim. Expiration releases capacity at the deadline and is recorded once when a later action observes it. Disposable SQL covers the closed gate, paid capacity, unconfirmed identities, replay, audit rollback, cancellation, and expiry. Paired CI adds independent PostgreSQL 17 races for the last Pro reservation and one durable claim on replay.
+
+Remaining operator work includes Owner UI and delivery through the existing email infrastructure, the paired native claim transport, reciprocal inactive admission and acknowledgment, activation, signed revision delivery, and role/revocation controls. Real operator and hosted customer acceptance remain pending.
+
 ### Fresh workspace creation in checkout
 
 Checkout now offers a separate creation form to eligible verified customers when the creation, membership preparation, and billing runtime gates permit it. Its return URL carries only the approved plan and a creation command, mutually exclusive with an existing Company selector. Login and email verification preserve that command. An uncertain response returns to the same command, and a confirmed reservation returns to the exact Company for reciprocal preparation. The creation adapter accepts only the new business name and command. It derives identity from the current Core session and reuses the atomic Company, Owner, reservation, and audit operation. A lost intent response can be recovered from the reserved Company's checkout. The Company-only return from Stock preparation also survives login and reloads only that Company's saved plan.
