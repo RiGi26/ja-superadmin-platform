@@ -43,3 +43,15 @@ export function parseStockOperatorClaim(value: unknown, inviteId: string): Stock
       Date.parse(value.expiresAt) <= Date.now()) throw new Error('STOCK_OPERATOR_CLAIM_INVALID')
   return value as StockOperatorClaim
 }
+
+export type StockOperatorStage = Omit<StockOperatorClaim, 'status'> &
+  Readonly<{ status: 'staged'; stockAuditEventId: string }>
+
+export function parseStockOperatorStage(value: unknown, claim: StockOperatorClaim): StockOperatorStage {
+  if (!record(value) || Object.keys(value).sort().join(',') !== [...claimKeys.split(','), 'stockAuditEventId'].sort().join(',') ||
+      value.status !== 'staged' || !isActiveStockUuid(value.stockAuditEventId) ||
+      Object.entries(claim).some(([key, expected]) => key !== 'status' && value[key] !== expected)) {
+    throw new Error('STOCK_OPERATOR_STAGE_INVALID')
+  }
+  return value as StockOperatorStage
+}

@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Reciprocal Stock operator staging and Core admission
+
+The closed callback now stages the inactive Stock profile after Core verifies the invitation and recipient. Stock rechecks the native session and linked Core identity, the exact Pro paid resource, its Owner profile, and the receipt-bound entitlement. It writes the exact profile through a consumed row-image permit and commits its immutable stage and audit together. The authenticated Stock reader returns the staged receipt only to the currently verified recipient. The callback reports verification after an exact committed Stock receipt and still keeps existing authentication cookies.
+
+The Core commit proposal accepts an independently authenticated Stock receipt and matches it against the retained claim under the Registry lock. It converts one reserved seat to one operational membership, maps that person to Registry member and preserves Owner-only billing, appends the scoped Company audit event, and retains the Company's existing revision. The same committed receipt can be recovered using fresh native credentials. It grants no Stock session. Disposable SQL covers rejection of a foreign or modified receipt, both audit rollbacks, idempotency, Owner-only billing, and an inactive Stock profile after Core admission.
+
+The private application bridge still needs to perform the authenticated Stock read and call the Core commit. Stock activation, signed lifecycle revisions and revocation, invitation delivery and Owner controls remain open. No managed migration, provider configuration, live email, payment or deployment is authorized by these proposals.
+
 ### Native operator invitation claim
 
 The closed Stock invitation landing expects a 32-byte random capability in the email-link fragment. It clears the fragment before an explicit sign-in submission. Stock hashes the capability at its same-origin start route, stores only the proof digest in an isolated short-lived continuation, and uses a separate PKCE namespace and callback. The pinned Stock server sends the digest and both native credentials to the private Core claim receiver. Core verifies the pair, checks the recipient's exact live native Stock session through the authenticated Stock reader, and uses the invitation ID as the durable claim command. The existing Core reservation function binds the verified email and enforces capacity. The response is an inactive claim or exact terminal state.
