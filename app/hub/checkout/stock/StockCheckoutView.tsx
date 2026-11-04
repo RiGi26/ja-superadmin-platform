@@ -4,6 +4,7 @@ import { prepareStockWorkspace, prepareStockMembership, submitStockPayment } fro
 import { ACTIVE_STOCK_ORIGIN } from '@/lib/stock-active-protocol'
 import type { StockWorkspaceChoice } from '@/lib/stock-membership-protocol'
 import styles from './checkout.module.css'
+import { StockActivationStatus } from '../../_components/StockActivationStatus'
 
 type Plan = { id: string; tierDisplayName: string; priceMonthly: number; features: readonly string[] }
 const money = (amount: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount)
@@ -23,6 +24,7 @@ export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessR
   preparationRequired?: boolean; membershipPreparation?: StockWorkspaceChoice | null;
 }) {
   const paid = selected?.activation === 'pending' || selected?.activation === 'active'
+  const paidInvoice = selected?.invoices.find(invoice => invoice.status === 'paid')
   const renewing = selected && plan && selected.subscription?.planId === plan.id && (selected.hasPaidContract || selected.invoices.some(invoice => invoice.planId === plan.id && ['unpaid', 'awaiting_payment'].includes(invoice.status)))
   const available = salesEnabled || renewing
   const canPay = available && accessReady && selected?.stockTenantId && !paid && !preparationRequired
@@ -41,6 +43,7 @@ export function StockCheckoutView({ plan, salesEnabled, sandbox = false, accessR
         </> : <>
           {workspaces.length > 1 && <form method="get" action="/hub/checkout/stock" className={styles.selector}><input type="hidden" name="plan" value={plan.id} /><label htmlFor="stock-company">Pilih usaha</label><select id="stock-company" name="company" required defaultValue={selected?.companyId ?? ''}><option value="" disabled>Pilih usaha milik Anda</option>{workspaces.map(item => <option key={item.companyId} value={item.companyId}>{item.companyName}</option>)}</select><button className={styles.secondary}>Gunakan usaha ini</button></form>}
           {selected && <><p className={styles.business}>{selected.companyName}</p>
+            {selected.activation === 'pending' && paidInvoice && <StockActivationStatus invoiceId={paidInvoice.id} className={styles.secondary} />}
             {paid ? <div className={styles.notice} role="status"><h3>{selected.activation === 'active' ? 'Stock sudah aktif' : 'Pembayaran diterima, aktivasi diproses'}</h3><p>{selected.activation === 'active' ? 'Kelola akses dan tagihan melalui Customer Hub.' : 'Tidak perlu membayar lagi. Status akan diperbarui setelah koneksi Stock terkonfirmasi.'}</p><a className={styles.secondary} href="/hub/account?view=billing">Periksa Tagihan</a></div>
             : !selected.stockTenantId ? <><p>Sambungkan akun Stock untuk menyiapkan workspace sebelum pembayaran.</p><form action={prepareStockWorkspace}><input type="hidden" name="plan" value={plan.id} /><input type="hidden" name="company" value={selected.companyId} /><button className={styles.primary}>Selesaikan penyambungan Stock</button></form></>
             : preparationRequired ? <><p>Konfirmasi workspace dan akun Stock sebelum membuat tagihan. Langkah ini belum mengaktifkan langganan.</p>

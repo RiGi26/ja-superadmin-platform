@@ -28,7 +28,7 @@ export default async function StockCheckoutPage({ searchParams }: {
   if (identity?.error || !identity?.data.user?.email_confirmed_at || identity.data.user.is_anonymous === true) {
     redirect(`/hub/login?next=${encodeURIComponent(returnPath)}`)
   }
-  const [offers, account, intent] = await Promise.all([readStockPurchaseOffers(), readStockBillingAccount(), readStockPurchaseIntent()])
+  const [offers, account, intent] = await Promise.all([readStockPurchaseOffers(), readStockBillingAccount(), readStockPurchaseIntent(company ?? undefined)])
   const planId = selectedPlan ?? intent?.planId ?? null
   const workspaces = account.status === 'ready' ? account.workspaces : []
   const selected = company ? workspaces.find(item => item.companyId === company) ?? null : workspaces.length === 1 ? workspaces[0] : null

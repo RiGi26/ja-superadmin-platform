@@ -15,6 +15,7 @@
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { MidtransMode } from '@/types/billing'
+import type { CatalogPlan } from '@/lib/plan-catalog'
 
 const SNAP_API: Record<MidtransMode, string> = {
   production: 'https://app.midtrans.com/snap/v1/transactions',
@@ -55,8 +56,18 @@ export function serverKeyForMode(mode: MidtransMode): string | null {
 
 // Mode aktif. Sumber kebenaran = DB. Bila baris belum ada / nilai invalid / DB
 // error, fallback ke legacy (NEXT_PUBLIC_MIDTRANS_ENV). Error DB di-LOG.
-export async function getMidtransMode(): Promise<MidtransMode> {
+export async function getMidtransMode(plan?: CatalogPlan): Promise<MidtransMode> {
   const db = createAdminClient()
+  // Only approved new Stock offers use Stock's private billing mode. A missing
+  // reader or closed setting fails closed; LMS/legacy callers keep their mode.
+  if (plan?.platform === 'stock') {
+    const { approvedOffer } = await import('@/lib/plan-catalog')
+    if (approvedOffer(plan)?.platform === 'stock') {
+      const result = await db.rpc('stock_billing_payment_mode')
+      if (result.error || !['sandbox', 'production'].includes(result.data)) throw new Error('STOCK_PAYMENT_MODE_UNAVAILABLE')
+      return result.data as MidtransMode
+    }
+  }
   const { data, error } = await db
     .from('platform_settings')
     .select('value')
@@ -99,8 +110,8 @@ export function midtransConfigForMode(mode: MidtransMode): PlatformMidtrans {
 }
 
 // Konfigurasi untuk mode AKTIF (dari DB). Dipakai saat MEMBUAT invoice baru.
-export async function getPlatformMidtrans(): Promise<PlatformMidtrans> {
-  return midtransConfigForMode(await getMidtransMode())
+export async function getPlatformMidtrans(plan?: CatalogPlan): Promise<PlatformMidtrans> {
+  return midtransConfigForMode(await getMidtransMode(plan))
 }
 
 // Status konfigurasi key per-mode untuk UI admin (tanpa membuka key). true = siap.

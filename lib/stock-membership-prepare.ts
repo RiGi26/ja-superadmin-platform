@@ -40,7 +40,7 @@ export async function prepareStockMembershipOwner(input: unknown, stockToken: st
     const first = await observe()
     // Explicit provider token: a pre-existing browser session must not select
     // another customer's saved intent in this server-to-server request.
-    const saved = await client.rpc('stock_billing_read_intent').setHeader('Authorization', `Bearer ${coreToken}`)
+    const saved = await client.rpc('stock_billing_read_workspace_intent', { p_company: selected.companyId }).setHeader('Authorization', `Bearer ${coreToken}`)
       .abortSignal(AbortSignal.timeout(2500))
     const intent: unknown = saved.data
     if (saved.error || !intent || typeof intent !== 'object' || Array.isArray(intent) ||

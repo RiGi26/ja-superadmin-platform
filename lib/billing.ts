@@ -170,6 +170,11 @@ export async function createSubscriptionCheckout(args: {
   if (existingSubError) return { ok: false, status: 503, error: 'Kontrak berjalan belum dapat diverifikasi.' }
   const planError = await verifyPlanPurchase(plan, tenantId, existingSub?.plan_id ?? null, period)
   if (planError) return { ok: false, status: 409, error: planError }
+  // A new Stock contract cannot leave a subscription stub when its dedicated
+  // mode reader or gateway configuration is unavailable. Issued invoices below
+  // retain their own mode and need no current-mode lookup to resume checkout.
+  const preparedStockConfig = !existingSub && isVersionedPlan(plan) && plan.platform === 'stock'
+    ? sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan) : undefined
   if (existingSub) {
     subscriptionId = existingSub.id
   } else {
@@ -200,7 +205,8 @@ export async function createSubscriptionCheckout(args: {
     .in('status', ['unpaid', 'awaiting_payment'])
     .maybeSingle()
   if (live?.redirect_url) {
-    const intendedMode = sandboxUat ? 'sandbox' : await getMidtransMode()
+    const intendedMode = isVersionedPlan(plan) && plan.platform === 'stock'
+      ? live.midtrans_mode : sandboxUat ? 'sandbox' : await getMidtransMode(plan)
     if (normalizeOrderMode(live.midtrans_mode) !== intendedMode) {
       return { ok: false, status: 409, error: 'Tagihan sebelumnya memakai lingkungan pembayaran berbeda. Hubungi tim Webzoka.' }
     }
@@ -210,7 +216,7 @@ export async function createSubscriptionCheckout(args: {
     return { ok: false, status: 409, error: 'Tagihan sedang diproses. Periksa status pembayaran sebelum mencoba kembali.' }
   }
 
-  const { serverKey, snapApiUrl, mode } = sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans()
+  const { serverKey, snapApiUrl, mode } = preparedStockConfig ?? (sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan))
 
   // 5. Fase 1: insert (order_id null) untuk dapat id.
   const { data: inv, error: insErr } = await db
@@ -242,7 +248,9 @@ export async function createSubscriptionCheckout(args: {
         .in('status', ['unpaid', 'awaiting_payment'])
         .maybeSingle()
       if (existing?.redirect_url) {
-        if (normalizeOrderMode(existing.midtrans_mode) !== mode) {
+        if (isVersionedPlan(plan) && plan.platform === 'stock'
+          ? !['sandbox', 'production'].includes(existing.midtrans_mode)
+          : normalizeOrderMode(existing.midtrans_mode) !== mode) {
           return { ok: false, status: 409, error: 'Tagihan sebelumnya memakai lingkungan pembayaran berbeda. Hubungi tim Webzoka.' }
         }
         return {

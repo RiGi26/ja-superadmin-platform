@@ -23,22 +23,46 @@ const receiptSchema = z.object({ status: z.literal('active'), invoiceId: uuid, d
 
 export type StockActivationDelivery = 'closed' | 'not_applicable' | 'pending' | 'active'
 
+async function withinActivationBudget<T>(work: () => PromiseLike<T>, deadline: number): Promise<T> {
+  const remaining = deadline - Date.now()
+  if (remaining <= 0) throw new Error('ACTIVATION_BUDGET_EXHAUSTED')
+  const signal = AbortSignal.timeout(remaining)
+  return new Promise<T>((resolve, reject) => {
+    const expired = () => reject(new Error('ACTIVATION_BUDGET_EXHAUSTED'))
+    signal.addEventListener('abort', expired, { once: true })
+    Promise.resolve().then(work).then(value => {
+      signal.removeEventListener('abort', expired); resolve(value)
+    }, error => { signal.removeEventListener('abort', expired); reject(error) })
+  })
+}
+
 /** Only committed Core outbox state is signed. No caller supplies an activation
  * tuple, price, recipient URL, or entitlement. Delivery is safe to retry. */
 export async function deliverStockPaidActivation(tenantId: string): Promise<StockActivationDelivery> {
+  // Retries read the same persisted invoice/outbox. They never create a payment.
+  // Leave time for the caller's remaining work within the existing function budget.
+  const deadline = Date.now() + 24_000
+  for (let attempt = 0; attempt < 3 && Date.now() < deadline; attempt++) {
+    const result = await attemptStockPaidActivation(tenantId, deadline)
+    if (result !== 'pending') return result
+  }
+  return 'pending'
+}
+
+async function attemptStockPaidActivation(tenantId: string, deadline: number): Promise<StockActivationDelivery> {
   if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return 'closed'
   if (!uuid.safeParse(tenantId).success) return 'pending'
   const secret = process.env.BILLING_SYNC_SECRET
   if (!secret || secret.length < 32) return 'pending'
   try {
     const admin = createAdminClient()
-    const claimed = await admin.rpc('stock_billing_claim_activation', { p_tenant: tenantId })
+    const claimed = await withinActivationBudget(() => admin.rpc('stock_billing_claim_activation', { p_tenant: tenantId }), deadline)
     if (claimed.error) return 'pending'
     if (claimed.data === null) return 'not_applicable'
     const parsed = payloadSchema.safeParse(claimed.data)
     if (!parsed.success) return 'pending'
     const payload = parsed.data
-    const identity = await admin.auth.admin.getUserById(payload.coreSubject)
+    const identity = await withinActivationBudget(() => admin.auth.admin.getUserById(payload.coreSubject), deadline)
     const user = identity.data.user as (typeof identity.data.user & { deleted_at?: string | null; banned_until?: string | null })
     if (identity.error || !user || user.id !== payload.coreSubject || user.is_anonymous !== false ||
         !user.email_confirmed_at || user.deleted_at || (user.banned_until && !(Date.parse(user.banned_until) <= Date.now()))) return 'pending'
@@ -54,8 +78,10 @@ export async function deliverStockPaidActivation(tenantId: string): Promise<Stoc
     const timestamp = String(Date.now())
     const nonce = randomBytes(16).toString('hex')
     const signature = createHmac('sha256', secret).update(`${timestamp}\n${nonce}\n${body}`).digest('hex')
+    const remaining = deadline - Date.now()
+    if (remaining <= 0) return 'pending'
     const response = await fetch(`${STOCK_E1_APP_ORIGIN}/api/billing/activate`, {
-      method: 'POST', redirect: 'error', credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(8_000),
+      method: 'POST', redirect: 'error', credentials: 'omit', cache: 'no-store', signal: AbortSignal.timeout(Math.min(8_000, remaining)),
       headers: { 'Content-Type': 'application/json', 'x-ja-timestamp': timestamp, 'x-ja-nonce': nonce, 'x-ja-signature': signature },
       body,
     })
@@ -63,11 +89,11 @@ export async function deliverStockPaidActivation(tenantId: string): Promise<Stoc
       await response.body?.cancel().catch(() => {})
       return 'pending'
     }
-    const receipt = receiptSchema.safeParse(await response.json())
+    const receipt = receiptSchema.safeParse(await withinActivationBudget(() => response.json(), deadline))
     if (!receipt.success || receipt.data.invoiceId !== payload.invoiceId || receipt.data.deliveryId !== payload.deliveryId ||
         receipt.data.companyId !== payload.companyId || receipt.data.stockTenantId !== payload.stockTenantId ||
         receipt.data.profileId !== payload.profileId) return 'pending'
-    const acknowledged = await admin.rpc('stock_billing_ack_activation', { p_invoice: payload.invoiceId, p_receipt: receipt.data })
+    const acknowledged = await withinActivationBudget(() => admin.rpc('stock_billing_ack_activation', { p_invoice: payload.invoiceId, p_receipt: receipt.data }), deadline)
     return !acknowledged.error && acknowledged.data === true ? 'active' : 'pending'
   } catch { return 'pending' }
 }

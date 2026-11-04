@@ -1522,5 +1522,57 @@
         "after": "  \"git\": {\n    \"deploymentEnabled\": {\n      \"feat/basic-pro-pricing-prep\": false\n    }\n  },\n"
       }
     ]
+  },
+  {
+    "file": "lib/billing.ts",
+    "profile": "runtime",
+    "beforeHash": "2de90cb2c6dec7205beb4a9558168b61ea8302c4953b9cb5963bc8c93d4bb53c",
+    "afterHash": "02546ed44f2c829b0cab228725ea016f59b5981a6b42a3e977561e00ccec7fad",
+    "edits": [
+      {
+        "beforeOffset": 7985,
+        "afterOffset": 7985,
+        "before": "  if (planError) return { ok: false, status: 409, error: planError }\n",
+        "after": "  if (planError) return { ok: false, status: 409, error: planError }\n  // A new Stock contract cannot leave a subscription stub when its dedicated\n  // mode reader or gateway configuration is unavailable. Issued invoices below\n  // retain their own mode and need no current-mode lookup to resume checkout.\n  const preparedStockConfig = !existingSub && isVersionedPlan(plan) && plan.platform === 'stock'\n    ? sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan) : undefined\n"
+      },
+      {
+        "beforeOffset": 9331,
+        "afterOffset": 9763,
+        "before": "    const intendedMode = sandboxUat ? 'sandbox' : await getMidtransMode()",
+        "after": "    const intendedMode = isVersionedPlan(plan) && plan.platform === 'stock'\n      ? live.midtrans_mode : sandboxUat ? 'sandbox' : await getMidtransMode(plan)"
+      },
+      {
+        "beforeOffset": 9897,
+        "afterOffset": 10413,
+        "before": "  const { serverKey, snapApiUrl, mode } = sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans()",
+        "after": "  const { serverKey, snapApiUrl, mode } = preparedStockConfig ?? (sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan))"
+      },
+      {
+        "beforeOffset": 11083,
+        "afterOffset": 11628,
+        "before": "        if (normalizeOrderMode(existing.midtrans_mode) !== mode) {",
+        "after": "        if (isVersionedPlan(plan) && plan.platform === 'stock'\n          ? !['sandbox', 'production'].includes(existing.midtrans_mode)\n          : normalizeOrderMode(existing.midtrans_mode) !== mode) {"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-first-purchase-engine.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "dd0825d9385b32ad8ee9f2615db23343d10161749cc742b982fa44a4e9a5bf1b",
+    "afterHash": "95c81660e06a25dcd9b71920940057a2eafaf65e2aecb42ce73331b5d8f7d92a",
+    "edits": [
+      {
+        "beforeOffset": 4649,
+        "afterOffset": 4649,
+        "before": "getPlatformMidtrans: async () => { calls.push({ method: 'paymentConfig' }); ",
+        "after": "getPlatformMidtrans: async () => { calls.push({ method: 'paymentConfig' }); if (options.modeUnavailable) throw new Error('STOCK_PAYMENT_MODE_UNAVAILABLE'); "
+      },
+      {
+        "beforeOffset": 18713,
+        "afterOffset": 18793,
+        "before": "",
+        "after": "\ntest('approved Stock invoices keep issued mode across a global-mode change and insertion race', async () => {\n  for(const race of [false,true]) {\n    const live={id:'issued-stock-invoice',redirect_url:'https://sandbox.example.invalid/existing',amount:149000,midtrans_mode:'production'}\n    const h=engine({plan:approved,catalog:approvedRows,enabled:true,currentMode:'sandbox',invoiceConflict:race,\n      subscriptions:[success({...existing,plan_id:approved.id})],\n      liveInvoices:race?[null,live]:[live]})\n    const result=await h.checkout({durableCheckout:true})\n    assert.equal(result.ok,true);assert.equal(result.reused,true);assert.equal(result.invoiceId,live.id)\n    assert.equal(h.calls.filter(call=>call.method==='paymentFetch').length,0)\n  }\n})\n\ntest('unavailable Stock mode cannot leave a subscription or invoice stub', async () => {\n  const h=engine({plan:approved,catalog:approvedRows,enabled:true,modeUnavailable:true})\n  await assert.rejects(h.checkout({durableCheckout:true}),/STOCK_PAYMENT_MODE_UNAVAILABLE/)\n  assert.equal(h.calls.some(hasMutation),false)\n  assert.equal(h.calls.some(call=>call.method==='paymentFetch'),false)\n})\n"
+      }
+    ]
   }
 ]

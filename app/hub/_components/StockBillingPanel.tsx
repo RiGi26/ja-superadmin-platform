@@ -6,6 +6,7 @@ import { APPROVED_OFFERS } from '@/lib/plan-catalog'
 import { stockCheckoutPath } from '@/lib/stock-purchase-policy'
 import styles from './stock-billing.module.css'
 import { refreshStockInvoiceAction } from '../checkout/stock/actions'
+import { StockActivationStatus } from './StockActivationStatus'
 
 const money = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value)
 const date = (value: string) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Jakarta' }).format(new Date(value))
@@ -19,7 +20,8 @@ export function StockBillingPanel({ billing, systemsOnly = false }: { billing: S
       const offer = APPROVED_OFFERS.find(item => item.id === workspace.subscription?.planId && item.platform === 'stock')
       return <article key={workspace.companyId} className={styles.panel}>
         <div className={styles.title}><div><h2>{workspace.companyName}</h2><p>Webzoka Stock{offer ? ` · ${offer.name}` : ''}</p></div><span className={styles.status}>{states[workspace.activation]}</span></div>
-        {workspace.activation === 'pending' && <p className={styles.notice} role="status">Pembayaran sudah tercatat. Tidak perlu membayar lagi. Periksa kembali setelah aktivasi Stock selesai.</p>}
+        {workspace.activation === 'pending' && <><p className={styles.notice} role="status">Pembayaran sudah tercatat. Tidak perlu membayar lagi. Periksa kembali setelah aktivasi Stock selesai.</p>
+          {workspace.invoices.find(invoice => invoice.status === 'paid') && <StockActivationStatus invoiceId={workspace.invoices.find(invoice => invoice.status === 'paid')!.id} className={styles.secondary} />}</>}
         {workspace.subscription?.expiresAt && <p>Periode berbayar sampai {date(workspace.subscription.expiresAt)}.</p>}
         <div className={styles.actions}>
           {workspace.activation === 'active' ? <form method="post" action={`${STOCK_E1_APP_ORIGIN}/api/auth/e1/start`}>

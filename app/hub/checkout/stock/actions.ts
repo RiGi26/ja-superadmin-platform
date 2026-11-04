@@ -1,7 +1,7 @@
 'use server'
 
 import { redirect } from 'next/navigation'
-import { rememberStockPurchase, startStockPurchase } from '@/lib/stock-self-payment'
+import { rememberStockPurchase, startStockPurchase, readStockBillingAccount } from '@/lib/stock-self-payment'
 import { stockCheckoutPath, stockPlanId, stockCompanyId } from '@/lib/stock-purchase-policy'
 import { refreshStockInvoice } from '@/lib/stock-invoice-recovery'
 import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-protocol'
@@ -47,4 +47,15 @@ export async function refreshStockInvoiceAction(form: FormData): Promise<never> 
     await refreshStockInvoice(form.get('invoice'))
   }
   redirect('/hub/account?view=billing')
+}
+
+/** Poll only an already paid, currently owned invoice; never create a charge. */
+export async function checkStockActivationAction(invoice: string): Promise<'active' | 'pending' | 'unavailable'> {
+  const account = await readStockBillingAccount()
+  const workspace = account.status === 'ready' && account.workspaces.find(row => row.invoices.some(item => item.id === invoice && item.status === 'paid'))
+  if (!workspace) return 'unavailable'
+  if (workspace.activation === 'active') return 'active'
+  if (workspace.activation !== 'pending') return 'unavailable'
+  await refreshStockInvoice(invoice)
+  return 'pending'
 }

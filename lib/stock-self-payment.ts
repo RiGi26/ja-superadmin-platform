@@ -61,13 +61,16 @@ export async function readStockBillingAccount(): Promise<StockBillingAccount> {
   } catch { return { status: 'unavailable', workspaces: [] } }
 }
 
-export async function readStockPurchaseIntent() {
+export async function readStockPurchaseIntent(company?: string | null) {
   if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return null
   try {
     const { client } = await authenticate()
-    const result = await client.rpc('stock_billing_read_intent')
+    if (company != null && !stockCompanyId(company)) return null
+    const result = company === undefined ? await client.rpc('stock_billing_read_intent')
+      : await client.rpc('stock_billing_read_workspace_intent', { p_company: company })
     const parsed = intent.safeParse(result.data)
-    return !result.error && parsed.success && stockPlanId(parsed.data.planId) ? parsed.data : null
+    return !result.error && parsed.success && stockPlanId(parsed.data.planId) &&
+      (company === undefined || parsed.data.companyId === company) ? parsed.data : null
   } catch { return null }
 }
 
