@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Operational workspace discovery and entry
+
+The Hub Systems view now reads current operational memberships independently from Owner billing. Its authenticated discovery RPC returns only the current user's admitted Company, instance, membership and role, with a live native Core session, active Registry membership, unrevoked identity pair, current verified account and consent, active Owner, paid receipt and seat capacity. The list grants no access. Each workspace posts an explicit selector into the existing reciprocal native selection flow, which verifies and commits both selections before operational access. Owners retain their existing billing workspace controls. Operational roles receive no invoice history, invitation management or financial mutation controls from this list.
+
+Accepted invitations and uncertain selection results now return to Hub Systems, where the recipient can select the workspace. Source tests render two separately selected operator workspaces, verify exact form fields and role display, reject foreign/duplicate/malformed discovery responses and expired/changed native sessions, and keep discovery out of billing/support reads. Actual disposable SQL proves each of two Pro operators sees only its own admitted paid workspace, while the Owner, expired sessions, banned accounts and a revoked identity pair cannot use that operational list. Hosted native selection, real operators and desktop/exact-390px screenshots remain unexecuted.
+
+`STOCK_OPERATOR_WORKSPACES_CORE.PROPOSED.sql` follows the mail proposal and remains uninstalled. New source gates stay closed. Remaining source includes signed lifecycle revisions, role/revocation controls and delivery, canceled-stage cleanup, document/upload authorization and mixed legacy/v2 access. The five bounded sandbox purchases and separately authorized live journey remain required. Production changed NO.
+
 ### Owner invitation controls and recoverable email delivery
 
 The closed Core team page now selects an exact Company and retains its invitation command through login and retries. Verified Owners can choose an operational role, reserve a paid seat, inspect recent invitations, cancel pending invitations, and recover an uncertain delivery using the original command even when that reservation occupies the last seat. The selected Company remains explicit. Neither operators nor this page receive billing authority.
@@ -8,7 +16,7 @@ Delivery uses the existing Resend integration. A domain-separated HMAC with the 
 
 `STOCK_OPERATOR_MAIL_CORE.PROPOSED.sql` is an uninstalled forward proposal after operator admission. It grants bounded delivery only to the service bridge and the current Owner view only to authenticated customers, with forced RLS, immutable history, and Registry audit. Source fuses remain false. Local tests exercise mocked provider acceptance with a lost response, a lost database acknowledgment, native-session expiry, foreign selectors, seat denial, login return preservation, and recovery after the last seat is reserved. Disposable SQL verifies the actual mail snapshot and receipt functions, their access restrictions, and Owner-only visibility. The final paired source checks and hosted delivery acceptance remain distinct.
 
-Remaining source work includes operator workspace entry, signed lifecycle revisions, role/revocation controls and delivery, canceled-stage cleanup, document/upload boundary review, and mixed legacy/v2 access. No real email, managed migration, deployment, account operation, payment, or sales enablement was performed in this continuation. Hosted desktop and exact-390px UAT, five bounded sandbox purchases, real operators, and separately authorized Production acceptance remain open.
+The newer operational workspace continuation above extends this checkpoint. Remaining source work includes signed lifecycle revisions, role/revocation controls and delivery, canceled-stage cleanup, document/upload boundary review, and mixed legacy/v2 access. No real email, managed migration, deployment, account operation, payment, or sales enablement was performed in this continuation. Hosted desktop and exact-390px UAT, five bounded sandbox purchases, real operators, and separately authorized Production acceptance remain open.
 
 ### Operator admission through local activation
 

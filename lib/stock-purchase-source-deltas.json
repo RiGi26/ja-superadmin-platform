@@ -1710,5 +1710,65 @@
         "after": "      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || pathname === '/hub/stock/team' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {\n"
       }
     ]
+  },
+  {
+    "file": "app/hub/_components/AccountHub.tsx",
+    "profile": "runtime",
+    "beforeHash": "c8e61a704b2b5f22fe57489d3e84bcef8ce154f92b0a0dba182c1aa7012af230",
+    "afterHash": "e3836578c1698a10d320d82f5ebacdb0ff93513230de59bc7197eab30248febe",
+    "edits": [
+      {
+        "beforeOffset": 491,
+        "afterOffset": 491,
+        "before": "",
+        "after": "import type { StockOperatorWorkspaceList } from '@/lib/stock-operator-workspaces'\nimport { StockOperatorWorkspacesPanel } from './StockOperatorWorkspacesPanel'\n"
+      },
+      {
+        "beforeOffset": 1023,
+        "afterOffset": 1183,
+        "before": "export function AccountHub({ account, view, billing = null }: { account: HubAccount; view: AccountHubView; billing?: StockBillingAccount | null }) {\n",
+        "after": "export function AccountHub({ account, view, billing = null, operatorWorkspaces = null }: { account: HubAccount; view: AccountHubView; billing?: StockBillingAccount | null; operatorWorkspaces?: StockOperatorWorkspaceList | null }) {\n  const hasOperatorWorkspaces = operatorWorkspaces?.status === 'ready' && operatorWorkspaces.workspaces.length > 0\n  const systemsAccessReady = account.accessReady && operatorWorkspaces?.status !== 'unavailable'\n"
+      },
+      {
+        "beforeOffset": 6779,
+        "afterOffset": 7234,
+        "before": "      {view === 'systems' && (billing?.status === 'ready' && billing.workspaces.length > 0 ? <StockBillingPanel billing={billing} systemsOnly /> : <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}><LayoutGrid aria-hidden=\"true\" /><div><h2>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</h2><p>{account.accessReady ? workspaceDescription : 'Akses keanggotaan belum dapat diperiksa. Muat ulang halaman atau hubungi bantuan.'}</p></div><Link className={styles.primaryButton} href=\"/hub/store\">Jelajahi Store</Link><a className={styles.textLink} href={help}>Bantuan aktivasi</a></section>)}\n",
+        "after": "      {view === 'systems' && <StockOperatorWorkspacesPanel list={operatorWorkspaces} />}\n      {view === 'systems' && (billing?.status === 'ready' && billing.workspaces.length > 0 ? <StockBillingPanel billing={billing} systemsOnly /> : hasOperatorWorkspaces || operatorWorkspaces?.status === 'unavailable' ? null : <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}><LayoutGrid aria-hidden=\"true\" /><div><h2>{systemsAccessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</h2><p>{systemsAccessReady ? workspaceDescription : 'Akses keanggotaan belum dapat diperiksa. Muat ulang halaman atau hubungi bantuan.'}</p></div><Link className={styles.primaryButton} href=\"/hub/store\">Jelajahi Store</Link><a className={styles.textLink} href={help}>Bantuan aktivasi</a></section>)}\n"
+      }
+    ]
+  },
+  {
+    "file": "app/hub/account/page.tsx",
+    "profile": "runtime",
+    "beforeHash": "ec7eab7f56b3f4c26993dd0dbb2815062e9aa43d2f99e278c619e254a1b31b2d",
+    "afterHash": "b459b442d3a059630279470ad3c974cb547b1ec35af0242fcbc9e24fe96fa9fa",
+    "edits": [
+      {
+        "beforeOffset": 193,
+        "afterOffset": 193,
+        "before": "",
+        "after": "import { readStockOperatorWorkspaces } from '@/lib/stock-operator-workspaces'\n"
+      },
+      {
+        "beforeOffset": 733,
+        "afterOffset": 811,
+        "before": "  const [account, billing] = await Promise.all([getHubAccount(), view === 'support' ? Promise.resolve(null) : readStockBillingAccount()])\n  return <AccountHub account={account} view={view} billing={billing} />\n",
+        "after": "  const [account, billing, operatorWorkspaces] = await Promise.all([\n    getHubAccount(), view === 'support' ? Promise.resolve(null) : readStockBillingAccount(),\n    view === 'systems' ? readStockOperatorWorkspaces() : Promise.resolve(null),\n  ])\n  return <AccountHub account={account} view={view} billing={billing} operatorWorkspaces={operatorWorkspaces} />\n"
+      }
+    ]
+  },
+  {
+    "file": "lib/hub-owned-workspace.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "0b26cb5d771acf9ed785507f926dd6439e85c2f94e590fe6fb0ad2ef1f30b6ac",
+    "afterHash": "fff9ce15aea8efe11f57c1493d89bdf0caae021cba419f182710e0e645b8d47b",
+    "edits": [
+      {
+        "beforeOffset": 5564,
+        "afterOffset": 5564,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-operator-workspaces') return { readStockOperatorWorkspaces: async () => ({ status: 'closed', workspaces: [] }) }\n"
+      }
+    ]
   }
 ]
