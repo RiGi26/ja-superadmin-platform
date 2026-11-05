@@ -1725,6 +1725,56 @@
         "files": 667,
         "sourceCommit": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
       }
+    },
+    "staticSignupBrowserEvidence": {
+      "level": "BROWSER_UAT_PARTIAL_STATIC_PAGE_ONLY",
+      "origin": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app",
+      "deploymentId": "dpl_4CNW3cxotCzbU5QvnuH4b53aBfCi",
+      "sourceCommit": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+      "page": "/hub/signup",
+      "plan": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+      "desktopCssViewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "mobileCssViewport": {
+        "width": 390,
+        "height": 844
+      },
+      "observedMobileMetrics": {
+        "initialClientWidth": 375,
+        "initialScrollWidth": 375,
+        "inputFontPixels": 16,
+        "passwordToggleHeightPixels": 44,
+        "submitHeightPixels": 52,
+        "lowerFormSubmitWithinViewport": true
+      },
+      "screenshots": [
+        {
+          "file": "gate-b-core-preview-signup-basic-desktop.jpg",
+          "width": 1264,
+          "height": 1161,
+          "sha256": "024d02f2623fc8ee5a00b4c4017c2e52e80402994e393a194eb0c9919949f15a"
+        },
+        {
+          "file": "gate-b-core-preview-signup-basic-mobile-exact.jpg",
+          "width": 390,
+          "height": 844,
+          "sha256": "dd122c52e1af79879284630106ea6f53d32da46419d56eea11bf2b8499714f14"
+        },
+        {
+          "file": "gate-b-core-preview-signup-basic-mobile-bottom.jpg",
+          "width": 390,
+          "height": 844,
+          "sha256": "0681ba1f19a2527c9da6c47e50c996a46f10a4d34cc2c37a710903d98dad6e77"
+        }
+      ],
+      "formSubmitted": false,
+      "accountCreated": false,
+      "emailSent": false,
+      "fullCustomerJourney": "NOT_EXECUTED",
+      "viewportOverrideReset": true,
+      "note": "Visible browser and explicit screenshot clip produce the required 390x844 JPEG. Earlier hidden/native-size captures were not accepted as exact-width evidence."
     }
   },
   "gateBAuthCorrection": {
