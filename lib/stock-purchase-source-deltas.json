@@ -1818,5 +1818,65 @@
         "after": "      if (name === '@/lib/stock-member-protocol') return { STOCK_MEMBER_LIFECYCLE_ENABLED: false }\n"
       }
     ]
+  },
+  {
+    "file": "lib/security-dependency-successor.mjs",
+    "profile": "runtime",
+    "beforeHash": "c2560f96d398eb4fddf5b0e302f76aa5a95b5f16b6d19968a671cb441644ff35",
+    "afterHash": "66f1ee07a936b49d821509096df73d6897e4f9590f5fd2d1e9c9173e1c1b0747",
+    "edits": [
+      {
+        "beforeOffset": 941,
+        "afterOffset": 941,
+        "before": "",
+        "after": "// Exact forward lock correction for GHSA-w5vr-8v7q-w6rv. Both existing\n// parent ranges admit patched 2.11.x. Historical security pins remain unchanged.\n// Restore only this reviewed block before the original whole-file assertion.\nconst baselineMappingLockHash = \"4197ffea746240740fcde442570fa31350e7b57f379bb566419f49525bec160b\"\nfunction precedingSecurityLock(source) {\n  if (hash(source) !== baselineMappingLockHash) return source\n  const current = \"    \\\"node_modules/baseline-browser-mapping\\\": {\\n      \\\"version\\\": \\\"2.11.35\\\",\\n      \\\"resolved\\\": \\\"https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.35.tgz\\\",\\n      \\\"integrity\\\": \\\"sha512-GNk8KX52CHqeNKGk8+7tZnQab/2k1t/BgrUHPKNdijzpEhF1saPQZHVKb6m5loSAxB39gyrTYw34Qf9CQ3u1qQ==\\\",\\n      \\\"license\\\": \\\"Apache-2.0\\\",\\n      \\\"bin\\\": {\\n        \\\"baseline-browser-mapping\\\": \\\"dist/cli.cjs\\\"\\n      },\\n      \\\"engines\\\": {\\n        \\\"node\\\": \\\">=6.0.0\\\"\\n      }\\n    },\"\n  const prior = \"    \\\"node_modules/baseline-browser-mapping\\\": {\\n      \\\"version\\\": \\\"2.10.32\\\",\\n      \\\"resolved\\\": \\\"https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.32.tgz\\\",\\n      \\\"integrity\\\": \\\"sha512-wbPvpyjJPC0zdfdKXxqEL3Ea+bOMD/87X4lftiJkkaBiuG6ALQy1SLmEd7BSmVCuwCQsBrCamgBoLyfFDD1EPg==\\\",\\n      \\\"license\\\": \\\"Apache-2.0\\\",\\n      \\\"bin\\\": {\\n        \\\"baseline-browser-mapping\\\": \\\"dist/cli.cjs\\\"\\n      },\\n      \\\"engines\\\": {\\n        \\\"node\\\": \\\">=6.0.0\\\"\\n      }\\n    },\"\n  assert.equal(source.split(current).length, 2, 'One exact browser mapping lock entry')\n  const restored = source.replace(current, prior)\n  assert.equal(hash(restored), \"30f399ee6eb2ad4b9fd723a73014745fb15498b7184f099bd3ff0f9d4601bb7e\", 'Retain the complete preceding dependency lock')\n  return restored\n}\n"
+      },
+      {
+        "beforeOffset": 1105,
+        "afterOffset": 2907,
+        "before": "",
+        "after": "  if (path === 'package-lock.json') actual = precedingSecurityLock(actual)\n"
+      }
+    ]
+  },
+  {
+    "file": "package-lock.json",
+    "profile": "runtime",
+    "beforeHash": "30f399ee6eb2ad4b9fd723a73014745fb15498b7184f099bd3ff0f9d4601bb7e",
+    "afterHash": "4197ffea746240740fcde442570fa31350e7b57f379bb566419f49525bec160b",
+    "edits": [
+      {
+        "beforeOffset": 150594,
+        "afterOffset": 150594,
+        "before": "    \"node_modules/baseline-browser-mapping\": {\n      \"version\": \"2.10.32\",\n      \"resolved\": \"https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.10.32.tgz\",\n      \"integrity\": \"sha512-wbPvpyjJPC0zdfdKXxqEL3Ea+bOMD/87X4lftiJkkaBiuG6ALQy1SLmEd7BSmVCuwCQsBrCamgBoLyfFDD1EPg==\",\n      \"license\": \"Apache-2.0\",\n      \"bin\": {\n        \"baseline-browser-mapping\": \"dist/cli.cjs\"\n      },\n      \"engines\": {\n        \"node\": \">=6.0.0\"\n      }\n    },",
+        "after": "    \"node_modules/baseline-browser-mapping\": {\n      \"version\": \"2.11.35\",\n      \"resolved\": \"https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.35.tgz\",\n      \"integrity\": \"sha512-GNk8KX52CHqeNKGk8+7tZnQab/2k1t/BgrUHPKNdijzpEhF1saPQZHVKb6m5loSAxB39gyrTYw34Qf9CQ3u1qQ==\",\n      \"license\": \"Apache-2.0\",\n      \"bin\": {\n        \"baseline-browser-mapping\": \"dist/cli.cjs\"\n      },\n      \"engines\": {\n        \"node\": \">=6.0.0\"\n      }\n    },"
+      }
+    ]
+  },
+  {
+    "file": "lib/security-runtime-dependencies.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "89541632500f6151161c71f9a77208126199801a822e174820c6a49f0b8a251e",
+    "afterHash": "b78ff06f90b507930efbce3dfb30b4cb04209ed17cfbefc9fbcd4e16a61c6b88",
+    "edits": [
+      {
+        "beforeOffset": 40,
+        "afterOffset": 40,
+        "before": "",
+        "after": "import { execFileSync } from 'node:child_process'\n"
+      },
+      {
+        "beforeOffset": 892,
+        "afterOffset": 942,
+        "before": "",
+        "after": "  const browserMapping = lock.packages['node_modules/baseline-browser-mapping'].version.split('.').map(Number)\n  assert.ok(browserMapping[0] > 2 || (browserMapping[0] === 2 && browserMapping[1] >= 11))\n"
+      },
+      {
+        "beforeOffset": 1132,
+        "afterOffset": 1384,
+        "before": "",
+        "after": "  }\n})\n\ntest('browser mapping patch retains the historical lock and rejects adjacent dependency changes', () => {\n  const actual = readFileSync(new URL('../package-lock.json', import.meta.url), 'utf8')\n  const original = execFileSync('git', ['show', '8a9ae5e7d61b706c3bd87f5516d759560876bad5:package-lock.json'], { encoding: 'utf8' })\n  assert.doesNotThrow(() => assertFrozenOrSecurityDependency('package-lock.json', actual, original))\n  for (const changed of [actual.replace('2.11.35', '2.10.32'), actual.replace('19.2.4', '19.2.5')]) {\n    assert.notEqual(changed, actual)\n    assert.throws(() => assertFrozenOrSecurityDependency('package-lock.json', changed, original))\n"
+      }
+    ]
   }
 ]
