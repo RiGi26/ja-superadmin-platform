@@ -1,5 +1,6 @@
 /** V2 wire validation only. Parsed values are never native identity, ownership,
- * membership, paid entitlement or an access grant. No live route selects v2 yet.
+ * membership, paid entitlement or an access grant. The Gate B source candidate
+ * requires separate deployment and managed-setting authority before use.
  * Its issuer/DB integration must verify current native sessions, retained history,
  * Company/resource mapping, paid contract and both Owner/member revisions.
  */
@@ -7,8 +8,8 @@ import { isActiveStockUuid, parseActiveStockDecision, parseActiveStockRequest,
   parseActiveStockSelector, type ActiveStockDecision, type ActiveStockRequest,
   type ActiveStockSelector } from './stock-active-protocol'
 
-export const STOCK_MEMBERSHIP_RUNTIME_ENABLED = false
-export const STOCK_MEMBERSHIP_PREPARATION_ENABLED = false
+export const STOCK_MEMBERSHIP_RUNTIME_ENABLED = true
+export const STOCK_MEMBERSHIP_PREPARATION_ENABLED = true
 
 type MemberRole = 'admin' | 'staff' | 'produksi'
 export type StockWorkspaceChoice = ActiveStockSelector & Readonly<{ commandId: string }>

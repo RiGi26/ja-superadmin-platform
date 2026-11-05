@@ -10,7 +10,7 @@ import { STOCK_MEMBERSHIP_PREPARATION_ENABLED } from '@/lib/stock-membership-pro
 
 // Independent source fuse. Enabling this requires the complete reciprocal
 // provisioning/selection successor, reviewed migrations and rollout authority.
-export const STOCK_WORKSPACE_CREATION_ENABLED = false
+export const STOCK_WORKSPACE_CREATION_ENABLED = true
 export const STOCK_CHECKOUT_WORKSPACE_CREATION_ENABLED = STOCK_WORKSPACE_CREATION_ENABLED &&
   STOCK_MEMBERSHIP_PREPARATION_ENABLED && STOCK_PAID_BILLING_RUNTIME_ENABLED
 const uuid=z.uuid().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/)
