@@ -8,10 +8,12 @@ import { readStockOperatorOwnerView } from '@/lib/stock-operator-owner'
 import { safeStockOperatorReturnPath, stockCompanyId, stockOperatorPath } from '@/lib/stock-purchase-policy'
 import { StockInvitationForm } from './StockInvitationForm'
 import { cancelStockOperatorAction } from './actions'
+import { readStockMemberOwnerView } from '@/lib/stock-member-owner'
+import { StockMemberControls } from './StockMemberControls'
 import styles from './team.module.css'
 
 export const dynamic = 'force-dynamic'
-export const metadata = { title: 'Undangan Tim Stock | Webzoka', referrer: 'strict-origin' as const,
+export const metadata = { title: 'Tim Stock | Webzoka', referrer: 'strict-origin' as const,
   robots: { index: false, follow: false } }
 
 const roles = { admin: 'Admin operasional', staff: 'Staf', produksi: 'Produksi' }
@@ -39,12 +41,22 @@ export default async function StockOperatorTeamPage({ searchParams }: {
   }
   // Put the durable command in the URL before showing any actionable form.
   if (!query.command) redirect(returnPath + (typeof query.result === 'string' ? '&result=' + query.result : ''))
-  const workspace = await readStockOperatorOwnerView(company)
+  const [workspace,members] = await Promise.all([readStockOperatorOwnerView(company),readStockMemberOwnerView(company)])
   const pending = workspace?.invitations.find(invite => invite.commandId === command && ['reserved','claimed'].includes(invite.state))
   const notice = typeof query.result === 'string' ? results[query.result] : null
   return <main className={styles.page} lang="id"><div className={styles.container}>
     <nav className={styles.nav} aria-label="Customer Hub"><Link href="/hub/account?view=systems">Sistem Saya</Link><span>Webzoka Stock</span></nav>
-    <h1>Undangan tim Stock</h1>
+    <h1>Tim Stock</h1>
+    {members && <section className={styles.panel}><h2>Anggota {members.companyName}</h2>
+      <p>Owner tetap mengelola langganan dan tagihan. Peran admin operasional tidak memberikan akses tagihan.</p>
+      <p><a href={stockOperatorPath(company,command)}>Muat ulang status anggota</a></p>
+      {members.members.length===0?<p>Belum ada operator yang diterima.</p>:<ul className={styles.list}>
+        {members.members.map(member=><li key={member.membershipId}>
+          <strong>{member.email??'Anggota Stock'}</strong><span>{roles[member.role]} · {member.revoked?'Akses dicabut':'Keanggotaan diterima'}</span>
+          <StockMemberControls companyId={company} member={member} canManage={members.canManage} roleCommand={randomUUID()} revokeCommand={randomUUID()}/>
+        </li>)}
+      </ul>}
+    </section>}
     {!workspace ? <section className={styles.panel}><h2>Undangan belum tersedia</h2><p>Akses Owner dan workspace berlangganan perlu diverifikasi sebelum mengelola undangan.</p></section>
       : <><p>{workspace.companyName}</p>
         {notice && <p className={styles.notice} role="status">{notice}</p>}

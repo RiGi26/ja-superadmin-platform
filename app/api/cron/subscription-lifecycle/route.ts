@@ -6,6 +6,7 @@ import { signBillingToken } from '@/lib/billing-link'
 import { syncTenantPortal } from '@/lib/lms-sync'
 import { hubAppUrl } from '@/lib/hub-app-url'
 import { reconcileStockPaidActivations } from '@/lib/stock-paid-activation'
+import { reconcileStockMemberEvents } from '@/lib/stock-member-delivery'
 
 /**
  * GET /api/cron/subscription-lifecycle — Phase 3 (Workstream D). Dijalankan
@@ -48,6 +49,7 @@ export async function GET(request: Request) {
   }
 
   after(() => reconcileStockPaidActivations())
+  after(() => reconcileStockMemberEvents())
 
   const db = createAdminClient()
   const now = new Date()
