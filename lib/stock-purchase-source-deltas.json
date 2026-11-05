@@ -2798,5 +2798,37 @@
         "after": ""
       }
     ]
+  },
+  {
+    "file": "lib/google-oauth-dev.test.mjs",
+    "profile": "runtime",
+    "beforeHash": "710bf53f65b92c61952944f59c8d7d685fa214325755c2d161a15e4214d34def",
+    "afterHash": "273d881027f757aeb35bbf744d6ef835503e3c2c5b075a02bd375342ac876915",
+    "edits": [
+      {
+        "beforeOffset": 120,
+        "afterOffset": 120,
+        "before": "import { assertFrozenOrSecurityDependency } from './security-dependency-successor.mjs'\n",
+        "after": "import { assertFrozenOrSecurityDependency, historicalSecurityPackage } from './security-dependency-successor.mjs'\n"
+      },
+      {
+        "beforeOffset": 25238,
+        "afterOffset": 25265,
+        "before": "test('all declared dependencies already resolve locally; no package changes required', () => {\n",
+        "after": "test('all current declared dependencies resolve locally after the exact unused CLI removal', () => {\n"
+      },
+      {
+        "beforeOffset": 25382,
+        "afterOffset": 25415,
+        "before": "",
+        "after": "  const historical = JSON.parse(historicalSecurityPackage(source('package.json')))\n  assert.equal(Object.keys({ ...historical.dependencies, ...historical.devDependencies }).length, 27)\n  assert.equal(pkg.devDependencies.shadcn, undefined)\n"
+      },
+      {
+        "beforeOffset": 25459,
+        "afterOffset": 25731,
+        "before": "  assert.equal(names.length, 27)\n",
+        "after": "  assert.equal(names.length, 26)\n"
+      }
+    ]
   }
 ]
