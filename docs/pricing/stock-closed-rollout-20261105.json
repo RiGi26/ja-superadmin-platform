@@ -1,5 +1,5 @@
 {
-  "status": "PROPOSED_NOT_AUTHORIZED",
+  "status": "GATE_A_PARTIALLY_EXECUTED_REPAIR_AUTHORITY_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -389,7 +389,7 @@
     "cohortMaximumHours": 6,
     "publicOfferRowsEnabled": 0
   },
-  "productionChanged": false,
+  "productionChanged": true,
   "operators": [
     {
       "label": "operator_1",
@@ -607,5 +607,298 @@
       "observedApplicationRegion": "sin1"
     },
     "rollbackPermission": "Not granted by this observation; recheck compatibility with v2 history before restoring an earlier application"
+  },
+  "gateAExecution": {
+    "date": "2026-11-05",
+    "ownerAuthorization": {
+      "answer": "Approve Gate A including promotions",
+      "proposalCommit": "91289ee538fda0ef490a296009009c0bd96a039f",
+      "scope": "29 pinned migrations, scoped reads, at most three closed builds and Stock-first promotions; excludes payments/sales/Auth callback changes"
+    },
+    "coreMigrations": [
+      {
+        "order": 1,
+        "path": "docs/pricing/STOCK_PAYMENT_MODE_FORWARD.PROPOSED.sql",
+        "sha256": "92897216191e29d96eb1ec57a06c96b65376b462fe714d7d7f932809742e406c",
+        "name": "stock_payment_mode_forward_closed_20261105",
+        "version": "20261105084738",
+        "status": "APPLIED"
+      },
+      {
+        "order": 2,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_CORE.PROPOSED.sql",
+        "sha256": "d280a8ab485c420b40c7904bab1083e50ae05ac22ec51138107c0ad085ae8427",
+        "name": "stock_membership_core_closed_20261105",
+        "version": "20261105084739",
+        "status": "APPLIED"
+      },
+      {
+        "order": 3,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_PREPARE_CORE.PROPOSED.sql",
+        "sha256": "d8fcd8aaaf909fdf0f0cbf76f50f69ca50f30e9892bfc7e94c9755bfdd3f7f20",
+        "name": "stock_membership_prepare_core_closed_20261105",
+        "version": "20261105084743",
+        "status": "APPLIED"
+      },
+      {
+        "order": 4,
+        "path": "docs/pricing/STOCK_WORKSPACE_INTENTS_FORWARD.PROPOSED.sql",
+        "sha256": "42eb42b2ae6fb6223f4f2a51df56084525765b93e1aabad5917df5b9782a0590",
+        "name": "stock_workspace_intents_forward_closed_20261105",
+        "version": "20261105084745",
+        "status": "APPLIED"
+      },
+      {
+        "order": 5,
+        "path": "docs/pricing/STOCK_WORKSPACE_CORE_FORWARD.PROPOSED.sql",
+        "sha256": "9f5e3d023739e8a25de2a9c617ca5cbedbf41aba4d69b57a882af523d3328865",
+        "name": "stock_workspace_core_forward_closed_20261105",
+        "version": "20261105084803",
+        "status": "APPLIED"
+      },
+      {
+        "order": 6,
+        "path": "docs/pricing/STOCK_WORKSPACE_BILLING_FORWARD.PROPOSED.sql",
+        "sha256": "60c6db9fccb4ea4e45a50fa358dcb6bb6cc8162508c511947fcd14786b0fc89c",
+        "name": "stock_workspace_billing_forward_closed_20261105",
+        "version": "20261105084805",
+        "status": "APPLIED"
+      },
+      {
+        "order": 7,
+        "path": "docs/pricing/STOCK_WORKSPACE_PREPARE_CORE_FORWARD.PROPOSED.sql",
+        "sha256": "f9027c95bbdc6db009f99a335496636bdc09f9cd7722af5539007c09da4d3403",
+        "name": "stock_workspace_prepare_core_forward_closed_20261105",
+        "version": "20261105084807",
+        "status": "APPLIED"
+      },
+      {
+        "order": 8,
+        "path": "docs/pricing/STOCK_OPERATOR_INVITATIONS_CORE.PROPOSED.sql",
+        "sha256": "040fe435cff4cbefef6b76589219dcfc93b344ed84e41f2eb5bb85718ddb46db",
+        "name": "stock_operator_invitations_core_closed_20261105",
+        "version": "20261105084808",
+        "status": "APPLIED"
+      },
+      {
+        "order": 9,
+        "path": "docs/pricing/STOCK_OPERATOR_COMMIT_CORE.PROPOSED.sql",
+        "sha256": "f80aed8814b13cfe7b942f3e6b9689b22def9052834321c2c95bbac145b340bc",
+        "name": "stock_operator_commit_core_closed_20261105",
+        "version": "20261105084827",
+        "status": "APPLIED"
+      },
+      {
+        "order": 10,
+        "path": "docs/pricing/STOCK_OPERATOR_MAIL_CORE.PROPOSED.sql",
+        "sha256": "0f7103fa2741a30c872da9356bc73d759930ebccb3f2d5bd4b7ca485efa9d857",
+        "name": "stock_operator_mail_core_closed_20261105",
+        "version": "20261105084828",
+        "status": "APPLIED"
+      },
+      {
+        "order": 11,
+        "path": "docs/pricing/STOCK_OPERATOR_WORKSPACES_CORE.PROPOSED.sql",
+        "sha256": "4bdcae6bc682c40a2e8e53550c08d198deada939de8ab01cc0a026cfc67c1c47",
+        "name": "stock_operator_workspaces_core_closed_20261105",
+        "version": "20261105084829",
+        "status": "APPLIED"
+      },
+      {
+        "order": 12,
+        "path": "docs/pricing/STOCK_OPERATOR_CONFIRM_CORE.PROPOSED.sql",
+        "sha256": "d6559b978aa1cd1b0fce9a2f86d21f0a757fe77e5ce8105d9dfe33bdc06e1f62",
+        "name": "stock_operator_confirm_core_closed_20261105",
+        "version": "20261105084831",
+        "status": "APPLIED"
+      },
+      {
+        "order": 13,
+        "path": "docs/pricing/STOCK_MEMBER_LIFECYCLE_CORE.PROPOSED.sql",
+        "sha256": "83a7c4d15e41979b31f353582ec5943b7d82c091ce74776f6613042f036a531c",
+        "name": "stock_member_lifecycle_core_closed_20261105",
+        "version": "20261105084851",
+        "status": "APPLIED"
+      },
+      {
+        "order": 14,
+        "path": "docs/pricing/STOCK_MEMBER_DELIVERY_CORE.PROPOSED.sql",
+        "sha256": "74df377da6dd4c50e8d7f1271338ede0ba01451b8e47bb98b1780f4cc0248dab",
+        "name": "stock_member_delivery_core_closed_20261105",
+        "version": "20261105084852",
+        "status": "APPLIED"
+      },
+      {
+        "order": 15,
+        "path": "docs/pricing/STOCK_OPERATOR_CLOSURE_CORE.PROPOSED.sql",
+        "sha256": "2f693190f9e765d13cd875e9e8358ac9b139e4da18aa26f4100128208bc217cf",
+        "name": "stock_operator_closure_core_closed_20261105",
+        "version": "20261105084854",
+        "status": "APPLIED"
+      },
+      {
+        "order": 16,
+        "path": "docs/pricing/STOCK_MIXED_SESSION_CORE.PROPOSED.sql",
+        "sha256": "b49773a2001d57bb04c0ea92b5523d961d470928fd9434a957d0222a37ba8c27",
+        "name": "stock_mixed_session_core_closed_20261105",
+        "version": "20261105084855",
+        "status": "APPLIED"
+      }
+    ],
+    "stockMigrations": [
+      {
+        "order": 1,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_STOCK.PROPOSED.sql",
+        "sha256": "263964ee5cd88580f0c466a71b79b9aa594c93d2895eb1f110503faac72bdfec",
+        "name": "stock_membership_stock_closed_20261105",
+        "version": "20261105084913",
+        "status": "APPLIED"
+      },
+      {
+        "order": 2,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_CANONICAL_FORWARD.PROPOSED.sql",
+        "sha256": "d202be2cff51ef8179ebde378646b83effbdf3de9f0090b752431b031e419b60",
+        "name": "stock_membership_canonical_forward_closed_20261105",
+        "attemptedVersion": "20261105084913",
+        "status": "DDL_COMMITTED_HISTORY_INSERT_FAILED",
+        "error": "23505 schema_migrations_pkey duplicate version 20261105084913",
+        "observedCanonicalHashes": [
+          {
+            "signature": "public.custom_access_token_hook(jsonb)",
+            "owner": "postgres",
+            "definition_hash": "be9aa0d25da3db3dc000017d18ab215b"
+          },
+          {
+            "signature": "public.resolve_stock_context()",
+            "owner": "postgres",
+            "definition_hash": "9909ad6d7be347b07bfbb88651c051e3"
+          },
+          {
+            "signature": "stock_active_private.b64url(bytea)",
+            "owner": "postgres",
+            "definition_hash": "9b2432b82d92ee121c6b50ea16628f7a"
+          },
+          {
+            "signature": "stock_active_private.online_decision(jsonb,text)",
+            "owner": "postgres",
+            "definition_hash": "d98ccd0abf49fc45776ea8e6b76341bf"
+          },
+          {
+            "signature": "stock_private.resolve_stock_context_internal()",
+            "owner": "postgres",
+            "definition_hash": "6d68821667d074974764162712df1bc9"
+          },
+          {
+            "signature": "stock_private.session_is_live()",
+            "owner": "postgres",
+            "definition_hash": "bae909e102caee44d029fe0d638eda40"
+          }
+        ]
+      }
+    ],
+    "stockRemainingOrders": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "stockRemainingStatus": "NOT_EXECUTED",
+    "deploymentsCreated": 0,
+    "promotions": 0,
+    "newCoreGatesDisabled": true,
+    "publicOffersClosed": true,
+    "corePrivateTablesForcedRls": 30,
+    "coreConstraintsValidated": 127,
+    "coreTriggersEnabled": 70,
+    "advisorBlockingScope": [
+      {
+        "name": "unindexed_foreign_keys",
+        "level": "INFO",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
+        "detail": "Table \\`stock_membership_private.memberships\\` has a foreign key \\`memberships_id_company_id_core_subject_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+        "metadata": {
+          "name": "memberships",
+          "type": "table",
+          "schema": "stock_membership_private",
+          "fkey_name": "memberships_id_company_id_core_subject_fkey",
+          "fkey_columns": [
+            1,
+            2,
+            3
+          ]
+        },
+        "observed_at": "2026-11-05T08:51:41.755Z"
+      },
+      {
+        "name": "unindexed_foreign_keys",
+        "level": "INFO",
+        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
+        "detail": "Table \\`stock_workspace_private.origins\\` has a foreign key \\`origins_membership_id_company_id_core_subject_fkey\\` without a covering index. This can lead to suboptimal query performance.",
+        "metadata": {
+          "name": "origins",
+          "type": "table",
+          "schema": "stock_workspace_private",
+          "fkey_name": "origins_membership_id_company_id_core_subject_fkey",
+          "fkey_columns": [
+            2,
+            1,
+            3
+          ]
+        },
+        "observed_at": "2026-11-05T08:51:41.755Z"
+      }
+    ],
+    "postcheckScope": "Core schema/settings PASS; no authenticated customer, payment or hosted acceptance",
+    "configurationChanged": false
+  },
+  "gateASupplementalRepair": {
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "reason": "Exact original allowlist does not include migration-history INSERT or two additional Core indexes",
+    "files": {
+      "core": [
+        {
+          "path": "docs/pricing/STOCK_WORKSPACE_FK_INDEX_CORE.PROPOSED.sql",
+          "sha256": "a06f582250489ab44fde1d9272d962ce6b35501cbf8b7e7d1fe6b8c1087258a6",
+          "bytes": 1789
+        },
+        {
+          "path": "docs/pricing/STOCK_WORKSPACE_FK_INDEX_CORE_POSTCHECK_READONLY.sql",
+          "sha256": "e75166fc29331ea37c265ba33fb8e87c8e886d9c1e3b17342e16080ed91b5d1a",
+          "bytes": 1342
+        }
+      ],
+      "stock": [
+        {
+          "path": "docs/pricing/STOCK_CANONICAL_HISTORY_REPAIR.PROPOSED.sql",
+          "sha256": "596df3ee162f3ab2da77f3521949998b1fb28814d536f5739430765cdf46b0ea",
+          "bytes": 8496
+        },
+        {
+          "path": "docs/pricing/STOCK_CANONICAL_HISTORY_REPAIR_READONLY.sql",
+          "sha256": "ce5da7f2dae3e665b879698c594feb7df57ef30f78bb3b85f250bc83c7b176f1",
+          "bytes": 1324
+        }
+      ]
+    },
+    "validation": {
+      "disposableTests": 5,
+      "failures": 0,
+      "managedRepairExecuted": false
+    },
+    "executionOrder": [
+      "Stock repair read-only preflight",
+      "Stock one-row repair via execute_sql, not apply_migration",
+      "Core FK index proposal via apply_migration",
+      "Core index postcheck and performance advisor",
+      "Resume original Stock orders 3-13 unchanged with per-call history verification and at least two seconds between migration submissions",
+      "Original postchecks/advisors, then original Gate A closed deployments/promotions"
+    ]
   }
 }
