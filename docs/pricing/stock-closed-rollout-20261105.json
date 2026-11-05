@@ -1,5 +1,5 @@
 {
-  "status": "GATE_A_CLOSED_ROLLOUT_COMPLETE_GATE_B_PENDING",
+  "status": "GATE_B_APPLICATIONS_PROMOTED_DB_CLOSED_AUTH_CORRECTION_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -294,18 +294,20 @@
       "emailSha256": "80054671e626cb4ada79324f6ec1c5667ec5a99981054c38873b553f0efb9e62",
       "companyId": "0c0b5c44-2af7-471e-8685-bd99438db48d",
       "instanceId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
-      "coreSubject": null,
-      "stockSubject": null,
+      "coreSubject": "fdbcf474-722b-4f5b-a3e7-23086e3f490d",
+      "stockSubject": "26e9a59b-dd0d-47da-bc0b-dad349dc206f",
       "coreTenantId": "55f50424-6663-440f-8001-0e77af2b1d35",
       "stockTenantId": "900376ee-8003-4c20-807e-e4ff50f2be06",
-      "ownerMembershipId": null,
+      "ownerMembershipId": "1af51693-caf9-401b-b942-4734dc7bd0a3",
       "profileId": "94387c2e-3491-4254-9392-6010eddcbb8b",
       "preparationCommandId": null,
       "invoiceId": null,
       "status": "Gate A exact fixture read-back verified: matching inactive Stock profile, current verified Owner, no pilot history, zero paid receipts",
       "currentSavedPlanMatches": true,
       "billingAccountExists": false,
-      "observedAt": "2026-11-05"
+      "observedAt": "2026-11-05",
+      "nativeIdentityObservedAt": "2026-11-05",
+      "nativeIdentityEvidence": "Approved Gate B exact fixture readbacks; verified on both sides; no native session or paid-access claim"
     },
     {
       "label": "existing_pro",
@@ -313,18 +315,20 @@
       "emailSha256": "f89bad06bbc562993eaf322b3cbc001a5ddc8f8851f96207f7fd5439a02302cc",
       "companyId": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
       "instanceId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
-      "coreSubject": null,
-      "stockSubject": null,
+      "coreSubject": "3f8c7096-db2e-4e9c-af69-05902358b8c0",
+      "stockSubject": "8cc47e5f-82b9-4fa0-a125-a4fefea9da13",
       "coreTenantId": "871aadb3-b581-456b-a2f5-076f90d16564",
       "stockTenantId": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
-      "ownerMembershipId": null,
+      "ownerMembershipId": "8777ce56-6bcb-4cfa-b8d6-1f1da55fbbff",
       "profileId": "8022b87c-6e70-42bf-b3e0-a2658720229a",
       "preparationCommandId": null,
       "invoiceId": null,
       "status": "Gate A exact fixture read-back verified: matching inactive Stock profile, current verified Owner, no pilot history, zero paid receipts",
       "currentSavedPlanMatches": null,
       "billingAccountExists": false,
-      "observedAt": "2026-11-05"
+      "observedAt": "2026-11-05",
+      "nativeIdentityObservedAt": "2026-11-05",
+      "nativeIdentityEvidence": "Approved Gate B exact fixture readbacks; verified on both sides; no native session or paid-access claim"
     },
     {
       "label": "fresh_basic",
@@ -1321,7 +1325,7 @@
     }
   },
   "gateBProposal": {
-    "status": "PROPOSED_NOT_AUTHORIZED",
+    "status": "OWNER_APPROVED_PARTIALLY_EXECUTED_AUTH_CORRECTION_PENDING",
     "sourceCandidates": {
       "core": "187a4e08028e05b5acf7022606c55ab007611522",
       "stock": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
@@ -1408,6 +1412,331 @@
       "coreStatus": "PASS",
       "stockPairedStatus": "PASS",
       "pdfStatus": "PASS"
+    },
+    "ownerAuthorization": {
+      "answer": "Approve Gate B including promotions",
+      "proposalCommit": "e65b7902ba78fcb7ee5e21565d0422e17da36339"
+    },
+    "nativeOAuthClientRedirectAdditionsStatus": "SUPERSEDED_WRONG_TARGET_DO_NOT_APPLY; see gateBAuthCorrection"
+  },
+  "gateBExecution": {
+    "approval": "Approve Gate B including promotions",
+    "approvalCommit": "e65b7902ba78fcb7ee5e21565d0422e17da36339",
+    "sourceCandidates": {
+      "core": "187a4e08028e05b5acf7022606c55ab007611522",
+      "stock": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
+    },
+    "stockBuildStarted": true,
+    "buildLimit": 2,
+    "buildsSubmitted": 2,
+    "dbGateEnablement": "NOT_EXECUTED; callbacks must be compatible first",
+    "authChanges": "NOT_EXECUTED; Auth-config write permission missing and two original callback target/pattern entries require correction",
+    "accountsCreated": 0,
+    "paymentsExecuted": 0,
+    "stockDeployment": {
+      "id": "dpl_4CHBSDJNoajugaA9GKHJesEmmfYe",
+      "url": "https://webzoka-stock-platform-3sf7huvq1-rigi26s-projects.vercel.app",
+      "target": "production",
+      "readyState": "READY",
+      "promotedOrder": 1
+    },
+    "coreDeployment": {
+      "id": "dpl_8UusZpnSyyYvZGVGbjkASv7HwVwJ",
+      "url": "https://ja-superadmin-platform-11nopxubq-rigi26s-projects.vercel.app",
+      "target": "production",
+      "readyState": "READY",
+      "promotedOrder": 2
+    },
+    "fixtureReads": "PASS: two existing verified Core/Stock native pairs, no fresh identities/workspaces",
+    "canonicalDeployments": {
+      "core": {
+        "id": "dpl_8UusZpnSyyYvZGVGbjkASv7HwVwJ",
+        "url": "ja-superadmin-platform-11nopxubq-rigi26s-projects.vercel.app",
+        "target": "production",
+        "readyState": "READY"
+      },
+      "stock": {
+        "id": "dpl_4CHBSDJNoajugaA9GKHJesEmmfYe",
+        "url": "webzoka-stock-platform-3sf7huvq1-rigi26s-projects.vercel.app",
+        "target": "production",
+        "readyState": "READY"
+      }
+    },
+    "closedHttp": {
+      "cases": [
+        {
+          "system": "core",
+          "method": "GET",
+          "path": "/login",
+          "expected": 200,
+          "actual": 200,
+          "pass": true,
+          "json": null,
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "GET",
+          "path": "/store",
+          "expected": 200,
+          "actual": 200,
+          "pass": true,
+          "json": null,
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "GET",
+          "path": "/api/public/stock-price-quotes",
+          "expected": 200,
+          "actual": 200,
+          "pass": true,
+          "json": {
+            "offerVersion": "basic-pro-2026-10-v1",
+            "salesEnabled": false,
+            "plans": [
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "platform": "stock",
+                "tier": "starter",
+                "tierDisplayName": "Basic",
+                "priceMonthly": 149000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "basic",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "1 akun operator aktif",
+                  "Pesanan dan katalog",
+                  "Invoice dan label pengiriman",
+                  "Stok, lot, opname, dan pemantauan kedaluwarsa"
+                ]
+              },
+              {
+                "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+                "platform": "stock",
+                "tier": "pro",
+                "tierDisplayName": "Pro",
+                "priceMonthly": 359000,
+                "priceYearly": null,
+                "offerVersion": "basic-pro-2026-10-v1",
+                "publicTier": "pro",
+                "periods": [
+                  "monthly"
+                ],
+                "features": [
+                  "3 akun operator aktif",
+                  "Semua fitur Basic",
+                  "Pemasok dan purchase order",
+                  "Laporan keuangan dan arus kas"
+                ]
+              }
+            ]
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "GET",
+          "path": "/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+          "expected": 307,
+          "actual": 307,
+          "pass": true,
+          "json": null,
+          "redirectPath": "/login"
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/authorize",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/prepare",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/confirm",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/select",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/claim",
+          "expected": 404,
+          "actual": 404,
+          "pass": true,
+          "json": {
+            "status": "unavailable"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/commit",
+          "expected": 404,
+          "actual": 404,
+          "pass": true,
+          "json": {
+            "status": "unavailable"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "core",
+          "method": "POST",
+          "path": "/api/stock/membership/operator-confirm",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "GET",
+          "path": "/login",
+          "expected": 200,
+          "actual": 200,
+          "pass": true,
+          "json": null,
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "GET",
+          "path": "/dashboard",
+          "expected": 307,
+          "actual": 307,
+          "pass": true,
+          "json": null,
+          "redirectPath": "/login"
+        },
+        {
+          "system": "stock",
+          "method": "POST",
+          "path": "/api/billing/activate",
+          "expected": 401,
+          "actual": 401,
+          "pass": true,
+          "json": {
+            "error": "invalid_signature"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "POST",
+          "path": "/api/billing/member-events",
+          "expected": 503,
+          "actual": 503,
+          "pass": true,
+          "json": {
+            "error": "member_events_closed"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "POST",
+          "path": "/api/auth/stock-membership/start",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "POST",
+          "path": "/api/auth/stock-membership/selection/start",
+          "expected": 403,
+          "actual": 403,
+          "pass": true,
+          "json": {
+            "status": "denied"
+          },
+          "redirectPath": ""
+        },
+        {
+          "system": "stock",
+          "method": "POST",
+          "path": "/api/auth/stock-membership/invitation/start",
+          "expected": 503,
+          "actual": 503,
+          "pass": true,
+          "json": {
+            "status": "blocked"
+          },
+          "redirectPath": ""
+        }
+      ],
+      "passing": 18,
+      "total": 18,
+      "scope": "Unauthenticated negative/closed checks only. No cookie/native session or financial mutation."
+    },
+    "sourceExports": {
+      "core": {
+        "files": 504,
+        "sourceCommit": "187a4e08028e05b5acf7022606c55ab007611522"
+      },
+      "stock": {
+        "files": 667,
+        "sourceCommit": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
+      }
     }
+  },
+  "gateBAuthCorrection": {
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "payload": "docs/pricing/stock-gate-b-auth-redirects-20261105.json",
+    "sha256": "32dc13d278e731de9faeb5d64527139f6629040da58475cfa1a7ae1a2cddc2e1",
+    "correction": "Stock application redirectTo URLs belong to Stock Auth Additional Redirect URLs, including the strict flow query. Core OAuth client keeps only the existing Stock Supabase provider callback.",
+    "stockPatterns": [
+      "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+      "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+    ],
+    "coreOAuthClientUnchanged": true,
+    "managedAuthChangesExecuted": false
   }
 }

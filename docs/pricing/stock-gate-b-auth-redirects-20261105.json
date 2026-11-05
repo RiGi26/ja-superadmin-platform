@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "status": "PROPOSED_TARGET_CORRECTION_NOT_EXECUTED",
+  "originalGateBApprovalCommit": "e65b7902ba78fcb7ee5e21565d0422e17da36339",
+  "coreProjectRef": "hxhusfkrlafxdnyasmsu",
+  "stockProjectRef": "oyyfcmlquqfrdoffkgsd",
+  "coreAdditionalRedirectUrls": [
+    "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+    "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
+  ],
+  "stockAdditionalRedirectPatterns": [
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "stockCallbackPaths": [
+    "/api/auth/stock-membership/callback",
+    "/api/auth/stock-membership/selection/callback"
+  ],
+  "coreOAuthClientId": "fe3e0af9-2d84-4ec2-a750-b26bb4a81caf",
+  "coreOAuthClientRetainedRedirectUris": [
+    "https://oyyfcmlquqfrdoffkgsd.supabase.co/auth/v1/callback"
+  ],
+  "coreOAuthClientAction": "RETAIN_UNCHANGED",
+  "stockPatternScope": "Exact HTTPS hostname and callback path; escaped literal question mark; one lowercase UUID-v4 flow value only. No host/path wildcard, star, globstar or extra query parameter.",
+  "providerWriteScope": "Append only the two missing Stock URI_ALLOW_LIST patterns after additional exact-target approval; retain all existing entries. Two original Core Preview signup entries remain approved but not executed.",
+  "permissionBlocker": "Core and Stock Add URL controls remain disabled after authenticated reload. Upstream RedirectUrlList gates editing on PROJECT.AUTH_CONFIG_WRITE. No role change, disabled-control bypass or direct Auth-table write is allowed."
+}
