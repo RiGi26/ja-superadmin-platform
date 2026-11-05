@@ -1,5 +1,17 @@
 # Stock self-payment implementation and acceptance
 
+### Reciprocal operator activation confirmation — 5 November
+
+Core now independently reads the recipient's committed Stock activation using the same live native Stock token before retaining a confirmation. The new authenticated Stock reader exposes only that recipient's immutable activation witness, tied to its current native session. Core verifies the current native pair, admitted membership, paid resource, Owner and exact Company/profile tuple. Its confirmation and append-only audit commit together. It changes no Company or member revision, creates no selected session, and grants no billing authority.
+
+The callback first attempts confirmation of an already active membership. That recovery path avoids replaying an initial role or email-bound admission after later changes. An inactive result continues the existing claim, stage, admission and local activation sequence, then completes confirmation. Lost activation or confirmation responses recover the same membership and confirmation. Fresh sessions can replay the immutable witness without extending an old authorization deadline. A missing or revoked current membership still denies confirmation, even when a historical receipt exists.
+
+`STOCK_OPERATOR_CONFIRM_STOCK.PROPOSED.sql` follows local operator activation. `STOCK_OPERATOR_CONFIRM_CORE.PROPOSED.sql` follows the Core operator workspace reader. The Core confirmation setting installs disabled, and existing source gates remain closed. Install compatible readers and confirmation objects before deploying the new caller in an approved receiver-first rollout. No migration or runtime setting was executed in this continuation.
+
+Focused disposable SQL covers actual confirmation functions, private grants, foreign selectors, audit rollback, native expiry, a verified email change, fresh-session replay, and confirmation denial after identity-pair revocation. Cross-repo source tests cover both real application bridges with synthetic identities and SQL responses, including lost acknowledgments and recovery without the old admission. PostgreSQL 17 CI adds a two-connection confirmation race and checks one durable receipt and audit. These checks do not prove hosted native Auth or real operator acceptance.
+
+This confirmation is a prerequisite for role management; the role/revocation writer and signed revision delivery remain open. Remaining work also includes canceled-stage cleanup, document/upload boundaries, mixed legacy/v2 access, full hosted desktop and exact-390px acceptance, five bounded sandbox purchases and separately authorized live verification. Production changed NO.
+
 ### Stock font build recovery
 
 The paired Stock build at `60a95fb416f71cfcf17d11d87bc262ca50d2acb8` failed twice in Next 16.4.1's Google font resolver with `next/font/google queries have exactly one entry` ([retained CI attempts](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41807314592)). The same commit's independent PDF build passed; this did not establish a reproducible paired build. A fresh request using the original family names and weights returned 124 extensionless Noto Sans JP font URLs, matching the response shape documented in [Next issue 99114](https://github.com/vercel/next.js/issues/99114).

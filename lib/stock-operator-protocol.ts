@@ -92,3 +92,47 @@ export function parseStockOperatorActivation(value: unknown, admission: StockOpe
   }
   return value as StockOperatorActivation
 }
+
+
+/** Initial activation witness, read only by the currently live native recipient.
+ * It is evidence of the initial commit, not a selected session or a role grant.
+ */
+export type StockOperatorActivatedContext = StockOperatorActivation & Readonly<{
+  coreSubject: string; stockSubject: string; stockSessionId: string; stockAuditEventId: string;
+}>
+
+export function parseStockOperatorActivatedContext(value: unknown, expected: {
+  inviteId: string; coreSubject: string; stockSubject: string; stockSessionId: string;
+}): StockOperatorActivatedContext {
+  const ids = ['inviteId','companyId','instanceId','membershipId','profileId','coreSubject','stockSubject','stockSessionId','stockAuditEventId']
+  if (!record(value) || Object.keys(value).sort().join(',') !==
+      'accessGranted,companyId,coreSubject,instanceId,inviteId,membershipId,membershipRevision,profileId,role,status,stockAuditEventId,stockSessionId,stockSubject' ||
+      value.status !== 'activated' || value.accessGranted !== false || value.membershipRevision !== 1 ||
+      !ids.every(key => isActiveStockUuid(value[key])) ||
+      (value.role !== 'admin' && value.role !== 'staff' && value.role !== 'produksi') ||
+      ['inviteId','coreSubject','stockSubject','stockSessionId'].some(key => value[key] !== expected[key as keyof typeof expected])) {
+    throw new Error('STOCK_OPERATOR_ACTIVATED_CONTEXT_INVALID')
+  }
+  return value as StockOperatorActivatedContext
+}
+
+export type StockOperatorConfirmation = Readonly<{
+  status: 'confirmed'; inviteId: string; companyId: string; membershipId: string;
+  profileId: string; stockAuditEventId: string; accessGranted: false;
+}>
+
+export function parseStockOperatorConfirmation(value: unknown, expected: {
+  inviteId: string; companyId?: string; membershipId?: string; profileId?: string;
+}): StockOperatorConfirmation {
+  if (!record(value) || Object.keys(value).sort().join(',') !==
+      'accessGranted,companyId,inviteId,membershipId,profileId,status,stockAuditEventId' ||
+      value.status !== 'confirmed' || value.accessGranted !== false ||
+      !['inviteId','companyId','membershipId','profileId','stockAuditEventId'].every(key => isActiveStockUuid(value[key])) ||
+      ['inviteId','companyId','membershipId','profileId'].some(key => {
+        const field = expected[key as keyof typeof expected]
+        return field !== undefined && value[key] !== field
+      })) {
+    throw new Error('STOCK_OPERATOR_CONFIRMATION_INVALID')
+  }
+  return value as StockOperatorConfirmation
+}

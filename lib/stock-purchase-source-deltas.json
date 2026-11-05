@@ -1770,5 +1770,19 @@
         "after": "      if (name === '@/lib/stock-operator-workspaces') return { readStockOperatorWorkspaces: async () => ({ status: 'closed', workspaces: [] }) }\n"
       }
     ]
+  },
+  {
+    "file": "proxy.ts",
+    "profile": "runtime",
+    "beforeHash": "5b084266aaf0c3b68f62a30a8418aa02b611ea02adfb5a28a37622d5505c8505",
+    "afterHash": "6cf957f20fc20bd83ed2ebca0db78165d79e1e58d6605a4696077397ec2593af",
+    "edits": [
+      {
+        "beforeOffset": 4665,
+        "afterOffset": 4665,
+        "before": "",
+        "after": "      '/api/stock/membership/operator-confirm',\n"
+      }
+    ]
   }
 ]

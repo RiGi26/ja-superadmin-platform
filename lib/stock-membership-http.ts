@@ -7,6 +7,7 @@ import { STOCK_MEMBERSHIP_RUNTIME_ENABLED, STOCK_MEMBERSHIP_PREPARATION_ENABLED 
 import { selectStockMembershipSession } from '@/lib/stock-membership-select'
 import { prepareStockMembershipOwner, confirmStockMembershipOwner } from '@/lib/stock-membership-prepare'
 import { claimStockOperatorInvitation, commitStockOperatorInvitation } from '@/lib/stock-operator-claim'
+import { confirmStockOperatorActivation } from '@/lib/stock-operator-confirm'
 import { STOCK_OPERATOR_INVITATION_ENABLED } from '@/lib/stock-operator-protocol'
 
 const PATH = '/api/stock/membership/authorize'
@@ -42,7 +43,7 @@ async function readBody(request: NextRequest) {
 
 /** Dedicated closed v2 receiver. It is independent from the v1/pilot flags and
  * never accepts cookies or browser-originated authority. */
-export async function handleStockMembershipCoreRequest(request: NextRequest, operation: 'authorize' | 'select' | 'prepare' | 'confirm' | 'claim' | 'commit' = 'authorize') {
+export async function handleStockMembershipCoreRequest(request: NextRequest, operation: 'authorize' | 'select' | 'prepare' | 'confirm' | 'claim' | 'commit' | 'operator-confirm' = 'authorize') {
   const enabled = operation === 'prepare' || operation === 'confirm' ? STOCK_MEMBERSHIP_PREPARATION_ENABLED
     : STOCK_MEMBERSHIP_RUNTIME_ENABLED && (!['claim','commit'].includes(operation) || STOCK_OPERATOR_INVITATION_ENABLED)
   if (!enabled) {
@@ -67,6 +68,13 @@ export async function handleStockMembershipCoreRequest(request: NextRequest, ope
         : await confirmStockMembershipOwner(input, token, coreToken)
       return NextResponse.json(prepared, { status: ['prepared','confirmed'].includes(prepared.status) ? 200 : prepared.status === 'denied' ? 403 : 503,
         headers: { ...headers, Vary: 'Authorization, X-Webzoka-Core-Provider' } })
+    }
+    if (operation === 'operator-confirm') {
+      const confirmed = await confirmStockOperatorActivation(input,token,coreToken)
+      return NextResponse.json(confirmed,{
+        status: ['confirmed','not_active'].includes(confirmed.status) ? 200 : confirmed.status==='denied' ? 403 : 503,
+        headers:{...headers,Vary:'Authorization, X-Webzoka-Core-Provider'},
+      })
     }
     if (operation === 'claim' || operation === 'commit') {
       const claimed = operation === 'claim' ? await claimStockOperatorInvitation(input, token, coreToken)
