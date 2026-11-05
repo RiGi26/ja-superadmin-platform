@@ -1,0 +1,412 @@
+{
+  "status": "PROPOSED_NOT_AUTHORIZED",
+  "date": "2026-11-05",
+  "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
+  "sourceCandidates": {
+    "core": "fbd20c9fd7963a6ddfa56bfd9478413099b3be92",
+    "stock": "85a894273dc5b0fb957b2f8914251d1d2463798a"
+  },
+  "targets": {
+    "core": {
+      "repository": "RiGi26/ja-superadmin-platform",
+      "supabaseProject": "hxhusfkrlafxdnyasmsu",
+      "origin": "https://hub.webzoka.com"
+    },
+    "stock": {
+      "repository": "RiGi26/webzoka-stock-platform",
+      "supabaseProject": "oyyfcmlquqfrdoffkgsd",
+      "origin": "https://webzoka-stock-platform.vercel.app"
+    }
+  },
+  "coreUat": {
+    "origin": null,
+    "deploymentId": null,
+    "status": "Freeze one actual Core Ready Preview URL before exact redirect approval; no wildcard or SSO origin replacement"
+  },
+  "forwardMigrations": {
+    "core": [
+      {
+        "order": 1,
+        "path": "docs/pricing/STOCK_PAYMENT_MODE_FORWARD.PROPOSED.sql",
+        "sha256": "92897216191e29d96eb1ec57a06c96b65376b462fe714d7d7f932809742e406c",
+        "bytes": 1169
+      },
+      {
+        "order": 2,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_CORE.PROPOSED.sql",
+        "sha256": "d280a8ab485c420b40c7904bab1083e50ae05ac22ec51138107c0ad085ae8427",
+        "bytes": 19318
+      },
+      {
+        "order": 3,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_PREPARE_CORE.PROPOSED.sql",
+        "sha256": "d8fcd8aaaf909fdf0f0cbf76f50f69ca50f30e9892bfc7e94c9755bfdd3f7f20",
+        "bytes": 15316
+      },
+      {
+        "order": 4,
+        "path": "docs/pricing/STOCK_WORKSPACE_INTENTS_FORWARD.PROPOSED.sql",
+        "sha256": "42eb42b2ae6fb6223f4f2a51df56084525765b93e1aabad5917df5b9782a0590",
+        "bytes": 5657
+      },
+      {
+        "order": 5,
+        "path": "docs/pricing/STOCK_WORKSPACE_CORE_FORWARD.PROPOSED.sql",
+        "sha256": "9f5e3d023739e8a25de2a9c617ca5cbedbf41aba4d69b57a882af523d3328865",
+        "bytes": 16839
+      },
+      {
+        "order": 6,
+        "path": "docs/pricing/STOCK_WORKSPACE_BILLING_FORWARD.PROPOSED.sql",
+        "sha256": "60c6db9fccb4ea4e45a50fa358dcb6bb6cc8162508c511947fcd14786b0fc89c",
+        "bytes": 31145
+      },
+      {
+        "order": 7,
+        "path": "docs/pricing/STOCK_WORKSPACE_PREPARE_CORE_FORWARD.PROPOSED.sql",
+        "sha256": "f9027c95bbdc6db009f99a335496636bdc09f9cd7722af5539007c09da4d3403",
+        "bytes": 9804
+      },
+      {
+        "order": 8,
+        "path": "docs/pricing/STOCK_OPERATOR_INVITATIONS_CORE.PROPOSED.sql",
+        "sha256": "040fe435cff4cbefef6b76589219dcfc93b344ed84e41f2eb5bb85718ddb46db",
+        "bytes": 19218
+      },
+      {
+        "order": 9,
+        "path": "docs/pricing/STOCK_OPERATOR_COMMIT_CORE.PROPOSED.sql",
+        "sha256": "f80aed8814b13cfe7b942f3e6b9689b22def9052834321c2c95bbac145b340bc",
+        "bytes": 13140
+      },
+      {
+        "order": 10,
+        "path": "docs/pricing/STOCK_OPERATOR_MAIL_CORE.PROPOSED.sql",
+        "sha256": "0f7103fa2741a30c872da9356bc73d759930ebccb3f2d5bd4b7ca485efa9d857",
+        "bytes": 7880
+      },
+      {
+        "order": 11,
+        "path": "docs/pricing/STOCK_OPERATOR_WORKSPACES_CORE.PROPOSED.sql",
+        "sha256": "4bdcae6bc682c40a2e8e53550c08d198deada939de8ab01cc0a026cfc67c1c47",
+        "bytes": 3071
+      },
+      {
+        "order": 12,
+        "path": "docs/pricing/STOCK_OPERATOR_CONFIRM_CORE.PROPOSED.sql",
+        "sha256": "d6559b978aa1cd1b0fce9a2f86d21f0a757fe77e5ce8105d9dfe33bdc06e1f62",
+        "bytes": 7979
+      },
+      {
+        "order": 13,
+        "path": "docs/pricing/STOCK_MEMBER_LIFECYCLE_CORE.PROPOSED.sql",
+        "sha256": "83a7c4d15e41979b31f353582ec5943b7d82c091ce74776f6613042f036a531c",
+        "bytes": 14785
+      },
+      {
+        "order": 14,
+        "path": "docs/pricing/STOCK_MEMBER_DELIVERY_CORE.PROPOSED.sql",
+        "sha256": "74df377da6dd4c50e8d7f1271338ede0ba01451b8e47bb98b1780f4cc0248dab",
+        "bytes": 9096
+      },
+      {
+        "order": 15,
+        "path": "docs/pricing/STOCK_OPERATOR_CLOSURE_CORE.PROPOSED.sql",
+        "sha256": "2f693190f9e765d13cd875e9e8358ac9b139e4da18aa26f4100128208bc217cf",
+        "bytes": 6477
+      },
+      {
+        "order": 16,
+        "path": "docs/pricing/STOCK_MIXED_SESSION_CORE.PROPOSED.sql",
+        "sha256": "b49773a2001d57bb04c0ea92b5523d961d470928fd9434a957d0222a37ba8c27",
+        "bytes": 7143
+      }
+    ],
+    "stock": [
+      {
+        "order": 1,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_STOCK.PROPOSED.sql",
+        "sha256": "263964ee5cd88580f0c466a71b79b9aa594c93d2895eb1f110503faac72bdfec",
+        "bytes": 23836
+      },
+      {
+        "order": 2,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_CANONICAL_FORWARD.PROPOSED.sql",
+        "sha256": "d202be2cff51ef8179ebde378646b83effbdf3de9f0090b752431b031e419b60",
+        "bytes": 4557
+      },
+      {
+        "order": 3,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_PREPARE_STOCK.PROPOSED.sql",
+        "sha256": "07cfba0c1b590dbee7531ca6311e6bc8be593c40c33ef6ac0546248886f27e25",
+        "bytes": 13769
+      },
+      {
+        "order": 4,
+        "path": "docs/pricing/STOCK_STORAGE_CONTEXT_FORWARD.PROPOSED.sql",
+        "sha256": "610fafa34ebf20220171b2ca476499bf0c39c76a1341120568a7e1379efb96cb",
+        "bytes": 2240
+      },
+      {
+        "order": 5,
+        "path": "docs/pricing/STOCK_WORKSPACE_STOCK_FORWARD.PROPOSED.sql",
+        "sha256": "d97764dfa277303144368c198cb01ebfd9879b2701e2f68b061d8841e2130cc3",
+        "bytes": 31502
+      },
+      {
+        "order": 6,
+        "path": "docs/pricing/STOCK_WORKSPACE_ACTIVATION_FORWARD.PROPOSED.sql",
+        "sha256": "7eb2d2dc65e705cc5f67dd2724cf335077aca4d2cced48e99e1dd51abec9af31",
+        "bytes": 13480
+      },
+      {
+        "order": 7,
+        "path": "docs/pricing/STOCK_OPERATOR_NATIVE_STOCK.PROPOSED.sql",
+        "sha256": "e20712b2a4df5539f1b363033b57c53b2596795776e54358a92a107cfe2e4619",
+        "bytes": 2301
+      },
+      {
+        "order": 8,
+        "path": "docs/pricing/STOCK_OPERATOR_STAGE_STOCK.PROPOSED.sql",
+        "sha256": "61f37023078b419a2a8c9229604a2b59c7e4d592b2266a853db495109bf48d02",
+        "bytes": 12999
+      },
+      {
+        "order": 9,
+        "path": "docs/pricing/STOCK_OPERATOR_ACTIVATION_STOCK.PROPOSED.sql",
+        "sha256": "33a54316896ea8bb324339413d3f051740bbddad804c9fc38460d3531394d53b",
+        "bytes": 9883
+      },
+      {
+        "order": 10,
+        "path": "docs/pricing/STOCK_OPERATOR_CONFIRM_STOCK.PROPOSED.sql",
+        "sha256": "011f16ba30dac079dabe0656f3e259419b00e304f79519a0ecca4e7adf918455",
+        "bytes": 2519
+      },
+      {
+        "order": 11,
+        "path": "docs/pricing/STOCK_MEMBER_LIFECYCLE_STOCK.PROPOSED.sql",
+        "sha256": "366831b83a1d8d9e7a558b71ab4f9947b6ef9dbf4c07f60f416510b0877da9a0",
+        "bytes": 13670
+      },
+      {
+        "order": 12,
+        "path": "docs/pricing/STOCK_OPERATOR_CLOSURE_STOCK.PROPOSED.sql",
+        "sha256": "630a4566632fc1c0919d0070786db82504a45f902da97b61773128443d7c59e2",
+        "bytes": 8717
+      },
+      {
+        "order": 13,
+        "path": "docs/pricing/STOCK_MIXED_SESSION_STOCK.PROPOSED.sql",
+        "sha256": "5330ecbd020704ddc353702c72b6b356d45793f42d211144a96731beb17bc633",
+        "bytes": 7925
+      }
+    ]
+  },
+  "readOnlyPreflight": {
+    "core": [
+      {
+        "path": "docs/pricing/STOCK_SELF_PAYMENT_BASELINE_READONLY.sql",
+        "sha256": "d9f6458babd1eb31308b7fef89bf6c7f89274a8b7c4e23eb872c9fe93475e5af",
+        "bytes": 2818
+      },
+      {
+        "path": "docs/pricing/STOCK_SANDBOX_READINESS_CORE_READONLY.sql",
+        "sha256": "1cf22181af7691acf52f18065ae81d8454c241e4b67ab0ac8693ba5364d5dd6a",
+        "bytes": 2554
+      },
+      {
+        "path": "docs/pricing/STOCK_PREPARED_FIXTURES_CORE_READONLY.sql",
+        "sha256": "64f051744a68e69cb9f1a76643cc1372102aa3b06b3f51e3392a3e4cd12582ef",
+        "bytes": 2289
+      }
+    ],
+    "stock": [
+      {
+        "path": "docs/pricing/STOCK_SELF_PAYMENT_BASELINE_READONLY.sql",
+        "sha256": "62f5674dd2b6e83a74fdfb0b81f3139d1df8165eb656a4f0d322339acdab0824",
+        "bytes": 2802
+      },
+      {
+        "path": "docs/pricing/STOCK_MEMBERSHIP_CANONICAL_BASELINE_READONLY.sql",
+        "sha256": "09c46ed111a6ab198b262f3449f64525f722dc59e5578554c455819f76db7e43",
+        "bytes": 854
+      },
+      {
+        "path": "docs/pricing/STOCK_SANDBOX_READINESS_STOCK_READONLY.sql",
+        "sha256": "ae756fa38d485c6a29c0916202b37a744e9287e78422cb4620de03d22dc13aca",
+        "bytes": 1146
+      },
+      {
+        "path": "docs/pricing/STOCK_PREPARED_FIXTURES_STOCK_READONLY.sql",
+        "sha256": "ac787329002902fd0726e6556917b944c67f157980918c20ca79e81c325759bf",
+        "bytes": 1623
+      }
+    ]
+  },
+  "readOnlyPostcheck": {
+    "core": {
+      "path": "docs/pricing/STOCK_CLOSED_ROLLOUT_POSTCHECK_READONLY.sql",
+      "sha256": "6be40c701a83a3fc1725b6a95909c6ec26570f8926c17ffe92a4f1f4b183ffbe",
+      "bytes": 3604,
+      "source": "Documentation follow-up carrying this manifest; verify exact file hash before execution"
+    },
+    "stock": {
+      "path": "docs/pricing/STOCK_CLOSED_ROLLOUT_POSTCHECK_READONLY.sql",
+      "sha256": "0f8aef973c2c0956f198865211ba8657b50f8903bcc943c67f437e22eb84e6a2",
+      "bytes": 3527,
+      "source": "Documentation follow-up carrying this manifest; verify exact file hash before execution"
+    }
+  },
+  "installedMigrationObservation": {
+    "observedAt": "2026-11-05",
+    "method": "Verified exact get_project_url then list_migrations; metadata only, no SQL execution",
+    "coreCount": 20,
+    "stockCount": 129,
+    "coreDoNotReplay": [
+      "20261027024106",
+      "20261030042604",
+      "20261101224842",
+      "20261101224847",
+      "20261101232959",
+      "20261103040648"
+    ],
+    "stockDoNotReplay": [
+      "20261027024056",
+      "20261101224850"
+    ],
+    "limitation": "Not proof of current function bodies, settings, customer rows or absence of later drift"
+  },
+  "fixtures": [
+    {
+      "label": "existing_basic",
+      "plan": "basic",
+      "emailSha256": "80054671e626cb4ada79324f6ec1c5667ec5a99981054c38873b553f0efb9e62",
+      "companyId": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+      "instanceId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+      "coreSubject": null,
+      "stockSubject": null,
+      "coreTenantId": null,
+      "stockTenantId": null,
+      "ownerMembershipId": null,
+      "profileId": null,
+      "preparationCommandId": null,
+      "invoiceId": null,
+      "status": "Historical mapping; fresh approved read-back required"
+    },
+    {
+      "label": "existing_pro",
+      "plan": "pro",
+      "emailSha256": "f89bad06bbc562993eaf322b3cbc001a5ddc8f8851f96207f7fd5439a02302cc",
+      "companyId": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+      "instanceId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+      "coreSubject": null,
+      "stockSubject": null,
+      "coreTenantId": null,
+      "stockTenantId": null,
+      "ownerMembershipId": null,
+      "profileId": null,
+      "preparationCommandId": null,
+      "invoiceId": null,
+      "status": "Historical mapping; fresh approved read-back required"
+    },
+    {
+      "label": "fresh_basic",
+      "plan": "basic",
+      "proposedEmail": "egyelisyaaaaa+stock-basic-fresh-20261105@gmail.com",
+      "emailSha256": "55230f2e25367cef3445f6949d6ea8f34c24b5e1d7b03f15de7e7c2140c8172d",
+      "companyName": "Stock Fresh Basic 20261105",
+      "companyId": null,
+      "instanceId": null,
+      "coreSubject": null,
+      "stockSubject": null,
+      "coreTenantId": null,
+      "stockTenantId": null,
+      "ownerMembershipId": null,
+      "profileId": null,
+      "creationCommandId": null,
+      "preparationCommandId": null,
+      "invoiceId": null,
+      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+    },
+    {
+      "label": "fresh_pro",
+      "plan": "pro",
+      "proposedEmail": "egyelisyaaaaa+stock-pro-fresh-20261105@gmail.com",
+      "emailSha256": "2d850799d13da45446aaa14f23d12c2f04077c87ea3dc36907ca62dd31d3e40f",
+      "companyName": "Stock Fresh Pro 20261105",
+      "companyId": null,
+      "instanceId": null,
+      "coreSubject": null,
+      "stockSubject": null,
+      "coreTenantId": null,
+      "stockTenantId": null,
+      "ownerMembershipId": null,
+      "profileId": null,
+      "creationCommandId": null,
+      "preparationCommandId": null,
+      "invoiceId": null,
+      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+    },
+    {
+      "label": "additional_basic",
+      "plan": "basic",
+      "proposedEmail": "egyelisyaaaaa+stock-pro-fresh-20261105@gmail.com",
+      "emailSha256": "2d850799d13da45446aaa14f23d12c2f04077c87ea3dc36907ca62dd31d3e40f",
+      "companyName": "Stock Fresh Pro Second Basic 20261105",
+      "companyId": null,
+      "instanceId": null,
+      "coreSubject": null,
+      "stockSubject": null,
+      "coreTenantId": null,
+      "stockTenantId": null,
+      "ownerMembershipId": null,
+      "profileId": null,
+      "creationCommandId": null,
+      "preparationCommandId": null,
+      "invoiceId": null,
+      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+    }
+  ],
+  "sandboxBounds": {
+    "successfulPurchases": 5,
+    "basicPurchases": 3,
+    "proPurchases": 2,
+    "aggregateSuccessfulFaceValueIdr": 1165000,
+    "realCharges": 0,
+    "negativeUnpaidInvoicesMaximum": 2,
+    "negativeSlots": [
+      "N1_cancel",
+      "N2_expire"
+    ],
+    "cohortMaximumHours": 6,
+    "publicOfferRowsEnabled": 0
+  },
+  "productionChanged": false,
+  "operators": [
+    {
+      "label": "operator_1",
+      "email": "egyelisyaaaaa+stock-operator1-20261103@gmail.com",
+      "workspace": "fresh_pro",
+      "role": "staff",
+      "coreSubject": null,
+      "stockSubject": null,
+      "membershipId": null,
+      "profileId": null,
+      "invitationId": null,
+      "status": "Recipient alias previously approved; runtime/deployment/payment authority separate"
+    },
+    {
+      "label": "operator_2",
+      "email": "egyelisyaaaaa+stock-operator2-20261103@gmail.com",
+      "workspace": "fresh_pro",
+      "role": "produksi",
+      "coreSubject": null,
+      "stockSubject": null,
+      "membershipId": null,
+      "profileId": null,
+      "invitationId": null,
+      "status": "Recipient alias previously approved; runtime/deployment/payment authority separate"
+    }
+  ]
+}
