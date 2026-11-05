@@ -3,8 +3,8 @@
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
-    "core": "1c96621bed8682302b0baa01f959943244668262",
-    "stock": "5b968a5fbc3c8b782464393c1bd8cfb6ed84899a"
+    "core": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+    "stock": "879feea11dac35e5133b55cc5d67ac64e8714080"
   },
   "targets": {
     "core": {
@@ -418,18 +418,6 @@
   ],
   "securityReview": {
     "date": "2026-11-05",
-    "productionDependencyAudit": {
-      "core": {
-        "lockSha256": "4197ffea746240740fcde442570fa31350e7b57f379bb566419f49525bec160b",
-        "findings": 0,
-        "exit": 0
-      },
-      "stock": {
-        "lockSha256": "d68c8ca6f03613cea52aac433be187898ff09fa56dad8f97ef556076f6cbd295",
-        "findings": 0,
-        "exit": 0
-      }
-    },
     "coreBrowserMappingPatch": {
       "previous": "2.10.32",
       "current": "2.11.35",
@@ -452,24 +440,87 @@
         "low": 0
       }
     },
-    "limitation": "Full tooling tree is not security-cleared. Applicable resolution or explicit risk acceptance remains public-release Gate D. Core GitHub alert discovery returned HTTP 403; no scope/configuration change made."
+    "limitation": "Zero known npm audit findings at the recorded candidate locks is source evidence only. Default-branch alerts await an authorized merge; Core alert API previously returned HTTP 403. Recheck advisories at public release; merchant, commercial, identity/runtime and financial gates remain open.",
+    "previousProductionDependencyAudit": {
+      "core": {
+        "lockSha256": "4197ffea746240740fcde442570fa31350e7b57f379bb566419f49525bec160b",
+        "findings": 0,
+        "exit": 0
+      },
+      "stock": {
+        "lockSha256": "d68c8ca6f03613cea52aac433be187898ff09fa56dad8f97ef556076f6cbd295",
+        "findings": 0,
+        "exit": 0
+      }
+    },
+    "fullDependencyAudit": {
+      "core": {
+        "candidate": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+        "lockSha256": "6444c06acb95377e66535cdff7f457bead0a383e7c134981877c7c3ee3b0b23e",
+        "command": "npm audit --json --ignore-scripts --fetch-retries=0 --fetch-timeout=30000",
+        "exit": 0,
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      },
+      "stock": {
+        "candidate": "879feea11dac35e5133b55cc5d67ac64e8714080",
+        "lockSha256": "d4a9c21d5e1210c8a013b3e974d7847624017935100a0e542cffaf936a886906",
+        "command": "npm audit --json --ignore-scripts --fetch-retries=0 --fetch-timeout=30000",
+        "exit": 0,
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    "toolingRemediation": {
+      "removedCoreDevOnlyNodes": 254,
+      "cssSource": "shadcn 4.8.0 dist/tailwind.css",
+      "cssOriginalBytes": 1669,
+      "cssOriginalSha256": "146941ac3ff65496fdf1cb306e697255328e4dadc7c105d66e36bb031b00f6d6",
+      "retainedLicense": "MIT; original copyright and notice embedded in app/shadcn-variants.css",
+      "localCompiledGlobalCssComparison": {
+        "status": "PASS",
+        "bytesAfterCommentRemoval": 103456,
+        "scope": "Both imports compiled using existing local Tailwind/PostCSS; not a hosted visual claim"
+      },
+      "lintOverride": {
+        "parent": "@typescript-eslint/typescript-estree",
+        "dependency": "minimatch",
+        "version": "11.0.1",
+        "scope": "development-only parent; runtime dependency declarations unchanged"
+      },
+      "lockUpdates": "Remaining Babel/Browserslist/brace-expansion/js-yaml packages updated within existing parent ranges",
+      "nextVersion": "16.4.1",
+      "workstationPackagesInstalled": false,
+      "advisories": [
+        "https://github.com/advisories/GHSA-jqcg-44mw-7w3h",
+        "https://github.com/advisories/GHSA-g3hv-75wg-m249"
+      ]
+    }
   },
   "sourceEvidence": {
     "core": {
-      "runId": 41983918990,
-      "headSha": "1c96621bed8682302b0baa01f959943244668262",
+      "runId": 41994897995,
+      "headSha": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
       "status": "PASS"
     },
     "pairedStock": {
-      "runId": 41984174260,
-      "headSha": "5b968a5fbc3c8b782464393c1bd8cfb6ed84899a",
-      "corePin": "1c96621bed8682302b0baa01f959943244668262",
+      "runId": 41994950787,
+      "headSha": "879feea11dac35e5133b55cc5d67ac64e8714080",
+      "corePin": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
       "status": "PASS",
-      "includes": "scripts, modules, actual disposable SQL, independent PostgreSQL 17 connections, types, lint, build"
+      "includes": "clean dependency install, scripts, modules, actual disposable SQL, independent PostgreSQL 17, types, lint, build"
     },
     "pdf": {
-      "runId": 41984174280,
-      "headSha": "5b968a5fbc3c8b782464393c1bd8cfb6ed84899a",
+      "runId": 41994950823,
+      "headSha": "879feea11dac35e5133b55cc5d67ac64e8714080",
       "status": "PASS",
       "includes": "document engine, PDF, issuance, pricing history, types, lint, build"
     },
@@ -478,6 +529,54 @@
       "stockStatements": 10,
       "status": "PASS_DISPOSABLE_ONLY",
       "managedStatus": "NOT_EXECUTED"
+    },
+    "previousPassingPair": {
+      "core": {
+        "runId": 41983918990,
+        "headSha": "1c96621bed8682302b0baa01f959943244668262",
+        "status": "PASS"
+      },
+      "pairedStock": {
+        "runId": 41984174260,
+        "headSha": "5b968a5fbc3c8b782464393c1bd8cfb6ed84899a",
+        "corePin": "1c96621bed8682302b0baa01f959943244668262",
+        "status": "PASS",
+        "includes": "scripts, modules, actual disposable SQL, independent PostgreSQL 17 connections, types, lint, build"
+      },
+      "pdf": {
+        "runId": 41984174280,
+        "headSha": "5b968a5fbc3c8b782464393c1bd8cfb6ed84899a",
+        "status": "PASS",
+        "includes": "document engine, PDF, issuance, pricing history, types, lint, build"
+      }
+    },
+    "toolingInitialRuns": {
+      "core": {
+        "runId": 41994341868,
+        "status": "FAILED",
+        "reason": "One historical direct-dependency count still expected 27 after unused CLI removal leaves 26; corrected test retains historical 27 and resolves all 26 current packages"
+      },
+      "pairedStock": {
+        "runId": 41994393627,
+        "status": "PASS"
+      },
+      "pdf": {
+        "runId": 41994393636,
+        "status": "PASS"
+      },
+      "focusedCorrection": {
+        "checks": 3,
+        "failed": 0,
+        "lintExit": 0
+      }
+    },
+    "forwardOrderCheck": {
+      "status": "PASS_DISPOSABLE_ONLY",
+      "paymentModeReaderBeforeMembership": true,
+      "mixedCoreAfterOperatorLifecycleClosure": true,
+      "corePostcheckStatements": 9,
+      "stockPostcheckStatements": 10,
+      "managedExecuted": false
     }
   },
   "providerMetadata": {
