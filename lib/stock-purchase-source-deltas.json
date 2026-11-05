@@ -1784,5 +1784,25 @@
         "after": "      '/api/stock/membership/operator-confirm',\n"
       }
     ]
+  },
+  {
+    "file": "app/api/cron/subscription-lifecycle/route.ts",
+    "profile": "runtime",
+    "beforeHash": "9d2e338326d0be70b4f169196632b4d1cac08fd7dbc501041729723eae254a51",
+    "afterHash": "bea59068dda7341ddf368712efd792d2ba23524e11dad6a262a9f8528cb66d41",
+    "edits": [
+      {
+        "beforeOffset": 400,
+        "afterOffset": 400,
+        "before": "",
+        "after": "import { reconcileStockMemberEvents } from '@/lib/stock-member-delivery'\n"
+      },
+      {
+        "beforeOffset": 2083,
+        "afterOffset": 2156,
+        "before": "",
+        "after": "  after(() => reconcileStockMemberEvents())\n"
+      }
+    ]
   }
 ]
