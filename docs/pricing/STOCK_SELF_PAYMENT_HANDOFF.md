@@ -1,5 +1,15 @@
 # Stock self-payment implementation and acceptance
 
+### Invitation closure recovery and selected storage
+
+An Owner cancellation schedules signed cleanup of the exact closed invitation after the response. The existing daily lifecycle reconciliation records bounded expired batches under the same Registry fence as admission and retries any canceled or expired claimed invitation until Stock acknowledges it. The immutable closure and claim supply the payload. An admitted invitation stays outside this cleanup path and uses the separate membership revocation flow.
+
+Stock applies a closure under the staging lock. It retires the exact inactive profile with a row-image permit and retains the stage and audit records. When the stage has not arrived, a closure record fences later inserts by invitation, profile and membership ID. Exact replay returns the retained receipt, and Core retains one acknowledgment. No selected session, payment or entitlement is created. Delivery uses the existing closed lifecycle gate and the same signed receiver. Install `STOCK_OPERATOR_CLOSURE_STOCK.PROPOSED.sql` after Stock lifecycle and `STOCK_OPERATOR_CLOSURE_CORE.PROPOSED.sql` after Core delivery, before the corresponding callers in the approved rollout.
+
+Stock also binds the document and upload bridge to the exact current verified user, workspace, profile and role. The storage reader proposal installs after the canonical resolver and before its callers. The existing document RLS policy showed only the selected workspace's document through Basic → Pro → Basic switching and denied access after revocation in disposable SQL. [Paired source CI](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41957115570) and [PDF CI](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/41957115572) passed at Stock `bde0e0388fa6f557ebce97e7a3029debf3244102`.
+
+Mixed v1/v2 access under one account remains open. The current resolver chooses v2 by subject and the v1 canonical function requires a single profile for that subject. A successor must use current native session evidence to disambiguate, preserve the exact legacy online decision and reject conflicting origin versions. Managed migrations, hosted HTTP/browser, five bounded sandbox purchases and Production verification remain pending. Public sales stay closed.
+
 ### Signed operator lifecycle delivery and Owner controls — 5 November
 
 The team page now manages operational roles and terminal revocation independently from invitation creation. Each command verifies the current native Core customer session and current Company Owner, checks the expected member revision, and commits its Registry audit, exact row changes and immutable delivery payload atomically. The Owner membership is protected, public Registry members remain non-billing members, and the Company revision stays unchanged. Role changes require reciprocal activation confirmation. Revocation can retire an admitted operator before local activation and does not require a still-paid subscription.

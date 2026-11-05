@@ -47,3 +47,32 @@ export function parseStockMemberReceipt(value: unknown, event: StockMemberEvent)
   }
   return value as StockMemberReceipt
 }
+
+const closureIds = ['inviteId', 'companyId', 'instanceId', 'stockTenantId', 'ownerMembershipId',
+  'membershipId', 'profileId', 'coreSubject', 'stockSubject'] as const
+type StockOperatorClosure = Readonly<Record<(typeof closureIds)[number], string> & {
+  kind: 'stock_operator_closure_v2'
+  state: 'canceled' | 'expired'
+  closedAt: string
+}>
+const closureKeys = [...closureIds, 'kind', 'state', 'closedAt'].sort().join(',')
+
+export function parseStockOperatorClosure(value: unknown): StockOperatorClosure {
+  if (!record(value) || Object.keys(value).sort().join(',') !== closureKeys ||
+      value.kind !== 'stock_operator_closure_v2' || !closureIds.every(key => isActiveStockUuid(value[key])) ||
+      value.membershipId === value.ownerMembershipId || (value.state !== 'canceled' && value.state !== 'expired') ||
+      typeof value.closedAt !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,6})?(?:Z|[+-]\d\d:\d\d)$/.test(value.closedAt) ||
+      !Number.isFinite(Date.parse(value.closedAt)) || Date.parse(value.closedAt) > Date.now() + 5000) {
+    throw new Error('STOCK_OPERATOR_CLOSURE_INVALID')
+  }
+  return value as StockOperatorClosure
+}
+
+export function parseStockOperatorClosureReceipt(value: unknown, closure: StockOperatorClosure) {
+  if (!record(value) || Object.keys(value).sort().join(',') !== 'companyId,inviteId,profileId,status,stockAuditEventId' ||
+      value.status !== 'retired' || value.inviteId !== closure.inviteId || value.companyId !== closure.companyId ||
+      value.profileId !== closure.profileId || !isActiveStockUuid(value.stockAuditEventId)) {
+    throw new Error('STOCK_OPERATOR_CLOSURE_RECEIPT_INVALID')
+  }
+  return value
+}

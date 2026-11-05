@@ -1,6 +1,8 @@
 import 'server-only'
 
 import { createHash, createHmac } from 'node:crypto'
+import { after } from 'next/server'
+import { deliverStockOperatorClosure } from '@/lib/stock-member-delivery'
 import { z } from 'zod'
 import { Resend } from 'resend'
 import { createClient } from '@/lib/supabase/server'
@@ -160,7 +162,12 @@ export async function cancelStockOperatorInvitation(input: unknown): Promise<Sto
       p_invite: selected.data.inviteId, p_command: selected.data.commandId,
     }).abortSignal(AbortSignal.timeout(2500))
     const value = terminal.safeParse(response.data)
-    return !response.error && value.success && value.data.companyId === selected.data.companyId &&
-      value.data.inviteId === selected.data.inviteId ? value.data.status : 'unconfirmed'
+    if (response.error || !value.success || value.data.companyId !== selected.data.companyId ||
+        value.data.inviteId !== selected.data.inviteId) return 'unconfirmed'
+    if (value.data.status === 'canceled' || value.data.status === 'expired') {
+      const inviteId = value.data.inviteId
+      after(async () => { await deliverStockOperatorClosure(inviteId) })
+    }
+    return value.data.status
   } catch { return 'unconfirmed' }
 }
