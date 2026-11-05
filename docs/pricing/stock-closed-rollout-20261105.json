@@ -293,13 +293,16 @@
       "instanceId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
       "coreSubject": null,
       "stockSubject": null,
-      "coreTenantId": null,
-      "stockTenantId": null,
+      "coreTenantId": "55f50424-6663-440f-8001-0e77af2b1d35",
+      "stockTenantId": "900376ee-8003-4c20-807e-e4ff50f2be06",
       "ownerMembershipId": null,
-      "profileId": null,
+      "profileId": "94387c2e-3491-4254-9392-6010eddcbb8b",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "Historical mapping; fresh approved read-back required"
+      "status": "Gate A exact fixture read-back verified: matching inactive Stock profile, current verified Owner, no pilot history, zero paid receipts",
+      "currentSavedPlanMatches": true,
+      "billingAccountExists": false,
+      "observedAt": "2026-11-05"
     },
     {
       "label": "existing_pro",
@@ -309,13 +312,16 @@
       "instanceId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
       "coreSubject": null,
       "stockSubject": null,
-      "coreTenantId": null,
-      "stockTenantId": null,
+      "coreTenantId": "871aadb3-b581-456b-a2f5-076f90d16564",
+      "stockTenantId": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
       "ownerMembershipId": null,
-      "profileId": null,
+      "profileId": "8022b87c-6e70-42bf-b3e0-a2658720229a",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "Historical mapping; fresh approved read-back required"
+      "status": "Gate A exact fixture read-back verified: matching inactive Stock profile, current verified Owner, no pilot history, zero paid receipts",
+      "currentSavedPlanMatches": null,
+      "billingAccountExists": false,
+      "observedAt": "2026-11-05"
     },
     {
       "label": "fresh_basic",
@@ -856,7 +862,12 @@
       }
     ],
     "postcheckScope": "Core schema/settings PASS; no authenticated customer, payment or hosted acceptance",
-    "configurationChanged": false
+    "configurationChanged": false,
+    "stockPartialAdvisor": {
+      "status": "No task-scope finding except four unused indexes; retained for closed/new schema",
+      "observedAt": "2026-11-05",
+      "managedRepairExecuted": false
+    }
   },
   "gateASupplementalRepair": {
     "status": "PROPOSED_NOT_AUTHORIZED",
@@ -890,7 +901,23 @@
     "validation": {
       "disposableTests": 5,
       "failures": 0,
-      "managedRepairExecuted": false
+      "managedRepairExecuted": false,
+      "coreSource": {
+        "commit": "a8b0e70ed9f7c950143c40c0a1282c62faf041bb",
+        "runId": 41999371112,
+        "status": "PASS"
+      },
+      "stockSource": {
+        "commit": "9daa43b94dcd8a18a7f81c705e4cb9064bfb2953",
+        "corePin": "a8b0e70ed9f7c950143c40c0a1282c62faf041bb",
+        "runId": 41999515613,
+        "status": "PASS"
+      },
+      "pdf": {
+        "runId": 41999515622,
+        "status": "PASS"
+      },
+      "scopedLintExit": 0
     },
     "executionOrder": [
       "Stock repair read-only preflight",
