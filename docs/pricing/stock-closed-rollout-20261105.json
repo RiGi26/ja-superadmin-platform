@@ -1235,6 +1235,15 @@
       "BROWSER_UAT": "NOT_EXECUTED for customer journey",
       "PAYMENT_RECOVERY": "NOT_EXECUTED",
       "PRODUCTION": "Closed schema/application rollout PASS; live payment journey NOT_EXECUTED"
+    },
+    "browserObservation": {
+      "origin": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app",
+      "customerPath": "/hub/login",
+      "viewportWidth": 390,
+      "render": "Customer Hub login observed",
+      "screenshotStatus": "BLOCKED",
+      "error": "Playwright file access denied: session scratchpad outside configured allowed roots; workspace policy requires scratchpad artifacts",
+      "customerJourney": "NOT_EXECUTED"
     }
   },
   "gateASupplementalRepair": {
@@ -1309,6 +1318,96 @@
         "stock_workspace_private.stock_workspace_registry_fk_idx(membership_id,company_id,core_subject)"
       ],
       "postchecks": "PASS; both indexes valid/ready, original FKs validated, closed settings preserved"
+    }
+  },
+  "gateBProposal": {
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "sourceCandidates": {
+      "core": "187a4e08028e05b5acf7022606c55ab007611522",
+      "stock": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
+    },
+    "files": {
+      "core": [
+        {
+          "path": "docs/pricing/STOCK_GATE_B_PREPARATION_ENABLE.PROPOSED.sql",
+          "sha256": "6fc7d3c9a2533de7136a13aa6befc27ad481dc13381c300bbef0d91df1aef17a",
+          "bytes": 4912
+        },
+        {
+          "path": "docs/pricing/STOCK_GATE_B_PREPARATION_POSTCHECK_READONLY.sql",
+          "sha256": "aaa0cc9344655041fe07cafb6761203216402adf10e2e1c4ab0788432d410a11",
+          "bytes": 1449
+        },
+        {
+          "path": "docs/pricing/STOCK_GATE_B_FIXTURES_READONLY.sql",
+          "sha256": "5cd7113079fc045714ba34b334b28d43536c5acea9f55911cb1e93fab365e909",
+          "bytes": 1978
+        }
+      ],
+      "stock": [
+        {
+          "path": "docs/pricing/STOCK_GATE_B_PREPARATION_ENABLE.PROPOSED.sql",
+          "sha256": "8cf121096ef13445583821f591a46bf7a11592f378a55098ed8a39246772a3e3",
+          "bytes": 3903
+        },
+        {
+          "path": "docs/pricing/STOCK_GATE_B_PREPARATION_POSTCHECK_READONLY.sql",
+          "sha256": "641c775d3aed6e1b7aa00d5a990576aeb71742c7c34233008a475f4f2944ff9c",
+          "bytes": 1025
+        },
+        {
+          "path": "docs/pricing/STOCK_GATE_B_FIXTURES_READONLY.sql",
+          "sha256": "408909e3665e6d878670de518bec29c125bf9df71e2bdb35f669ccdf62cb2c79",
+          "bytes": 2324
+        }
+      ]
+    },
+    "buildLimit": 2,
+    "promotions": "Stock then Core, existing Production targets only",
+    "overrides": {
+      "both": {
+        "STOCK_SSO_PILOT_ENABLED": "false"
+      },
+      "core": {
+        "BILLING_SANDBOX_UAT_ENABLED": "false"
+      }
+    },
+    "corePreview": {
+      "origin": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app",
+      "deploymentId": "dpl_4CNW3cxotCzbU5QvnuH4b53aBfCi",
+      "sourceCommit": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+      "scope": "Existing closed Preview signup/email pages only; fresh normal sign-in at Hub for Gate B workspace/native transitions"
+    },
+    "coreAdditionalRedirectUrls": [
+      "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+      "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
+    ],
+    "nativeOAuthClientId": "fe3e0af9-2d84-4ec2-a750-b26bb4a81caf",
+    "nativeOAuthClientRedirectAdditions": [
+      "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback",
+      "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback"
+    ],
+    "freshOwnerEmails": [
+      "egyelisyaaaaa+stock-basic-fresh-20261105@gmail.com",
+      "egyelisyaaaaa+stock-pro-fresh-20261105@gmail.com"
+    ],
+    "newCompanies": [
+      "Stock Fresh Basic 20261105",
+      "Stock Fresh Pro 20261105",
+      "Stock Fresh Pro Second Basic 20261105"
+    ],
+    "normalEmailBound": "At most two signup verification sends per fresh Owner, including one explicit resend only if needed; no invitation, admin verification or identity overwrite",
+    "settingsScope": "Three existing booleans per database: workspace, preparation, membership; global verified-customer gates. Test execution only the four approved Owner identities/five resources.",
+    "paymentStatus": "NOT_AUTHORIZED; zero new invoices or checkout requests to Midtrans",
+    "validation": {
+      "coreRun": 42006994939,
+      "stockPairedRun": 42007080835,
+      "pdfRun": 42007080979,
+      "status": "PASS_AT_EXACT_CANDIDATES",
+      "local": "Core/Stock broad source suites, types, scoped lint and three Gate B disposable SQL checks PASS; actual customer/browser/payment acceptance NOT_EXECUTED",
+      "coreStatus": "PASS",
+      "stockPairedStatus": "PASS",
+      "pdfStatus": "PASS"
     }
   }
 }
