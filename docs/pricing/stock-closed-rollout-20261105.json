@@ -1,5 +1,5 @@
 {
-  "status": "GATE_A_PARTIALLY_EXECUTED_REPAIR_AUTHORITY_PENDING",
+  "status": "GATE_A_CLOSED_ROLLOUT_COMPLETE_GATE_B_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -26,9 +26,12 @@
     }
   },
   "coreUat": {
-    "origin": null,
-    "deploymentId": null,
-    "status": "Freeze one actual Core Ready Preview URL before exact redirect approval; no wildcard or SSO origin replacement"
+    "origin": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app",
+    "deploymentId": "dpl_4CNW3cxotCzbU5QvnuH4b53aBfCi",
+    "target": "preview",
+    "readyState": "READY",
+    "sourceCommit": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+    "status": "Ready closed Preview; exact callback exception NOT_AUTHORIZED; customer UAT NOT_EXECUTED"
   },
   "forwardMigrations": {
     "core": [
@@ -756,121 +759,486 @@
         "order": 1,
         "path": "docs/pricing/STOCK_MEMBERSHIP_STOCK.PROPOSED.sql",
         "sha256": "263964ee5cd88580f0c466a71b79b9aa594c93d2895eb1f110503faac72bdfec",
-        "name": "stock_membership_stock_closed_20261105",
         "version": "20261105084913",
+        "name": "stock_membership_stock_closed_20261105",
         "status": "APPLIED"
       },
       {
         "order": 2,
         "path": "docs/pricing/STOCK_MEMBERSHIP_CANONICAL_FORWARD.PROPOSED.sql",
         "sha256": "d202be2cff51ef8179ebde378646b83effbdf3de9f0090b752431b031e419b60",
+        "version": "20261105084914",
         "name": "stock_membership_canonical_forward_closed_20261105",
-        "attemptedVersion": "20261105084913",
-        "status": "DDL_COMMITTED_HISTORY_INSERT_FAILED",
-        "error": "23505 schema_migrations_pkey duplicate version 20261105084913",
-        "observedCanonicalHashes": [
-          {
-            "signature": "public.custom_access_token_hook(jsonb)",
-            "owner": "postgres",
-            "definition_hash": "be9aa0d25da3db3dc000017d18ab215b"
-          },
-          {
-            "signature": "public.resolve_stock_context()",
-            "owner": "postgres",
-            "definition_hash": "9909ad6d7be347b07bfbb88651c051e3"
-          },
-          {
-            "signature": "stock_active_private.b64url(bytea)",
-            "owner": "postgres",
-            "definition_hash": "9b2432b82d92ee121c6b50ea16628f7a"
-          },
-          {
-            "signature": "stock_active_private.online_decision(jsonb,text)",
-            "owner": "postgres",
-            "definition_hash": "d98ccd0abf49fc45776ea8e6b76341bf"
-          },
-          {
-            "signature": "stock_private.resolve_stock_context_internal()",
-            "owner": "postgres",
-            "definition_hash": "6d68821667d074974764162712df1bc9"
-          },
-          {
-            "signature": "stock_private.session_is_live()",
-            "owner": "postgres",
-            "definition_hash": "bae909e102caee44d029fe0d638eda40"
-          }
-        ]
+        "status": "DDL_COMMITTED_HISTORY_REPAIRED_WITHOUT_REPLAY"
+      },
+      {
+        "order": 3,
+        "path": "docs/pricing/STOCK_MEMBERSHIP_PREPARE_STOCK.PROPOSED.sql",
+        "sha256": "07cfba0c1b590dbee7531ca6311e6bc8be593c40c33ef6ac0546248886f27e25",
+        "version": "20261105091518",
+        "name": "stock_membership_prepare_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 4,
+        "path": "docs/pricing/STOCK_STORAGE_CONTEXT_FORWARD.PROPOSED.sql",
+        "sha256": "610fafa34ebf20220171b2ca476499bf0c39c76a1341120568a7e1379efb96cb",
+        "version": "20261105091521",
+        "name": "stock_storage_context_forward_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 5,
+        "path": "docs/pricing/STOCK_WORKSPACE_STOCK_FORWARD.PROPOSED.sql",
+        "sha256": "d97764dfa277303144368c198cb01ebfd9879b2701e2f68b061d8841e2130cc3",
+        "version": "20261105091524",
+        "name": "stock_workspace_stock_forward_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 6,
+        "path": "docs/pricing/STOCK_WORKSPACE_ACTIVATION_FORWARD.PROPOSED.sql",
+        "sha256": "7eb2d2dc65e705cc5f67dd2724cf335077aca4d2cced48e99e1dd51abec9af31",
+        "version": "20261105091526",
+        "name": "stock_workspace_activation_forward_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 7,
+        "path": "docs/pricing/STOCK_OPERATOR_NATIVE_STOCK.PROPOSED.sql",
+        "sha256": "e20712b2a4df5539f1b363033b57c53b2596795776e54358a92a107cfe2e4619",
+        "version": "20261105091556",
+        "name": "stock_operator_native_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 8,
+        "path": "docs/pricing/STOCK_OPERATOR_STAGE_STOCK.PROPOSED.sql",
+        "sha256": "61f37023078b419a2a8c9229604a2b59c7e4d592b2266a853db495109bf48d02",
+        "version": "20261105091559",
+        "name": "stock_operator_stage_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 9,
+        "path": "docs/pricing/STOCK_OPERATOR_ACTIVATION_STOCK.PROPOSED.sql",
+        "sha256": "33a54316896ea8bb324339413d3f051740bbddad804c9fc38460d3531394d53b",
+        "version": "20261105091601",
+        "name": "stock_operator_activation_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 10,
+        "path": "docs/pricing/STOCK_OPERATOR_CONFIRM_STOCK.PROPOSED.sql",
+        "sha256": "011f16ba30dac079dabe0656f3e259419b00e304f79519a0ecca4e7adf918455",
+        "version": "20261105091604",
+        "name": "stock_operator_confirm_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 11,
+        "path": "docs/pricing/STOCK_MEMBER_LIFECYCLE_STOCK.PROPOSED.sql",
+        "sha256": "366831b83a1d8d9e7a558b71ab4f9947b6ef9dbf4c07f60f416510b0877da9a0",
+        "version": "20261105091628",
+        "name": "stock_member_lifecycle_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 12,
+        "path": "docs/pricing/STOCK_OPERATOR_CLOSURE_STOCK.PROPOSED.sql",
+        "sha256": "630a4566632fc1c0919d0070786db82504a45f902da97b61773128443d7c59e2",
+        "version": "20261105091630",
+        "name": "stock_operator_closure_stock_closed_20261105",
+        "status": "APPLIED"
+      },
+      {
+        "order": 13,
+        "path": "docs/pricing/STOCK_MIXED_SESSION_STOCK.PROPOSED.sql",
+        "sha256": "5330ecbd020704ddc353702c72b6b356d45793f42d211144a96731beb17bc633",
+        "version": "20261105091633",
+        "name": "stock_mixed_session_stock_closed_20261105",
+        "status": "APPLIED"
       }
     ],
-    "stockRemainingOrders": [
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13
-    ],
-    "stockRemainingStatus": "NOT_EXECUTED",
-    "deploymentsCreated": 0,
-    "promotions": 0,
+    "stockRemainingOrders": [],
+    "stockRemainingStatus": "APPLIED_AND_POSTCHECKED",
+    "deploymentsCreated": 3,
+    "promotions": 2,
     "newCoreGatesDisabled": true,
     "publicOffersClosed": true,
     "corePrivateTablesForcedRls": 30,
     "coreConstraintsValidated": 127,
     "coreTriggersEnabled": 70,
-    "advisorBlockingScope": [
+    "advisorBlockingScope": [],
+    "postcheckScope": "PASS: privileged schema/settings only. Core 30 forced-RLS private tables, 127 validated constraints, 70 enabled triggers; Stock 21 forced-RLS new private tables, 88 validated constraints. All new gates false, Stock receiver false/sandbox, offers inactive/not for sale. No authenticated customer access claim.",
+    "configurationChanged": "Deployment-level non-secret false overrides and authorized promotions only; no project settings, protection, secrets or Auth callback change",
+    "stockPartialAdvisor": {
+      "status": "Historical partial-install observation; superseded by final task-scope checks",
+      "observedAt": "2026-11-05",
+      "managedRepairExecuted": true
+    },
+    "historyIncident": {
+      "providerError": "23505 schema_migrations_pkey duplicate version 20261105084913 after canonical DDL committed",
+      "resolution": "Owner-approved guarded metadata-only insertion at version 20261105084914; no DDL replay",
+      "recurrence": "No subsequent collision with at least 2.1 seconds between calls and history verified after every call",
+      "originalSqlSha256": "d202be2cff51ef8179ebde378646b83effbdf3de9f0090b752431b031e419b60"
+    },
+    "deployments": [
       {
-        "name": "unindexed_foreign_keys",
-        "level": "INFO",
-        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
-        "detail": "Table \\`stock_membership_private.memberships\\` has a foreign key \\`memberships_id_company_id_core_subject_fkey\\` without a covering index. This can lead to suboptimal query performance.",
-        "metadata": {
-          "name": "memberships",
-          "type": "table",
-          "schema": "stock_membership_private",
-          "fkey_name": "memberships_id_company_id_core_subject_fkey",
-          "fkey_columns": [
-            1,
-            2,
-            3
-          ]
-        },
-        "observed_at": "2026-11-05T08:51:41.755Z"
+        "system": "stock",
+        "id": "dpl_5ozbFzmcRmqmYS35V4G4Yw7GdAyZ",
+        "origin": "https://webzoka-stock-platform-ntjwl5oou-rigi26s-projects.vercel.app",
+        "target": "production",
+        "sourceCommit": "879feea11dac35e5133b55cc5d67ac64e8714080",
+        "ready": true,
+        "promotedOrder": 1
       },
       {
-        "name": "unindexed_foreign_keys",
-        "level": "INFO",
-        "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys",
-        "detail": "Table \\`stock_workspace_private.origins\\` has a foreign key \\`origins_membership_id_company_id_core_subject_fkey\\` without a covering index. This can lead to suboptimal query performance.",
-        "metadata": {
-          "name": "origins",
-          "type": "table",
-          "schema": "stock_workspace_private",
-          "fkey_name": "origins_membership_id_company_id_core_subject_fkey",
-          "fkey_columns": [
-            2,
-            1,
-            3
-          ]
-        },
-        "observed_at": "2026-11-05T08:51:41.755Z"
+        "system": "core",
+        "id": "dpl_FWTvXWN5AkLL27d8YEbFQLrmZa7p",
+        "origin": "https://ja-superadmin-platform-rn68nnqnz-rigi26s-projects.vercel.app",
+        "target": "production",
+        "sourceCommit": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+        "ready": true,
+        "promotedOrder": 2
+      },
+      {
+        "system": "core",
+        "id": "dpl_4CNW3cxotCzbU5QvnuH4b53aBfCi",
+        "origin": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app",
+        "target": "preview",
+        "sourceCommit": "67a5b506fd9939c6b2e2932c7a568b162a8624d2",
+        "ready": true,
+        "promoted": false
       }
     ],
-    "postcheckScope": "Core schema/settings PASS; no authenticated customer, payment or hosted acceptance",
-    "configurationChanged": false,
-    "stockPartialAdvisor": {
-      "status": "No task-scope finding except four unused indexes; retained for closed/new schema",
-      "observedAt": "2026-11-05",
-      "managedRepairExecuted": false
+    "buildRuntimeOverrides": {
+      "both": {
+        "STOCK_SSO_PILOT_ENABLED": "false"
+      },
+      "core": {
+        "BILLING_SANDBOX_UAT_ENABLED": "false"
+      }
+    },
+    "applicationSourceExport": {
+      "core": {
+        "files": 499,
+        "verification": "All raw Git blob SHA-1 values match the approved source commit; unrelated dirty/untracked work excluded"
+      },
+      "stock": {
+        "files": 662,
+        "verification": "All raw Git blob SHA-1 values match the approved source commit"
+      }
+    },
+    "closedHttpSmoke": {
+      "core": {
+        "deploymentId": "dpl_FWTvXWN5AkLL27d8YEbFQLrmZa7p",
+        "origin": "https://hub.webzoka.com",
+        "cases": [
+          {
+            "method": "GET",
+            "path": "/login",
+            "expected": 200,
+            "actual": 200,
+            "json": null,
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "GET",
+            "path": "/store",
+            "expected": 200,
+            "actual": 200,
+            "json": null,
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "GET",
+            "path": "/api/public/stock-price-quotes",
+            "expected": 200,
+            "actual": 200,
+            "json": {
+              "offerVersion": "basic-pro-2026-10-v1",
+              "salesEnabled": false,
+              "plans": [
+                {
+                  "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                  "platform": "stock",
+                  "tier": "starter",
+                  "tierDisplayName": "Basic",
+                  "priceMonthly": 149000,
+                  "priceYearly": null,
+                  "offerVersion": "basic-pro-2026-10-v1",
+                  "publicTier": "basic",
+                  "periods": [
+                    "monthly"
+                  ],
+                  "features": [
+                    "1 akun operator aktif",
+                    "Pesanan dan katalog",
+                    "Invoice dan label pengiriman",
+                    "Stok, lot, opname, dan pemantauan kedaluwarsa"
+                  ]
+                },
+                {
+                  "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+                  "platform": "stock",
+                  "tier": "pro",
+                  "tierDisplayName": "Pro",
+                  "priceMonthly": 359000,
+                  "priceYearly": null,
+                  "offerVersion": "basic-pro-2026-10-v1",
+                  "publicTier": "pro",
+                  "periods": [
+                    "monthly"
+                  ],
+                  "features": [
+                    "3 akun operator aktif",
+                    "Semua fitur Basic",
+                    "Pemasok dan purchase order",
+                    "Laporan keuangan dan arus kas"
+                  ]
+                }
+              ]
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "GET",
+            "path": "/checkout/stock?plan=5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "expected": 307,
+            "actual": 307,
+            "json": {
+              "redirect": "/login?next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+              "status": "307"
+            },
+            "redirectHost": null,
+            "redirectPath": "/login",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/authorize",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/prepare",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/confirm",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/select",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/claim",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/commit",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/stock/membership/operator-confirm",
+            "expected": 404,
+            "actual": 404,
+            "json": {
+              "status": "unavailable"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "pass": true
+          }
+        ]
+      },
+      "stock": {
+        "deploymentId": "dpl_5ozbFzmcRmqmYS35V4G4Yw7GdAyZ",
+        "origin": "https://webzoka-stock-platform.vercel.app",
+        "cases": [
+          {
+            "method": "GET",
+            "path": "/login",
+            "expected": 200,
+            "actual": 200,
+            "json": null,
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": true,
+            "pass": true
+          },
+          {
+            "method": "GET",
+            "path": "/dashboard",
+            "expected": 307,
+            "actual": 307,
+            "json": {
+              "redirect": "/login?next=%2Fdashboard",
+              "status": "307"
+            },
+            "redirectHost": null,
+            "redirectPath": "/login",
+            "loginText": null,
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/billing/activate",
+            "expected": 401,
+            "actual": 401,
+            "json": {
+              "error": "invalid_signature"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": null,
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/billing/member-events",
+            "expected": 503,
+            "actual": 503,
+            "json": {
+              "error": "member_events_closed"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": null,
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/auth/stock-membership/start",
+            "expected": 503,
+            "actual": 503,
+            "json": {
+              "status": "blocked"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": null,
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/auth/stock-membership/selection/start",
+            "expected": 503,
+            "actual": 503,
+            "json": {
+              "status": "blocked"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": null,
+            "pass": true
+          },
+          {
+            "method": "POST",
+            "path": "/api/auth/stock-membership/invitation/start",
+            "expected": 503,
+            "actual": 503,
+            "json": {
+              "status": "blocked"
+            },
+            "redirectHost": null,
+            "redirectPath": "",
+            "loginText": null,
+            "pass": true
+          }
+        ]
+      }
+    },
+    "finalCanonicalDeployments": {
+      "core": {
+        "id": "dpl_FWTvXWN5AkLL27d8YEbFQLrmZa7p",
+        "name": "ja-superadmin-platform",
+        "url": "ja-superadmin-platform-rn68nnqnz-rigi26s-projects.vercel.app",
+        "target": "production",
+        "readyState": "READY"
+      },
+      "stock": {
+        "id": "dpl_5ozbFzmcRmqmYS35V4G4Yw7GdAyZ",
+        "name": "webzoka-stock-platform",
+        "url": "webzoka-stock-platform-ntjwl5oou-rigi26s-projects.vercel.app",
+        "target": "production",
+        "readyState": "READY"
+      }
+    },
+    "previewHttp": {
+      "url": "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/login",
+      "httpStatus": 200,
+      "deploymentProtection": false,
+      "applicationUat": "NOT_EXECUTED"
+    },
+    "advisorFinalScope": "Two Core missing FK findings cleared after approved indexes; remaining task findings are unused indexes, retained. Unrelated historical findings outside scope.",
+    "acceptanceLevels": {
+      "STATIC_UNIT": "PASS at reviewed candidates and supplemental CI",
+      "INTEGRATION": "PASS disposable SQL and actual PostgreSQL 17; managed cross-provider customer flow NOT_EXECUTED",
+      "DB_RUNTIME": "PASS approved schema/settings/repair postchecks only; authenticated native/customer/RLS acceptance NOT_EXECUTED",
+      "HTTP": "PASS 18 closed unauthenticated checks; authenticated journey NOT_EXECUTED",
+      "BROWSER_UAT": "NOT_EXECUTED for customer journey",
+      "PAYMENT_RECOVERY": "NOT_EXECUTED",
+      "PRODUCTION": "Closed schema/application rollout PASS; live payment journey NOT_EXECUTED"
     }
   },
   "gateASupplementalRepair": {
-    "status": "PROPOSED_NOT_AUTHORIZED",
+    "status": "OWNER_APPROVED_EXECUTED_POSTCHECK_PASS",
     "reason": "Exact original allowlist does not include migration-history INSERT or two additional Core indexes",
     "files": {
       "core": [
@@ -901,7 +1269,7 @@
     "validation": {
       "disposableTests": 5,
       "failures": 0,
-      "managedRepairExecuted": false,
+      "managedRepairExecuted": true,
       "coreSource": {
         "commit": "a8b0e70ed9f7c950143c40c0a1282c62faf041bb",
         "runId": 41999371112,
@@ -926,6 +1294,21 @@
       "Core index postcheck and performance advisor",
       "Resume original Stock orders 3-13 unchanged with per-call history verification and at least two seconds between migration submissions",
       "Original postchecks/advisors, then original Gate A closed deployments/promotions"
-    ]
+    ],
+    "ownerAuthorization": {
+      "answer": "Approve both repairs and scoped reads",
+      "proposalCommit": "99b46e65b35d1a2ca9991cbf19d3f8fe1fb4b198"
+    },
+    "execution": {
+      "stockHistoryVersion": "20261105084914",
+      "coreIndexMigrationVersion": "20261105091355",
+      "coreIndexMigrationName": "stock_workspace_fk_covering_indexes_20261105",
+      "stockDdlReplayed": false,
+      "newCoreIndexes": [
+        "stock_membership_private.stock_member_registry_fk_idx(id,company_id,core_subject)",
+        "stock_workspace_private.stock_workspace_registry_fk_idx(membership_id,company_id,core_subject)"
+      ],
+      "postchecks": "PASS; both indexes valid/ready, original FKs validated, closed settings preserved"
+    }
   }
 }
