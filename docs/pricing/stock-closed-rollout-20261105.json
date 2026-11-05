@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_APPLICATIONS_PROMOTED_DB_CLOSED_AUTH_CORRECTION_PENDING",
+  "status": "GATE_B_PREPARATION_ENABLED_FRESH_SIGNUP_IN_PROGRESS",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -1325,7 +1325,7 @@
     }
   },
   "gateBProposal": {
-    "status": "OWNER_APPROVED_PARTIALLY_EXECUTED_AUTH_CORRECTION_PENDING",
+    "status": "OWNER_APPROVED_AUTH_AND_PREPARATION_APPLIED_NATIVE_UAT_PENDING",
     "sourceCandidates": {
       "core": "187a4e08028e05b5acf7022606c55ab007611522",
       "stock": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
@@ -1429,8 +1429,8 @@
     "stockBuildStarted": true,
     "buildLimit": 2,
     "buildsSubmitted": 2,
-    "dbGateEnablement": "NOT_EXECUTED; callbacks must be compatible first",
-    "authChanges": "NOT_EXECUTED; Auth-config write permission missing and two original callback target/pattern entries require correction",
+    "dbGateEnablement": "APPLIED Stock then Core, unchanged approved payloads; exact postchecks PASS; only workspace/preparation/membership enabled",
+    "authChanges": "APPLIED: two Core Preview signup redirects and two equivalent bounded Stock callback patterns; originals and Core OAuth client retained",
     "accountsCreated": 0,
     "paymentsExecuted": 0,
     "stockDeployment": {
@@ -1781,16 +1781,160 @@
       "environment": "Core hxhusfkrlafxdnyasmsu and Stock oyyfcmlquqfrdoffkgsd; existing Gate B Production candidates and Core closed Preview",
       "category": "AUTH_CONFIG_ACCESS_AND_EXACT_TARGET_AUTHORITY",
       "affectedLevel": "Auth configuration; Gate B DB enablement and downstream native/customer acceptance",
-      "status": "BLOCKED",
+      "status": "RESOLVED",
       "source": "Fresh authenticated Stock URL Configuration UI: Add URL remains disabled, four retained entries, new membership paths absent. Corrected payload remains PROPOSED_NOT_AUTHORIZED; workspace AGENTS.md Protected authority and exact closed target approval apply.",
       "recurrence": "Same condition retained across three consecutive goal turns, including the original discovery and two continuation audits. No new Owner approval or Auth-edit session was provided.",
       "resolution": "Approve the two corrected Stock Auth patterns and use an existing session/account with Auth-config write access to append authorized Core/Stock redirect entries; preserve the Core OAuth client and every existing redirect.",
       "safeContinuation": "Reviewed source/SQL proposals, exact permitted reads, application promotions and partial static signup evidence are complete for this gate. Do not enable DB gates or create fixtures before callback compatibility. No additional authorized action can advance the remaining native journey without the missing input/access.",
-      "productionChangedByAudit": false
-    }
+      "productionChangedByAudit": false,
+      "resolutionObserved": "Owner approved corrected Stock patterns and supplied an Auth-editable session. Approved allowlist changes and both preparation transactions are now verified. Historical audit retained."
+    },
+    "authEvidence": {
+      "coreProjectRef": "hxhusfkrlafxdnyasmsu",
+      "coreAdded": [
+        "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+        "https://ja-superadmin-platform-dkqji4srl-rigi26s-projects.vercel.app/auth/callback?flow=signup&next=%2Fhub%2Fcheckout%2Fstock%3Fplan%3D5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
+      ],
+      "coreCountAfter": 8,
+      "coreOriginalCount": 6,
+      "stockProjectRef": "oyyfcmlquqfrdoffkgsd",
+      "stockOriginalEntries": [
+        "https://webzoka-stock-preview.vercel.app/auth/callback",
+        "https://stock.webzoka.com/auth/callback",
+        "https://stock.webzoka.com/**",
+        "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+      ],
+      "stockFinalEntries": [
+        "https://webzoka-stock-preview.vercel.app/auth/callback",
+        "https://stock.webzoka.com/auth/callback",
+        "https://stock.webzoka.com/**",
+        "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+        "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]",
+        "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+      ],
+      "stockCountAfter": 6,
+      "stockCombinedCharacters": 1453,
+      "encoding": "Equivalent ASCII hex ranges; original allowed URI set unchanged",
+      "coreOAuthClientUpdated": false,
+      "siteUrlsChanged": false,
+      "rolesChangedByAgent": false,
+      "coreOAuthClientVerified": {
+        "id": "fe3e0af9-2d84-4ec2-a750-b26bb4a81caf",
+        "redirectUris": [
+          "https://oyyfcmlquqfrdoffkgsd.supabase.co/auth/v1/callback"
+        ],
+        "tokenEndpointAuthMethod": "client_secret_basic",
+        "updated": false
+      }
+    },
+    "dbPostchecks": {
+      "core": {
+        "settings": [
+          {
+            "feature": "membership",
+            "enabled": true
+          },
+          {
+            "feature": "preparation",
+            "enabled": true
+          },
+          {
+            "feature": "workspace",
+            "enabled": true
+          },
+          {
+            "feature": "invitation",
+            "enabled": false
+          },
+          {
+            "feature": "operator_commit",
+            "enabled": false
+          },
+          {
+            "feature": "operator_confirmation",
+            "enabled": false
+          },
+          {
+            "feature": "lifecycle_mutations",
+            "enabled": false
+          },
+          {
+            "feature": "lifecycle_delivery",
+            "enabled": false
+          }
+        ],
+        "billing": [
+          {
+            "feature": "billing",
+            "enabled": true,
+            "sandbox_mode": true
+          }
+        ],
+        "other": [
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "is_active": false,
+            "is_for_sale": false,
+            "approved_contract": true
+          },
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "is_active": false,
+            "is_for_sale": false,
+            "approved_contract": true
+          }
+        ]
+      },
+      "stock": {
+        "settings": [
+          {
+            "feature": "membership",
+            "enabled": true
+          },
+          {
+            "feature": "preparation",
+            "enabled": true
+          },
+          {
+            "feature": "workspace",
+            "enabled": true
+          },
+          {
+            "feature": "operator_stage",
+            "enabled": false
+          },
+          {
+            "feature": "operator_activation",
+            "enabled": false
+          },
+          {
+            "feature": "lifecycle",
+            "enabled": false
+          }
+        ],
+        "billing": [
+          {
+            "feature": "paid_receiver",
+            "enabled": false,
+            "sandbox_mode": true
+          }
+        ],
+        "other": [
+          {
+            "runtime_enabled": false
+          }
+        ]
+      }
+    },
+    "enablePayloadHashes": {
+      "stock": "8cf121096ef13445583821f591a46bf7a11592f378a55098ed8a39246772a3e3",
+      "core": "6fc7d3c9a2533de7136a13aa6befc27ad481dc13381c300bbef0d91df1aef17a"
+    },
+    "fixtureCreation": "Fresh Basic normal signup handed to Owner for private password/submission/verification; result not yet observed. Pro and new workspace creation not started.",
+    "customerNativeFlow": "NOT_EXECUTED; normal signup handoff in progress"
   },
   "gateBAuthCorrection": {
-    "status": "PROPOSED_NOT_AUTHORIZED",
+    "status": "OWNER_APPROVED_APPLIED_EQUIVALENT_ENCODING_VERIFIED",
     "payload": "docs/pricing/stock-gate-b-auth-redirects-20261105.json",
     "sha256": "32dc13d278e731de9faeb5d64527139f6629040da58475cfa1a7ae1a2cddc2e1",
     "correction": "Stock application redirectTo URLs belong to Stock Auth Additional Redirect URLs, including the strict flow query. Core OAuth client keeps only the existing Stock Supabase provider callback.",
@@ -1799,6 +1943,23 @@
       "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
     ],
     "coreOAuthClientUnchanged": true,
-    "managedAuthChangesExecuted": false
+    "managedAuthChangesExecuted": true,
+    "ownerAuthorization": {
+      "answer": "Approve corrected Stock Auth patterns",
+      "proposalCommit": "f3cd782032a8166d8acabe848db7f2f8327ebefb",
+      "source": "Owner question reply in this chat, 5 November 2026"
+    },
+    "executionEncoding": {
+      "path": "docs/pricing/stock-gate-b-auth-execution-20261105.json",
+      "sha256": "33d82d56f0ed8c74a5acedb798c9ae02f5b29e43933a843d7c1511b06891ff00",
+      "transformation": "[0123456789abcdef] to [0-9a-f] at the same 30 UUID positions per pattern; identical finite rune set, all other bytes unchanged",
+      "permissionScopeChanged": false,
+      "studioLimit": 2048,
+      "originalCombinedCharacters": 2053,
+      "appliedCombinedCharacters": 1453,
+      "localTests": 4,
+      "failures": 0,
+      "scopedLintExit": 0
+    }
   }
 }

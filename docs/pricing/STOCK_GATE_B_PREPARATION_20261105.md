@@ -1,6 +1,12 @@
 # Stock Gate B: native workspace preparation and fixture freeze
 
-Status: Owner approved Gate B including promotions at `e65b7902ba78fcb7ee5e21565d0422e17da36339`. Both application promotions are complete; DB gates remain closed. The Auth target correction below needs separate exact-target authority before those two Stock additions. Gate A and its approved repairs are complete; Production currently runs the closed Core/Stock pair recorded in the [canonical rollout](STOCK_CLOSED_ROLLOUT_20261105.md). This proposal enables only preparation and session-selected workspace authorization. Payments, public sales, invitations and lifecycle remain closed.
+Status: Owner approved Gate B including promotions at `e65b7902ba78fcb7ee5e21565d0422e17da36339` and the corrected Stock Auth patterns at `f3cd782032a8166d8acabe848db7f2f8327ebefb`. Both application promotions, the four redirect additions and the two original preparation setting transactions are complete. Fresh customer signup and native preparation acceptance remain pending. Production runs the preparation-enabled Core/Stock pair recorded in the [canonical rollout](STOCK_CLOSED_ROLLOUT_20261105.md). Payments, public sales, invitations and lifecycle remain closed.
+
+## Current execution
+
+The corrected Stock scope is Owner-approved. All four Auth additions are saved: Core eight total entries, Stock six, with all originals retained and the Core OAuth client unchanged. Studio rejected the verbose Stock representation at 2053 characters against its 2048-character combined-list limit. Exact equivalent ASCII hex ranges reduce the same approved permission sets to 1453; four tests and scoped lint pass. The [execution artifact](stock-gate-b-auth-execution-20261105.json) records the unchanged baseline, equivalent representation and proof. No new authority is inferred: the allowed host, two paths and UUID-v4 flow set are identical to the approved correction.
+
+The two original setting transactions executed Stock-first and passed their exact postchecks. Only workspace/preparation/membership are enabled; financial and operator gates remain closed. Fresh Basic signup is handed to the Owner for private password entry, one normal submission and email verification. Its result and all customer/native/payment acceptance remain pending. Earlier proposed/blocked statements below are historical; current evidence is in the canonical handoff and manifest.
 
 ## Exact source and validation
 

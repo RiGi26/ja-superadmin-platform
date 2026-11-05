@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "approvedCommit": "f3cd782032a8166d8acabe848db7f2f8327ebefb",
+  "approvedPayloadSha256": "32dc13d278e731de9faeb5d64527139f6629040da58475cfa1a7ae1a2cddc2e1",
+  "ownerAuthorization": "Approve corrected Stock Auth patterns",
+  "projectRef": "oyyfcmlquqfrdoffkgsd",
+  "baselineStockRedirects": [
+    "https://webzoka-stock-preview.vercel.app/auth/callback",
+    "https://stock.webzoka.com/auth/callback",
+    "https://stock.webzoka.com/**",
+    "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "studioCombinedCharacterLimit": 2048,
+  "stockExecutionPatterns": [
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+  ],
+  "encoding": "ASCII_HEX_RANGE_EQUIVALENT",
+  "permissionSet": "Same exact Stock host, two callback paths and lowercase UUID-v4 flow; existing entries retained",
+  "originalCombinedCharacters": 2053,
+  "encodedCombinedCharacters": 1453,
+  "rootCause": "Supabase Studio AddNewURLModal enforces payloadString.length <= 2 * 1024 before its API mutation; exact existing-plus-proposed list was 2053 characters.",
+  "verification": "Four local tests pass, including failing-before/passing-after length regression and exact finite-character-set equivalence. Stock UI persists six entries, retaining all four originals.",
+  "managedApplied": true
+}
