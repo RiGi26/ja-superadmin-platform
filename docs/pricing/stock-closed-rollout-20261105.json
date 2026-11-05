@@ -1775,6 +1775,18 @@
       "fullCustomerJourney": "NOT_EXECUTED",
       "viewportOverrideReset": true,
       "note": "Visible browser and explicit screenshot clip produce the required 390x844 JPEG. Earlier hidden/native-size captures were not accepted as exact-width evidence."
+    },
+    "blockerAudit": {
+      "observedAt": "2026-11-05T14:18:24Z",
+      "environment": "Core hxhusfkrlafxdnyasmsu and Stock oyyfcmlquqfrdoffkgsd; existing Gate B Production candidates and Core closed Preview",
+      "category": "AUTH_CONFIG_ACCESS_AND_EXACT_TARGET_AUTHORITY",
+      "affectedLevel": "Auth configuration; Gate B DB enablement and downstream native/customer acceptance",
+      "status": "BLOCKED",
+      "source": "Fresh authenticated Stock URL Configuration UI: Add URL remains disabled, four retained entries, new membership paths absent. Corrected payload remains PROPOSED_NOT_AUTHORIZED; workspace AGENTS.md Protected authority and exact closed target approval apply.",
+      "recurrence": "Same condition retained across three consecutive goal turns, including the original discovery and two continuation audits. No new Owner approval or Auth-edit session was provided.",
+      "resolution": "Approve the two corrected Stock Auth patterns and use an existing session/account with Auth-config write access to append authorized Core/Stock redirect entries; preserve the Core OAuth client and every existing redirect.",
+      "safeContinuation": "Reviewed source/SQL proposals, exact permitted reads, application promotions and partial static signup evidence are complete for this gate. Do not enable DB gates or create fixtures before callback compatibility. No additional authorized action can advance the remaining native journey without the missing input/access.",
+      "productionChangedByAudit": false
     }
   },
   "gateBAuthCorrection": {

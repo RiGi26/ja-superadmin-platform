@@ -1,6 +1,12 @@
 # Stock self-payment implementation and acceptance
 
-### Gate B applications promoted; Auth correction pending — 5 November
+### Runtime continuation blocked after repeated access audit — 5 November
++
++Fresh authenticated Stock Auth observation at 14:18:24 UTC still shows Add URL disabled and only the four retained entries. The corrected Stock callback payload remains unapproved. This same access/authority condition persisted through three consecutive goal turns; no provider Auth write or new fixture/email/payment action occurred. The manifest records the affected environment/level, source, recurrence and exact resolution under `gateBExecution.blockerAudit`. No delay is estimated.
++
++Continuation requires approval of the two corrected Stock Auth patterns and an existing Auth-config-write session to apply the authorized entries. Core's OAuth client and all existing redirects remain unchanged. Gate B DB enablement must wait for compatible callbacks. Available source, scoped reads, deployments and partial static-page checks are already verified; no safe remaining runtime action can advance signup/preparation while these blockers persist. Production changed by this audit: NO. The complete subscription objective remains unachieved; do not substitute the closed deployment or source checks for customer/payment acceptance.
++
++### Gate B applications promoted; Auth correction pending — 5 November
 
 The Owner approved Gate B including promotions against publication `e65b7902ba78fcb7ee5e21565d0422e17da36339`. Both exact application candidates reached Ready and were promoted Stock first: Stock `dpl_4CHBSDJNoajugaA9GKHJesEmmfYe` at source `9a2fb818341352cb4aabe183d864cf5bc4a9b8b8`, then Core `dpl_8UusZpnSyyYvZGVGbjkASv7HwVwJ` at source `187a4e08028e05b5acf7022606c55ab007611522`. Both were verified unaliased before promotion; fresh canonical inspection matches the exact Ready IDs. All raw export blobs match (Stock 667; Core 504). Both approved builds are consumed. Eighteen closed/unauthenticated HTTP checks pass. All new database gates and Stock paid receiver remain false; offers stay closed, and both required deployment switches remain false. No Gate B enable transaction or account/email/payment action occurred.
 
