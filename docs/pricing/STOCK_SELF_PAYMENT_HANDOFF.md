@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+### Core operator lifecycle commands — closed source foundation
+
+`STOCK_MEMBER_LIFECYCLE_CORE.PROPOSED.sql` adds an Owner-only, native-session-verified command for operational role changes and scoped revocation. Role changes require the reciprocal activation confirmation and a current paid seat decision. Expected member revisions reject stale writes. The Owner membership is never a target, preserving the last admin and Owner-only billing. Member revisions advance independently from the unchanged Company revision. Revocation updates the Registry and private membership together, retains history and denies reactivation. Partial uniqueness permits a later fresh admission while preserving one current membership per identity and workspace; Stock cleanup must finish before a replacement profile can be staged.
+
+Exact transaction row permits authorize the private member update. A consumed audit permit supplies the Company audit-head row image to the existing graph guard; no legacy graph branch or Registry append implementation is replaced. The member change, Registry audit and immutable command payload commit atomically. The payload is the durable input for future signed delivery. Both mutation and delivery settings install disabled, and no application action exposes this writer yet.
+
+Disposable SQL tests cover Owner protection, foreign scope, missing activation confirmation, stale revisions, audit rollback, command replay/conflict, loss of old-revision authorization, unchanged Owner/Company revisions, terminal revocation and retained private history. PostgreSQL 17 CI adds competing role commands on independent connections. Signed transport, Stock application/acknowledgment, management UI and canceled-stage cleanup remain required before enabling the feature. This is source progress, not a working hosted role-management claim. No managed SQL or Production change was executed.
+
 ### Reciprocal operator activation confirmation — 5 November
 
 Core now independently reads the recipient's committed Stock activation using the same live native Stock token before retaining a confirmation. The new authenticated Stock reader exposes only that recipient's immutable activation witness, tied to its current native session. Core verifies the current native pair, admitted membership, paid resource, Owner and exact Company/profile tuple. Its confirmation and append-only audit commit together. It changes no Company or member revision, creates no selected session, and grants no billing authority.
