@@ -4,6 +4,7 @@ import type { StockBillingAccount } from '@/lib/stock-self-payment'
 import { STOCK_E1_APP_ORIGIN } from '@/lib/e1-realm'
 import { APPROVED_OFFERS } from '@/lib/plan-catalog'
 import { STOCK_OPERATOR_INVITATION_ENABLED } from '@/lib/stock-operator-protocol'
+import { STOCK_MEMBER_LIFECYCLE_ENABLED } from '@/lib/stock-member-protocol'
 import { STOCK_MEMBERSHIP_RUNTIME_ENABLED } from '@/lib/stock-membership-protocol'
 import { stockCheckoutPath, stockOperatorPath } from '@/lib/stock-purchase-policy'
 import styles from './stock-billing.module.css'
@@ -33,8 +34,8 @@ export function StockBillingPanel({ billing, systemsOnly = false }: { billing: S
             <input type="hidden" name="companyId" value={workspace.companyId} /><input type="hidden" name="reservationId" value={workspace.reservationId} /><input type="hidden" name="commandId" value={randomUUID()} />
             <button className={styles.primary}>Buka Webzoka Stock</button>
           </form> : ['not_started', 'suspended'].includes(workspace.activation) && <Link className={styles.primary} href={offer ? stockCheckoutPath(offer.id, workspace.companyId) : '/hub/store#stock-packages'}>{offer ? 'Periksa langganan' : 'Pilih paket Stock'}</Link>}
-          {canEnter && membership && STOCK_OPERATOR_INVITATION_ENABLED &&
-            <Link className={styles.secondary} href={stockOperatorPath(workspace.companyId)}>Kelola undangan tim</Link>}
+          {membership && STOCK_MEMBERSHIP_RUNTIME_ENABLED && (STOCK_MEMBER_LIFECYCLE_ENABLED || (canEnter && STOCK_OPERATOR_INVITATION_ENABLED)) &&
+            <Link className={styles.secondary} href={stockOperatorPath(workspace.companyId)}>Kelola tim Stock</Link>}
           <a className={styles.secondary} href="/hub/account?view=billing">Periksa status terbaru</a>
         </div>
         {!systemsOnly && <section aria-label={`Riwayat tagihan ${workspace.companyName}`} className={styles.history}><h3>Riwayat tagihan</h3>

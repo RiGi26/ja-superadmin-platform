@@ -1804,5 +1804,19 @@
         "after": "  after(() => reconcileStockMemberEvents())\n"
       }
     ]
+  },
+  {
+    "file": "lib/hub-ui-test-harness.mjs",
+    "profile": "runtime",
+    "beforeHash": "80605dae31596a5c91fd7e1f1fbf5273b737ac144d49e924363ffd44954fb430",
+    "afterHash": "1ab47c6cef8b74f56b440fd40cadf586c5c451208ebf6c65e1b7ed2afd4a0a14",
+    "edits": [
+      {
+        "beforeOffset": 1562,
+        "afterOffset": 1562,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-member-protocol') return { STOCK_MEMBER_LIFECYCLE_ENABLED: false }\n"
+      }
+    ]
   }
 ]
