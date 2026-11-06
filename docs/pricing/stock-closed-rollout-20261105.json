@@ -2144,6 +2144,14 @@
         }
       ],
       "financialActions": 0
+    },
+    "existingBasicNormalRegression": {
+      "status": "LOGIN_REJECTED_OWNER_DIRECT_SIGNIN_PENDING",
+      "date": "2026-11-06",
+      "attempts": 2,
+      "credentialValueRecorded": false,
+      "resetExecuted": false,
+      "nativePreparationExecuted": false
     }
   },
   "gateBAuthCorrection": {
@@ -2347,6 +2355,16 @@
     "productionFixDeployed": false,
     "hostedRetest": "NOT_EXECUTED",
     "mobileExact390": "NOT_EXECUTED",
-    "evidence": "Session scratchpad/gate-b-pro-account-workspace-check-unavailable-full-20261106.jpg"
+    "evidence": "Session scratchpad/gate-b-pro-account-workspace-check-unavailable-full-20261106.jpg",
+    "sourceContract": {
+      "initialRun": 42168326634,
+      "initialPassed": 1451,
+      "initialFailed": 2,
+      "classification": "EXACT_SOURCE_SUCCESSOR_NOT_REGISTERED",
+      "resolution": "Separate new rendered regression from immutable historical test; append one exact four-hunk UI successor, retain all preceding contracts and negative controls",
+      "localReconstructionChecks": "10/10 PASS",
+      "localTypes": "PASS",
+      "localLint": "PASS"
+    }
   }
 }
