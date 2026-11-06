@@ -48,4 +48,3 @@ export function stockPreparationDiagnostics(operation: Operation) {
     },
   }
 }
-
