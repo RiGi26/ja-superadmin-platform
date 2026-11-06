@@ -1329,7 +1329,7 @@
     }
   },
   "gateBProposal": {
-    "status": "OWNER_APPROVED_AUTH_AND_PREPARATION_APPLIED_NATIVE_UAT_PENDING",
+    "status": "OWNER_APPROVED_PREPARATION_APPLIED_SELECTION_AUTH_AND_NATIVE_READINESS_PENDING",
     "sourceCandidates": {
       "core": "187a4e08028e05b5acf7022606c55ab007611522",
       "stock": "9a2fb818341352cb4aabe183d864cf5bc4a9b8b8"
@@ -1965,6 +1965,24 @@
       "stockOriginRows": 0,
       "next": "Review/approve exact unpaid preparation repair; retry retained command only after postchecks. No replacement workspace or payment.",
       "sourceRootCause": "New account preparation incorrectly requires public sales or sandbox cohort; disposable no-cohort reproduction fails STOCK_BILLING_EXISTING_RESOURCE."
+    },
+    "pendingLayoutEvidence": {
+      "status": "PARTIAL_ONLY_NOT_EXACT_CSS390",
+      "desktop": "Session scratchpad/gate-b-basic-pending-desktop.jpg",
+      "crop": "Session scratchpad/gate-b-basic-pending-mobile-crop-not-css390.jpg",
+      "requested": [
+        390,
+        844
+      ],
+      "observedInner": [
+        430,
+        668
+      ],
+      "observedClientAndScrollWidth": [
+        415,
+        415
+      ],
+      "note": "390px screenshot crop is not a CSS-390 viewport. No exact-mobile UAT PASS. Browser viewport reset afterward."
     }
   },
   "gateBAuthCorrection": {
@@ -1985,7 +2003,7 @@
     },
     "executionEncoding": {
       "path": "docs/pricing/stock-gate-b-auth-execution-20261105.json",
-      "sha256": "7b77e3acc8701a94403f3855015e2059fc7b78f6301b3e5a5f66221e51262319",
+      "sha256": "c639e929164be719a8f239e292f4ccee6358c2b13befbf1a4ffa374abb5be348",
       "encoding": "Original approved explicit character lists; rejected mixed-range attempt retained only as history",
       "permissionScopeChanged": false,
       "studioLimit": 2048,
@@ -1995,6 +2013,19 @@
       "selectionApplied": false,
       "providerEngine": "github.com/gobwas/glob v0.2.3",
       "providerEngineCI": "PASS 42144917127 at 1c3b11d21817290f532c96913892608a4687e610"
+    },
+    "selectionResolution": {
+      "status": "ORIGINAL_AUTHORITY_VALID_EXECUTION_CAPABILITY_PENDING",
+      "path": "docs/pricing/stock-gate-b-auth-management-patch-20261106.json",
+      "sha256": "d53ba79d0af6a5e8de5e960e4bb2da668a28e9383bb8ffd9fbeb9b9bd32342b0",
+      "endpoint": "PATCH https://api.supabase.com/v1/projects/oyyfcmlquqfrdoffkgsd/config/auth",
+      "bodyFields": [
+        "uri_allow_list"
+      ],
+      "entries": 6,
+      "characters": 2053,
+      "newPermissions": false,
+      "note": "Exact four retained entries plus both original approved patterns. Connected Supabase tool has no Auth-config mutation; Studio cannot submit the full string. No API request or credential read occurred."
     }
   },
   "gateBPreparationRepair": {
@@ -2021,6 +2052,31 @@
     "applicationBuildNeeded": false,
     "managedExecuted": false,
     "oldBodyMd5": "b665c2a71190f0185e3d2bee3e5a14ac",
-    "newBodyMd5": "966a113084bf699edb1c52cb42105be5"
+    "newBodyMd5": "966a113084bf699edb1c52cb42105be5",
+    "validation": {
+      "coreCommit": "50451b25c850a882cad334477e1aee86dca73fe3",
+      "coreRun": 42146802148,
+      "coreConclusion": "success",
+      "stockCommit": "ab79315e20b47a418065ea57732cbb2745b2c0a4",
+      "stockRun": 42148043208,
+      "stockConclusion": "success",
+      "pdfRun": 42148043065,
+      "pdfConclusion": "success",
+      "sourceChecks": 336,
+      "stockModuleTests": 216,
+      "disposableSqlTests": 311,
+      "postgres17Tests": 10,
+      "failures": 0,
+      "localWorkspaceTests": 28,
+      "localAuthContracts": 5,
+      "payloadHashesFreshlyMatched": true
+    },
+    "testFixtureHistory": {
+      "failedRun": 42147338381,
+      "failure": "The PostgreSQL fixture tried to re-enable retired cohort rows; STOCK_BILLING_COHORT_IMMUTABLE correctly rejected it.",
+      "resolution": "Start without cohort eligibility and insert it only once after preparation for the existing financial matrix. Protected guards and proposed SQL were unchanged.",
+      "retestRun": 42148043208,
+      "retest": "PASS"
+    }
   }
 }

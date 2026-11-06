@@ -8,6 +8,8 @@ Core's two Preview callbacks remain applied. Stock's invalid compact attempt was
 
 The two original setting transactions executed Stock-first and passed their exact postchecks. Only workspace/preparation/membership are enabled; financial and operator gates remain closed. Fresh Basic signup/email verification and canonical Hub sign-in succeeded. Its approved named Core Company was created through the normal UI and independently read back. Stock native preparation remains pending after the Auth interruption. The canonical handoff and manifest contain current IDs and evidence; earlier blocked/proposed observations below retain their historical scope.
 
+Native Basic consent is complete and both exact native subject IDs are verified. Reciprocal readiness remains unconfirmed. The [supplemental unpaid preparation repair](STOCK_GATE_B_PREPARATION_REPAIR_20261106.md) reproduces and corrects the sales/cohort coupling in source; paired disposable/PostgreSQL 17 CI passes, while managed execution remains unapproved.
+
 ## Exact source and validation
 
 - Core source: `187a4e08028e05b5acf7022606c55ab007611522`; [source CI](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42006994939).

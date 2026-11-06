@@ -19,7 +19,7 @@
   "originalCombinedCharacters": 2053,
   "encodedCombinedCharacters": 1408,
   "rootCause": "The mixed range [0-9a-f] is invalid in github.com/gobwas/glob v0.2.3. Supabase Auth uses glob.MustCompile during configuration loading; invalid additions caused Auth 503 until removed. JavaScript regex tests did not prove provider syntax.",
-  "verification": "Stock Auth JWKS returned 503 before removal and 200 after baseline restoration. UI now retains four original entries and the verbatim approved preparation callback. Actual pinned Go engine regression runs in existing source CI.",
+  "verification": "Actual pinned Go engine compilation/matching passed in full Core CI 42144917127 and 42146802148. Five local Node contracts verify current/pending sets and exact Management API payload. Stock UI retains five valid entries; selection remains unapplied.",
   "managedApplied": true,
   "status": "PREPARATION_CALLBACK_APPLIED_VERBATIM_SELECTION_PENDING_UI_LIMIT",
   "rejectedCompactPatterns": [
