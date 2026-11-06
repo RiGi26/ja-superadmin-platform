@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_FRESH_THREE_RECIPROCALLY_PREPARED_EXISTING_REGRESSIONS_AND_SELECTION_PENDING",
+  "status": "PAUSED_BY_OWNER_EXISTING_BASIC_FINAL_CONFIRMATION_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -300,19 +300,41 @@
       "stockTenantId": "900376ee-8003-4c20-807e-e4ff50f2be06",
       "ownerMembershipId": "1af51693-caf9-401b-b942-4734dc7bd0a3",
       "profileId": "94387c2e-3491-4254-9392-6010eddcbb8b",
-      "preparationCommandId": null,
+      "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
       "invoiceId": null,
-      "status": "PREPARATION_RECEIPT_MISSING_NATIVE_REGRESSION_PENDING",
+      "status": "CORE_STOCK_PREPARED_CORE_CONFIRMATION_PENDING",
       "currentSavedPlanMatches": true,
       "billingAccountExists": false,
       "observedAt": "2026-11-05",
       "nativeIdentityObservedAt": "2026-11-05",
       "nativeIdentityEvidence": "Approved Gate B exact fixture readbacks; verified on both sides; no native session or paid-access claim",
       "preparationReceiptObservedAt": "2026-11-06",
-      "preparationReceiptBothSidesMatch": false,
+      "preparationReceiptBothSidesMatch": true,
       "corePreparationConfirmed": false,
-      "coreCurrentMembershipMatches": false,
-      "stockCurrentMembershipMatches": false
+      "coreCurrentMembershipMatches": true,
+      "stockCurrentMembershipMatches": true,
+      "preparationReceipt": {
+        "role": "admin",
+        "status": "prepared",
+        "version": 2,
+        "bindingId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+        "commandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
+        "companyId": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+        "profileId": "94387c2e-3491-4254-9392-6010eddcbb8b",
+        "instanceId": "80f34350-cf08-41b4-99b9-fa3012dc37ac",
+        "coreSubject": "fdbcf474-722b-4f5b-a3e7-23086e3f490d",
+        "coreTenantId": "55f50424-6663-440f-8001-0e77af2b1d35",
+        "stockSubject": "26e9a59b-dd0d-47da-bc0b-dad349dc206f",
+        "accessGranted": false,
+        "stockTenantId": "900376ee-8003-4c20-807e-e4ff50f2be06",
+        "bindingRevision": 1,
+        "companyRevision": 0,
+        "ownerMembershipId": "1af51693-caf9-401b-b942-4734dc7bd0a3",
+        "membershipRevision": 1
+      },
+      "matchingInactiveProfile": true,
+      "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+      "readinessEvidence": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
     },
     {
       "label": "existing_pro",
@@ -2243,12 +2265,31 @@
       "financialActions": 0
     },
     "existingBasicNormalRegression": {
-      "status": "LOGIN_REJECTED_OWNER_DIRECT_SIGNIN_PENDING",
+      "status": "LOGIN_RECOVERED_PREPARATION_CONFIRMATION_PENDING",
       "date": "2026-11-06",
-      "attempts": 2,
-      "credentialValueRecorded": false,
-      "resetExecuted": false,
-      "nativePreparationExecuted": false
+      "historicalRejectedLogin": {
+        "status": "LOGIN_REJECTED_OWNER_DIRECT_SIGNIN_PENDING",
+        "date": "2026-11-06",
+        "attempts": 2,
+        "credentialValueRecorded": false,
+        "resetExecuted": false,
+        "nativePreparationExecuted": false
+      },
+      "recovery": {
+        "ownerApproval": "Recover older Basic only",
+        "email": "egyelisyaaaaa+stock-basic-20261102@gmail.com",
+        "requestCount": 1,
+        "ownerReportedPasswordUpdated": true,
+        "passwordValueStored": false,
+        "normalLoginSucceeded": true,
+        "exactEmailObservedInAccountMenu": true,
+        "proRecoveryAuthorized": false
+      },
+      "nativeConfirmationAttempts": 2,
+      "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
+      "coreConfirmation": false,
+      "rootCause": "NOT_ESTABLISHED",
+      "observationScope": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
     }
   },
   "gateBAuthCorrection": {
@@ -2471,10 +2512,12 @@
     "routineLoginApproved": true,
     "repeatedLoginPermissionRequired": false,
     "credentialValueStored": false,
-    "otherApprovedScenarioIdentitiesRetained": true
+    "otherApprovedScenarioIdentitiesRetained": true,
+    "latestNativeLoginSucceeded": true,
+    "passwordRecoveryCompleted": "Older Basic only; one request; Owner privately entered/submitted new password; no credential value stored"
   },
   "gateBReceiptFreeze": {
-    "status": "OWNER_APPROVED_EXECUTED_THREE_MATCH_TWO_MISSING",
+    "status": "OWNER_APPROVED_EXECUTED_FOUR_RECEIPTS_THREE_CONFIRMED_ONE_PARTIAL_ONE_MISSING",
     "proposal": "docs/pricing/STOCK_GATE_B_RECEIPT_FREEZE_20261106.md",
     "core": {
       "projectRef": "hxhusfkrlafxdnyasmsu",
@@ -2505,6 +2548,63 @@
       "date": "2026-11-06"
     },
     "managedObservations": [
+      {
+        "label": "additional_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "3f315484-2c46-4ae2-a408-3a231facbce8",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001"
+      },
+      {
+        "label": "existing_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
+        "coreConfirmed": false,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+        "observationScope": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
+      },
+      {
+        "label": "existing_pro",
+        "reciprocalReceiptMatches": false,
+        "preparationCommandId": null,
+        "coreConfirmed": false,
+        "coreCurrentMember": false,
+        "stockCurrentMember": false,
+        "stockInactiveProfile": true,
+        "savedPlanId": null
+      },
+      {
+        "label": "fresh_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "452f1bc6-747e-4b3a-88c9-f5968443a239",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001"
+      },
+      {
+        "label": "fresh_pro",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "9ca176ce-0639-46a0-934b-3e31afa511d4",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
+      }
+    ],
+    "managedEvidence": "Session scratchpad/gate-b-receipt-freeze-managed-20261106.json",
+    "managedMutationPerformed": false,
+    "financialActionPerformed": false,
+    "allFiveReady": false,
+    "initialManagedObservations": [
       {
         "label": "additional_basic",
         "reciprocalReceiptMatches": true,
@@ -2556,9 +2656,24 @@
         "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
       }
     ],
-    "managedEvidence": "Session scratchpad/gate-b-receipt-freeze-managed-20261106.json",
-    "managedMutationPerformed": false,
-    "financialActionPerformed": false,
+    "latestManagedEvidence": "Session scratchpad/gate-b-existing-basic-partial-handoff-20261106.json"
+  },
+  "pauseHandoff": {
+    "status": "PAUSED_BY_OWNER",
+    "date": "2026-11-06",
+    "reason": "Owner requested latest handoff and continuation in a new chat",
+    "canonicalDocument": "docs/pricing/STOCK_SELF_PAYMENT_HANDOFF.md",
+    "nextAction": "Diagnose existing Basic final Core acknowledgement; stop blind retries; preserve exact authority boundaries",
+    "rootCause": "NOT_ESTABLISHED",
+    "stockDiagnosticSource": "730f7f64a473066d781856f19d83f4083f53e8b2",
+    "stockDiagnosticFocusedLocal": "PASS 1/1 covering existing v1 Basic and Pro; native transport synthetic",
+    "stockDiagnosticCi": {
+      "source": 42175113962,
+      "pdf": 42175113964,
+      "conclusion": "PASS"
+    },
+    "productionChangedForHandoff": false,
     "allFiveReady": false
-  }
+  },
+  "lastUpdated": "2026-11-06"
 }

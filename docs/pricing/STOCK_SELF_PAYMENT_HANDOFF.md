@@ -1,5 +1,98 @@
 # Stock self-payment implementation and acceptance
 
+## Latest continuation snapshot — paused by Owner, 6 November 2026
+
+Read this section first in the next chat. The Owner requested a fresh-chat handoff because this chat is too long and set the goal to `paused`. Execution stopped. This snapshot supersedes the older observations below; those remain historical evidence. The objective is incomplete, and no public or financial release is authorized.
+
+### Objective and first next action
+
+Preserve the complete scope: Basic Rp149,000/month and Pro Rp359,000/month; choose package → normal signup/sign-in → email verification → prepare/select workspace → review → Midtrans → activated Stock → invoice history. Acceptance still includes five successful bounded sandbox purchases, two real Pro operators, independent Basic/Pro workspaces under one Owner, recovery/isolation/role tests, desktop and exact CSS 390px, then separately authorized public release and live-mode proof. Do not redefine completion around preparation or passing source tests.
+
+The immediate blocker is **existing Basic's final reciprocal acknowledgement**, not its password or account identity. Normal recovery/sign-in now works. Two native confirmation attempts saved matching Core/Stock preparation receipts under the same command, but Core still has no final confirmation. Stop blind retries. Diagnose the authenticated Core confirm/Stock prepared-read/native transport boundary with a falsifiable hypothesis and evidence. Do not manually insert a confirmation or treat privileged readback as customer RLS proof. Any extra managed query, sensitive runtime-log access, provider mutation or new deployment outside the existing exact approvals needs its own concrete scoped authority.
+
+### Repositories, source and preserved work
+
+| Item | Current state |
+| --- | --- |
+| Core | `D:\Project\Website JapanArena\JapanArena SaaS\.wt-customer-hub-core`; `RiGi26/ja-superadmin-platform`; task branch `feat/basic-pro-pricing-prep`, default `main`; draft [PR 60](https://github.com/RiGi26/ja-superadmin-platform/pull/60) |
+| Stock | `D:\Project\Website JapanArena\JapanArena SaaS\.wt-webzoka-stock-pdf`; `RiGi26/webzoka-stock-platform`; same task branch, default `main`; draft [PR 14](https://github.com/RiGi26/webzoka-stock-platform/pull/14) |
+| Core before this documentation publication | `1841cc3106bcc7ebd2ed41de6f21aefd9a988bca`; [full CI 42172261625 PASS](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42172261625) |
+| Latest Stock diagnostic-test successor | `730f7f64a473066d781856f19d83f4083f53e8b2`; adds only an authenticated v1 receipt-read assertion. Focused local test PASS; [source CI 42175113962 PASS](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42175113962), [PDF CI 42175113964 PASS](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42175113964). No application/SQL fix is included. |
+| Last complete paired verification | Core `5691c2716f486a2417d849baaff5c2baf42bd612` [CI 42170725773 PASS](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42170725773); Stock `ffed2e57c8d46c931aefe9344866acb2d96ac311` [paired CI 42170838870 PASS](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42170838870), pinned to that Core; [PDF CI 42170838898 PASS](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42170838898) |
+
+Verify current Git HEADs/status and PR checks before editing; the final handoff publication changes documentation/manifest only. Core has unrelated modified `.gitignore` and untracked `docs/security/h1-g1-e1-isolated-ci.zip`; preserve both. Reuse these verified worktrees. No new worktree, installation, reset, cleanup or deletion is needed or authorized by this handoff. Do not inspect the retired Stock repository. Both task branches have Vercel Git deployment disabled. No Notion/Obsidian write is needed.
+
+### Production is separate from current source
+
+| Target | Approved deployed application |
+| --- | --- |
+| Core | Source `187a4e08028e05b5acf7022606c55ab007611522`; Production `dpl_8UusZpnSyyYvZGVGbjkASv7HwVwJ`; canonical `https://hub.webzoka.com`; deployment `https://ja-superadmin-platform-11nopxubq-rigi26s-projects.vercel.app` |
+| Stock | Source `9a2fb818341352cb4aabe183d864cf5bc4a9b8b8`; Production `dpl_4CHBSDJNoajugaA9GKHJesEmmfYe`; canonical `https://webzoka-stock-platform.vercel.app`; deployment `https://webzoka-stock-platform-3sf7huvq1-rigi26s-projects.vercel.app` |
+| Managed databases | Core `hxhusfkrlafxdnyasmsu`; Stock/portal `oyyfcmlquqfrdoffkgsd` |
+
+Gate A's three builds and Gate B's two additional Production builds are consumed. No further deployment/promotion, merge, public-sales or payment authority exists. The Core Hub overview fix is source-only: it uses the already verified canonical Stock Owner workspace result instead of erasing v2/multiple workspaces when the legacy E1 summary is unavailable. Its local rendered/billing regressions pass 31/31; types/lint/full Core CI pass. Exact source reconstruction preserves all historical pins. It still needs an approved deployment and hosted retest.
+
+### UAT identity and password recovery
+
+Default UAT account: **`egyelisyaaaaa+stock-basic-20261102@gmail.com`**, existing Basic. It is different from `egyelisyaaaaa+stock-basic-fresh-20261105@gmail.com`. The Owner explicitly authorized routine login and instructed not to ask for login permission repeatedly. That authority carries forward. Other approved fixtures remain necessary for their specific Pro/fresh/isolation scenarios.
+
+After rejected credentials, the Owner approved **“Recover older Basic only”**. One normal Hub recovery request was submitted. Core's exact existing recovery callback was independently verified in its eight-entry redirect list; no Auth configuration changed. The Owner entered/submitted the new password privately, reported completion, and left the login form ready. The agent hid the visible-password toggle, submitted the form under standing authority, and verified the exact older Basic email in the account menu. The native preparation receipt independently matches Core subject `fdbcf474-722b-4f5b-a3e7-23086e3f490d` and Stock subject `26e9a59b-dd0d-47da-bc0b-dad349dc206f`. No password value is stored here, in the manifest or in evidence.
+
+Existing Pro has **no password-recovery authorization** and received no recovery request. New-password entry/confirmation/submission and any unapproved security/consent prompt remain human steps. Normal login permission does not supply an unavailable credential or authorize credential guessing. Do not copy tokens/cookies between origins or ask for passwords/recovery links in chat.
+
+At pause, the old chat's in-app browser was ID `2`, tab `8`, on Stock's membership callback showing an uncertain result. Hub older Basic sign-in had succeeded. Treat browser IDs/session survival as historical: discover the new chat's current browser state and obtain fresh native authorization if expired. User-owned Gmail/Google tabs were not read or modified. Preserve them. Do not put callback authorization codes or raw sessions in handoff evidence.
+
+### Five fixtures and exact current preparation state
+
+All resource IDs, normalized aliases/hashes, profiles, native subjects, creation commands and known preparation receipts live in `stock-closed-rollout-20261105.json` → `fixtures`. The three fresh businesses already exist: do not recreate them.
+
+| Fixture | Company | Preparation command | Current evidence |
+| --- | --- | --- | --- |
+| Existing Basic | `0c0b5c44-2af7-471e-8685-bd99438db48d` | `f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc` | Core and Stock receipts match; current revision-1 membership/profile matches; inactive Stock profile. Core confirmation **false**, including readback after one controlled retry. Not checkout-ready. |
+| Existing Pro | `bab486e5-f50e-45ac-8dca-6ae8488104a0` | `null` | Still no preparation receipt/current membership confirmation. Staged Stock profile inactive. Normal native regression not completed. |
+| Fresh Basic | `d2c2f26b-9740-4f05-b775-b814563bfd79` | `452f1bc6-747e-4b3a-88c9-f5968443a239` | Both receipts match; Core confirmed; Stock inactive; Basic saved plan. |
+| Fresh Pro | `d713ddba-3568-477b-af22-7dec7d7ec740` | `9ca176ce-0639-46a0-934b-3e31afa511d4` | Both receipts match; Core confirmed; Stock inactive; Pro saved plan. |
+| Pro Owner's separate Basic | `8215b025-e5b6-43d4-b2d1-3a4236178b6c` | `3f315484-2c46-4ae2-a408-3a231facbce8` | Both receipts match; Core confirmed; Stock inactive; Basic saved plan. |
+
+Existing Basic's retained reservation is `80f34350-cf08-41b4-99b9-fa3012dc37ac`. After its first native attempt, both exact reads showed matching receipt/command, while Core confirmation was false. After the retry, the Core read again showed the same command and false confirmation. Stock was not reread after that retry; its prior committed receipt is recorded with that observation scope. No replacement workspace, financial action or forced acknowledgement occurred.
+
+### Current investigation and evidence limits
+
+The new four-line Stock test assertion calls `public.stock_membership_prepared_owner_context` as an authenticated synthetic Stock user between v1 preparation and Core confirmation. The focused test covers existing Basic and Pro and passes 1/1 locally. Therefore the managed failure is **not reproduced by this local SQL scenario**; do not declare all managed SQL/native JWT behavior correct or assert a root cause. Native transport/Auth observations in these fixtures remain synthetic. No speculative acknowledgement repair was implemented.
+
+One earlier UI observation also remains open: after “Verifikasi workspace Stock,” the page still displayed that control until a normal browser reload revealed “Konfirmasi koneksi Stock.” Record it as an observation; caching/root cause is not established. Do not claim this was fixed.
+
+Safe next investigation: inspect the current Core confirm/Stock native prepared-read composition and compare its deployed source with the passing v1/v2 cases; obtain only the next missing bounded runtime evidence under applicable authority. Do not weaken identity/session/revision checks, extend an expired observation, normalize an uncertain result into success, or apply SQL outside an approved exact payload. Two native confirmation attempts are not three source-fix attempts; nevertheless do not keep repeating them without new evidence.
+
+### Reusable authority and remaining protected boundaries
+
+- Gate A: **“Approve Gate A including promotions”**, proposal `91289ee538fda0ef490a296009009c0bd96a039f`; 29 exact migrations/scoped reads and three closed builds. Installed and recorded. Supplemental **“Approve both repairs and scoped reads”** at `99b46e65b35d1a2ca9991cbf19d3f8fe1fb4b198` covered one Stock history row without DDL replay and two Core FK indexes. Do not replay installed proposals.
+- Gate B: **“Approve Gate B including promotions”** at `e65b7902ba78fcb7ee5e21565d0422e17da36339`; two additional Production builds/promotions, six original SQL payloads, normal preparation for four approved Owners/five workspaces. Both preparation-setting transactions and Stock-first promotions completed. Workspace/membership/preparation are enabled; payment, invitations/operators/lifecycle/cohort/public offers remain closed. No automatic grant for extra SQL, builds or financial actions follows.
+- Auth correction: **“Approve corrected Stock Auth patterns”** at `f3cd782032a8166d8acabe848db7f2f8327ebefb`. Core's two exact Preview callbacks and Stock's original preparation callback are saved. Core OAuth client `fe3e0af9-2d84-4ec2-a750-b26bb4a81caf` remains unchanged with provider callback `https://oyyfcmlquqfrdoffkgsd.supabase.co/auth/v1/callback`.
+- Stock selection callback remains pending. The full retained-four-plus-approved-two list totals 2053 characters; Studio caps 2048. Current valid list has five rows. Invalid `[0-9a-f]` mixed ranges previously caused Auth 503 and were removed; full original character-list syntax is mandatory. Actual pinned Go glob v0.2.3 tests pass. The exact [Studio exception](STOCK_GATE_B_PREPARATION_REPAIR_20261106.md#proposed-studio-execution-exception-remove-one-redundant-legacy-entry) at `afaf21e3bee1ba3a12e4a0ca3c74b4a258fa0b0f` removes only redundant `https://stock.webzoka.com/auth/callback`, retained by unchanged `https://stock.webzoka.com/**`, then appends the original approved selection pattern. Final list 2013 characters. **This exception is still unapproved.** Do not remove any original row or add a wildcard without that decision. Original complete six-row Management API payload remains approved if a safe existing execution capability is available; do not install tooling, read tokens or create broader credentials.
+- Supplemental Core repair: **“Approve repair, checks and conditional recovery”** at `d37edd9ffc9eac28f5878bf00ca5a690e0c93b10`. Installed as `20261106022402_stock_preparation_sales_decouple_core_20261106`; only the unpaid-account preparer's sales/cohort coupling changed. New body MD5 `966a113084bf699edb1c52cb42105be5`; pinned postchecks pass. No enabled cohort; both offers closed. Advisor had no repair-attributable finding; unrelated legacy findings retained. Recovery not executed. This does not authorize an unrelated confirm repair.
+- Receipt reads: **“Approve both read-only checks”** at `a0ca69dcc7f60e1bff514541de9586c7d26c8c8b`. Reuse exact `STOCK_PREPARATION_RECEIPTS_CORE_READONLY.sql` (SHA-256 `4d00eca228126b737c87928ca42fe7629ff6b227d688344e3626b4a9de98a69f`) and Stock counterpart (SHA-256 `edeab960b54eaf8d04e330378325b29ab6d4893a426f640e59f22067a9d106bd`) for the five frozen tuples. Original Gate B fixture/settings reads remain approved. Do not broaden to sessions/secrets/invoices or unrelated rows.
+- Routine login and older-Basic-only recovery approvals are described above. No Pro recovery, payment/cohort enrollment, invitation/operator action, new build/promotion, merge, public release or live-mode purchase is authorized by them.
+
+Gate C still needs actual five-fixture readiness, exact Company eligibility SQL/close command and a separate bounded sandbox grant: five successful monthly sandbox purchases totaling Rp1,165,000 face value, at most two separately identified unpaid cancel/expire negatives, maximum six-hour eligibility, no real charge. Do not produce executable cohort enrollment against an incomplete readiness set. Gate D requires merchant/commercial/security readiness plus explicit merge/deployment/public/financial authority. Gate E requires separately bounded real live-mode proof. No self-service trial, annual sale, automatic debit, legacy migration or LMS sales enablement is included.
+
+### Evidence and validation at pause
+
+Scratchpad: `C:\Users\61140\AppData\Local\Temp\Codex\stock-subscriptions-20261105\scratchpad`.
+
+- Latest partial/recovery evidence: `gate-b-existing-basic-partial-handoff-20261106.json`; screenshot `gate-b-existing-basic-confirmation-problem-current-20261106.jpg`. No Auth code, token, password or raw session is retained in these artifacts.
+- Approved initial five-fixture readback: `gate-b-receipt-freeze-managed-20261106.json`; fresh-three preparation: `gate-b-fresh-three-prepared-20261106.json`; initial Core repair: `gate-b-basic-prepared-and-core-repair-20261106.json`.
+- Desktop proofs include `gate-b-basic-prepared-desktop1600.jpg`, `gate-b-pro-prepared-desktop1600-20261106.jpg`, `gate-b-second-basic-prepared-desktop1600-20261106.jpg`, and `gate-b-pro-after-second-basic-desktop1600-20261106.jpg`; measured inner width 1600 and no page overflow.
+- Exact CSS 390px remains **unverified**. Earlier IAB 390 requests rendered inner width 430/client width 415. A 390-pixel crop is not mobile evidence. Do not reuse it as PASS.
+- STATIC/UNIT/INTEGRATION: last full paired checks pass at the pins above; latest Stock test enhancement has focused local PASS and full automatic source/PDF CI PASS at the exact SHA above. DB RUNTIME: approved schema/settings/repair, four committed matching preparation receipts, but only three final confirmations. BROWSER UAT: older Basic login recovered; fresh-three preparation demonstrated; existing Basic callback remains uncertain. Authenticated isolation/selection, full HTTP matrix, operators, payment/recovery and live-mode acceptance remain incomplete.
+- Production effects in this continuation: one approved normal Basic recovery request and the Owner's private password update, successful normal sign-in, and normal existing-Basic inactive preparation records. No new SQL repair, app deployment, provider-config change, financial action, invitation/operator change, merge or public release occurred.
+
+Resume this same objective only on the Owner's continuation instruction. Preserve every passing check and explicit approval while obtaining fresh evidence for the unresolved boundary. The goal must remain incomplete until the full original acceptance is demonstrated.
+
+---
+
+## Historical progress record
+
 ### Default UAT login and additional receipt-read proposal — 6 November
 
 The Owner instructed: “when you UAT use the account you mentioned dont forget it. i give you approve to login account. so you dont ask for me”. The default Stock UAT account is `egyelisyaaaaa+stock-basic-20261102@gmail.com`, the existing Basic fixture. Routine login authority is reusable; do not ask for login permission again. Other already-approved identities remain necessary for Pro, fresh signup and isolation scenarios. This instruction does not supply a working credential, authorize guessing, change a password, or bypass native verification/security prompts. Passwords are never recorded in source or evidence. The browser is left at the exact older Basic login, not the similarly named fresh Basic account. Existing Basic preparation remains unverified until its native sign-in succeeds.
