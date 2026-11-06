@@ -1,6 +1,10 @@
 # Gate B supplemental unpaid preparation repair
 
-Status: proposed, not authorized for managed execution. Existing Gate A/B approvals remain applicable to their exact original payloads. This is one additional Core function repair, its pinned metadata-only postcheck and conditional recovery. No application build or promotion is needed.
+Status: Owner approved “Approve repair, checks and conditional recovery” against `d37edd9ffc9eac28f5878bf00ca5a690e0c93b10`. Exact forward SQL applied as Core migration `20261106022402`; all pinned postchecks pass and fresh Basic reciprocal preparation now succeeds with an inactive Stock profile and disabled payment control. Recovery was not needed. This execution does not authorize payments, public sales or a new build. Original proposal and payload pins below are retained.
+
+## Execution evidence
+
+The forward SHA-256 remained `f77a0ec82e45f38d872ea42ce5c06d2819aa9265a21de429143c4c4e626b3d32`. Managed postchecks confirm the expected body, ownership and service-only grants; three preparation flags true; both offers closed; no enabled cohort. Scoped performance advisor found no repair-attributable issue. The normal Basic native callback returned to Hub readiness, and exact approved fixture reads match Core/Stock IDs, membership revision 1 and an inactive Stock profile. No financial action or conditional recovery executed. Fresh Pro Core signup/email verification is also complete; its native preparation remains pending. The handoff and manifest contain current runtime evidence and remaining acceptance.
 
 ## Problem and correction
 
@@ -34,10 +38,20 @@ Local disposable SQL reproduces the old failure, then passes exact forward/postc
 
 Separately, the agent's invalid compact Auth pattern was removed. Stock Auth recovered to 200, all four original entries remain, and the original approved preparation callback is applied verbatim. The approved selection callback still needs an execution path that can retain the complete 2053-character original list; Studio caps it at 2048. The original authorization remains valid; this repair does not change or broaden that Auth scope. Core's actual Go glob compilation/matching suite passed in CI `42144917127` at `1c3b11d21817290f532c96913892608a4687e610`. JavaScript regex equivalence claims from the rejected compact attempt are retracted.
 
-Managed SQL execution is `NOT_EXECUTED` pending this exact additional authority. Native reciprocal readiness, customer RLS, full desktop/exact-390px journey, operators, five sandbox purchases and public/live-mode release remain open. Production changed previously through approved Gate A/B deployments, Auth and preparation settings; no supplemental repair has executed.
+Managed SQL execution is now verified: the Owner approved the exact proposal at `d37edd9ffc9eac28f5878bf00ca5a690e0c93b10`, Core migration `20261106022402` applied once, and all pinned postchecks passed. Fresh Basic reciprocal readiness is demonstrated with an inactive Stock profile and disabled payment control. Customer RLS, full desktop/exact-390px journey, other workspace preparation, operators, five sandbox purchases and public/live-mode release remain open. Production changed through this approved Core function repair and normal unpaid preparation, in addition to the earlier Gate A/B work; no financial action occurred.
 
 ## Already-approved selection callback: remaining execution path
 
 The [exact non-secret Management API patch](stock-gate-b-auth-management-patch-20261106.json) contains only `uri_allow_list`: the four retained Stock entries followed by both original approved callback patterns, verbatim. Five local Node contracts verify this complete 2053-character set; actual Go tests compile and constrain both approved patterns. It changes no Site URL, OAuth client, role or secret. The existing Auth approval remains valid; this is not an additional Auth authority request.
 
 The connected Supabase tool has no Auth-configuration mutation, and the dashboard caps the exact combined string at 2048. An Owner with existing authorized Management API access can submit this body to `PATCH https://api.supabase.com/v1/projects/oyyfcmlquqfrdoffkgsd/config/auth`, after confirming the retained entries have not changed. No token or full Auth-config response should be pasted into chat. Do not create broader credentials or replace existing entries to get around the limit. This API submission has not executed; afterward verify six exact rows and Auth health before native selection UAT. [Official endpoint](https://supabase.com/docs/reference/api/v1-update-auth-service-config).
+
+## Proposed Studio execution exception: remove one redundant legacy entry
+
+Status: **not authorized and not executed**. The original approval requires all four baseline entries retained. This alternative therefore requires a precise Owner exception before changing Stock Auth; it is not covered by the existing callback approval.
+
+The [exact before/after proposal](stock-gate-b-auth-studio-proposal-20261106.json) targets only Stock `oyyfcmlquqfrdoffkgsd`. Remove exactly `https://stock.webzoka.com/auth/callback`, which remains accepted by the unchanged existing `https://stock.webzoka.com/**` entry, then append the already-approved selection callback verbatim. All other entries remain byte-identical. This preserves the legacy allowed URL set, introduces no wildcard, hostname or callback path, and fits the five-row combined list into 2013 characters (limit 2048). Core's OAuth client, Site URL, roles, secrets, app deployments and financial gates remain unchanged.
+
+The new contract checks exact before/after sets, a single literal removal, retained covering wildcard, immutable approved additions and the 2013-character budget. The actual pinned Go glob test compiles every resulting pattern and verifies that the literal removed URI belongs to the retained wildcard's accepted set; removing that covered singleton cannot change the legacy union. Existing strict UUID-v4 and foreign-target rejection tests remain required. Local Node contracts pass 6/6; actual Go execution must pass in the existing source CI before this exception is recommended for approval. No workstation runtime installation is used.
+
+Execution, only after approval: verify current five rows and JWKS 200; remove that exact redundant legacy row; save and verify Auth health; add only the original selection pattern; save, verify the exact five-row final set and JWKS 200, then run native selection acceptance. If recovery is needed, remove only the newly added selection pattern before restoring the exact legacy row, and verify the original five-entry list and Auth health. Never delete the retained wildcard or any other row.

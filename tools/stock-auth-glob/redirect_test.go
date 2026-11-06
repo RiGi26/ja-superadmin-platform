@@ -27,6 +27,46 @@ func readJSON(t *testing.T, name string, value any) {
 	if err := json.Unmarshal(data, value); err != nil { t.Fatal(err) }
 }
 
+func TestStudioProposalRetainsLegacyPermissionSet(t *testing.T) {
+	var p struct {
+		Status string `json:"status"`
+		RemoveOnly string `json:"removeOnly"`
+		CoveredByUnchanged string `json:"coveredByUnchanged"`
+		Before []string `json:"before"`
+		After []string `json:"after"`
+		CombinedCharacters int `json:"combinedCharacters"`
+		StudioLimit int `json:"studioLimit"`
+	}
+	readJSON(t, "stock-gate-b-auth-studio-proposal-20261106.json", &p)
+	if p.Status != "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED" { t.Fatal("proposal is not execution evidence") }
+	if p.RemoveOnly != "https://stock.webzoka.com/auth/callback" || strings.ContainsAny(p.RemoveOnly, "?*[]{}\\") {
+		t.Fatal("removed pattern must be exactly one literal URI")
+	}
+	if p.CoveredByUnchanged != "https://stock.webzoka.com/**" { t.Fatal("covering pattern changed") }
+	cover, err := glob.Compile(p.CoveredByUnchanged, '.', '/')
+	if err != nil { t.Fatal(err) }
+	literal, err := glob.Compile(p.RemoveOnly, '.', '/')
+	if err != nil { t.Fatal(err) }
+	// Removing the singleton {URI} cannot change the union because this URI
+	// remains in the existing covering wildcard. No new wildcard is introduced.
+	if !literal.Match(p.RemoveOnly) || !cover.Match(p.RemoveOnly) { t.Fatal("legacy exact URI is not covered") }
+	var c redirects
+	readJSON(t, "stock-gate-b-auth-redirects-20261105.json", &c)
+	want := []string{}
+	removed, retainedCover := 0, false
+	for _, pattern := range p.Before {
+		if pattern == p.RemoveOnly { removed++; continue }
+		if pattern == p.CoveredByUnchanged { retainedCover = true }
+		want = append(want, pattern)
+	}
+	want = append(want, c.StockAdditionalRedirectPatterns[1])
+	if removed != 1 || !retainedCover || strings.Join(want, ",") != strings.Join(p.After, ",") { t.Fatal("unexpected allowlist change") }
+	for _, pattern := range p.After {
+		if _, err := glob.Compile(pattern, '.', '/'); err != nil { t.Fatal(err) }
+	}
+	if n := len(strings.Join(p.After, ",")); n != 2013 || n != p.CombinedCharacters || n > p.StudioLimit { t.Fatal("Studio budget exceeded") }
+}
+
 func TestProviderGlobRejectsMixedRanges(t *testing.T) {
 	var e execution
 	readJSON(t, "stock-gate-b-auth-execution-20261105.json", &e)

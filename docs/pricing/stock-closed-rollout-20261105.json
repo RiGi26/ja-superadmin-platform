@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_NATIVE_IDENTITIES_VERIFIED_PREPARATION_REPAIR_PROPOSED",
+  "status": "GATE_B_FRESH_BASIC_PREPARED_PRO_COMPANY_CREATED_CONSENT_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -347,11 +347,15 @@
       "creationCommandId": "34a7d551-ab66-4081-9c0e-e58e0896b2ec",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "CORE_COMPANY_AND_BOTH_NATIVE_IDENTITIES_VERIFIED; reciprocal preparation uncertain twice; no Stock origin; source no-cohort blocker reproduced; supplemental repair proposed",
+      "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
       "nativeIdentityObservedAt": "2026-11-06",
       "coreEmailVerified": true,
       "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent.",
-      "stockEmailVerified": true
+      "stockEmailVerified": true,
+      "stockAuditEventId": "368fe541-0207-46f6-af49-c12bc02a3b56",
+      "membershipRevision": 1,
+      "matchingInactiveProfile": true,
+      "readinessEvidence": "Native callback returned to Hub ready state; payment control disabled. Exact approved Core/Stock fixture readbacks match all resource IDs and inactive Stock profile. Preparation command/receipt export remains pending before cohort enrollment."
     },
     {
       "label": "fresh_pro",
@@ -359,18 +363,21 @@
       "proposedEmail": "egyelisyaaaaa+stock-pro-fresh-20261105@gmail.com",
       "emailSha256": "2d850799d13da45446aaa14f23d12c2f04077c87ea3dc36907ca62dd31d3e40f",
       "companyName": "Stock Fresh Pro 20261105",
-      "companyId": null,
-      "instanceId": null,
-      "coreSubject": null,
+      "companyId": "d713ddba-3568-477b-af22-7dec7d7ec740",
+      "instanceId": "cf6437d2-b6c2-4973-8ea7-ae69333883b1",
+      "coreSubject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
       "stockSubject": null,
-      "coreTenantId": null,
-      "stockTenantId": null,
-      "ownerMembershipId": null,
-      "profileId": null,
-      "creationCommandId": null,
+      "coreTenantId": "4613d510-58b2-4c76-b2bb-3860e7918765",
+      "stockTenantId": "add9ddac-4cc8-4c83-9be1-020c6f96f70b",
+      "ownerMembershipId": "1570435d-5e8a-42d6-955d-5a1aab8e50d7",
+      "profileId": "1a694c28-d7ee-4ebc-a3f2-31f6da20b129",
+      "creationCommandId": "3f1ed2e1-1ec5-4729-9634-a7aca6906f9d",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+      "status": "CORE_VERIFIED_CANONICAL_IDENTITY_AND_COMPANY_CREATED_NATIVE_CONSENT_PENDING",
+      "coreEmailVerified": true,
+      "nativeIdentityObservedAt": "2026-11-06",
+      "nativeIdentityEvidence": "Normal Pro signup/email verification; canonical Hub account menu shows exact fresh Pro alias. Original scoped Core fixture read matches Company creation. Native Stock consent handed to Owner; no Stock subject or reciprocal readiness claimed."
     },
     {
       "label": "additional_basic",
@@ -1960,11 +1967,20 @@
       "browserProof": "Session scratchpad/gate-b-stock-auth-valid-preparation-only.jpg"
     },
     "nativeBasicPreparation": {
-      "status": "UNCERTAIN_AFTER_CONSENT_AND_ONE_RETRY",
+      "status": "PREPARED_READY_PAYMENT_DISABLED",
       "stockSubject": "cecba884-f703-467a-8f44-3b932ba3a833",
-      "stockOriginRows": 0,
-      "next": "Review/approve exact unpaid preparation repair; retry retained command only after postchecks. No replacement workspace or payment.",
-      "sourceRootCause": "New account preparation incorrectly requires public sales or sandbox cohort; disposable no-cohort reproduction fails STOCK_BILLING_EXISTING_RESOURCE."
+      "stockOriginRows": 1,
+      "next": "Retain this workspace; continue approved fresh Pro and existing-fixture preparation. No financial action.",
+      "sourceRootCause": "New account preparation incorrectly requires public sales or sandbox cohort; disposable no-cohort reproduction fails STOCK_BILLING_EXISTING_RESOURCE.",
+      "postRepairControlledAttempts": 1,
+      "browser": {
+        "status": "PREPARED_READY_PAYMENT_DISABLED",
+        "observationTimeout": "CDP snapshot timed out after submission; same-tab follow-up observed successful return. Mutation was not repeated solely due to timeout.",
+        "currentView": "gate-b-basic-prepared-current-view.jpg",
+        "desktopScreenshot": "gate-b-basic-prepared-desktop1600.jpg",
+        "desktopInnerWidth": 1600,
+        "mobileExact390": "NOT_VERIFIED"
+      }
     },
     "pendingLayoutEvidence": {
       "status": "PARTIAL_ONLY_NOT_EXACT_CSS390",
@@ -1983,6 +1999,14 @@
         415
       ],
       "note": "390px screenshot crop is not a CSS-390 viewport. No exact-mobile UAT PASS. Browser viewport reset afterward."
+    },
+    "repairRuntimeEvidence": "Session scratchpad/gate-b-basic-prepared-and-core-repair-20261106.json",
+    "selectionAuthRetest": {
+      "date": "2026-11-06",
+      "result": "Studio again rejects verbatim second approved pattern with Too many redirect URLs; list retains five entries; no Auth write occurred.",
+      "cli": "SUPABASE_CLI_NOT_AVAILABLE",
+      "stockAuthJwksStatus": 200,
+      "ownerReply": "Owner clicked workspace confirmation, not Management API patch; selection remains unapplied."
     }
   },
   "gateBAuthCorrection": {
@@ -2029,7 +2053,7 @@
     }
   },
   "gateBPreparationRepair": {
-    "status": "PROPOSED_NOT_AUTHORIZED",
+    "status": "OWNER_APPROVED_APPLIED_POSTCHECK_PASS_NATIVE_BASIC_PREPARED",
     "proposal": "docs/pricing/STOCK_GATE_B_PREPARATION_REPAIR_20261106.md",
     "target": "hxhusfkrlafxdnyasmsu",
     "payloads": [
@@ -2050,7 +2074,7 @@
       }
     ],
     "applicationBuildNeeded": false,
-    "managedExecuted": false,
+    "managedExecuted": true,
     "oldBodyMd5": "b665c2a71190f0185e3d2bee3e5a14ac",
     "newBodyMd5": "966a113084bf699edb1c52cb42105be5",
     "validation": {
@@ -2077,6 +2101,104 @@
       "resolution": "Start without cohort eligibility and insert it only once after preparation for the existing financial matrix. Protected guards and proposed SQL were unchanged.",
       "retestRun": 42148043208,
       "retest": "PASS"
-    }
+    },
+    "ownerAuthorization": {
+      "answer": "Approve repair, checks and conditional recovery",
+      "proposalCommit": "d37edd9ffc9eac28f5878bf00ca5a690e0c93b10",
+      "source": "Owner reply to explicit supplemental Core SQL approval question in this chat",
+      "date": "2026-11-06"
+    },
+    "migration": {
+      "version": "20261106022402",
+      "name": "stock_preparation_sales_decouple_core_20261106"
+    },
+    "execution": {
+      "status": "POSTCHECK_PASS",
+      "checks": [
+        [
+          {
+            "expected_preparer": true,
+            "postgres_owned": true,
+            "security_definer": true,
+            "anon_denied": true,
+            "authenticated_denied": true,
+            "service_only": true
+          }
+        ],
+        [
+          {
+            "feature": "membership",
+            "enabled": true
+          },
+          {
+            "feature": "preparation",
+            "enabled": true
+          },
+          {
+            "feature": "workspace",
+            "enabled": true
+          }
+        ],
+        [
+          {
+            "both_offers_closed": true
+          }
+        ],
+        [
+          {
+            "cohort_still_closed": true
+          }
+        ]
+      ],
+      "advisor": {
+        "notices": [
+          {
+            "name": "unindexed_foreign_keys",
+            "count": 7
+          },
+          {
+            "name": "auth_rls_initplan",
+            "count": 4
+          },
+          {
+            "name": "unused_index",
+            "count": 46
+          },
+          {
+            "name": "multiple_permissive_policies",
+            "count": 35
+          }
+        ],
+        "repairAttributableFindings": 0,
+        "note": "No new table/index/RLS changes; existing public findings and unused private indexes retained."
+      },
+      "ownerApproval": {
+        "answer": "Approve repair, checks and conditional recovery",
+        "proposalCommit": "d37edd9ffc9eac28f5878bf00ca5a690e0c93b10",
+        "source": "Owner reply to explicit supplemental Core SQL approval question in this chat",
+        "date": "2026-11-06"
+      },
+      "forward": {
+        "sha256": "f77a0ec82e45f38d872ea42ce5c06d2819aa9265a21de429143c4c4e626b3d32",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"success\":true}"
+            }
+          ]
+        }
+      }
+    },
+    "recoveryExecuted": false
+  },
+  "gateBStudioAuthException": {
+    "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+    "proposal": "docs/pricing/stock-gate-b-auth-studio-proposal-20261106.json",
+    "removeOnly": "https://stock.webzoka.com/auth/callback",
+    "retainedCover": "https://stock.webzoka.com/**",
+    "combinedCharacters": 2013,
+    "requiresNewExactException": true,
+    "providerMutationExecuted": false
   }
 }
