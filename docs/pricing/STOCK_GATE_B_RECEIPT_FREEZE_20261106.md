@@ -35,4 +35,12 @@ No database mutation, function call with side effects, setting, grant, Auth conf
 
 The disposable actual-SQL test prepares two v1 and three v2 fixtures, including two workspaces under one Owner. It exercises the exact reads with synthetic tuple bindings, checks both receipts/commands agree, confirms read-only transactions, and verifies unbound/mismatched tuples and unexpected JSON fields return no receipt or command. It retains zero purchase cohorts, invoices and active profiles. Local test passes 1/1. An initial test-only marker accidentally matched its own forbidden `DO` keyword check; changing that synthetic marker resolved the harness false positive without altering the proposed SQL or removing the check.
 
-The same read helper is added to the existing PostgreSQL 17 independent-connection test before financial enrollment. It verifies one actual v2 preparation and four missing scoped rows on separate connections. Paired CI and immutable source references will be recorded before seeking managed-read approval. No workstation database/runtime installation or new paid resource is used.
+The same read helper executes in the existing PostgreSQL 17 independent-connection test before financial enrollment. It verifies one actual v2 preparation and four missing scoped rows on separate connections. All paired source checks pass, including types, lint, builds and whitespace. No workstation database/runtime installation or new paid resource is used.
+
+| Tested source | Evidence |
+| --- | --- |
+| Core `5691c2716f486a2417d849baaff5c2baf42bd612` | [Full source CI 42170725773](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42170725773) |
+| Stock `ffed2e57c8d46c931aefe9344866acb2d96ac311`, pinned to that Core | [Paired CI 42170838870](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42170838870), including actual PostgreSQL 17 and disposable read checks |
+| Same Stock source | [PDF CI 42170838898](https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42170838898) |
+
+Immutable payloads: [Core read](https://github.com/RiGi26/ja-superadmin-platform/blob/5691c2716f486a2417d849baaff5c2baf42bd612/docs/pricing/STOCK_PREPARATION_RECEIPTS_CORE_READONLY.sql), [Stock read](https://github.com/RiGi26/webzoka-stock-platform/blob/ffed2e57c8d46c931aefe9344866acb2d96ac311/docs/pricing/STOCK_PREPARATION_RECEIPTS_STOCK_READONLY.sql). Fresh raw Git-blob verification matches the two hashes above: 4781 Core bytes and 4735 Stock bytes. A documentation-only publication does not change those tested payloads or establish managed execution. The separate Stock redirect-list exception and deployment of the overview fix remain outside this read-only request.

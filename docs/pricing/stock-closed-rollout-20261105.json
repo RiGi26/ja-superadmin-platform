@@ -2392,6 +2392,15 @@
     "fixtureRows": 5,
     "managedExecuted": false,
     "localDisposable": "PASS 1/1 mixed v1/v2 actual SQL read projection",
-    "postgres17": "PENDING_PAIRED_CI"
+    "postgres17": "PASS actual independent PostgreSQL 17 connections; exact read projections before financial enrollment",
+    "sourcePair": {
+      "coreSha": "5691c2716f486a2417d849baaff5c2baf42bd612",
+      "stockSha": "ffed2e57c8d46c931aefe9344866acb2d96ac311",
+      "coreCi": 42170725773,
+      "stockCi": 42170838870,
+      "stockPdfCi": 42170838898,
+      "conclusion": "PASS",
+      "rawGitBlobHashesVerified": true
+    }
   }
 }
