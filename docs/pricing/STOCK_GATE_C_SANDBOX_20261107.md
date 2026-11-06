@@ -31,7 +31,7 @@ Include the already reviewed exact Studio execution exception in `STOCK_GATE_B_P
 | Target | File | Exact SHA-256 |
 | --- | --- | --- |
 | core | `STOCK_GATE_C_RUNTIME_ENABLE.PROPOSED.sql` | `ddea8205732f98b1949b58e05140154398d39253aa8f5a205e160585e91085ca` |
-| core | `STOCK_GATE_C_COHORT_ENABLE.PROPOSED.sql` | `b729062ac7e129494c83484b45d26c413dbc46abeef7bef1fb1f4680d9e81bf9` |
+| core | `STOCK_GATE_C_COHORT_ENABLE.PROPOSED.sql` | `f75a7e112df961fe7bdf265abc5c27b46b2051aa7f35f71ee75b4fff1be98c37` |
 | core | `STOCK_GATE_C_PURCHASE_CLOSE.PROPOSED.sql` | `ccbc58be86e0e3c5b17ce6d38431f324b3a1bc8c2cc2e0242638f70a6fbba183` |
 | core | `STOCK_GATE_C_FINANCIAL_POSTCHECK_READONLY.sql` | `fcae95a80618504f11246033b6fb684caae4dbff6db34cf5b1573b6800506bc9` |
 | stock | `STOCK_GATE_C_RUNTIME_ENABLE.PROPOSED.sql` | `8ef8b5bc8d1103e98d624dba989f4ee49ea9811e2c80b5a709e4581ca46cb610` |
@@ -59,6 +59,6 @@ Capture desktop and exact CSS390×844 rendered evidence for the complete accepte
 
 ## Evidence and current limits
 
-Local new cohort/runtime SQL and bounded financial projections pass in disposable PGlite; the first positive test failed because its v1 fixture had not saved an intent. It now uses the actual remember-intent function, matching the normal customer path. The Production guard was not weakened. Cross-repo transport/negative gates pass, including disabled-flag branches. Dedicated actual PostgreSQL17 CI runs the exact transaction predicates with only frozen fixture literals rebound to synthetic IDs and tests an independent Registry-lock contender. Native identities and provider transport in these source tests are synthetic. Final exact-source CI must pass before recommending managed execution.
+Local new cohort/runtime SQL and bounded financial projections pass in disposable PGlite; the first positive test failed because its v1 fixture had not saved an intent. It now uses the actual remember-intent function, matching the normal customer path. The Production guard was not weakened. A subsequent source review caught a second fixture mismatch: real Core stores `platform_settings.value` as text while the shared fixture used JSONB. Before any managed attempt, the proposed guard was corrected to the existing type-safe `to_jsonb(row)->>'value'` projection, and this regression now uses the actual text column type. Initial candidate checks do not validate the corrected successor; its exact paired CI is required. Cross-repo transport/negative gates pass, including disabled-flag branches. Dedicated actual PostgreSQL17 CI runs the exact transaction predicates with only frozen fixture literals rebound to synthetic IDs and tests an independent Registry-lock contender. Native identities and provider transport in these source tests are synthetic. Final exact-source CI must pass before recommending managed execution.
 
 Current Production still runs the accepted diagnostic application pair and repaired Stock hook. All financial/operator settings remain closed at their last approved read; no new candidate was deployed, cohort enabled, invitation sent, invoice issued or sandbox payment completed. Full goal remains active and unverified. Gate D public/commercial release and any live-mode proof remain separately protected; neither is authorized by this sandbox proposal.

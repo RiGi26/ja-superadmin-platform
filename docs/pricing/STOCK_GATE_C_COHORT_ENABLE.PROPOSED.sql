@@ -11,7 +11,7 @@ BEGIN
  THEN RAISE EXCEPTION 'STOCK_GATE_C_OPERATOR_OR_BUSY'; END IF;
  LOCK TABLE stock_billing_private.sandbox_cohort IN SHARE ROW EXCLUSIVE MODE NOWAIT;
  IF (SELECT count(*) FROM stock_billing_private.settings WHERE singleton AND enabled AND payment_mode='sandbox')<>1
-   OR (SELECT count(*) FROM public.platform_settings WHERE key='midtrans_mode' AND value='"sandbox"'::jsonb)<>1
+   OR (SELECT count(*) FROM public.platform_settings s WHERE key='midtrans_mode' AND (to_jsonb(s)->>'value')='sandbox')<>1
    OR (SELECT count(*) FROM stock_membership_private.settings WHERE singleton AND enabled)<>1
    OR (SELECT count(*) FROM stock_membership_private.preparation_settings WHERE singleton AND enabled)<>1
    OR (SELECT count(*) FROM stock_workspace_private.settings WHERE singleton AND enabled)<>1

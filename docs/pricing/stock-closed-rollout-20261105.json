@@ -2878,7 +2878,8 @@
     "status": "PASS_READY_UNPAID_INACTIVE",
     "recoveryEmailSent": false,
     "receiptCount": 5,
-    "confirmedCount": 5
+    "confirmedCount": 5,
+    "closedHttpEvidence": "Session scratchpad/pro-closed-cookie-http-20261107.json; own200, foreign selector200 with no selected Company/payment, unpaid Stock307 to login. Partial only; retained Stock browser session not independently proved."
   },
   "currentAcceptance20261107": {
     "source": "Owner-edited active master goal, 7 November 2026",
@@ -2927,7 +2928,7 @@
       {
         "side": "core",
         "path": "docs/pricing/STOCK_GATE_C_COHORT_ENABLE.PROPOSED.sql",
-        "sha256": "b729062ac7e129494c83484b45d26c413dbc46abeef7bef1fb1f4680d9e81bf9"
+        "sha256": "f75a7e112df961fe7bdf265abc5c27b46b2051aa7f35f71ee75b4fff1be98c37"
       },
       {
         "side": "core",
@@ -2950,6 +2951,10 @@
         "sha256": "228010a83e8b7d720f0d5c9984afb3553a03448fa9094d99f607e95539ae1ab1"
       }
     ],
-    "sourceCi": "PENDING_FINAL_PAIRED_CANDIDATES"
+    "sourceCi": "PENDING_FINAL_PAIRED_CANDIDATES",
+    "schemaReview": "Real Core bootstrap platform_settings.value is text. Guard uses to_jsonb(row)->>value; regression now executes against text. No managed attempt occurred.",
+    "firstCandidateCore": "b7de68981b049613c2006773485640a42775ea48",
+    "firstCandidateCoreCi": 42269150248,
+    "firstCandidateCoreCiConclusion": "PASS"
   }
 }
