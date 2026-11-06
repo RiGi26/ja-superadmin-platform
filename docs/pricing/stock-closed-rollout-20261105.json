@@ -2366,5 +2366,32 @@
       "localTypes": "PASS",
       "localLint": "PASS"
     }
+  },
+  "defaultUatLogin": {
+    "email": "egyelisyaaaaa+stock-basic-20261102@gmail.com",
+    "fixtureLabel": "existing_basic",
+    "ownerInstructionDate": "2026-11-06",
+    "routineLoginApproved": true,
+    "repeatedLoginPermissionRequired": false,
+    "credentialValueStored": false,
+    "otherApprovedScenarioIdentitiesRetained": true
+  },
+  "gateBReceiptFreeze": {
+    "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+    "proposal": "docs/pricing/STOCK_GATE_B_RECEIPT_FREEZE_20261106.md",
+    "core": {
+      "projectRef": "hxhusfkrlafxdnyasmsu",
+      "path": "docs/pricing/STOCK_PREPARATION_RECEIPTS_CORE_READONLY.sql",
+      "sha256": "4d00eca228126b737c87928ca42fe7629ff6b227d688344e3626b4a9de98a69f"
+    },
+    "stock": {
+      "projectRef": "oyyfcmlquqfrdoffkgsd",
+      "path": "docs/pricing/STOCK_PREPARATION_RECEIPTS_STOCK_READONLY.sql",
+      "sha256": "edeab960b54eaf8d04e330378325b29ab6d4893a426f640e59f22067a9d106bd"
+    },
+    "fixtureRows": 5,
+    "managedExecuted": false,
+    "localDisposable": "PASS 1/1 mixed v1/v2 actual SQL read projection",
+    "postgres17": "PENDING_PAIRED_CI"
   }
 }
