@@ -1,5 +1,21 @@
 {
-  "status": "PAUSED_BY_OWNER_EXISTING_BASIC_FINAL_CONFIRMATION_PENDING",
+  "status": "RESUMED_EXISTING_BASIC_CONFIRMATION_UNRESOLVED_DIAGNOSTIC_SOURCE_IN_PROGRESS",
+  "resumeInvestigation20261106": {
+    "objectiveComplete": false,
+    "sameTask": true,
+    "managedDiagnosticSha256": "ab5da180c8f40e1682b24f98e83f64f2f86a9d8ddb703f8c79b8850cb76c3b17",
+    "managedPositivePredicates": "all true",
+    "managedLegacyPilotCohortConflicts": false,
+    "managedFunctionBodyHashesMatchReviewedSource": true,
+    "nativeConfirmationRetestsThisContinuation": 1,
+    "nativeRetestResult": "unconfirmed",
+    "rootCause": "NOT_ESTABLISHED",
+    "localStageDiagnostics": "SOURCE_ONLY_NOT_DEPLOYED",
+    "historicalVercelLogs": "BLOCKED_403_CLI_HAS_NO_HISTORICAL_QUERY",
+    "canonicalHubCheckoutCss390": "measured and screenshot captured; not full hosted journey acceptance",
+    "newDeploymentPaymentPublicReleaseAuthorized": false,
+    "evidence": "resume-basic-diagnostic-corrected-result-20261106.json"
+  },
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
