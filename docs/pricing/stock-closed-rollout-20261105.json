@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_FRESH_BASIC_PREPARED_PRO_COMPANY_CREATED_CONSENT_PENDING",
+  "status": "GATE_B_FRESH_THREE_RECIPROCALLY_PREPARED_EXISTING_REGRESSIONS_AND_SELECTION_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -350,12 +350,12 @@
       "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
       "nativeIdentityObservedAt": "2026-11-06",
       "coreEmailVerified": true,
-      "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent.",
+      "nativeIdentityEvidence": "Original exact scoped Core/Stock fixture reads match native subjects, Company resources and inactive profile. Actual native callback and Hub readiness observed. No paid access claim.",
       "stockEmailVerified": true,
       "stockAuditEventId": "368fe541-0207-46f6-af49-c12bc02a3b56",
       "membershipRevision": 1,
       "matchingInactiveProfile": true,
-      "readinessEvidence": "Native callback returned to Hub ready state; payment control disabled. Exact approved Core/Stock fixture readbacks match all resource IDs and inactive Stock profile. Preparation command/receipt export remains pending before cohort enrollment."
+      "readinessEvidence": "Hub ready state with payment disabled. Native preparation command and full receipt export remain pending exact additional read authority; creation command is separate."
     },
     {
       "label": "fresh_pro",
@@ -366,7 +366,7 @@
       "companyId": "d713ddba-3568-477b-af22-7dec7d7ec740",
       "instanceId": "cf6437d2-b6c2-4973-8ea7-ae69333883b1",
       "coreSubject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
-      "stockSubject": null,
+      "stockSubject": "c22a4ea5-3679-4cc6-a583-f8012bd471bc",
       "coreTenantId": "4613d510-58b2-4c76-b2bb-3860e7918765",
       "stockTenantId": "add9ddac-4cc8-4c83-9be1-020c6f96f70b",
       "ownerMembershipId": "1570435d-5e8a-42d6-955d-5a1aab8e50d7",
@@ -374,10 +374,15 @@
       "creationCommandId": "3f1ed2e1-1ec5-4729-9634-a7aca6906f9d",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "CORE_VERIFIED_CANONICAL_IDENTITY_AND_COMPANY_CREATED_NATIVE_CONSENT_PENDING",
+      "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
       "coreEmailVerified": true,
       "nativeIdentityObservedAt": "2026-11-06",
-      "nativeIdentityEvidence": "Normal Pro signup/email verification; canonical Hub account menu shows exact fresh Pro alias. Original scoped Core fixture read matches Company creation. Native Stock consent handed to Owner; no Stock subject or reciprocal readiness claimed."
+      "nativeIdentityEvidence": "Original exact scoped Core/Stock fixture reads match native subjects, Company resources and inactive profile. Actual native callback and Hub readiness observed. No paid access claim.",
+      "stockAuditEventId": "6d96b11f-ffdf-4da8-bf7a-9a397b175e8d",
+      "membershipRevision": 1,
+      "matchingInactiveProfile": true,
+      "stockEmailVerified": true,
+      "readinessEvidence": "Hub ready state with payment disabled. Native preparation command and full receipt export remain pending exact additional read authority; creation command is separate."
     },
     {
       "label": "additional_basic",
@@ -385,18 +390,26 @@
       "proposedEmail": "egyelisyaaaaa+stock-pro-fresh-20261105@gmail.com",
       "emailSha256": "2d850799d13da45446aaa14f23d12c2f04077c87ea3dc36907ca62dd31d3e40f",
       "companyName": "Stock Fresh Pro Second Basic 20261105",
-      "companyId": null,
-      "instanceId": null,
-      "coreSubject": null,
-      "stockSubject": null,
-      "coreTenantId": null,
-      "stockTenantId": null,
-      "ownerMembershipId": null,
-      "profileId": null,
-      "creationCommandId": null,
+      "companyId": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+      "instanceId": "b326f8c3-8522-47cb-a267-ccd59fad823c",
+      "coreSubject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
+      "stockSubject": "c22a4ea5-3679-4cc6-a583-f8012bd471bc",
+      "coreTenantId": "5d813c3f-e45f-4893-9356-2f3f14566629",
+      "stockTenantId": "df28ca9c-d65d-4a21-99fb-a8e64514a808",
+      "ownerMembershipId": "70a36df6-a26a-4bbb-a07a-795a550411a3",
+      "profileId": "d385d443-3423-4c7e-aa97-fc3523e449f4",
+      "creationCommandId": "fc9c18f5-75ac-40eb-9007-a4b71d55fbf6",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+      "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
+      "stockAuditEventId": "013e8a81-761b-441e-8298-3d78404403e0",
+      "membershipRevision": 1,
+      "matchingInactiveProfile": true,
+      "coreEmailVerified": true,
+      "stockEmailVerified": true,
+      "nativeIdentityObservedAt": "2026-11-06",
+      "nativeIdentityEvidence": "Original exact scoped Core/Stock fixture reads match native subjects, Company resources and inactive profile. Actual native callback and Hub readiness observed. No paid access claim.",
+      "readinessEvidence": "Hub ready state with payment disabled. Native preparation command and full receipt export remain pending exact additional read authority; creation command is separate."
     }
   ],
   "sandboxBounds": {
@@ -2007,6 +2020,130 @@
       "cli": "SUPABASE_CLI_NOT_AVAILABLE",
       "stockAuthJwksStatus": 200,
       "ownerReply": "Owner clicked workspace confirmation, not Management API patch; selection remains unapplied."
+    },
+    "nativeFreshThreePreparation": {
+      "date": "2026-11-06",
+      "core": [
+        {
+          "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+          "reservation_id": "b326f8c3-8522-47cb-a267-ccd59fad823c",
+          "core_subject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
+          "membership_id": "70a36df6-a26a-4bbb-a07a-795a550411a3",
+          "core_tenant_id": "5d813c3f-e45f-4893-9356-2f3f14566629",
+          "stock_tenant_id": "df28ca9c-d65d-4a21-99fb-a8e64514a808",
+          "profile_id": "d385d443-3423-4c7e-aa97-fc3523e449f4",
+          "command_id": "fc9c18f5-75ac-40eb-9007-a4b71d55fbf6"
+        },
+        {
+          "company_id": "d2c2f26b-9740-4f05-b775-b814563bfd79",
+          "reservation_id": "6deede3f-a3cf-4d6d-815c-130e80c25f10",
+          "core_subject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
+          "membership_id": "7f75d067-a713-4937-973e-6481efbfbdde",
+          "core_tenant_id": "cdf19ca9-f529-4bd2-a3f8-d75b53671a8f",
+          "stock_tenant_id": "f358b30d-3141-401c-99cf-63421126ef29",
+          "profile_id": "bf3169ed-5e2a-4eb4-a98d-69ac0e8de259",
+          "command_id": "34a7d551-ab66-4081-9c0e-e58e0896b2ec"
+        },
+        {
+          "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+          "reservation_id": "cf6437d2-b6c2-4973-8ea7-ae69333883b1",
+          "core_subject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
+          "membership_id": "1570435d-5e8a-42d6-955d-5a1aab8e50d7",
+          "core_tenant_id": "4613d510-58b2-4c76-b2bb-3860e7918765",
+          "stock_tenant_id": "add9ddac-4cc8-4c83-9be1-020c6f96f70b",
+          "profile_id": "1a694c28-d7ee-4ebc-a3f2-31f6da20b129",
+          "command_id": "3f1ed2e1-1ec5-4729-9634-a7aca6906f9d"
+        }
+      ],
+      "stock": [
+        {
+          "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+          "reservation_id": "b326f8c3-8522-47cb-a267-ccd59fad823c",
+          "core_subject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
+          "stock_subject": "c22a4ea5-3679-4cc6-a583-f8012bd471bc",
+          "core_tenant_id": "5d813c3f-e45f-4893-9356-2f3f14566629",
+          "stock_tenant_id": "df28ca9c-d65d-4a21-99fb-a8e64514a808",
+          "profile_id": "d385d443-3423-4c7e-aa97-fc3523e449f4",
+          "audit_event_id": "013e8a81-761b-441e-8298-3d78404403e0",
+          "membership_id": "70a36df6-a26a-4bbb-a07a-795a550411a3",
+          "membership_revision": 1,
+          "matching_inactive_profile": true
+        },
+        {
+          "company_id": "d2c2f26b-9740-4f05-b775-b814563bfd79",
+          "reservation_id": "6deede3f-a3cf-4d6d-815c-130e80c25f10",
+          "core_subject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
+          "stock_subject": "cecba884-f703-467a-8f44-3b932ba3a833",
+          "core_tenant_id": "cdf19ca9-f529-4bd2-a3f8-d75b53671a8f",
+          "stock_tenant_id": "f358b30d-3141-401c-99cf-63421126ef29",
+          "profile_id": "bf3169ed-5e2a-4eb4-a98d-69ac0e8de259",
+          "audit_event_id": "368fe541-0207-46f6-af49-c12bc02a3b56",
+          "membership_id": "7f75d067-a713-4937-973e-6481efbfbdde",
+          "membership_revision": 1,
+          "matching_inactive_profile": true
+        },
+        {
+          "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+          "reservation_id": "cf6437d2-b6c2-4973-8ea7-ae69333883b1",
+          "core_subject": "36191ebc-3a6e-4d8c-b8e4-abb62e33b965",
+          "stock_subject": "c22a4ea5-3679-4cc6-a583-f8012bd471bc",
+          "core_tenant_id": "4613d510-58b2-4c76-b2bb-3860e7918765",
+          "stock_tenant_id": "add9ddac-4cc8-4c83-9be1-020c6f96f70b",
+          "profile_id": "1a694c28-d7ee-4ebc-a3f2-31f6da20b129",
+          "audit_event_id": "6d96b11f-ffdf-4da8-bf7a-9a397b175e8d",
+          "membership_id": "1570435d-5e8a-42d6-955d-5a1aab8e50d7",
+          "membership_revision": 1,
+          "matching_inactive_profile": true
+        }
+      ],
+      "stockNativeIdentities": [
+        {
+          "label": "existing_basic",
+          "stock_subject": "26e9a59b-dd0d-47da-bc0b-dad349dc206f",
+          "verified": true
+        },
+        {
+          "label": "existing_pro",
+          "stock_subject": "8cc47e5f-82b9-4fa0-a125-a4fefea9da13",
+          "verified": true
+        },
+        {
+          "label": "fresh_basic",
+          "stock_subject": "cecba884-f703-467a-8f44-3b932ba3a833",
+          "verified": true
+        },
+        {
+          "label": "fresh_pro",
+          "stock_subject": "c22a4ea5-3679-4cc6-a583-f8012bd471bc",
+          "verified": true
+        }
+      ],
+      "ownerConsentAuthority": {
+        "quote": "You go click that i give you permission",
+        "scope": "Click the displayed fresh Pro native Stock consent"
+      },
+      "browser": {
+        "freshPro": "READY_PAYMENT_DISABLED",
+        "secondBasic": "READY_PAYMENT_DISABLED_AFTER_ONE_RETAINED_COMMAND_RETRY",
+        "proAfterSecondBasic": "READY_PAYMENT_DISABLED_PRO_359000",
+        "desktopInnerWidth": 1600,
+        "exact390": "NOT_VERIFIED"
+      },
+      "historicalFailures": [
+        {
+          "step": "old Pro consent",
+          "observed": "decision_failed; request unavailable",
+          "recovery": "Restarted authorization for the existing Company; fresh request and explicitly authorized consent succeeded",
+          "cause": "NOT_ESTABLISHED; no expiry claim"
+        },
+        {
+          "step": "first second-Basic native callback",
+          "observed": "unconfirmed; Core origin exists; exact scoped Stock origin read absent",
+          "recovery": "Returned to Hub, inspected mappings, retried same workspace command once; readiness then observed and three matching Stock origins read back",
+          "cause": "NOT_ESTABLISHED; no source/provider repair; retain failed and successful observations"
+        }
+      ],
+      "financialActions": 0
     }
   },
   "gateBAuthCorrection": {
@@ -2200,5 +2337,16 @@
     "combinedCharacters": 2013,
     "requiresNewExactException": true,
     "providerMutationExecuted": false
+  },
+  "gateBAccountOverviewRepair": {
+    "status": "SOURCE_FIXED_NOT_DEPLOYED",
+    "observation": "Fresh Pro Hub home cannot summarize its v2 workspaces, including after normal recheck",
+    "rootCause": "Legacy summary reader accepts at most one membership and uses E1-only native context; home ignored already-verified canonical Stock workspace data",
+    "sourceFix": "Home summary consumes the existing exact-Owner canonical billing result; legacy reader, authorization and paid access guards unchanged",
+    "localRegression": "Failing-before and passing-after actual component rendering; account/billing suites 31/31",
+    "productionFixDeployed": false,
+    "hostedRetest": "NOT_EXECUTED",
+    "mobileExact390": "NOT_EXECUTED",
+    "evidence": "Session scratchpad/gate-b-pro-account-workspace-check-unavailable-full-20261106.jpg"
   }
 }

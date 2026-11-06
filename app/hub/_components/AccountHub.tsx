@@ -21,20 +21,26 @@ const items: HubNavigationItem[] = [
 export function AccountHub({ account, view, billing = null, operatorWorkspaces = null }: { account: HubAccount; view: AccountHubView; billing?: StockBillingAccount | null; operatorWorkspaces?: StockOperatorWorkspaceList | null }) {
   const hasOperatorWorkspaces = operatorWorkspaces?.status === 'ready' && operatorWorkspaces.workspaces.length > 0
   const systemsAccessReady = account.accessReady && operatorWorkspaces?.status !== 'unavailable'
-  const ready = account.workspace.status === 'ready'
-  const title = ready ? account.workspace.companyName : 'Siapkan workspace usaha'
+  // The canonical billing reader independently verifies the current Owner and
+  // every Company. The legacy E1 summary intentionally accepts only one v1
+  // workspace; its unavailable result must not erase verified v2 workspaces.
+  const ownedStock = billing?.status === 'ready' ? billing.workspaces : []
+  const legacyWorkspace = account.workspace.status === 'ready' ? account.workspace : null
+  const ready = ownedStock.length > 0 || legacyWorkspace !== null
+  const title = ownedStock.length > 1 ? 'Workspace usaha Anda'
+    : ownedStock[0]?.companyName ?? legacyWorkspace?.companyName ?? 'Siapkan workspace usaha'
   const initials = account.name.trim().charAt(0).toUpperCase() || 'W'
   const help = '/hub/account?view=support'
-  const companyId = account.workspace.status === 'ready' ? account.workspace.companyId : null
-  const paidWorkspace = billing?.status === 'ready' && companyId
-    ? billing.workspaces.find(workspace => workspace.companyId === companyId)
-    : null
-  const workspaceDescription = paidWorkspace?.activation === 'active'
+  const paidWorkspace = ownedStock.length === 1 ? ownedStock[0]
+    : legacyWorkspace ? ownedStock.find(workspace => workspace.companyId === legacyWorkspace.companyId) : null
+  const workspaceDescription = ownedStock.length > 1
+    ? `${ownedStock.length} workspace usaha tersedia. Periksa status dan akses setiap workspace di Sistem Saya.`
+    : paidWorkspace?.activation === 'active'
     ? 'Webzoka Stock aktif untuk workspace ini. Buka Sistem Saya untuk mulai bekerja.'
     : paidWorkspace?.activation === 'pending'
       ? 'Pembayaran diterima. Aktivasi Webzoka Stock sedang diproses.'
       : ready
-    ? account.workspace.stockStatus === 'quarantined' ? 'Koneksi Stock tercatat dalam karantina. Stock belum aktif.' : 'Workspace tersedia. Stock belum aktif.'
+    ? legacyWorkspace?.stockStatus === 'quarantined' ? 'Koneksi Stock tercatat dalam karantina. Stock belum aktif.' : 'Workspace tersedia. Stock belum aktif.'
     : 'Gunakan nama usaha Anda untuk membuat workspace baru. Pembuatan workspace tidak memulai trial, tagihan, atau pembayaran produk.'
   return <div className={styles.hubShell}>
     <a className={styles.skipLink} href="#hub-main">Lewati ke konten utama</a>
@@ -55,7 +61,7 @@ export function AccountHub({ account, view, billing = null, operatorWorkspaces =
       {view === 'systems' && <StockOperatorWorkspacesPanel list={operatorWorkspaces} />}
       {view === 'systems' && (billing?.status === 'ready' && billing.workspaces.length > 0 ? <StockBillingPanel billing={billing} systemsOnly /> : hasOperatorWorkspaces || operatorWorkspaces?.status === 'unavailable' ? null : <section className={`${styles.honestEmptyState} ${styles.inventoryState}`}><LayoutGrid aria-hidden="true" /><div><h2>{systemsAccessReady ? 'Belum ada keanggotaan sistem aktif' : 'Daftar sistem belum tersedia'}</h2><p>{systemsAccessReady ? workspaceDescription : 'Akses keanggotaan belum dapat diperiksa. Muat ulang halaman atau hubungi bantuan.'}</p></div><Link className={styles.primaryButton} href="/hub/store">Jelajahi Store</Link><a className={styles.textLink} href={help}>Bantuan aktivasi</a></section>)}
       {view === 'billing' && (billing?.status === 'ready' ? <StockBillingPanel billing={billing} /> : <><section className={styles.workspaceCard}><div className={styles.workspaceHeading}><span className={styles.systemMark}><ReceiptText aria-hidden="true" /></span><h2>Akses tagihan belum tersedia</h2></div><p className={styles.muted}>Akun dan workspace tidak otomatis memberikan akses mengelola langganan atau melihat tagihan produk.</p><div className={styles.buttonRow}><Link className={styles.primaryButton} href="/hub/store#stock-packages">Lihat paket di Store</Link><a className={styles.secondaryButton} href={help}>Bantuan akses tagihan</a></div></section><section className={styles.sectionBlock}><h2>Riwayat tagihan</h2><div className={styles.inlineNotice}><ReceiptText aria-hidden="true" /><span>Riwayat belum dapat ditampilkan untuk akun ini. Hubungi bantuan bila Anda memerlukan pemeriksaan.</span></div></section></>)}
-      {view === 'support' && <><section className={styles.supportGrid}><article className={styles.supportPrimary}><span className={styles.supportIcon}><MessageCircle aria-hidden="true" /></span><h2>WhatsApp Webzoka</h2><p>Sertakan nama usaha, sistem terkait, dan ringkasan kendala agar tim dapat memahami kebutuhan Anda.</p><a className={styles.secondaryButton} href="https://wa.me/6281296917963?text=Halo%20Webzoka%2C%20saya%20membutuhkan%20bantuan%20Customer%20Hub." target="_blank" rel="noopener noreferrer">Buka WhatsApp<span className={styles.srOnly}> — membuka tab baru</span></a></article><article className={styles.supportSecondary}><h2>Informasi untuk disertakan</h2><dl className={styles.supportFacts}><div><dt>Workspace</dt><dd>{ready ? account.workspace.companyName : 'Belum tersedia'}</dd></div><div><dt>Status sistem</dt><dd>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Belum dapat diperiksa'}</dd></div><div><dt>Email akun</dt><dd>{account.email}</dd></div></dl><p>Jangan membagikan kata sandi atau kode verifikasi melalui percakapan.</p></article></section><section className={styles.sectionBlock}><h2>Pertanyaan umum</h2><div className={styles.faq}><details><summary>Apakah workspace berarti sudah berlangganan?</summary><p>Tidak. Pembuatan workspace tidak otomatis memulai trial, tagihan, atau pembayaran produk.</p></details><details><summary>Bagaimana bila sistem saya belum muncul?</summary><p>Hubungi bantuan untuk pemeriksaan akun dan keanggotaan sistem Anda.</p></details></div><p className={styles.guideNote}>Panduan terpusat dan pelacakan tiket belum tersedia.</p></section></>}
+      {view === 'support' && <><section className={styles.supportGrid}><article className={styles.supportPrimary}><span className={styles.supportIcon}><MessageCircle aria-hidden="true" /></span><h2>WhatsApp Webzoka</h2><p>Sertakan nama usaha, sistem terkait, dan ringkasan kendala agar tim dapat memahami kebutuhan Anda.</p><a className={styles.secondaryButton} href="https://wa.me/6281296917963?text=Halo%20Webzoka%2C%20saya%20membutuhkan%20bantuan%20Customer%20Hub." target="_blank" rel="noopener noreferrer">Buka WhatsApp<span className={styles.srOnly}> — membuka tab baru</span></a></article><article className={styles.supportSecondary}><h2>Informasi untuk disertakan</h2><dl className={styles.supportFacts}><div><dt>Workspace</dt><dd>{ready ? title : 'Belum tersedia'}</dd></div><div><dt>Status sistem</dt><dd>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Belum dapat diperiksa'}</dd></div><div><dt>Email akun</dt><dd>{account.email}</dd></div></dl><p>Jangan membagikan kata sandi atau kode verifikasi melalui percakapan.</p></article></section><section className={styles.sectionBlock}><h2>Pertanyaan umum</h2><div className={styles.faq}><details><summary>Apakah workspace berarti sudah berlangganan?</summary><p>Tidak. Pembuatan workspace tidak otomatis memulai trial, tagihan, atau pembayaran produk.</p></details><details><summary>Bagaimana bila sistem saya belum muncul?</summary><p>Hubungi bantuan untuk pemeriksaan akun dan keanggotaan sistem Anda.</p></details></div><p className={styles.guideNote}>Panduan terpusat dan pelacakan tiket belum tersedia.</p></section></>}
       <p className={styles.guideNote}><Link className={styles.textLink} href="/hub/faq">FAQ Webzoka</Link></p>
     </div></main>
   </div>
