@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_PREPARATION_ENABLED_FRESH_SIGNUP_IN_PROGRESS",
+  "status": "GATE_B_BASIC_CORE_WORKSPACE_CREATED_AUTH_REPAIRED_SELECTION_PENDING",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -336,18 +336,18 @@
       "proposedEmail": "egyelisyaaaaa+stock-basic-fresh-20261105@gmail.com",
       "emailSha256": "55230f2e25367cef3445f6949d6ea8f34c24b5e1d7b03f15de7e7c2140c8172d",
       "companyName": "Stock Fresh Basic 20261105",
-      "companyId": null,
-      "instanceId": null,
+      "companyId": "d2c2f26b-9740-4f05-b775-b814563bfd79",
+      "instanceId": "6deede3f-a3cf-4d6d-815c-130e80c25f10",
       "coreSubject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
       "stockSubject": null,
-      "coreTenantId": null,
-      "stockTenantId": null,
-      "ownerMembershipId": null,
-      "profileId": null,
-      "creationCommandId": null,
+      "coreTenantId": "cdf19ca9-f529-4bd2-a3f8-d75b53671a8f",
+      "stockTenantId": "f358b30d-3141-401c-99cf-63421126ef29",
+      "ownerMembershipId": "7f75d067-a713-4937-973e-6481efbfbdde",
+      "profileId": "bf3169ed-5e2a-4eb4-a98d-69ac0e8de259",
+      "creationCommandId": "34a7d551-ab66-4081-9c0e-e58e0896b2ec",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "NORMAL_CORE_SIGNUP_AND_EMAIL_VERIFICATION_CONFIRMED; canonical Hub fresh-owner sign-in pending; Stock native identity and workspace not yet created",
+      "status": "CORE_COMPANY_CREATED_AND_VERIFIED; Stock native confirmation interrupted by Auth 503; invalid redirects removed, original preparation callback restored; Stock identity and readiness still pending",
       "nativeIdentityObservedAt": "2026-11-06",
       "coreEmailVerified": true,
       "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent."
@@ -1828,7 +1828,8 @@
         ],
         "tokenEndpointAuthMethod": "client_secret_basic",
         "updated": false
-      }
+      },
+      "currentStatus": "SUPERSEDED_BY_AUTH_SERVICE_REPAIR; previous six-entry observation included invalid patterns, now removed; current Stock count five"
     },
     "dbPostchecks": {
       "core": {
@@ -1936,21 +1937,30 @@
     "fixtureCreation": "Fresh Basic normal signup handed to Owner for private password/submission/verification; result not yet observed. Pro and new workspace creation not started.",
     "customerNativeFlow": "NOT_EXECUTED; normal signup handoff in progress",
     "freshBasicSignup": {
-      "status": "CORE_VERIFIED_CANONICAL_SIGNIN_HANDOFF",
+      "status": "CORE_SIGNUP_HUB_SIGNIN_AND_COMPANY_CREATED",
       "ownerReply": "Signup submitted; email verified",
       "observedDate": "2026-11-06",
       "coreSubject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
       "coreVerified": true,
       "stockSubject": null,
-      "workspaceCreated": false,
-      "browser": "Approved Core Preview returned to closed Basic checkout after verification. Canonical Hub held the existing Basic fixture session; agent signed it out using normal UI and handed fresh Basic login to Owner. No cookies/tokens copied.",
+      "workspaceCreated": true,
+      "browser": "Normal Preview signup/email verification, fresh same-person canonical Hub sign-in, fresh-owner account heading and normal named Company creation observed. Native Stock confirmation hit Auth 503 before provider login; no financial action.",
       "screenshot": "Session scratchpad/gate-b-basic-verified-checkout.jpg",
       "screenshotSha256": "0bbec4025e7494007f2e724e9d7fcde3a3ffc2291cb0ce452aa6a25ce2aa6630",
       "credentialHandling": "Owner entered/submitted new password; no password read or stored by agent."
+    },
+    "authServiceRepair": {
+      "date": "2026-11-06",
+      "cause": "Agent used JavaScript regex equivalence for a Go glob pattern. [0-9a-f] is invalid in github.com/gobwas/glob v0.2.3; Supabase uses glob.MustCompile while loading configuration. Earlier equivalence/PASS claims are retracted.",
+      "observedFailure": "Browser authorize and direct authorize/JWKS returned 503 upstream connection failure; Core JWKS 200; project metadata ACTIVE_HEALTHY did not prove Auth health.",
+      "repair": "Removed only the two agent-added invalid patterns. Retained all four originals. Added original approved preparation callback verbatim; selection remains pending UI limit. No service restart, role/secret/client change or permission expansion.",
+      "recovery": "Stock JWKS returned 200 after removing invalid patterns; UI shows five valid entries. Actual-engine CI test added; result pending.",
+      "selection": "Original six-entry list is 2053 characters, above Studio 2048. No wildcard or mixed range workaround permitted.",
+      "browserProof": "Session scratchpad/gate-b-stock-auth-valid-preparation-only.jpg"
     }
   },
   "gateBAuthCorrection": {
-    "status": "OWNER_APPROVED_APPLIED_EQUIVALENT_ENCODING_VERIFIED",
+    "status": "APPROVED_PARTIALLY_APPLIED_PREPARATION_VALID_SELECTION_PENDING_UI_LIMIT",
     "payload": "docs/pricing/stock-gate-b-auth-redirects-20261105.json",
     "sha256": "32dc13d278e731de9faeb5d64527139f6629040da58475cfa1a7ae1a2cddc2e1",
     "correction": "Stock application redirectTo URLs belong to Stock Auth Additional Redirect URLs, including the strict flow query. Core OAuth client keeps only the existing Stock Supabase provider callback.",
@@ -1967,15 +1977,16 @@
     },
     "executionEncoding": {
       "path": "docs/pricing/stock-gate-b-auth-execution-20261105.json",
-      "sha256": "33d82d56f0ed8c74a5acedb798c9ae02f5b29e43933a843d7c1511b06891ff00",
-      "transformation": "[0123456789abcdef] to [0-9a-f] at the same 30 UUID positions per pattern; identical finite rune set, all other bytes unchanged",
+      "sha256": "7b77e3acc8701a94403f3855015e2059fc7b78f6301b3e5a5f66221e51262319",
+      "encoding": "Original approved explicit character lists; rejected mixed-range attempt retained only as history",
       "permissionScopeChanged": false,
       "studioLimit": 2048,
       "originalCombinedCharacters": 2053,
-      "appliedCombinedCharacters": 1453,
-      "localTests": 4,
-      "failures": 0,
-      "scopedLintExit": 0
+      "currentCombinedCharacters": 1408,
+      "stockRedirectCount": 5,
+      "selectionApplied": false,
+      "providerEngine": "github.com/gobwas/glob v0.2.3",
+      "providerEngineCI": "PENDING"
     }
   }
 }

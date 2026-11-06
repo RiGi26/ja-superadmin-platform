@@ -1,12 +1,18 @@
 # Stock self-payment implementation and acceptance
 
+### Stock Auth encoding error repaired; selection callback pending — 6 November
+
+The earlier compact-encoding equivalence claim is retracted. `[0-9a-f]` works in JavaScript regex but is invalid in Supabase Auth's `github.com/gobwas/glob v0.2.3`: only one range or a literal character list is accepted. Auth uses `glob.MustCompile` during configuration loading. Browser authorize, independent direct authorize and Stock public JWKS returned 503 with upstream connection failure while Core JWKS returned 200. Project-level `ACTIVE_HEALTHY` did not establish Auth service health. Removing only the two agent-added invalid entries restored Stock JWKS to 200. All four original entries remain. The original approved preparation callback was then saved verbatim; Stock now has five entries. The approved selection callback remains unapplied because the complete original list is 2053 characters against Studio's 2048 limit. No permissions are broadened to bypass that limit. The original approved payload/hash remains unchanged. A regression suite against the actual pinned Go engine is added to existing source CI; JavaScript-only tests cannot prove provider compilation.
+
+The fresh Basic Owner completed canonical sign-in. Normal creation of `Stock Fresh Basic 20261105` succeeded: Company `d2c2f26b-9740-4f05-b775-b814563bfd79`, command `34a7d551-ab66-4081-9c0e-e58e0896b2ec`. The exact scoped Core readback freezes its reservation, Owner membership and mapping IDs in the manifest. Stock native confirmation stopped before login during the 503; scoped Stock origin readback is empty. No payment or paid access occurred. Retry the retained preparation command after current Auth health verification. Native customer, RLS, selection, full mobile, operators and payment acceptance remain open.
+
 ### Fresh Basic Core signup verified; canonical sign-in handoff — 6 November
 
 The Owner completed normal signup and email verification. The browser returned to the approved Preview's closed Basic checkout. The exact approved Auth read independently confirms verified Core subject `8a0a703c-63d7-44d7-b8fd-d76a129349d1`; fresh Basic Stock identity remains absent. The fixture manifest now freezes that Core identity. No workspace or payment was created. Canonical Hub still held the earlier existing Basic fixture session, which was signed out through its normal account menu. The fresh Basic login is handed to the Owner; no credentials or session tokens are copied between origins. Continue workspace preparation only after the intended fresh identity is established there.
 
 Core evidence commit `1ccbacaa1804b19003a20c0a9d9e8b15c2aa470d` passed full [source CI](https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42054138384), including tests, types, scoped lint and build. This does not replace the unchanged deployed application inputs or establish customer Stock/RLS/payment acceptance.
 
-### Auth configured and preparation enabled; normal signup in progress — 5 November
+### Historical Auth configuration attempt — compact equivalence retracted — 5 November
 
 The Owner approved the corrected Stock Auth patterns against `f3cd782032a8166d8acabe848db7f2f8327ebefb` and supplied an Auth-editable session. Core now has eight redirect entries, retaining its six originals plus the two exact Preview signup callbacks. Stock now has six, retaining all four originals plus the two membership preparation/selection callbacks. Core's existing OAuth client retains its original Stock Supabase provider callback and authentication method; it was not updated. No Site URL, secret, provider role or paid plan was changed by the agent. Browser confirmations are retained in the approved session scratchpad.
 
