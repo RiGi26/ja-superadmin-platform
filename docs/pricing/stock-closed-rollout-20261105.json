@@ -1,5 +1,5 @@
 {
-  "status": "RESUMED_EXISTING_BASIC_CONFIRMATION_UNRESOLVED_DIAGNOSTIC_SOURCE_IN_PROGRESS",
+  "status": "EXISTING_BASIC_UNRESOLVED_DIAGNOSTIC_SOURCE_VERIFIED_ROLLOUT_AUTHORITY_REQUIRED",
   "resumeInvestigation20261106": {
     "objectiveComplete": false,
     "sameTask": true,
@@ -10,7 +10,12 @@
     "nativeConfirmationRetestsThisContinuation": 1,
     "nativeRetestResult": "unconfirmed",
     "rootCause": "NOT_ESTABLISHED",
-    "localStageDiagnostics": "SOURCE_ONLY_NOT_DEPLOYED",
+    "localStageDiagnostics": "SOURCE_AND_CI_VERIFIED_NOT_DEPLOYED",
+    "coreDiagnosticCandidate": "d1679d7c1b97e1662eb2b289f4e6f3581c3f16d2",
+    "stockDiagnosticCandidate": "ac587a9f1427d810552fdd7a9479f58b94d0ec17",
+    "passingCoreSourceCi": 42182460372,
+    "passingPairedStockSourceCi": 42182498863,
+    "passingStockPdfCi": 42182498853,
     "historicalVercelLogs": "BLOCKED_403_CLI_HAS_NO_HISTORICAL_QUERY",
     "canonicalHubCheckoutCss390": "measured and screenshot captured; not full hosted journey acceptance",
     "newDeploymentPaymentPublicReleaseAuthorized": false,
