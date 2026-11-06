@@ -1,6 +1,14 @@
 # Gate B preparation command and receipt freeze
 
-Status: proposed, not authorized or executed against managed databases. This requests two additional read-only payloads; Gate B's original closed SQL list did not include preparation command/receipt export. Original rollout, repair, normal fixture preparation and routine login approvals remain valid. No payment authority follows from this proposal.
+Status: Owner approved “Approve both read-only checks” against `a0ca69dcc7f60e1bff514541de9586c7d26c8c8b`. Both exact pinned reads executed after fresh project-URL and raw Git-blob hash verification. Three fresh fixtures have matching reciprocal commands/receipts; existing Basic/Pro have no matching preparation receipts yet. No managed mutation or financial action occurred. The original proposal, payload comments, hashes and authority boundaries below are retained unchanged; no payment authority follows from this read approval.
+
+## Managed execution evidence
+
+Each target returned exactly five rows. Fresh Basic command `452f1bc6-747e-4b3a-88c9-f5968443a239`, fresh Pro command `9ca176ce-0639-46a0-934b-3e31afa511d4`, and the Pro Owner's separate Basic command `3f315484-2c46-4ae2-a408-3a231facbce8` agree between Core and Stock. Their complete known-field receipts match, Core confirms reciprocal preparation, both current membership flags match, and Stock profiles remain inactive. Saved plans are Basic, Pro and Basic respectively. These preparation commands are distinct from Company creation commands.
+
+Existing Basic and existing Pro return false receipt/current-membership/confirmation flags and null receipts/commands. Their staged Stock profiles still match and remain inactive. Their normal native preparation regressions are incomplete; they cannot be replaced by the three passing fixtures. The five-Company payment-cohort gate remains unsatisfied. Privileged metadata checks do not establish fresh native authorization or customer RLS.
+
+Actual bounded results and original Owner authorization are retained in session scratchpad `gate-b-receipt-freeze-managed-20261106.json`; the runtime manifest freezes the three actual preparation receipts/commands. No password, token, session or financial payload was read or recorded.
 
 ## Exact reads and targets
 
