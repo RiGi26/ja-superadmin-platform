@@ -1,5 +1,5 @@
 {
-  "status": "GATE_B_BASIC_CORE_WORKSPACE_CREATED_AUTH_REPAIRED_SELECTION_PENDING",
+  "status": "GATE_B_NATIVE_IDENTITIES_VERIFIED_PREPARATION_REPAIR_PROPOSED",
   "date": "2026-11-05",
   "hashContract": "SHA-256 of exact Git blob bytes; export from pinned commit, not working-tree line endings",
   "sourceCandidates": {
@@ -339,7 +339,7 @@
       "companyId": "d2c2f26b-9740-4f05-b775-b814563bfd79",
       "instanceId": "6deede3f-a3cf-4d6d-815c-130e80c25f10",
       "coreSubject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
-      "stockSubject": null,
+      "stockSubject": "cecba884-f703-467a-8f44-3b932ba3a833",
       "coreTenantId": "cdf19ca9-f529-4bd2-a3f8-d75b53671a8f",
       "stockTenantId": "f358b30d-3141-401c-99cf-63421126ef29",
       "ownerMembershipId": "7f75d067-a713-4937-973e-6481efbfbdde",
@@ -347,10 +347,11 @@
       "creationCommandId": "34a7d551-ab66-4081-9c0e-e58e0896b2ec",
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "CORE_COMPANY_CREATED_AND_VERIFIED; Stock native confirmation interrupted by Auth 503; invalid redirects removed, original preparation callback restored; Stock identity and readiness still pending",
+      "status": "CORE_COMPANY_AND_BOTH_NATIVE_IDENTITIES_VERIFIED; reciprocal preparation uncertain twice; no Stock origin; source no-cohort blocker reproduced; supplemental repair proposed",
       "nativeIdentityObservedAt": "2026-11-06",
       "coreEmailVerified": true,
-      "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent."
+      "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent.",
+      "stockEmailVerified": true
     },
     {
       "label": "fresh_pro",
@@ -1954,9 +1955,16 @@
       "cause": "Agent used JavaScript regex equivalence for a Go glob pattern. [0-9a-f] is invalid in github.com/gobwas/glob v0.2.3; Supabase uses glob.MustCompile while loading configuration. Earlier equivalence/PASS claims are retracted.",
       "observedFailure": "Browser authorize and direct authorize/JWKS returned 503 upstream connection failure; Core JWKS 200; project metadata ACTIVE_HEALTHY did not prove Auth health.",
       "repair": "Removed only the two agent-added invalid patterns. Retained all four originals. Added original approved preparation callback verbatim; selection remains pending UI limit. No service restart, role/secret/client change or permission expansion.",
-      "recovery": "Stock JWKS returned 200 after removing invalid patterns; UI shows five valid entries. Actual-engine CI test added; result pending.",
+      "recovery": "Stock JWKS returned 200 after removing invalid patterns; UI shows five valid entries; actual pinned Go engine compilation/matching tests passed in Core CI 42144917127. Retried native flow reached correct-email consent and created the verified Stock identity.",
       "selection": "Original six-entry list is 2053 characters, above Studio 2048. No wildcard or mixed range workaround permitted.",
       "browserProof": "Session scratchpad/gate-b-stock-auth-valid-preparation-only.jpg"
+    },
+    "nativeBasicPreparation": {
+      "status": "UNCERTAIN_AFTER_CONSENT_AND_ONE_RETRY",
+      "stockSubject": "cecba884-f703-467a-8f44-3b932ba3a833",
+      "stockOriginRows": 0,
+      "next": "Review/approve exact unpaid preparation repair; retry retained command only after postchecks. No replacement workspace or payment.",
+      "sourceRootCause": "New account preparation incorrectly requires public sales or sandbox cohort; disposable no-cohort reproduction fails STOCK_BILLING_EXISTING_RESOURCE."
     }
   },
   "gateBAuthCorrection": {
@@ -1986,7 +1994,33 @@
       "stockRedirectCount": 5,
       "selectionApplied": false,
       "providerEngine": "github.com/gobwas/glob v0.2.3",
-      "providerEngineCI": "PENDING"
+      "providerEngineCI": "PASS 42144917127 at 1c3b11d21817290f532c96913892608a4687e610"
     }
+  },
+  "gateBPreparationRepair": {
+    "status": "PROPOSED_NOT_AUTHORIZED",
+    "proposal": "docs/pricing/STOCK_GATE_B_PREPARATION_REPAIR_20261106.md",
+    "target": "hxhusfkrlafxdnyasmsu",
+    "payloads": [
+      {
+        "path": "docs/pricing/STOCK_PREPARATION_SALES_DECOUPLE_CORE_FORWARD.PROPOSED.sql",
+        "sha256": "f77a0ec82e45f38d872ea42ce5c06d2819aa9265a21de429143c4c4e626b3d32",
+        "bytes": 5311
+      },
+      {
+        "path": "docs/pricing/STOCK_PREPARATION_SALES_DECOUPLE_CORE_POSTCHECK_READONLY.sql",
+        "sha256": "34db819d60ae346a373ebe476b9c7d30dcc04a91acf1c77e0b8e356e9d48437e",
+        "bytes": 1301
+      },
+      {
+        "path": "docs/pricing/STOCK_PREPARATION_SALES_DECOUPLE_CORE_RECOVERY.PROPOSED.sql",
+        "sha256": "96d2c95666fd03923bc5e559982595b495db73c5721b515042bf33ffd2c23d4e",
+        "bytes": 5198
+      }
+    ],
+    "applicationBuildNeeded": false,
+    "managedExecuted": false,
+    "oldBodyMd5": "b665c2a71190f0185e3d2bee3e5a14ac",
+    "newBodyMd5": "966a113084bf699edb1c52cb42105be5"
   }
 }
