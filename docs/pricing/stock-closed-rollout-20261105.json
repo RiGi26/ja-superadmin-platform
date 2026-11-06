@@ -338,7 +338,7 @@
       "companyName": "Stock Fresh Basic 20261105",
       "companyId": null,
       "instanceId": null,
-      "coreSubject": null,
+      "coreSubject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
       "stockSubject": null,
       "coreTenantId": null,
       "stockTenantId": null,
@@ -347,7 +347,10 @@
       "creationCommandId": null,
       "preparationCommandId": null,
       "invoiceId": null,
-      "status": "PROPOSED; normal creation only after authority; freeze actual IDs before cohort approval"
+      "status": "NORMAL_CORE_SIGNUP_AND_EMAIL_VERIFICATION_CONFIRMED; canonical Hub fresh-owner sign-in pending; Stock native identity and workspace not yet created",
+      "nativeIdentityObservedAt": "2026-11-06",
+      "coreEmailVerified": true,
+      "nativeIdentityEvidence": "Owner reported normal signup/email verification; browser reached closed Basic checkout; approved exact scoped Auth read confirms verified Core subject and fresh Stock subject absent."
     },
     {
       "label": "fresh_pro",
@@ -1931,7 +1934,20 @@
       "core": "6fc7d3c9a2533de7136a13aa6befc27ad481dc13381c300bbef0d91df1aef17a"
     },
     "fixtureCreation": "Fresh Basic normal signup handed to Owner for private password/submission/verification; result not yet observed. Pro and new workspace creation not started.",
-    "customerNativeFlow": "NOT_EXECUTED; normal signup handoff in progress"
+    "customerNativeFlow": "NOT_EXECUTED; normal signup handoff in progress",
+    "freshBasicSignup": {
+      "status": "CORE_VERIFIED_CANONICAL_SIGNIN_HANDOFF",
+      "ownerReply": "Signup submitted; email verified",
+      "observedDate": "2026-11-06",
+      "coreSubject": "8a0a703c-63d7-44d7-b8fd-d76a129349d1",
+      "coreVerified": true,
+      "stockSubject": null,
+      "workspaceCreated": false,
+      "browser": "Approved Core Preview returned to closed Basic checkout after verification. Canonical Hub held the existing Basic fixture session; agent signed it out using normal UI and handed fresh Basic login to Owner. No cookies/tokens copied.",
+      "screenshot": "Session scratchpad/gate-b-basic-verified-checkout.jpg",
+      "screenshotSha256": "0bbec4025e7494007f2e724e9d7fcde3a3ffc2291cb0ce452aa6a25ce2aa6630",
+      "credentialHandling": "Owner entered/submitted new password; no password read or stored by agent."
+    }
   },
   "gateBAuthCorrection": {
     "status": "OWNER_APPROVED_APPLIED_EQUIVALENT_ENCODING_VERIFIED",
