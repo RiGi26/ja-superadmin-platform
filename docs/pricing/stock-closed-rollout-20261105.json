@@ -1,5 +1,5 @@
 {
-  "status": "PRE_REQUEST_CAUSE_ESTABLISHED_REPAIR_SOURCE_VERIFICATION_PENDING_PRODUCTION_AUTHORITY",
+  "status": "PRE_REQUEST_CAUSE_ESTABLISHED_REPAIR_SOURCE_CI_PASS_PRODUCTION_AUTHORITY_REQUIRED",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
@@ -10,7 +10,12 @@
     "predictedRepairedHookHash": "a90f6722c4632fbe0ba10a5377bf18bc",
     "managedPreflight": "PASS; metadata and existing gate booleans only",
     "localRepairRegression": "PASS 6/6",
-    "independentPostgreSql17": "PENDING_CI",
+    "independentPostgreSql17": "PASS in Stock CI 42249144864; fence, ACL preservation, forward metadata and exact recovery",
+    "stockSource": "4311bcde2b8ce5ca782dd6bd2afe4ab815789fc5",
+    "stockSourceCi": 42249144864,
+    "stockPdfCi": 42249144927,
+    "sourceCiStatus": "PASS",
+    "initialSourceCiFailure": "42248239802: test result transport and missing fixture cleanup, corrected without changing Production SQL",
     "managedRepair": "NOT_AUTHORIZED_NOT_EXECUTED",
     "nativeRetest": "NOT_AUTHORIZED_NOT_EXECUTED",
     "proposal": "Stock docs/pricing/STOCK_PREPARATION_PREREQUEST_REPAIR.PROPOSED.md",
