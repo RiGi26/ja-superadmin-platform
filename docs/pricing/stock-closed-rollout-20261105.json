@@ -1,11 +1,14 @@
 {
-  "status": "PRE_REQUEST_CAUSE_ESTABLISHED_REPAIR_SOURCE_CI_PASS_PRODUCTION_AUTHORITY_REQUIRED",
+  "status": "FIVE_RECIPROCAL_PREPARATIONS_CONFIRMED_INACTIVE_SANDBOX_RUNTIME_GATE_PENDING",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
     "observedHookHash": "dd0b70b5ad14cf91274ed865bf345b32",
     "observedHookAclHash": "37a7ab878ddb3c8de2877e90e7224b7e",
-    "observedExceptions": ["POST /rpc/stock_e1_pilot_receipt", "POST /rpc/stock_e1_resource_context"],
+    "observedExceptions": [
+      "POST /rpc/stock_e1_pilot_receipt",
+      "POST /rpc/stock_e1_resource_context"
+    ],
     "proposedException": "POST /rpc/stock_membership_prepared_owner_context",
     "predictedRepairedHookHash": "a90f6722c4632fbe0ba10a5377bf18bc",
     "managedPreflight": "PASS; metadata and existing gate booleans only",
@@ -16,14 +19,26 @@
     "stockPdfCi": 42249144927,
     "sourceCiStatus": "PASS",
     "initialSourceCiFailure": "42248239802: test result transport and missing fixture cleanup, corrected without changing Production SQL",
-    "managedRepair": "NOT_AUTHORIZED_NOT_EXECUTED",
-    "nativeRetest": "NOT_AUTHORIZED_NOT_EXECUTED",
+    "managedRepair": "OWNER_AUTHORIZED_EXECUTED_ONCE_POSTCHECK_PASS",
+    "nativeRetest": "PASS_BASIC_SAME_COMMAND_CONFIRMED_INACTIVE",
     "proposal": "Stock docs/pricing/STOCK_PREPARATION_PREREQUEST_REPAIR.PROPOSED.md",
     "forwardSha256": "a6920d4cb5b8578a89c126dd36d7e03108603fe8667d38bfc938a7edc24842a4",
     "postcheckSha256": "1c5ea26112a46e1432252d7a09f0b60bfd5af0a71bad113554f5c7a3752e72f1",
     "recoverySha256": "04e728b59802f0bffaad86a5d8cc53fc62cb54c2ebbc53cfd34bc5df1c7d9cf6",
     "authorityForRoutineDiagnostics": "Owner: jalankan sesuai rekomendasi. kedepannnya jangan tanya lagi; master goal requirement 11",
-    "productionWriteOrFinancialAuthorityInferred": false
+    "productionWriteOrFinancialAuthorityInferred": false,
+    "migrationVersion": "20261106165504",
+    "installedHookHash": "a90f6722c4632fbe0ba10a5377bf18bc",
+    "installedAclHash": "37a7ab878ddb3c8de2877e90e7224b7e",
+    "forwardExecutions": 1,
+    "recoveryExecutions": 0,
+    "basicRetestsConsumed": 1,
+    "ownerAuthorization": {
+      "answer": "Granted permision",
+      "additionalSameGrantReply": "choose the best practice",
+      "proposalCommit": "4311bcde2b8ce5ca782dd6bd2afe4ab815789fc5"
+    },
+    "managedEvidence": "Stock docs/pricing/STOCK_PREPARATION_PREREQUEST_EXECUTION_20261107.json"
   },
   "diagnosticRollout20261106": {
     "objectiveComplete": false,
@@ -395,15 +410,15 @@
       "profileId": "94387c2e-3491-4254-9392-6010eddcbb8b",
       "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
       "invoiceId": null,
-      "status": "CORE_STOCK_PREPARED_CORE_CONFIRMATION_PENDING",
+      "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
       "currentSavedPlanMatches": true,
       "billingAccountExists": false,
       "observedAt": "2026-11-05",
       "nativeIdentityObservedAt": "2026-11-05",
       "nativeIdentityEvidence": "Approved Gate B exact fixture readbacks; verified on both sides; no native session or paid-access claim",
-      "preparationReceiptObservedAt": "2026-11-06",
+      "preparationReceiptObservedAt": "2026-11-07",
       "preparationReceiptBothSidesMatch": true,
-      "corePreparationConfirmed": false,
+      "corePreparationConfirmed": true,
       "coreCurrentMembershipMatches": true,
       "stockCurrentMembershipMatches": true,
       "preparationReceipt": {
@@ -427,7 +442,8 @@
       },
       "matchingInactiveProfile": true,
       "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
-      "readinessEvidence": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
+      "readinessEvidence": "Fresh approved five-tuple Core/Stock receipt reads match immutable identities, command, reciprocal confirmation, current membership and inactive profile. Basic/Pro normal native readiness observed. Privileged reads do not prove full customer RLS, paid activation or release readiness.",
+      "historicalReadinessEvidence": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
     },
     {
       "label": "existing_pro",
@@ -441,19 +457,41 @@
       "stockTenantId": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
       "ownerMembershipId": "8777ce56-6bcb-4cfa-b8d6-1f1da55fbbff",
       "profileId": "8022b87c-6e70-42bf-b3e0-a2658720229a",
-      "preparationCommandId": null,
+      "preparationCommandId": "86f22a09-eeaa-45a6-9577-0edee8bf03eb",
       "invoiceId": null,
-      "status": "PREPARATION_RECEIPT_MISSING_NATIVE_REGRESSION_PENDING",
-      "currentSavedPlanMatches": null,
+      "status": "RECIPROCALLY_PREPARED_READY_UNPAID_INACTIVE",
+      "currentSavedPlanMatches": true,
       "billingAccountExists": false,
       "observedAt": "2026-11-05",
       "nativeIdentityObservedAt": "2026-11-05",
       "nativeIdentityEvidence": "Approved Gate B exact fixture readbacks; verified on both sides; no native session or paid-access claim",
-      "preparationReceiptObservedAt": "2026-11-06",
-      "preparationReceiptBothSidesMatch": false,
-      "corePreparationConfirmed": false,
-      "coreCurrentMembershipMatches": false,
-      "stockCurrentMembershipMatches": false
+      "preparationReceiptObservedAt": "2026-11-07",
+      "preparationReceiptBothSidesMatch": true,
+      "corePreparationConfirmed": true,
+      "coreCurrentMembershipMatches": true,
+      "stockCurrentMembershipMatches": true,
+      "matchingInactiveProfile": true,
+      "preparationReceipt": {
+        "role": "admin",
+        "status": "prepared",
+        "version": 2,
+        "bindingId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+        "commandId": "86f22a09-eeaa-45a6-9577-0edee8bf03eb",
+        "companyId": "bab486e5-f50e-45ac-8dca-6ae8488104a0",
+        "profileId": "8022b87c-6e70-42bf-b3e0-a2658720229a",
+        "instanceId": "1479f3e8-8e47-4a1e-a465-862260b229cb",
+        "coreSubject": "3f8c7096-db2e-4e9c-af69-05902358b8c0",
+        "coreTenantId": "871aadb3-b581-456b-a2f5-076f90d16564",
+        "stockSubject": "8cc47e5f-82b9-4fa0-a125-a4fefea9da13",
+        "accessGranted": false,
+        "stockTenantId": "0b740b9d-9a8d-4493-90f4-fddafe9c6fad",
+        "bindingRevision": 1,
+        "companyRevision": 0,
+        "ownerMembershipId": "8777ce56-6bcb-4cfa-b8d6-1f1da55fbbff",
+        "membershipRevision": 1
+      },
+      "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+      "readinessEvidence": "Fresh approved five-tuple Core/Stock receipt reads match immutable identities, command, reciprocal confirmation, current membership and inactive profile. Basic/Pro normal native readiness observed. Privileged reads do not prove full customer RLS, paid activation or release readiness."
     },
     {
       "label": "fresh_basic",
@@ -480,8 +518,8 @@
       "stockAuditEventId": "368fe541-0207-46f6-af49-c12bc02a3b56",
       "membershipRevision": 1,
       "matchingInactiveProfile": true,
-      "readinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions.",
-      "preparationReceiptObservedAt": "2026-11-06",
+      "readinessEvidence": "Fresh approved five-tuple Core/Stock receipt reads match immutable identities, command, reciprocal confirmation, current membership and inactive profile. Basic/Pro normal native readiness observed. Privileged reads do not prove full customer RLS, paid activation or release readiness.",
+      "preparationReceiptObservedAt": "2026-11-07",
       "preparationReceipt": {
         "role": "admin",
         "status": "prepared",
@@ -509,7 +547,8 @@
       "coreCurrentMembershipMatches": true,
       "stockCurrentMembershipMatches": true,
       "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
-      "currentSavedPlanMatches": true
+      "currentSavedPlanMatches": true,
+      "historicalReadinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions."
     },
     {
       "label": "fresh_pro",
@@ -536,8 +575,8 @@
       "membershipRevision": 1,
       "matchingInactiveProfile": true,
       "stockEmailVerified": true,
-      "readinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions.",
-      "preparationReceiptObservedAt": "2026-11-06",
+      "readinessEvidence": "Fresh approved five-tuple Core/Stock receipt reads match immutable identities, command, reciprocal confirmation, current membership and inactive profile. Basic/Pro normal native readiness observed. Privileged reads do not prove full customer RLS, paid activation or release readiness.",
+      "preparationReceiptObservedAt": "2026-11-07",
       "preparationReceipt": {
         "role": "admin",
         "status": "prepared",
@@ -565,7 +604,8 @@
       "coreCurrentMembershipMatches": true,
       "stockCurrentMembershipMatches": true,
       "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
-      "currentSavedPlanMatches": true
+      "currentSavedPlanMatches": true,
+      "historicalReadinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions."
     },
     {
       "label": "additional_basic",
@@ -592,8 +632,8 @@
       "stockEmailVerified": true,
       "nativeIdentityObservedAt": "2026-11-06",
       "nativeIdentityEvidence": "Original exact scoped Core/Stock fixture reads match native subjects, Company resources and inactive profile. Actual native callback and Hub readiness observed. No paid access claim.",
-      "readinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions.",
-      "preparationReceiptObservedAt": "2026-11-06",
+      "readinessEvidence": "Fresh approved five-tuple Core/Stock receipt reads match immutable identities, command, reciprocal confirmation, current membership and inactive profile. Basic/Pro normal native readiness observed. Privileged reads do not prove full customer RLS, paid activation or release readiness.",
+      "preparationReceiptObservedAt": "2026-11-07",
       "preparationReceipt": {
         "role": "admin",
         "status": "prepared",
@@ -621,7 +661,8 @@
       "coreCurrentMembershipMatches": true,
       "stockCurrentMembershipMatches": true,
       "currentSavedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
-      "currentSavedPlanMatches": true
+      "currentSavedPlanMatches": true,
+      "historicalReadinessEvidence": "Normal native callback and Hub readiness previously observed; approved pinned reads now freeze matching Core/Stock preparation command and receipt, reciprocal confirmation, current membership revision 1 and inactive Stock profile. Fresh native authorization remains required before later actions."
     }
   ],
   "sandboxBounds": {
@@ -2610,7 +2651,7 @@
     "passwordRecoveryCompleted": "Older Basic only; one request; Owner privately entered/submitted new password; no credential value stored"
   },
   "gateBReceiptFreeze": {
-    "status": "OWNER_APPROVED_EXECUTED_FOUR_RECEIPTS_THREE_CONFIRMED_ONE_PARTIAL_ONE_MISSING",
+    "status": "OWNER_APPROVED_FIVE_MATCHING_RECEIPTS_FIVE_CONFIRMED_INACTIVE",
     "proposal": "docs/pricing/STOCK_GATE_B_RECEIPT_FREEZE_20261106.md",
     "core": {
       "projectRef": "hxhusfkrlafxdnyasmsu",
@@ -2655,22 +2696,21 @@
         "label": "existing_basic",
         "reciprocalReceiptMatches": true,
         "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
-        "coreConfirmed": false,
+        "coreConfirmed": true,
         "coreCurrentMember": true,
         "stockCurrentMember": true,
         "stockInactiveProfile": true,
-        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
-        "observationScope": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001"
       },
       {
         "label": "existing_pro",
-        "reciprocalReceiptMatches": false,
-        "preparationCommandId": null,
-        "coreConfirmed": false,
-        "coreCurrentMember": false,
-        "stockCurrentMember": false,
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "86f22a09-eeaa-45a6-9577-0edee8bf03eb",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
         "stockInactiveProfile": true,
-        "savedPlanId": null
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
       },
       {
         "label": "fresh_basic",
@@ -2696,7 +2736,7 @@
     "managedEvidence": "Session scratchpad/gate-b-receipt-freeze-managed-20261106.json",
     "managedMutationPerformed": false,
     "financialActionPerformed": false,
-    "allFiveReady": false,
+    "allFiveReady": true,
     "initialManagedObservations": [
       {
         "label": "additional_basic",
@@ -2749,10 +2789,64 @@
         "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
       }
     ],
-    "latestManagedEvidence": "Session scratchpad/gate-b-existing-basic-partial-handoff-20261106.json"
+    "latestManagedEvidence": "Session scratchpad/gate-b-all-five-prepared-20261107.json",
+    "priorPartialManagedObservations": [
+      {
+        "label": "additional_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "3f315484-2c46-4ae2-a408-3a231facbce8",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001"
+      },
+      {
+        "label": "existing_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "f2e279dd-bc8a-4d71-b9b0-8ffb7ac731cc",
+        "coreConfirmed": false,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+        "observationScope": "Both receipts match after first attempt; Core confirmation remains false after one retained-command retry. Latest Stock read is after first attempt, latest Core read is after retry. Not checkout-ready."
+      },
+      {
+        "label": "existing_pro",
+        "reciprocalReceiptMatches": false,
+        "preparationCommandId": null,
+        "coreConfirmed": false,
+        "coreCurrentMember": false,
+        "stockCurrentMember": false,
+        "stockInactiveProfile": true,
+        "savedPlanId": null
+      },
+      {
+        "label": "fresh_basic",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "452f1bc6-747e-4b3a-88c9-f5968443a239",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001"
+      },
+      {
+        "label": "fresh_pro",
+        "reciprocalReceiptMatches": true,
+        "preparationCommandId": "9ca176ce-0639-46a0-934b-3e31afa511d4",
+        "coreConfirmed": true,
+        "coreCurrentMember": true,
+        "stockCurrentMember": true,
+        "stockInactiveProfile": true,
+        "savedPlanId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002"
+      }
+    ],
+    "lastObservedDate": "2026-11-07"
   },
   "pauseHandoff": {
-    "status": "PAUSED_BY_OWNER",
+    "status": "HISTORICAL_PAUSE_SUPERSEDED_BY_OWNER_RESUME",
     "date": "2026-11-06",
     "reason": "Owner requested latest handoff and continuation in a new chat",
     "canonicalDocument": "docs/pricing/STOCK_SELF_PAYMENT_HANDOFF.md",
@@ -2766,7 +2860,23 @@
       "conclusion": "PASS"
     },
     "productionChangedForHandoff": false,
-    "allFiveReady": false
+    "allFiveReady": false,
+    "historicalStatus": "PAUSED_BY_OWNER"
   },
-  "lastUpdated": "2026-11-06"
+  "lastUpdated": "2026-11-07",
+  "existingProNativePreparation20261107": {
+    "date": "2026-11-07",
+    "scope": "Original Gate B normal preparation, exact approved receipt readbacks",
+    "privateSignIn": "Owner completed and exact Pro email/verified Owner observed",
+    "intentSubmissions": 1,
+    "nativeConfirmationSubmissions": 1,
+    "commandId": "86f22a09-eeaa-45a6-9577-0edee8bf03eb",
+    "observation": "Playwright click dispatched; navigation observation timed out; same page re-observed without second click; ready message and disabled payment control",
+    "financialMutation": false,
+    "goalComplete": false,
+    "status": "PASS_READY_UNPAID_INACTIVE",
+    "recoveryEmailSent": false,
+    "receiptCount": 5,
+    "confirmedCount": 5
+  }
 }
