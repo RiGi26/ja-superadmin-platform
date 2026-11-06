@@ -677,7 +677,8 @@
       "N2_expire"
     ],
     "cohortMaximumHours": 6,
-    "publicOfferRowsEnabled": 0
+    "publicOfferRowsEnabled": 0,
+    "historicalContractSupersededBy": "currentAcceptance20261107 and gateCProposal20261107; old five-success scope is historical, not current mandatory acceptance"
   },
   "productionChanged": true,
   "operators": [
@@ -2878,5 +2879,77 @@
     "recoveryEmailSent": false,
     "receiptCount": 5,
     "confirmedCount": 5
+  },
+  "currentAcceptance20261107": {
+    "source": "Owner-edited active master goal, 7 November 2026",
+    "supersedesOldNumericalAcceptance": true,
+    "requirements": [
+      "Basic149000 and Pro359000 monthly with approved feature/seat limits",
+      "Normal registration, email confirmation, login, password recovery and native SSO",
+      "Existing/new authorized Company workspace creation, preparation, confirmation and selection",
+      "Authorization, RLS, revocation, tenant isolation, legacy coexistence and cross-workspace security",
+      "Authenticated HTTP and approved-host desktop/exact CSS390 browser UAT",
+      "Autonomous routine best-practice execution within existing material authority boundaries"
+    ],
+    "journeyIncludes": [
+      "verified payment",
+      "activated Stock entitlements",
+      "subscription status",
+      "invoice history"
+    ],
+    "financialProductionReleaseBoundariesRetained": true,
+    "objectiveComplete": false
+  },
+  "gateCProposal20261107": {
+    "status": "SOURCE_PREPARATION_NOT_AUTHORIZED_NOT_EXECUTED",
+    "proposal": "docs/pricing/STOCK_GATE_C_SANDBOX_20261107.md",
+    "cohort": [
+      "existing_basic",
+      "fresh_pro",
+      "additional_basic"
+    ],
+    "maximumSuccessfulSandboxPurchases": 3,
+    "maximumSuccessfulFaceValueIdr": 657000,
+    "maximumUnpaidCancellationInvoices": 1,
+    "maximumTotalInvoices": 4,
+    "maximumEligibilityHours": 6,
+    "maximumBuilds": 3,
+    "maximumInvitedAliases": 2,
+    "realCharges": 0,
+    "publicRelease": false,
+    "globalPaidOwnerOperatorGatesDisclosed": true,
+    "payloads": [
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_RUNTIME_ENABLE.PROPOSED.sql",
+        "sha256": "ddea8205732f98b1949b58e05140154398d39253aa8f5a205e160585e91085ca"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_COHORT_ENABLE.PROPOSED.sql",
+        "sha256": "b729062ac7e129494c83484b45d26c413dbc46abeef7bef1fb1f4680d9e81bf9"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_PURCHASE_CLOSE.PROPOSED.sql",
+        "sha256": "ccbc58be86e0e3c5b17ce6d38431f324b3a1bc8c2cc2e0242638f70a6fbba183"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_FINANCIAL_POSTCHECK_READONLY.sql",
+        "sha256": "fcae95a80618504f11246033b6fb684caae4dbff6db34cf5b1573b6800506bc9"
+      },
+      {
+        "side": "stock",
+        "path": "docs/pricing/STOCK_GATE_C_RUNTIME_ENABLE.PROPOSED.sql",
+        "sha256": "8ef8b5bc8d1103e98d624dba989f4ee49ea9811e2c80b5a709e4581ca46cb610"
+      },
+      {
+        "side": "stock",
+        "path": "docs/pricing/STOCK_GATE_C_FINANCIAL_POSTCHECK_READONLY.sql",
+        "sha256": "228010a83e8b7d720f0d5c9984afb3553a03448fa9094d99f607e95539ae1ab1"
+      }
+    ],
+    "sourceCi": "PENDING_FINAL_PAIRED_CANDIDATES"
   }
 }

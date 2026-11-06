@@ -1,6 +1,8 @@
 import { isActiveStockUuid } from './stock-active-protocol'
 
-export const STOCK_MEMBER_LIFECYCLE_ENABLED = false
+// Gate C source candidate; current native Owner and managed mutation/delivery
+// settings remain mandatory. Deployment requires separate runtime authority.
+export const STOCK_MEMBER_LIFECYCLE_ENABLED = true
 
 export type StockMemberEvent = Readonly<{
   kind: 'stock_member_event_v2'; eventId: string; commandId: string; companyId: string; companyRevision: number;

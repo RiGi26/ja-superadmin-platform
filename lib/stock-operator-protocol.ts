@@ -1,6 +1,8 @@
 import { isActiveStockUuid } from './stock-active-protocol'
 
-export const STOCK_OPERATOR_INVITATION_ENABLED = false
+// Gate C source candidate. Managed settings and a separately authorized rollout
+// must also permit invitations; this constant grants no paid access or ownership.
+export const STOCK_OPERATOR_INVITATION_ENABLED = true
 
 export type StockOperatorProof = Readonly<{ inviteId: string; proof: string }>
 export type StockOperatorClaim = Readonly<{
