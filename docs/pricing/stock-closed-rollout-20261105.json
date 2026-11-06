@@ -1,5 +1,25 @@
 {
-  "status": "DIAGNOSTIC_PAIR_DEPLOYED_BASIC_STOCK_CONTEXT_READ_42501_PERMISSION_METADATA_AUTHORITY_PENDING",
+  "status": "PRE_REQUEST_CAUSE_ESTABLISHED_REPAIR_SOURCE_VERIFICATION_PENDING_PRODUCTION_AUTHORITY",
+  "preRequestRepair20261106": {
+    "objectiveComplete": false,
+    "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
+    "observedHookHash": "dd0b70b5ad14cf91274ed865bf345b32",
+    "observedHookAclHash": "37a7ab878ddb3c8de2877e90e7224b7e",
+    "observedExceptions": ["POST /rpc/stock_e1_pilot_receipt", "POST /rpc/stock_e1_resource_context"],
+    "proposedException": "POST /rpc/stock_membership_prepared_owner_context",
+    "predictedRepairedHookHash": "a90f6722c4632fbe0ba10a5377bf18bc",
+    "managedPreflight": "PASS; metadata and existing gate booleans only",
+    "localRepairRegression": "PASS 6/6",
+    "independentPostgreSql17": "PENDING_CI",
+    "managedRepair": "NOT_AUTHORIZED_NOT_EXECUTED",
+    "nativeRetest": "NOT_AUTHORIZED_NOT_EXECUTED",
+    "proposal": "Stock docs/pricing/STOCK_PREPARATION_PREREQUEST_REPAIR.PROPOSED.md",
+    "forwardSha256": "a6920d4cb5b8578a89c126dd36d7e03108603fe8667d38bfc938a7edc24842a4",
+    "postcheckSha256": "1c5ea26112a46e1432252d7a09f0b60bfd5af0a71bad113554f5c7a3752e72f1",
+    "recoverySha256": "04e728b59802f0bffaad86a5d8cc53fc62cb54c2ebbc53cfd34bc5df1c7d9cf6",
+    "authorityForRoutineDiagnostics": "Owner: jalankan sesuai rekomendasi. kedepannnya jangan tanya lagi; master goal requirement 11",
+    "productionWriteOrFinancialAuthorityInferred": false
+  },
   "diagnosticRollout20261106": {
     "objectiveComplete": false,
     "ownerAuthorization": "jalankan best practicenya, in reply to the exact two-build closed rollout request",
@@ -38,7 +58,7 @@
     "proposedMetadataRead": {
       "path": "Stock docs/pricing/STOCK_NATIVE_RPC_PERMISSION_METADATA_READONLY.sql",
       "sha256": "4a12161b7bc8153e56a1c59dd3658ecc56a49337dd58e5625ede0fe79c430287",
-      "status": "NOT_AUTHORIZED_NOT_EXECUTED_MANAGED",
+      "status": "AUTHORIZED_EXECUTED_ONCE; public pre-request hook identified",
       "localRegression": "PASS 1/1"
     },
     "evidence": [
