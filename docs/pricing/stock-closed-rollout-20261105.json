@@ -1,5 +1,52 @@
 {
-  "status": "EXISTING_BASIC_UNRESOLVED_DIAGNOSTIC_SOURCE_VERIFIED_ROLLOUT_AUTHORITY_REQUIRED",
+  "status": "DIAGNOSTIC_PAIR_DEPLOYED_BASIC_STOCK_CONTEXT_READ_42501_PERMISSION_METADATA_AUTHORITY_PENDING",
+  "diagnosticRollout20261106": {
+    "objectiveComplete": false,
+    "ownerAuthorization": "jalankan best practicenya, in reply to the exact two-build closed rollout request",
+    "buildsConsumed": 2,
+    "promotionsConsumed": 2,
+    "sameCommandBasicRetestsConsumed": 1,
+    "core": {
+      "sourceCommit": "d1679d7c1b97e1662eb2b289f4e6f3581c3f16d2",
+      "deploymentId": "dpl_4ds1Uq4aXBmaggrSzjMkAPJ7B8TK",
+      "url": "https://ja-superadmin-platform-mlfe2x40z-rigi26s-projects.vercel.app",
+      "effectiveRuntime": "nodejs26.x iad1",
+      "closedHttp": "PASS 11/11"
+    },
+    "stock": {
+      "sourceCommit": "ac587a9f1427d810552fdd7a9479f58b94d0ec17",
+      "deploymentId": "dpl_9m67TBBvkiCrEZu9pKxCwyHpZ3Zq",
+      "url": "https://webzoka-stock-platform-higgvtaj8-rigi26s-projects.vercel.app",
+      "effectiveRuntime": "nodejs22.x sin1",
+      "closedHttp": "PASS 7/7"
+    },
+    "canonicalAliasesVerified": true,
+    "managedGatesUnchanged": true,
+    "configurationSqlPaymentMutation": false,
+    "nativeResult": "unconfirmed",
+    "firstFailedBoundary": "core_confirm.stock_context_read",
+    "sqlState": "42501",
+    "coreConfirmElapsedMs": 6903,
+    "stockCallbackElapsedMs": 17979,
+    "stockPeerConfirmStatus": 503,
+    "deadlineExceeded": false,
+    "exactDeniedTarget": "NOT_ESTABLISHED",
+    "sanitizedCoreRecords": 3,
+    "sanitizedStockRecords": 1,
+    "logWindowSeconds": 79,
+    "freshReceiptReadback": "existing Basic matching inactive receipts, reciprocal confirmation false; three v2 preparations remain confirmed/inactive; existing Pro remains unprepared",
+    "proposedMetadataRead": {
+      "path": "Stock docs/pricing/STOCK_NATIVE_RPC_PERMISSION_METADATA_READONLY.sql",
+      "sha256": "4a12161b7bc8153e56a1c59dd3658ecc56a49337dd58e5625ede0fe79c430287",
+      "status": "NOT_AUTHORIZED_NOT_EXECUTED_MANAGED",
+      "localRegression": "PASS 1/1"
+    },
+    "evidence": [
+      "scratchpad/diagnostic-rollout-execution-20261106.json",
+      "scratchpad/diagnostic-native-stage-evidence-20261106.json",
+      "scratchpad/diagnostic-native-basic-uncertain-20261106.jpg"
+    ]
+  },
   "resumeInvestigation20261106": {
     "objectiveComplete": false,
     "sameTask": true,
