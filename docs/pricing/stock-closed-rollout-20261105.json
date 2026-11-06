@@ -1,5 +1,5 @@
 {
-  "status": "FIVE_RECIPROCAL_PREPARATIONS_CONFIRMED_INACTIVE_SANDBOX_RUNTIME_GATE_PENDING",
+  "status": "FIVE_UNPAID_PREPARATIONS_CONFIRMED_GATE_C_SOURCE_CI_PASS_RUNTIME_AUTHORITY_REQUIRED",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
@@ -2902,7 +2902,7 @@
     "objectiveComplete": false
   },
   "gateCProposal20261107": {
-    "status": "SOURCE_PREPARATION_NOT_AUTHORIZED_NOT_EXECUTED",
+    "status": "SOURCE_CI_PASS_RUNTIME_FINANCIAL_AUTHORITY_REQUIRED",
     "proposal": "docs/pricing/STOCK_GATE_C_SANDBOX_20261107.md",
     "cohort": [
       "existing_basic",
@@ -2951,10 +2951,35 @@
         "sha256": "228010a83e8b7d720f0d5c9984afb3553a03448fa9094d99f607e95539ae1ab1"
       }
     ],
-    "sourceCi": "PENDING_FINAL_PAIRED_CANDIDATES",
+    "sourceCi": {
+      "core": {
+        "sha": "0ba6638b5013cf4da7d7b66f5a7d4bd8cca38778",
+        "run": 42270488045,
+        "conclusion": "PASS",
+        "url": "https://github.com/RiGi26/ja-superadmin-platform/actions/runs/42270488045"
+      },
+      "stock": {
+        "sha": "22b42abe94c30646c13e8e8c5d0dbc9eae767456",
+        "run": 42270710719,
+        "conclusion": "PASS",
+        "url": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42270710719"
+      },
+      "stockPdf": {
+        "sha": "22b42abe94c30646c13e8e8c5d0dbc9eae767456",
+        "run": 42270710696,
+        "conclusion": "PASS",
+        "url": "https://github.com/RiGi26/webzoka-stock-platform/actions/runs/42270710696"
+      }
+    },
     "schemaReview": "Real Core bootstrap platform_settings.value is text. Guard uses to_jsonb(row)->>value; regression now executes against text. No managed attempt occurred.",
     "firstCandidateCore": "b7de68981b049613c2006773485640a42775ea48",
     "firstCandidateCoreCi": 42269150248,
-    "firstCandidateCoreCiConclusion": "PASS"
+    "firstCandidateCoreCiConclusion": "PASS",
+    "managedExecuted": false,
+    "sourcePair": {
+      "core": "0ba6638b5013cf4da7d7b66f5a7d4bd8cca38778",
+      "stock": "22b42abe94c30646c13e8e8c5d0dbc9eae767456"
+    },
+    "rawGitSqlHashesVerified": true
   }
 }
