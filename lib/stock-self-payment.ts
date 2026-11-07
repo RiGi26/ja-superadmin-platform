@@ -76,17 +76,21 @@ export async function readStockPurchaseIntent(company?: string | null) {
   } catch { return null }
 }
 
-export async function readStockPurchaseOffers(company?: string) {
+export async function readStockPurchaseOffers(company?: string, plan?: string) {
   const rows = await readCatalogPlans('stock')
   const quote = rows ? stockPriceQuotes(rows) : null
   if (!quote) return null
   if (stockPurchaseAvailable(quote.salesEnabled)) return { ...quote, salesEnabled: true }
   if (STOCK_PAID_BILLING_RUNTIME_ENABLED && company && stockCompanyId(company)) {
+    const selectedPlan = plan === undefined ? null : stockPlanId(plan)
+    if (plan !== undefined && !selectedPlan) return { ...quote, salesEnabled: false }
     try {
       const { client, actor } = await authenticate()
       const owned = (await readOwned(client, actor.subject)).find(row => row.companyId === company)
       const approved = rows!.filter(row => approvedOffer(row)?.platform === 'stock')
-      if (owned && approved.length === 2 && (await Promise.all(approved.map(row => sandboxPurchaseAllowed(row, owned.coreTenantId)))).every(Boolean)) {
+      const selected = selectedPlan ? approved.filter(row => row.id === selectedPlan) : approved
+      if (owned && approved.length === 2 && selected.length > 0 &&
+        (await Promise.all(selected.map(row => sandboxPurchaseAllowed(row, owned.coreTenantId)))).every(Boolean)) {
         return { ...quote, salesEnabled: true, sandbox: true }
       }
     } catch { /* Public offers stay closed without exact sandbox scope. */ }

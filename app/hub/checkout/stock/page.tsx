@@ -41,7 +41,7 @@ export default async function StockCheckoutPage({ searchParams }: {
   const planId = selectedPlan ?? intent?.planId ?? null
   const workspaces = account.status === 'ready' ? account.workspaces : []
   const selected = creation ? null : company ? workspaces.find(item => item.companyId === company) ?? null : workspaces.length === 1 ? workspaces[0] : null
-  const scopedOffers = offers?.salesEnabled || !selected ? offers : await readStockPurchaseOffers(selected.companyId)
+  const scopedOffers = offers?.salesEnabled || !selected ? offers : await readStockPurchaseOffers(selected.companyId, planId ?? undefined)
   const plan = scopedOffers?.plans.find(item => item?.id === planId) ?? null
   const preparationRequired = Boolean(selected && !selected.hasPaidContract &&
     (selected.accessProtocol === 'membership' || (STOCK_MEMBERSHIP_PREPARATION_ENABLED && selected.stockTenantId)) &&

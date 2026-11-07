@@ -3435,14 +3435,31 @@
     ],
     "localSqlTests": "PASS 3/3",
     "lint": "PASS exit 0",
-    "hostedCi": "PENDING_FINAL_SOURCE_PINS",
-    "applicationSourcesUnchanged": true,
+    "hostedCi": "Exact Stock and paired Core SQL validation PASS; Core application successor requires its own exact-head CI",
     "newManagedExecutions": 0,
     "newRequestedCoreBuilds": 2,
     "additionalSuccessfulSandboxFaceValueIdr": 508000,
     "maximumNewInvoices": 2,
     "oldCohortReopen": "PROHIBITED_AND_TRIGGER_DENIED",
     "newLedger": "stock_billing_private.sandbox_continuations_20261107",
-    "newWindow": "One newly authorized maximum-six-hour window; original retired records unchanged"
+    "newWindow": "One newly authorized maximum-six-hour window; original retired records unchanged",
+    "stockApplicationUnchanged": true,
+    "coreApplicationDelta": [
+      "app/hub/checkout/stock/page.tsx",
+      "lib/stock-self-payment.ts"
+    ],
+    "coreApplicationInput": "Exact immutable Core revision containing this finalized package; pin that full SHA in the Owner grant",
+    "coreCheckoutUnit": "PASS 34/34; selected plan eligibility, public/foreign/wrong-plan denial",
+    "stockValidationSha": "ed00d812fd55e85fbf83dddb5acee1d070e1dd75",
+    "coreSqlValidationSha": "178b8fe8acdbdb9834e890e4b01d08f76b873229",
+    "stockSourceCi": 42317899886,
+    "stockPdfCi": 42317899928,
+    "coreSqlSourceCi": 42317191421,
+    "firstStockCiFailure": {
+      "run": 42317303224,
+      "classification": "TEST_HARNESS_DEFECT",
+      "cause": "New disposable database names absent from closed localhost-only CI allowlist",
+      "repair": "Allow only the two named CI databases; use scalar UUID parameters across drivers; unchanged SQL payloads"
+    }
   }
 }
