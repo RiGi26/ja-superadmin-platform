@@ -1,5 +1,15 @@
 # Stock self-payment implementation and acceptance
 
+## Pro Purchase Orders failure isolated further — 7 November 2026
+
+The retained Pro Owner session rendered the Supplier directory with its empty state and authorized add control. Its document returned HTTP200 in 22.8 seconds. Desktop CSS1600×1000 and CSS390×844 showed no horizontal overflow. A following independent Purchase Orders read in the same session returned HTTP200 in 22.7 seconds with `Gagal mengambil data purchase order.` and no purchase controls. This repeats the product failure while Supplier works. `listPurchaseOrders` maps that message to the embedded Data API read. The managed error code is still unknown.
+
+The tracked purchasing migration defines one Supplier foreign key and one line-item foreign key. A corrected disposable read-only PostgreSQL fixture using selected Pro authorization returned one own purchase row and one own profile row, with zero rows for the other workspace. Removing the synthetic line-item SELECT grant produced SQLSTATE `42501`. The new exact metadata query returns seven true baseline booleans and detects the missing grant and a synthetic duplicate relationship. Fixture preparation required the installed Core sales-decouple baseline, the legacy role helper and corrected SQL delimiter handling. This test uses synthetic Auth and SQL equivalent to the application query. It leaves managed grants, relationships and Data API schema-cache behavior unproven.
+
+The existing scratchpad record `gate-c-pro-post-shutdown-uat-20261107.json` includes the safe observations. The Supplier screenshots are `gate-c-pro-supplier-desktop1600-20261107.png` and `gate-c-pro-supplier-css390-20261107.png`. The disposable script is `gate-c-pro-purchase-readonly-fixture-20261107.mjs`, intended to be piped to Node as a module from the Stock worktree with the existing disposable Core source root. No new managed read, deployment or business mutation was performed.
+
+Next action is one bounded authorization of the [revised Stock rollout and three exact reads](https://github.com/RiGi26/webzoka-stock-platform/blob/1bbc7f2381f7633aa2b4d613046f4e68a3dfb3c7/docs/pricing/STOCK_GATE_C_INVITATION_AND_CACHE_ROLLOUT_20261107.PROPOSED.md). The runtime input stays exact `fcb9f2fd5be558b9ce77f69190cbb1f5a51be0b7`. The new Stock metadata payload uses SHA-256 `d4bb08c5e77a4a1177457d77c29c31b3953385b44d4acf814a62c970ac6e2d1b` and returns only fixed booleans. This scope supersedes the earlier unexecuted two-read request. Stock UAT and S3 paid activation remain open.
+
 ## Pro post-shutdown SSO and route UAT — 7 November 2026
 
 On unchanged canonical Stock `dpl_GB2i8VoL3nwqpeBekiNFit4saK1a` after Core checkout shutdown, an old Pro session returned 307 with `authorization_unavailable`. One fresh normal launch from the existing authenticated Hub Pro billing card reached the correct Stock workspace without a second password. Stock selection start and callback each returned 303. An initial browser navigation observation timed out while the same launch was in flight. Its subsequent dashboard settled with the correct workspace.
