@@ -1,5 +1,25 @@
 # Stock self-payment implementation and acceptance
 
+## Three sandbox payments verified and purchase shutdown complete — 7 November 2026
+
+The Owner restored the private Vercel and Fresh Pro browser sessions. Core protected preflight passed 10/10 on both exact unaliased builds. Checkout-on dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j and checkout-off dpl_BmMzGsNpUeJhc8ZwQV3QtPLtAodi were each built and promoted once from 0e8408b217c5e7be2c9c97f51e6fcebf6b53c283. Each canonical target passed 11/11 closed HTTP checks. The checkout-off deployment is canonical. Both authorized build and promotion slots are consumed.
+
+The exact Core continuation forward executed once. Managed readback confirmed two enabled plan-bound rows with a six-hour maximum starting 17:45:19 WIB, all three older rows retired, forced RLS, no direct customer/service reads and the expected eligibility predicate. Fresh Pro's current cookie session rendered its correct Pro and additional Basic workspaces at the approved prices. The wrong plan remained disabled. The foreign Basic selector exposed neither its workspace name nor a payment control. Each allowed workspace used one normal checkout and the official Midtrans sandbox test card.
+
+| Slot | Paid invoice and face value | Stock delivery after shutdown |
+| --- | --- | --- |
+| S1 existing Basic | 6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f · Rp149,000 monthly | Active, original matching receipt and Owner preserved |
+| S2 Fresh Pro | 73364558-1d72-44ed-b887-5af8a6c8a87c · Rp359,000 monthly | Active delivery 495fba0a-f64c-41f3-b935-a0785d78a766 and matching receipt about 4.5 seconds after payment |
+| S3 additional Basic | e692a22f-1ae2-47bc-9074-59247e0ae023 · Rp149,000 monthly | Pending delivery cc38953d-5973-4609-834d-675091ddf5ac, zero Stock receipt, inactive Owner |
+
+The exact close executed once before checkout-off promotion. Managed postcheck confirmed both new rows and the original three retired. Post-shutdown financial readback confirms three paid sandbox invoices totaling Rp657,000 and two active matching Stock receipts. S3 remains pending after its normal exact paid-invoice recovery. Preserve that invoice and delivery. The point of failure before Stock receipt creation remains unknown. No additional invoice or cohort opening is authorized.
+
+Pro native launch first returned authorization_unavailable. Its normal same-session dashboard retry loaded Stock Fresh Pro 20261105 without a second password. Desktop CSS1600×1000 and CSS390×844 screenshots confirm the workspace and no horizontal overflow. Same-cookie HTTP finance returned 200 and the correct workspace. Dashboard HTTP timed out during observation and internal team HTTP returned 307 authorization_unavailable. Hub Pro team returned 200 at CSS390 and showed two additional seats before invitation. The first approved staff invitation reports email sent and reserves one seat. Owner readback still shows waiting for recipient. The approved produksi invitation reports unconfirmed after one same-command recovery and has no visible row. Its delivery is unverified. Do not create a replacement command or resend blindly.
+
+Evidence is in the adjacent manifest and the existing scratchpad, including gate-c-repair-core-on-protected-preflight-20261107.json, gate-c-repair-core-off-protected-preflight-20261107.json, gate-c-s2-native-stock-desktop1600-20261107.png, gate-c-s2-native-stock-css390-20261107.png and gate-c-s3-paid-pending-css390-20261107.png. Managed sandbox settlement and shutdown pass. Full activation, native route reliability, operator lifecycle, isolation, revocation and recovery acceptance remain incomplete. Stock service-worker v5 remains source verified and awaits its separately gated rollout. Public sales stay closed.
+
+Next action: finish the existing Staff invitation's private Webzoka verification or sign-in, then verify the admitted role in a separate normal session.
+
 ## Basic native SSO verified and Core continuation staged — 7 November 2026
 
 Owner approved the exact Studio extension at Stock fd5ba02 with “Authorize exact Studio permission extension (Recommended)”. Both additional bounded metadata reads passed all four checks. The eight rendered SQL lines matched the approved payload. One normal Studio creation executed the three exact permission statements and enabled Postgres public.custom_access_token_hook on Stock oyyfcmlquqfrdoffkgsd. Studio reads back the exact enabled type, schema and function. No conditional disable ran. Evidence: scratchpad/stock-auth-hook-enabled-20261107.png and gate-c-stock-auth-hook-execution-20261107.json. The prior missing-hook blocker is resolved.

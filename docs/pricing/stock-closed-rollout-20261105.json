@@ -3734,5 +3734,169 @@
         ]
       }
     ]
+  },
+  "gateCContinuationManagedOutcome20261107": {
+    "recordedAtUtc": "2026-11-07T11:08:30.624060+00:00",
+    "coreApplication": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
+    "stockApplication": "22b42abe94c30646c13e8e8c5d0dbc9eae767456",
+    "buildSlots": {
+      "core_on": {
+        "submitted": true,
+        "deploymentId": "dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j",
+        "status": "READY",
+        "submittedAtUtc": "2026-11-07T10:13:52.550018+00:00",
+        "cliExitCode": 0,
+        "deploymentUrl": "https://ja-superadmin-platform-km0ehscue-rigi26s-projects.vercel.app",
+        "metadata": {
+          "id": "dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j",
+          "url": "ja-superadmin-platform-km0ehscue-rigi26s-projects.vercel.app",
+          "name": "ja-superadmin-platform",
+          "target": "production",
+          "readyState": "READY",
+          "contextName": "rigi26s-projects",
+          "approvedSourceSha": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
+          "gateCRepairSlot": "core_on",
+          "metadataEvidence": "provider_metadata_filtered_list"
+        },
+        "unaliasedBeforePromotion": true,
+        "closedPreflightPass": true,
+        "protectedPreflightStatus": "PASS_10_OF_10",
+        "preflightDeploymentId": "dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j",
+        "preflightEvidence": "gate-c-repair-core-on-protected-preflight-20261107.json",
+        "preflightRecordedAtUtc": "2026-11-07T10:43:08.745963+00:00",
+        "promotionSubmitted": true,
+        "promotionSubmittedAtUtc": "2026-11-07T10:43:20.720743+00:00",
+        "promotionStatus": "CANONICAL_VERIFIED",
+        "promotionCliExit": 0,
+        "canonicalClosedHttpPass": true
+      },
+      "core_off": {
+        "submitted": true,
+        "deploymentId": "dpl_BmMzGsNpUeJhc8ZwQV3QtPLtAodi",
+        "status": "READY",
+        "submittedAtUtc": "2026-11-07T10:53:10.985881+00:00",
+        "cliExitCode": 0,
+        "deploymentUrl": "https://ja-superadmin-platform-dwectbaa0-rigi26s-projects.vercel.app",
+        "metadata": {
+          "id": "dpl_BmMzGsNpUeJhc8ZwQV3QtPLtAodi",
+          "url": "ja-superadmin-platform-dwectbaa0-rigi26s-projects.vercel.app",
+          "name": "ja-superadmin-platform",
+          "target": "production",
+          "readyState": "READY",
+          "contextName": "rigi26s-projects",
+          "approvedSourceSha": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
+          "gateCRepairSlot": "core_off",
+          "metadataEvidence": "provider_metadata_filtered_list"
+        },
+        "closedPreflightPass": true,
+        "preflightDeploymentId": "dpl_BmMzGsNpUeJhc8ZwQV3QtPLtAodi",
+        "unaliasedBeforePromotion": true,
+        "protectedPreflightStatus": "PASS_10_OF_10",
+        "preflightEvidence": "gate-c-repair-core-off-protected-preflight-20261107.json",
+        "promotionSubmitted": true,
+        "promotionSubmittedAtUtc": "2026-11-07T10:57:23.034666+00:00",
+        "promotionStatus": "CANONICAL_VERIFIED",
+        "promotionCliExit": 0,
+        "canonicalClosedHttpPass": true
+      }
+    },
+    "retirement": {
+      "createdAt": "2026-11-07T10:45:19.598068+00:00",
+      "validUntil": "2026-11-07T16:45:19.598068+00:00",
+      "planBoundRows": [
+        {
+          "planId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+          "enabled": true,
+          "companyId": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+          "createdAt": "2026-11-07T10:45:19.598068+00:00",
+          "validUntil": "2026-11-07T16:45:19.598068+00:00",
+          "sixHourBound": true
+        },
+        {
+          "planId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+          "enabled": true,
+          "companyId": "d713ddba-3568-477b-af22-7dec7d7ec740",
+          "createdAt": "2026-11-07T10:45:19.598068+00:00",
+          "validUntil": "2026-11-07T16:45:19.598068+00:00",
+          "sixHourBound": true
+        }
+      ],
+      "closedVerifiedAt": "2026-11-07T10:52:57.866750+00:00",
+      "oldThreeStillRetired": true,
+      "allNewRowsRetired": true
+    },
+    "sandboxSlots": {
+      "S2": {
+        "fixture": "fresh_pro",
+        "invoiceId": "73364558-1d72-44ed-b887-5af8a6c8a87c",
+        "status": "PAID_ACTIVATION_VERIFIED",
+        "amountIdr": 359000,
+        "mode": "sandbox",
+        "period": "monthly",
+        "deliveryId": "495fba0a-f64c-41f3-b935-a0785d78a766",
+        "paidAt": "2026-11-07T10:48:47.988234+00:00",
+        "receiptAt": "2026-11-07T10:48:52.482173+00:00",
+        "nativeSso": "CORRECT_PRO_DASHBOARD_AFTER_SAME_SESSION_RETRY",
+        "ssoInitialError": "authorization_unavailable",
+        "desktopCss": [
+          1600,
+          1000
+        ],
+        "mobileCss": [
+          390,
+          844
+        ],
+        "authenticatedStockHttp": {
+          "dashboard": "TIMEOUT_OR_TRANSPORT",
+          "team": 307,
+          "finance": 200
+        }
+      },
+      "S3": {
+        "fixture": "additional_basic",
+        "invoiceId": "e692a22f-1ae2-47bc-9074-59247e0ae023",
+        "status": "PAID_ACTIVATION_PENDING",
+        "amountIdr": 149000,
+        "mode": "sandbox",
+        "period": "monthly",
+        "deliveryId": "cc38953d-5973-4609-834d-675091ddf5ac",
+        "paidAt": "2026-11-07T10:50:59.915551+00:00",
+        "normalRecovery": "EXACT_PAID_INVOICE_RECHECK_DISPATCHED_PENDING"
+      }
+    },
+    "totalSandboxPaidIdr": 657000,
+    "sandboxPaidInvoices": 3,
+    "postShutdownFinancialReadback": {
+      "paidInvoices": 3,
+      "successfulFaceValueIdr": 657000,
+      "activeStockReceipts": 2,
+      "pendingStockDelivery": "cc38953d-5973-4609-834d-675091ddf5ac"
+    },
+    "operators": {
+      "operator1": {
+        "role": "staff",
+        "status": "EMAIL_SENT_WAITING_FOR_ACCEPTANCE",
+        "ownerReadbackAtUtc": "2026-11-07T11:08:30.624060+00:00"
+      },
+      "operator2": {
+        "role": "produksi",
+        "status": "UNCONFIRMED_AFTER_ONE_SAME_COMMAND_RECOVERY",
+        "sameCommandRecoveries": 1,
+        "visibleInvitation": false
+      }
+    },
+    "closure": {
+      "oldAndNewRowsRetired": true,
+      "publicSalesEnabled": false,
+      "canonicalClosedHttpPass": "11/11",
+      "realCharges": 0
+    },
+    "remaining": [
+      "S3 exact paid delivery pending",
+      "Pro first-launch and team authorization reliability",
+      "Operator verification and role lifecycle",
+      "Runtime worker v5 isolation",
+      "Complete managed acceptance"
+    ]
   }
 }
