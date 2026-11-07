@@ -1,5 +1,5 @@
 {
-  "status": "GATE_C_S1_PAID_ACTIVATION_PENDING_PURCHASES_SHUT_DOWN_REPAIR_SOURCE_CANDIDATE",
+  "status": "S1_ACTIVATION_RECOVERED_NATIVE_SSO_BLOCKED_MISSING_AUTH_HOOK_WIRING",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
@@ -3399,7 +3399,7 @@
     ]
   },
   "gateCRepairContinuation20261107": {
-    "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+    "status": "S1_ACTIVATION_RECOVERED_NATIVE_SSO_BLOCKED_MISSING_AUTH_HOOK_WIRING",
     "proposal": "STOCK_GATE_C_REPAIR_CONTINUATION_20261107.md",
     "payloads": [
       {
@@ -3436,7 +3436,7 @@
     "localSqlTests": "PASS 3/3",
     "lint": "PASS exit 0",
     "hostedCi": "Exact Stock and paired Core SQL validation PASS; Core application successor requires its own exact-head CI",
-    "newManagedExecutions": 0,
+    "newManagedExecutions": 1,
     "newRequestedCoreBuilds": 2,
     "additionalSuccessfulSandboxFaceValueIdr": 508000,
     "maximumNewInvoices": 2,
@@ -3448,7 +3448,7 @@
       "app/hub/checkout/stock/page.tsx",
       "lib/stock-self-payment.ts"
     ],
-    "coreApplicationInput": "Exact immutable Core revision containing this finalized package; pin that full SHA in the Owner grant",
+    "coreApplicationInput": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
     "coreCheckoutUnit": "PASS 34/34; selected plan eligibility, public/foreign/wrong-plan denial",
     "stockValidationSha": "ed00d812fd55e85fbf83dddb5acee1d070e1dd75",
     "coreSqlValidationSha": "178b8fe8acdbdb9834e890e4b01d08f76b873229",
@@ -3460,6 +3460,174 @@
       "classification": "TEST_HARNESS_DEFECT",
       "cause": "New disposable database names absent from closed localhost-only CI allowlist",
       "repair": "Allow only the two named CI databases; use scalar UUID parameters across drivers; unchanged SQL payloads"
+    },
+    "ownerAuthorization": "Authorize bounded repair and continuation (Recommended)",
+    "authorizedPackageCommit": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
+    "stockMigrationVersion": "20261107041301",
+    "stockPostcheck": "PASS_ALL_12_TRUE",
+    "stockRecovery": "NOT_EXECUTED_PROHIBITED_AFTER_PAID_RUNTIME",
+    "coreApplicationCi": 42336877917,
+    "newCoreBuildsConsumed": 0,
+    "continuationEnrollment": "NOT_EXECUTED",
+    "remainingFinancialGrantRetained": true,
+    "s1": {
+      "invoiceId": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+      "deliveryId": "b9c84a4d-9818-4b19-b933-75480766880e",
+      "activation": "ACTIVE_RECEIPT_AND_CORE_ACK_MATCH",
+      "nativeSsoVerified": false,
+      "recoveryStatus": "ORIGINAL_PAID_INVOICE_RECOVERED_NO_NEW_PAYMENT",
+      "normalRecheckSubmittedAtUtc": "2026-11-07T04:14:33.090082+00:00",
+      "stockReceiptCreatedAtUtc": "2026-11-07T04:14:32.815505+00:00",
+      "normalSelectionAttempts": 1,
+      "nativeSelectionOutcome": "HTTP403_BEFORE_OBSERVED_CORE_SELECT",
+      "stockProfileActive": true,
+      "financialEvidence": "gate-c-s1-repaired-financial-20261107.json"
+    },
+    "hookWiringObservation": {
+      "target": "oyyfcmlquqfrdoffkgsd",
+      "configuredHookList": "EMPTY",
+      "providerConfigurationChanged": false,
+      "newMetadataRead": "NOT_AUTHORIZED_NOT_EXECUTED",
+      "metadataSha256": "9dfba0b7a0efa835a1a5bc94a3f15309e927fd43b7a41b272bac550de5924140",
+      "proposal": "https://github.com/RiGi26/webzoka-stock-platform/blob/eb9c43690f83b7d66b3aeffb3f7f2fe4961d03c7/docs/pricing/STOCK_AUTH_TOKEN_HOOK_WIRING_20261107.PROPOSED.md",
+      "sourceCommit": "eb9c43690f83b7d66b3aeffb3f7f2fe4961d03c7",
+      "focusedCallbackHookTests": "PASS 2/2",
+      "canonicalSecuritySql": "PASS 79/79",
+      "lint": "PASS exit 0"
+    },
+    "selectionMetadata": {
+      "windowUtc": [
+        "2026-11-07T04:10:00Z",
+        "2026-11-07T04:20:00Z"
+      ],
+      "stockCallbackStatuses": [
+        403
+      ],
+      "coreSelectRecords": 0,
+      "requestId": "NOT_ESTABLISHED",
+      "duration": "NOT_ESTABLISHED",
+      "rawMessagesRead": false,
+      "source": "Authenticated Vercel dashboard, exact deployment/environment/requestPath filters"
     }
+  },
+  "latestRepairFinancialReadback": {
+    "observedAtUtc": "2026-11-07T04:16:00Z",
+    "timestampPrecision": "Approximate observation minute; receipt has provider timestamp",
+    "results": [
+      {
+        "side": "core",
+        "rows": [
+          {
+            "label": "additional_basic",
+            "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 0,
+            "paid_count": 0,
+            "invoices": [],
+            "subscription": null,
+            "deliveries": []
+          },
+          {
+            "label": "existing_basic",
+            "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 1,
+            "paid_count": 1,
+            "invoices": [
+              {
+                "id": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+                "amount": 149000,
+                "period": "monthly",
+                "status": "paid",
+                "paid_at": "2026-11-06T23:30:40.244366+00:00",
+                "plan_id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "created_at": "2026-11-06T23:29:23.765181+00:00",
+                "midtrans_mode": "sandbox"
+              }
+            ],
+            "subscription": {
+              "planId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+              "status": "active",
+              "expiresAt": "2026-12-06T23:30:40.244366+00:00"
+            },
+            "deliveries": [
+              {
+                "state": "active",
+                "invoiceId": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+                "deliveryId": "b9c84a4d-9818-4b19-b933-75480766880e"
+              }
+            ]
+          },
+          {
+            "label": "fresh_pro",
+            "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 0,
+            "paid_count": 0,
+            "invoices": [],
+            "subscription": null,
+            "deliveries": []
+          }
+        ]
+      },
+      {
+        "side": "stock",
+        "rows": [
+          {
+            "label": "additional_basic",
+            "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+            "owner_profile": {
+              "role": "admin",
+              "active": false,
+              "revoked": false
+            },
+            "receipt_count": 0,
+            "receipts": []
+          },
+          {
+            "label": "existing_basic",
+            "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+            "owner_profile": {
+              "role": "admin",
+              "active": true,
+              "revoked": false
+            },
+            "receipt_count": 1,
+            "receipts": [
+              {
+                "plan_id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "created_at": "2026-11-07T04:14:32.815505+00:00",
+                "expires_at": "2026-12-06T23:30:40.244366+00:00",
+                "invoice_id": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+                "delivery_id": "b9c84a4d-9818-4b19-b933-75480766880e"
+              }
+            ]
+          },
+          {
+            "label": "fresh_pro",
+            "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+            "owner_profile": {
+              "role": "admin",
+              "active": false,
+              "revoked": false
+            },
+            "receipt_count": 0,
+            "receipts": []
+          }
+        ]
+      }
+    ]
   }
 }
