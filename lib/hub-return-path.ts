@@ -1,3 +1,5 @@
+import { safeStockCheckoutPath, safeStockOperatorReturnPath } from '@/lib/stock-purchase-policy'
+
 export function normalizeAuthorizationId(value: string | null | undefined) {
   if (!value) return null
   const normalized = value.trim()
@@ -9,6 +11,11 @@ export function safeHubReturnPath(value: string | null | undefined) {
   if (!value || !value.startsWith('/') || value.startsWith('//') || value.includes('\\')) {
     return null
   }
+
+  const operator = safeStockOperatorReturnPath(value)
+  if (operator) return operator
+  const checkout = safeStockCheckoutPath(value)
+  if (checkout) return checkout
 
   try {
     const parsed = new URL(value, 'https://www.webzoka.com')

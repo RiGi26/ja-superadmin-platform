@@ -1,0 +1,19 @@
+.purchaseUnavailable,
+.purchaseUnavailable:hover {
+  width: 100%;
+  min-height: 48px;
+  background: #e8edf4;
+  border-color: #c1cbd9;
+  color: #526176;
+  cursor: not-allowed;
+  font-family: inherit;
+}
+
+.purchaseAvailability {
+  margin-top: 8px !important;
+  color: #526176;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  overflow-wrap: anywhere;
+}

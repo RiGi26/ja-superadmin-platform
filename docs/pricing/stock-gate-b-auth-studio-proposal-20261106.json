@@ -1,0 +1,28 @@
+{
+  "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+  "projectRef": "oyyfcmlquqfrdoffkgsd",
+  "baselineApproval": "f3cd782032a8166d8acabe848db7f2f8327ebefb",
+  "additionalAuthorityRequired": "Remove only one redundant exact legacy entry; retain its existing covering wildcard unchanged. Add the already-approved selection callback verbatim.",
+  "removeOnly": "https://stock.webzoka.com/auth/callback",
+  "coveredByUnchanged": "https://stock.webzoka.com/**",
+  "before": [
+    "https://webzoka-stock-preview.vercel.app/auth/callback",
+    "https://stock.webzoka.com/auth/callback",
+    "https://stock.webzoka.com/**",
+    "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "after": [
+    "https://webzoka-stock-preview.vercel.app/auth/callback",
+    "https://stock.webzoka.com/**",
+    "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "combinedCharacters": 2013,
+  "studioLimit": 2048,
+  "siteUrlAction": "RETAIN_UNCHANGED",
+  "coreOAuthClientAction": "RETAIN_UNCHANGED",
+  "permissions": "Same accepted legacy URL set; both original approved Stock callbacks. No new wildcard, hostname or path.",
+  "recovery": "Remove only the new selection callback, then restore the exact legacy row; verify the original five-entry list and Auth health. No app or financial change."
+}

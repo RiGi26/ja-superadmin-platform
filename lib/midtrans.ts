@@ -15,6 +15,7 @@
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
 import type { MidtransMode } from '@/types/billing'
+import type { CatalogPlan } from '@/lib/plan-catalog'
 
 const SNAP_API: Record<MidtransMode, string> = {
   production: 'https://app.midtrans.com/snap/v1/transactions',
@@ -55,8 +56,18 @@ export function serverKeyForMode(mode: MidtransMode): string | null {
 
 // Mode aktif. Sumber kebenaran = DB. Bila baris belum ada / nilai invalid / DB
 // error, fallback ke legacy (NEXT_PUBLIC_MIDTRANS_ENV). Error DB di-LOG.
-export async function getMidtransMode(): Promise<MidtransMode> {
+export async function getMidtransMode(plan?: CatalogPlan): Promise<MidtransMode> {
   const db = createAdminClient()
+  // Only approved new Stock offers use Stock's private billing mode. A missing
+  // reader or closed setting fails closed; LMS/legacy callers keep their mode.
+  if (plan?.platform === 'stock') {
+    const { approvedOffer } = await import('@/lib/plan-catalog')
+    if (approvedOffer(plan)?.platform === 'stock') {
+      const result = await db.rpc('stock_billing_payment_mode')
+      if (result.error || !['sandbox', 'production'].includes(result.data)) throw new Error('STOCK_PAYMENT_MODE_UNAVAILABLE')
+      return result.data as MidtransMode
+    }
+  }
   const { data, error } = await db
     .from('platform_settings')
     .select('value')
@@ -99,8 +110,8 @@ export function midtransConfigForMode(mode: MidtransMode): PlatformMidtrans {
 }
 
 // Konfigurasi untuk mode AKTIF (dari DB). Dipakai saat MEMBUAT invoice baru.
-export async function getPlatformMidtrans(): Promise<PlatformMidtrans> {
-  return midtransConfigForMode(await getMidtransMode())
+export async function getPlatformMidtrans(plan?: CatalogPlan): Promise<PlatformMidtrans> {
+  return midtransConfigForMode(await getMidtransMode(plan))
 }
 
 // Status konfigurasi key per-mode untuk UI admin (tanpa membuka key). true = siap.
@@ -133,10 +144,9 @@ export function midtransServerKeys(): string[] {
 }
 
 // Verifikasi tanda tangan webhook Midtrans. MONEY-SAFETY: dicocokkan HANYA
-// terhadap key dari `mode` invoice (environment tempat ia DIBUAT) supaya
-// notifikasi bertanda tangan key environment LAIN (mis. sandbox untuk invoice
-// produksi) DITOLAK. Hanya bila key mode itu tak terkonfigurasi, jatuh ke semua
-// key sebagai jaring pengaman. Timing-safe + length-guarded.
+// terhadap key dari `mode` invoice (environment tempat ia DIBUAT). Missing keys
+// fail closed; another environment's key can never verify this invoice.
+// Timing-safe + length-guarded.
 export function verifyMidtransSignature(args: {
   orderId: string
   statusCode: string
@@ -146,7 +156,7 @@ export function verifyMidtransSignature(args: {
 }): boolean {
   const { orderId, statusCode, grossAmount, signatureKey, mode } = args
   const key = serverKeyForMode(mode)
-  const candidates = key ? [key] : midtransServerKeys()
+  const candidates = key ? [key] : []
   const sigBuf = Buffer.from(signatureKey ?? '')
   return candidates.some((k) => {
     const expected = crypto

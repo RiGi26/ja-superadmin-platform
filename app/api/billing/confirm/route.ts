@@ -1,8 +1,10 @@
-import { NextResponse } from 'next/server'
+import { after, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { midtransConfigForMode, normalizeOrderMode } from '@/lib/midtrans'
-import { markInvoicePaid, markInvoiceStatus } from '@/lib/billing'
+import { readVerifiedMidtransPayment } from '@/lib/midtrans-payment'
+import { markInvoiceStatus } from '@/lib/billing'
+import { markVerifiedInvoicePaid } from '@/lib/verified-subscription-payment'
 import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
+import { syncTenantPortal } from '@/lib/lms-sync'
 
 /**
  * POST /api/billing/confirm — poll status invoice dari Midtrans (cadangan
@@ -12,7 +14,7 @@ import { rateLimit, tooManyRequests } from '@/lib/rate-limit'
 export async function POST(request: Request) {
   try {
     const { invoice_id } = (await request.json().catch(() => ({}))) as { invoice_id?: string }
-    if (!invoice_id) {
+    if (typeof invoice_id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(invoice_id)) {
       return NextResponse.json({ error: 'invoice_id wajib' }, { status: 400 })
     }
 
@@ -20,49 +22,43 @@ export async function POST(request: Request) {
     if (!rl.allowed) return tooManyRequests(rl.retryAfter)
 
     const db = createAdminClient()
-    const { data: inv } = await db
+    const { data: inv, error } = await db
       .from('subscription_invoices')
-      .select('midtrans_order_id, midtrans_mode, status')
+      .select('midtrans_order_id, midtrans_mode, amount, status, tenant_id')
       .eq('id', invoice_id)
       .maybeSingle()
+    if (error) throw new Error('PAYMENT_INVOICE_UNAVAILABLE')
     if (!inv?.midtrans_order_id) {
       return NextResponse.json({ error: 'invoice tidak ditemukan' }, { status: 404 })
     }
-    if (inv.status === 'paid') return NextResponse.json({ confirmed: true, status: 'paid' })
+    if (inv.status === 'paid') {
+      // A finish-page retry can repair portal delivery without another payment,
+      // period extension or receipt email. The Core ledger remains authoritative.
+      after(() => syncTenantPortal(inv.tenant_id, 'payment_reconciled'))
+      return NextResponse.json({ confirmed: true, status: 'paid' })
+    }
 
-    const { serverKey, statusApiUrl } = midtransConfigForMode(normalizeOrderMode(inv.midtrans_mode))
-    const auth = Buffer.from(`${serverKey}:`).toString('base64')
-    const res = await fetch(`${statusApiUrl}/${inv.midtrans_order_id}/status`, {
-      headers: { Authorization: `Basic ${auth}` },
-    })
-    const data = await res.json()
+    const verified = await readVerifiedMidtransPayment(inv)
 
-    const isPaid =
-      (data.transaction_status === 'capture' && data.fraud_status === 'accept') ||
-      data.transaction_status === 'settlement'
-    const isPending = data.transaction_status === 'pending'
-
-    if (isPaid) {
-      await markInvoicePaid({
+    if (verified.paid) {
+      await markVerifiedInvoicePaid({
         midtransOrderId: inv.midtrans_order_id,
-        paymentType: data.payment_type,
-        raw: data,
+        mode: verified.mode, amount: verified.amount, raw: verified.data,
       })
       return NextResponse.json({ confirmed: true, status: 'paid' })
     }
-    if (isPending) {
+    if (verified.pending) {
       await markInvoiceStatus({
         midtransOrderId: inv.midtrans_order_id,
         status: 'awaiting_payment',
-        paymentType: data.payment_type,
-        raw: data,
+        paymentType: verified.paymentType,
+        raw: verified.data,
       })
       return NextResponse.json({ confirmed: false, status: 'awaiting_payment' })
     }
-    return NextResponse.json({ confirmed: false, status: data.transaction_status })
+    return NextResponse.json({ confirmed: false, status: verified.status })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'unknown'
-    console.error('[billing/confirm]', message)
-    return NextResponse.json({ error: message }, { status: 500 })
+    console.error('[billing/confirm] verification unavailable', err instanceof Error ? err.name : 'unknown')
+    return NextResponse.json({ error: 'payment_verification_unavailable' }, { status: 503 })
   }
 }

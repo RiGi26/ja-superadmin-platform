@@ -10,6 +10,8 @@ export const HUB_PUBLIC_ROUTES = [
   { publicPath: '/update-password', internalPath: '/hub/update-password' },
   { publicPath: '/account', internalPath: '/hub/account' },
   { publicPath: '/workspace', internalPath: '/hub/workspace' },
+  { publicPath: '/checkout/stock', internalPath: '/hub/checkout/stock' },
+  { publicPath: '/stock/team', internalPath: '/hub/stock/team' },
   { publicPath: '/home', internalPath: '/hub' },
   { publicPath: '/systems', internalPath: '/hub/systems' },
   { publicPath: '/billing', internalPath: '/hub/billing' },

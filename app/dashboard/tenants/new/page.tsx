@@ -1,14 +1,13 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { CreateTenantForm } from '@/components/dashboard/CreateTenantForm'
+import { readSaleablePlans } from '@/lib/plan-catalog-server'
+import type { SubscriptionPlan } from '@/types/tenant'
 
 export default async function NewTenantPage() {
   const db = createAdminClient()
-  const { data: plans } = await db
-    .from('subscription_plans')
-    .select('id, platform, tier, tier_display_name, price_monthly')
-    .eq('is_active', true)
-    .not('platform', 'in', '(stock,jastip)')
-    .order('platform')
+  const plans = (await readSaleablePlans()).filter((plan) => plan.platform !== 'stock' && plan.platform !== 'jastip')
+    .map((plan) => ({ ...plan, platform: plan.platform as SubscriptionPlan['platform'], tier: plan.tier as SubscriptionPlan['tier'],
+      tier_display_name: plan.tier_display_name ?? plan.name ?? plan.tier }))
 
   const { data: linkableTenants } = await db
     .from('tenants')

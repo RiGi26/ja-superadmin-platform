@@ -7,6 +7,7 @@ import { Resend } from 'resend'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import { hubAppUrl } from '@/lib/hub-app-url'
+import { readSaleablePlans } from '@/lib/plan-catalog-server'
 
 export const STOCK_TRIAL_DAYS = 14
 
@@ -25,7 +26,7 @@ export type StockPlanChoice = {
   tier: 'starter' | 'pro' | 'enterprise'
   name: string
   priceMonthly: number
-  priceYearly: number
+  priceYearly: number | null
   features: string[]
 }
 
@@ -122,18 +123,7 @@ function normalizeFeatures(value: unknown): string[] {
 }
 
 export async function getPublicStockPlans(): Promise<StockPlanChoice[]> {
-  const db = createAdminClient()
-  const { data, error } = await db
-    .from('subscription_plans')
-    .select('id, tier, tier_display_name, name, price_monthly, price_yearly, features')
-    .eq('platform', 'stock')
-    .eq('is_active', true)
-    .order('price_monthly')
-
-  if (error) {
-    console.error('[CustomerOnboarding] Failed to load Stock plans', { code: error.code })
-    return []
-  }
+  const data = await readSaleablePlans('stock')
 
   return (data ?? []).flatMap((plan) => {
     if (plan.tier !== 'starter' && plan.tier !== 'pro' && plan.tier !== 'enterprise') return []
@@ -142,23 +132,15 @@ export async function getPublicStockPlans(): Promise<StockPlanChoice[]> {
       tier: plan.tier,
       name: plan.tier_display_name || plan.name || plan.tier,
       priceMonthly: Number(plan.price_monthly),
-      priceYearly: Number(plan.price_yearly),
+      priceYearly: plan.price_yearly == null ? null : Number(plan.price_yearly),
       features: normalizeFeatures(plan.features),
     }]
   })
 }
 
 async function getStockPlan(planId: string) {
-  const db = createAdminClient()
-  const { data, error } = await db
-    .from('subscription_plans')
-    .select('id, tier, tier_display_name, name')
-    .eq('id', planId)
-    .eq('platform', 'stock')
-    .eq('is_active', true)
-    .maybeSingle()
-
-  if (error || !data) return null
+  const data = (await readSaleablePlans('stock')).find((plan) => plan.id === planId)
+  if (!data) return null
   return {
     id: data.id as string,
     tier: data.tier as string,

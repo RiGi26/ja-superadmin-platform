@@ -84,6 +84,17 @@ export async function proxy(request: NextRequest) {
     pathname === '/api/billing/cancel-schedule' || // token HMAC (batal downgrade terjadwal)
     pathname === '/api/tenants/provision' || // HMAC self-auth (provisioning lintas-repo)
     pathname.startsWith('/api/public') || // read-only public data (e.g. plan prices)
+    pathname === '/api/stock/active/authorize' || // exact bearer-only Stock bridge; handler verifies native identity
+    pathname === '/api/stock/active/enroll' || // exact reciprocal enrollment; handler verifies both native identities
+    (hostname === 'hub.webzoka.com' && [
+      '/api/stock/membership/authorize',
+      '/api/stock/membership/prepare',
+      '/api/stock/membership/confirm',
+      '/api/stock/membership/select',
+      '/api/stock/membership/claim',
+      '/api/stock/membership/commit',
+      '/api/stock/membership/operator-confirm',
+    ].includes(pathname)) || // exact native membership handlers own bearer verification
     pathname.startsWith('/api/cron') // self-auth via Bearer CRON_SECRET
   ) {
     return NextResponse.next()
@@ -139,7 +150,7 @@ export async function proxy(request: NextRequest) {
   if (isHubRoute || isOAuthConsent) {
     if (!claims?.sub && !isPublicHubExplore) {
       const loginUrl = new URL(publicHubPath('/hub/login', hostname), routingUrl)
-      if (isOAuthConsent || pathname === '/hub/workspace' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
+      if (isOAuthConsent || pathname === '/hub/workspace' || pathname === '/hub/checkout/stock' || pathname === '/hub/stock/team' || ['/hub/systems', '/hub/billing', '/hub/support'].includes(pathname)) {
         loginUrl.searchParams.set('next', `${pathname}${request.nextUrl.search}`)
       }
       return NextResponse.redirect(loginUrl)

@@ -12,9 +12,11 @@ const REDIRECT_SECONDS = 5
 export function BillingResult({
   invoiceId,
   portalUrl,
+  stockPurchase = false,
 }: {
   invoiceId: string | null
   portalUrl: string | null
+  stockPurchase?: boolean
 }) {
   const [view, setView] = useState<View>(invoiceId ? 'checking' : 'missing')
   const [busy, setBusy] = useState(false)
@@ -31,6 +33,7 @@ export function BillingResult({
       })
       const data = await res.json().catch(() => ({}))
       if (data.status === 'paid') {
+        setCountdown(REDIRECT_SECONDS)
         setView('paid')
         return true
       }
@@ -75,7 +78,6 @@ export function BillingResult({
   // pembayaran VA bisa lunas belakangan, user harus tetap bisa baca status).
   useEffect(() => {
     if (view !== 'paid' || !portalUrl) return
-    setCountdown(REDIRECT_SECONDS)
     const interval = setInterval(() => {
       setCountdown((c) => {
         if (c <= 1) {
@@ -101,7 +103,7 @@ export function BillingResult({
       <Shell
         icon={<CheckCircle2 className="size-12 text-green-500" />}
         title="Pembayaran berhasil"
-        desc="Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka."
+        desc={stockPurchase ? 'Pembayaran sudah diterima. Periksa status aktivasi Stock di Tagihan Customer Hub. Tidak perlu membayar lagi.' : 'Langganan Anda sudah aktif. Terima kasih telah berlangganan Webzoka.'}
       >
         {portalUrl && (
           <div className="flex flex-col items-center gap-2">
@@ -109,7 +111,7 @@ export function BillingResult({
               href={portalUrl}
               className="inline-flex items-center justify-center h-10 px-5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90"
             >
-              Masuk ke Dashboard
+              {stockPurchase ? 'Periksa aktivasi Stock' : 'Masuk ke Dashboard'}
             </a>
             <p className="text-xs text-muted-foreground">
               Anda akan diarahkan otomatis dalam {countdown} detik…

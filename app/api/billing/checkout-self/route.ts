@@ -4,6 +4,7 @@ import { verifyBillingToken } from '@/lib/billing-link'
 import { selfServiceChange } from '@/lib/billing'
 import { rateLimit, clientIp, tooManyRequests } from '@/lib/rate-limit'
 import type { InvoicePeriod } from '@/types/billing'
+import { basicProEnabled } from '@/lib/plan-catalog'
 
 /**
  * POST /api/billing/checkout-self — checkout self-service tenant (Slice C).
@@ -59,6 +60,9 @@ export async function POST(request: Request) {
     .eq('id', verified.tenantId)
     .maybeSingle()
   if (!tenant) return NextResponse.json({ error: 'Tenant tidak ditemukan.' }, { status: 404 })
+  if (!plan_id && basicProEnabled(undefined, tenant.platform) && (tenant.platform === 'lms' || tenant.platform === 'stock')) {
+    return NextResponse.json({ error: 'Pilih paket berdasarkan ID pada katalog terbaru.' }, { status: 400 })
+  }
 
   // Resolve paket via id eksplisit, atau via tier (dibatasi platform tenant + aktif).
   const { data: plan } = plan_id

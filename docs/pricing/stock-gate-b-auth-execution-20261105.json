@@ -1,0 +1,35 @@
+{
+  "version": 2,
+  "approvedCommit": "f3cd782032a8166d8acabe848db7f2f8327ebefb",
+  "approvedPayloadSha256": "32dc13d278e731de9faeb5d64527139f6629040da58475cfa1a7ae1a2cddc2e1",
+  "ownerAuthorization": "Approve corrected Stock Auth patterns",
+  "projectRef": "oyyfcmlquqfrdoffkgsd",
+  "baselineStockRedirects": [
+    "https://webzoka-stock-preview.vercel.app/auth/callback",
+    "https://stock.webzoka.com/auth/callback",
+    "https://stock.webzoka.com/**",
+    "https://webzoka-stock-platform.vercel.app/api/auth/e1/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "studioCombinedCharacterLimit": 2048,
+  "stockExecutionPatterns": [
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "encoding": "ORIGINAL_APPROVED_EXPLICIT_CHARACTER_LIST",
+  "permissionSet": "Four original entries retained; original approved preparation callback applied verbatim; approved selection callback remains pending.",
+  "originalCombinedCharacters": 2053,
+  "encodedCombinedCharacters": 1408,
+  "rootCause": "The mixed range [0-9a-f] is invalid in github.com/gobwas/glob v0.2.3. Supabase Auth uses glob.MustCompile during configuration loading; invalid additions caused Auth 503 until removed. JavaScript regex tests did not prove provider syntax.",
+  "verification": "Actual pinned Go engine compilation/matching passed in full Core CI 42144917127 and 42146802148. Five local Node contracts verify current/pending sets and exact Management API payload. Stock UI retains five valid entries; selection remains unapplied.",
+  "managedApplied": true,
+  "status": "PREPARATION_CALLBACK_APPLIED_VERBATIM_SELECTION_PENDING_UI_LIMIT",
+  "rejectedCompactPatterns": [
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]",
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f]-4[0-9a-f][0-9a-f][0-9a-f]-[89ab][0-9a-f][0-9a-f][0-9a-f]-[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]"
+  ],
+  "pendingStockPatterns": [
+    "https://webzoka-stock-platform.vercel.app/api/auth/stock-membership/selection/callback\\?flow=[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]-4[0123456789abcdef][0123456789abcdef][0123456789abcdef]-[89ab][0123456789abcdef][0123456789abcdef][0123456789abcdef]-[0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef][0123456789abcdef]"
+  ],
+  "managedStockRedirectCount": 5,
+  "selectionApplied": false,
+  "previousEquivalenceClaim": "RETRACTED: JavaScript regex and Go glob character class grammars differ."
+}

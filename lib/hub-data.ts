@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { createClient } from '@/lib/supabase/server'
 import type { PlatformType, Tenant, TenantMember } from '@/types/tenant'
+import { isVersionedPlan, planPeriods, saleablePlans, type CatalogPlan } from '@/lib/plan-catalog'
 
 export type HubSystem = {
   tenant: Pick<Tenant, 'id' | 'name' | 'slug' | 'status'> & { platform: PlatformType }
@@ -80,7 +81,8 @@ export type HubPlan = {
   tier: string
   name: string
   priceMonthly: number
-  priceYearly: number
+  priceYearly: number | null
+  periods?: ('monthly' | 'yearly')[]
   features: string[]
 }
 
@@ -121,14 +123,14 @@ export type HubCustomerSnapshot = {
   manageSubscriptionUrl: null
 }
 
-type PlanRow = {
+type PlanRow = CatalogPlan & {
   id: string
   platform: string
   tier: string
   tier_display_name: string | null
   name?: string | null
   price_monthly: number | string
-  price_yearly: number | string
+  price_yearly: number | string | null
   features: unknown
 }
 
@@ -146,7 +148,8 @@ function normalizePlan(row: PlanRow): HubPlan {
     tier: row.tier,
     name: row.tier_display_name || row.name || row.tier,
     priceMonthly: Number(row.price_monthly),
-    priceYearly: Number(row.price_yearly),
+    priceYearly: row.price_yearly == null ? null : Number(row.price_yearly),
+    ...(isVersionedPlan(row) ? { periods: planPeriods(row) } : {}),
     features: normalizeFeatures(row.features),
   }
 }
@@ -159,13 +162,12 @@ async function readActivePlans() {
   const db = await createClient()
   const { data, error } = await db
     .from('subscription_plans')
-    .select('id, platform, tier, tier_display_name, price_monthly, price_yearly, features')
+    .select('*')
     .eq('is_active', true)
     .order('platform')
     .order('price_monthly')
-
-  if (error) return []
-  return ((data ?? []) as PlanRow[]).map(normalizePlan)
+  if (error || !Array.isArray(data)) return []
+  return saleablePlans(data as PlanRow[]).map(normalizePlan)
 }
 
 async function previewSnapshot(): Promise<HubCustomerSnapshot> {

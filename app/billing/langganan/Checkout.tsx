@@ -3,13 +3,15 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Check, Loader2, ShieldCheck, CalendarClock, ArrowUp, ArrowDown, RefreshCw } from 'lucide-react'
+import type { CatalogPlan } from '@/lib/plan-catalog'
 
-export type CheckoutPlan = {
+export type CheckoutPlan = CatalogPlan & {
   id: string
   tier: string
   tier_display_name: string
   price_monthly: number
-  price_yearly: number
+  price_yearly: number | null
+  periods?: ('monthly' | 'yearly')[]
 }
 
 type Period = 'monthly' | 'yearly'
@@ -51,7 +53,7 @@ export function LanggananCheckout({
   currentPeriodEnd: string | null
   scheduledPlanId: string | null
 }) {
-  const now = Date.now()
+  const [now] = useState(() => Date.now())
   const periodEndMs = currentPeriodEnd ? Date.parse(currentPeriodEnd) : null
   const isActiveRunning =
     subscriptionStatus === 'active' && periodEndMs != null && periodEndMs > now
@@ -101,7 +103,7 @@ export function LanggananCheckout({
   }
 
   const selKind = selected ? classify(selected) : 'renew'
-  const fullPrice = selected ? (period === 'yearly' ? selected.price_yearly : selected.price_monthly) : 0
+  const fullPrice = selected ? Number(period === 'yearly' ? selected.price_yearly : selected.price_monthly) : 0
   const upgradeAmount = selected && selKind === 'upgrade' ? proratedFor(selected) : 0
 
   // Label/CTA footer per jenis perubahan paket terpilih.
@@ -256,7 +258,7 @@ export function LanggananCheckout({
       {/* Toggle periode — hanya saat tak ada periode aktif berjalan */}
       {!isActiveRunning && (
         <div className="inline-flex rounded-lg border border-border bg-muted/40 p-1 text-sm">
-          {(['monthly', 'yearly'] as Period[]).map((p) => (
+          {(selected?.periods ?? ['monthly', 'yearly'] as Period[]).map((p) => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
@@ -297,7 +299,7 @@ export function LanggananCheckout({
                   <KindBadge kind={kind} isCurrent={isCurrent} />
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {rupiah(amount)}
+                  {rupiah(Number(amount))}
                   <span className="text-xs"> / {period === 'yearly' ? 'tahun' : 'bulan'}</span>
                 </div>
               </div>

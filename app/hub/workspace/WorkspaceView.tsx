@@ -15,9 +15,9 @@ const messages: Record<HubE1State['status'], [string, string]> = {
   blocked: ['Pendaftaran belum tersedia', 'Pembuatan workspace dan koneksi Stock belum dibuka. Tidak ada aktivasi produk melalui halaman ini.'],
 }
 
-export function WorkspaceView({ initial, keys, enabled, stockStart, returnPath }: {
+export function WorkspaceView({ initial, keys, enabled, stockStart, returnPath, checkoutPath = null }: {
   initial: HubE1State; keys: { admissionId: string; commandId: string } | null;
-  enabled: boolean; stockStart: string; returnPath: string;
+  enabled: boolean; stockStart: string; returnPath: string; checkoutPath?: string | null;
 }) {
   const [state, action, pending] = useActionState(createHubWorkspace.bind(null, keys), initial)
   const [title, description] = messages[state.status]
@@ -54,6 +54,7 @@ export function WorkspaceView({ initial, keys, enabled, stockStart, returnPath }
               <p className={styles.help}>Anda akan diminta mengonfirmasi akun. Proses ini tidak mengaktifkan Stock.</p>
             </form>}
             {selected && <a className={styles.secondary} href={resultPath}>Periksa status terbaru</a>}
+            {state.status === 'quarantined' && checkoutPath && <a className={styles.secondary} href={checkoutPath}>Lanjutkan pilihan paket Stock</a>}
             <p className={styles.footnote}>Tidak memulai trial, tagihan, atau pembayaran produk.</p>
           </section>
           <aside className={styles.aside} aria-label="Tahapan workspace">

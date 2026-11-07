@@ -331,14 +331,14 @@ function BillingView({ snapshot, canManageSubscription, firstPurchaseTenant, pur
           <select id="first-purchase-plan" name="plan_id" required defaultValue={purchasePlans[0].id}>
             {purchasePlans.map((item) => (
               <option key={item.id} value={item.id}>
-                {item.name} — {formatRupiah(item.priceMonthly)}/bulan · {formatRupiah(item.priceYearly)}/tahun
+                {item.name} — {formatRupiah(item.priceMonthly)}/bulan{item.priceYearly != null && item.priceYearly > 0 ? ` · ${formatRupiah(item.priceYearly)}/tahun` : ''}
               </option>
             ))}
           </select>
           <label htmlFor="first-purchase-period">Periode</label>
           <select id="first-purchase-period" name="period" defaultValue="monthly">
             <option value="monthly">Bulanan</option>
-            <option value="yearly">Tahunan</option>
+            {purchasePlans.every((item) => (item.periods ?? ['monthly', 'yearly']).includes('yearly')) && <option value="yearly">Tahunan</option>}
           </select>
           <button className={styles.primaryButton} type="submit">Lanjutkan ke pembayaran</button>
         </form>

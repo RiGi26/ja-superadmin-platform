@@ -51,9 +51,11 @@ export function HubNavigation({ label, home, items, current, footer }: {
       <nav className={styles.nav} aria-label={`Navigasi ${label}`}>
         {items.map(item => {
           const Icon = icons[item.icon]
-          return <Link key={item.id} href={item.href} aria-current={item.id === section ? 'page' : undefined} onClick={() => { setSection(item.id); close() }}>
+          // Account sections must request fresh server state across the public redirect.
+          const NavigationLink = item.href.startsWith('/hub/account?view=') ? 'a' : Link
+          return <NavigationLink key={item.id} href={item.href} aria-current={item.id === section ? 'page' : undefined} onClick={() => { setSection(item.id); close() }}>
             <Icon aria-hidden="true" /><span>{item.label}</span>
-          </Link>
+          </NavigationLink>
         })}
       </nav>
       <div className={styles.footer}>{footer}</div>

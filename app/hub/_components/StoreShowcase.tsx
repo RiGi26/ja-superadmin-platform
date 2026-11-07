@@ -1,6 +1,6 @@
 import type { StockPlanChoice } from '@/lib/customer-onboarding'
 import type { PortfolioClient } from '../_public/public-content'
-import { StoreFront } from './StoreFront'
+import { StockStoreFront, type StockStoreQuote } from './StockStoreFront'
 import styles from '../hub.module.css'
 
 const clientVisualClass: Record<PortfolioClient['visual'], string> = {
@@ -47,6 +47,6 @@ export function ClientPreviewVisual({ client }: { client: PortfolioClient }) {
 }
 
 
-export function StoreShowcase({ plans = [] }: { plans?: StockPlanChoice[] }) {
-  return <StoreFront plans={plans} />
+export function StoreShowcase({ quote = null }: { plans?: StockPlanChoice[]; quote?: StockStoreQuote | null }) {
+  return <StockStoreFront quote={quote} />
 }

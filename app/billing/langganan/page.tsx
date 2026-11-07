@@ -2,6 +2,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyBillingToken } from '@/lib/billing-link'
 import { LanggananCheckout, type CheckoutPlan } from './Checkout'
 import { ShieldX } from 'lucide-react'
+import { checkoutPlans, planPeriods } from '@/lib/plan-catalog'
+import { managedStockBilling } from '@/lib/stock-billing-authority'
+import { redirect } from 'next/navigation'
+import { hubAppUrl } from '@/lib/hub-app-url'
 
 /**
  * /billing/langganan — halaman checkout self-service tenant (Slice C, publik).
@@ -59,6 +63,9 @@ export default async function LanggananPage({
     )
   }
 
+  const managed = await managedStockBilling(verified.tenantId)
+  if (managed === 'managed') redirect(`${hubAppUrl()}/account?view=billing`)
+  if (managed === 'unavailable') return <Invalid title="Akses belum dapat diperiksa" desc="Buka Customer Hub untuk memeriksa akses pembayaran Anda." />
   const db = createAdminClient()
   const { data: tenant } = await db
     .from('tenants')
@@ -80,7 +87,7 @@ export default async function LanggananPage({
     tenant.platform
       ? db
           .from('subscription_plans')
-          .select('id, tier, tier_display_name, price_monthly, price_yearly')
+          .select('*')
           .eq('platform', tenant.platform)
           .eq('is_active', true)
           .order('price_monthly', { ascending: true })
@@ -94,7 +101,8 @@ export default async function LanggananPage({
       .maybeSingle(),
   ])
 
-  const plans = (planRows ?? []) as CheckoutPlan[]
+  let plans: CheckoutPlan[] = checkoutPlans((planRows ?? []) as CheckoutPlan[], sub?.plan_id ?? null)
+    .map((plan) => ({ ...plan, periods: planPeriods(plan) }))
 
   // Tier paket berjalan (utk bedakan upgrade/downgrade) — paket berjalan bisa saja
   // tak ada di daftar aktif, jadi query terpisah.
@@ -102,10 +110,13 @@ export default async function LanggananPage({
   if (sub?.plan_id) {
     const { data: cp } = await db
       .from('subscription_plans')
-      .select('tier')
+      .select('*')
       .eq('id', sub.plan_id)
       .maybeSingle()
     currentTier = cp?.tier ?? null
+    if (cp && !plans.some((plan) => plan.id === cp.id)) {
+      plans = [{ ...cp, periods: planPeriods(cp) } as CheckoutPlan, ...plans]
+    }
   }
 
   if (plans.length === 0) {

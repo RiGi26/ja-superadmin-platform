@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { StoreShowcase } from '../../_components/StoreShowcase'
-import { getPublicStockPlans } from '@/lib/customer-onboarding'
+import { readStockPurchaseOffers } from '@/lib/stock-self-payment'
 
 export const metadata: Metadata = {
   title: 'Webzoka Store | Customer Hub',
@@ -10,6 +10,6 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic'
 
 export default async function StorePage() {
-  const plans = await getPublicStockPlans()
-  return <StoreShowcase plans={plans} />
+  const quote = await readStockPurchaseOffers()
+  return <StoreShowcase quote={quote} />
 }
