@@ -1,5 +1,5 @@
 {
-  "status": "FIVE_UNPAID_PREPARATIONS_CONFIRMED_GATE_C_SOURCE_CI_PASS_RUNTIME_AUTHORITY_REQUIRED",
+  "status": "GATE_C_S1_PAID_ACTIVATION_PENDING_PURCHASES_SHUT_DOWN_REPAIR_SOURCE_CANDIDATE",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
@@ -2981,5 +2981,468 @@
       "stock": "22b42abe94c30646c13e8e8c5d0dbc9eae767456"
     },
     "rawGitSqlHashesVerified": true
+  },
+  "gateCExecution20261107": {
+    "state": "PURCHASES_CLOSED_BASIC_PAID_ACTIVATION_FAILURE_INVESTIGATING",
+    "ownerReply": "Authorize bounded Gate C (Recommended)",
+    "approvedProposalCommit": "b8f5322f00e7679a2bba57eaf21b65724e7142be",
+    "observedAtUtc": "2026-11-07T05:46:50.524389+07:00",
+    "maximumBuilds": 3,
+    "buildSubmissions": 3,
+    "promotions": 3,
+    "cohortEnrollments": 1,
+    "cohortCloseExecutions": 1,
+    "cohortWindow": {
+      "enabled": false,
+      "createdAt": "2026-11-06T23:28:19.120524+00:00",
+      "validUntil": "2026-11-07T05:28:19.120524+00:00"
+    },
+    "sourcePins": {
+      "stock": "22b42abe94c30646c13e8e8c5d0dbc9eae767456",
+      "core": "0ba6638b5013cf4da7d7b66f5a7d4bd8cca38778"
+    },
+    "buildSlots": {
+      "stock_on": {
+        "submitted": true,
+        "deploymentId": "dpl_GB2i8VoL3nwqpeBekiNFit4saK1a",
+        "status": "READY",
+        "submittedAtUtc": "2026-11-07T05:51:48.811567+07:00",
+        "cliExitCode": 0,
+        "deploymentUrl": "https://webzoka-stock-platform-awq9drp46-rigi26s-projects.vercel.app",
+        "metadata": {
+          "id": "dpl_GB2i8VoL3nwqpeBekiNFit4saK1a",
+          "name": "webzoka-stock-platform",
+          "url": "webzoka-stock-platform-awq9drp46-rigi26s-projects.vercel.app",
+          "target": "production",
+          "readyState": "READY",
+          "contextName": "rigi26s-projects",
+          "approvedSourceSha": null,
+          "gateCSlot": null,
+          "configuredNodeVersions": [
+            "22.x"
+          ],
+          "buildFrameworks": [
+            "nextjs"
+          ],
+          "indexRuntime": "nodejs22.x",
+          "indexRegions": [
+            "sin1"
+          ]
+        },
+        "closedPreflightPass": true,
+        "closedPreflight": "PASS 7/7 protected HTTP with existing Owner Vercel SSO; staged login and dashboard guard visually verified",
+        "promotionSubmitted": true,
+        "promotionSubmittedAtUtc": "2026-11-07T06:08:34.730953+07:00",
+        "promotionCliExit": 0,
+        "promotionStatus": "CLI_TERMINAL_VERIFY_CANONICAL",
+        "promoted": true
+      },
+      "core_on": {
+        "submitted": true,
+        "deploymentId": "dpl_8HuyNu7nPxzkGnBVZtAYndFCeFYH",
+        "status": "READY",
+        "submittedAtUtc": "2026-11-06T23:10:46.946846+00:00",
+        "cliExitCode": 0,
+        "deploymentUrl": "https://ja-superadmin-platform-kcw4s0rs6-rigi26s-projects.vercel.app",
+        "metadata": {
+          "id": "dpl_8HuyNu7nPxzkGnBVZtAYndFCeFYH",
+          "name": "ja-superadmin-platform",
+          "url": "ja-superadmin-platform-kcw4s0rs6-rigi26s-projects.vercel.app",
+          "target": "production",
+          "readyState": "READY",
+          "contextName": "rigi26s-projects",
+          "approvedSourceSha": null,
+          "gateCSlot": null,
+          "configuredNodeVersions": [
+            "26.x"
+          ],
+          "buildFrameworks": [
+            "nextjs"
+          ],
+          "indexRuntime": "nodejs26.x",
+          "indexRegions": [
+            "iad1"
+          ]
+        },
+        "closedPreflightPass": true,
+        "closedPreflight": "PASS 10/10 protected HTTP; closed quotes; unauthenticated deployment-host membership redirects match source proxy",
+        "promotionSubmitted": true,
+        "promotionSubmittedAtUtc": "2026-11-06T23:21:04.356531+00:00",
+        "promotionCliExit": 0,
+        "promotionStatus": "CLI_TERMINAL_VERIFY_CANONICAL",
+        "promoted": true
+      },
+      "core_off": {
+        "submitted": true,
+        "deploymentId": "dpl_H1jYMS1Nsx1giVx4XccUuKTgmW7F",
+        "status": "READY",
+        "submittedAtUtc": "2026-11-06T23:37:16.687863+00:00",
+        "cliExitCode": 0,
+        "deploymentUrl": "https://ja-superadmin-platform-1sme0kcc5-rigi26s-projects.vercel.app",
+        "metadata": {
+          "id": "dpl_H1jYMS1Nsx1giVx4XccUuKTgmW7F",
+          "name": "ja-superadmin-platform",
+          "url": "ja-superadmin-platform-1sme0kcc5-rigi26s-projects.vercel.app",
+          "target": "production",
+          "readyState": "READY",
+          "contextName": "rigi26s-projects",
+          "approvedSourceSha": null,
+          "gateCSlot": null,
+          "configuredNodeVersions": [
+            "26.x"
+          ],
+          "buildFrameworks": [
+            "nextjs"
+          ],
+          "indexRuntime": "nodejs26.x",
+          "indexRegions": [
+            "iad1"
+          ]
+        },
+        "closedPreflightPass": true,
+        "closedPreflight": "PASS 10/10 protected staged HTTP; same expected host rules and closed quotes",
+        "promotionSubmitted": true,
+        "promotionSubmittedAtUtc": "2026-11-06T23:39:39.632504+00:00",
+        "promotionCliExit": 0,
+        "promotionStatus": "CLI_TERMINAL_VERIFY_CANONICAL",
+        "promoted": true
+      }
+    },
+    "sql": {
+      "stock_runtime": "EXECUTED_ONCE_POSTCHECK_PASS",
+      "core_runtime": "EXECUTED_ONCE_POSTCHECK_PASS",
+      "core_cohort": "EXECUTED_ONCE_POSTCHECK_PASS",
+      "core_close": "EXECUTED_ONCE_ALL_THREE_DISABLED_PAID_HISTORY_RETAINED"
+    },
+    "authStudioException": "APPLIED_EXACT_FIVE_ROWS_SITE_UNCHANGED_STOCK_CORE_JWKS_200",
+    "maximumSuccessfulSandboxFaceValueIdr": 657000,
+    "maximumTotalInvoices": 4,
+    "paymentSlots": {
+      "S1": {
+        "fixture": "existing_basic",
+        "invoiceId": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+        "status": "PROVIDER_SUCCESS_CORE_PAID_STOCK_ACTIVATION_PENDING",
+        "submittedAtUtc": "2026-11-06T23:29:04.489713+00:00",
+        "amountIdr": 149000,
+        "mode": "sandbox",
+        "deliveryId": "b9c84a4d-9818-4b19-b933-75480766880e",
+        "paidAtUtc": "2026-11-06T23:30:40.244366+00:00"
+      },
+      "S2": {
+        "fixture": "fresh_pro",
+        "invoiceId": null,
+        "status": "NOT_STARTED"
+      },
+      "S3": {
+        "fixture": "additional_basic",
+        "invoiceId": null,
+        "status": "NOT_STARTED"
+      }
+    },
+    "optionalCancellation": {
+      "slot": "N1",
+      "fixture": "existing_basic",
+      "invoiceId": null,
+      "status": "NOT_EXECUTED_OPTIONAL_OMITTED"
+    },
+    "operatorAliases": [
+      "egyelisyaaaaa+stock-operator1-20261103@gmail.com",
+      "egyelisyaaaaa+stock-operator2-20261103@gmail.com"
+    ],
+    "realCharges": 0,
+    "publicRelease": false,
+    "merge": false,
+    "additionalCostAuthorized": false,
+    "exports": {
+      "stock": {
+        "system": "stock",
+        "sourceCommit": "22b42abe94c30646c13e8e8c5d0dbc9eae767456",
+        "projectId": "prj_nTIID94EysP6VzpfeprqiK78ouN2",
+        "export": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-subscriptions-20261105\\scratchpad\\gate-c-stock-approved-source-22b42ab",
+        "files": 693
+      },
+      "core": {
+        "system": "core",
+        "sourceCommit": "0ba6638b5013cf4da7d7b66f5a7d4bd8cca38778",
+        "projectId": "prj_Z8taL31maerKj0AXlz65OBO8Bs6o",
+        "export": "C:\\Users\\61140\\AppData\\Local\\Temp\\Codex\\stock-subscriptions-20261105\\scratchpad\\gate-c-core-approved-source-0ba6638",
+        "files": 526
+      }
+    },
+    "freshProPrivateSignIn": "OWNER_COMPLETED_VERIFIED_EMAIL_OWNER_BOTH_WORKSPACES_VISIBLE",
+    "protectedHttpAuth": "OWNER_COMPLETED_EXISTING_VERCEL_SSO_IN_CHROME_NO_BYPASS_KEY_CREATED",
+    "runtimePostcheck": [
+      {
+        "side": "core",
+        "rows": [
+          {
+            "feature": "membership",
+            "enabled": true
+          },
+          {
+            "feature": "preparation",
+            "enabled": true
+          },
+          {
+            "feature": "workspace",
+            "enabled": true
+          },
+          {
+            "feature": "invitation",
+            "enabled": true
+          },
+          {
+            "feature": "operator_commit",
+            "enabled": true
+          },
+          {
+            "feature": "operator_confirmation",
+            "enabled": true
+          },
+          {
+            "feature": "lifecycle_mutations",
+            "enabled": true
+          },
+          {
+            "feature": "lifecycle_delivery",
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "side": "core",
+        "rows": [
+          {
+            "feature": "billing",
+            "enabled": true,
+            "sandbox_mode": true
+          }
+        ]
+      },
+      {
+        "side": "core",
+        "rows": [
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+            "is_active": false,
+            "is_for_sale": false,
+            "approved_contract": true
+          },
+          {
+            "id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2002",
+            "is_active": false,
+            "is_for_sale": false,
+            "approved_contract": true
+          }
+        ]
+      },
+      {
+        "side": "stock",
+        "rows": [
+          {
+            "feature": "membership",
+            "enabled": true
+          },
+          {
+            "feature": "preparation",
+            "enabled": true
+          },
+          {
+            "feature": "workspace",
+            "enabled": true
+          },
+          {
+            "feature": "operator_stage",
+            "enabled": true
+          },
+          {
+            "feature": "operator_activation",
+            "enabled": true
+          },
+          {
+            "feature": "lifecycle",
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "side": "stock",
+        "rows": [
+          {
+            "feature": "paid_receiver",
+            "enabled": true,
+            "sandbox_mode": true
+          }
+        ]
+      },
+      {
+        "side": "stock",
+        "rows": [
+          {
+            "runtime_enabled": false
+          }
+        ]
+      }
+    ],
+    "authExceptionEvidence": "gate-c-auth-selection-applied-20261107.jpg",
+    "cohortEnrollmentSubmittedAtUtc": "2026-11-06T23:28:18.063446+00:00",
+    "successfulSandboxFaceValueIdr": 149000,
+    "actualInvoices": 1,
+    "closureReason": "Basic paid; no Stock receipt after normal recovery; further purchases stopped",
+    "financialAfterShutdown": [
+      {
+        "side": "core",
+        "rows": [
+          {
+            "label": "additional_basic",
+            "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 0,
+            "paid_count": 0,
+            "invoices": [],
+            "subscription": null,
+            "deliveries": []
+          },
+          {
+            "label": "existing_basic",
+            "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 1,
+            "paid_count": 1,
+            "invoices": [
+              {
+                "id": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+                "amount": 149000,
+                "period": "monthly",
+                "status": "paid",
+                "paid_at": "2026-11-06T23:30:40.244366+00:00",
+                "plan_id": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+                "created_at": "2026-11-06T23:29:23.765181+00:00",
+                "midtrans_mode": "sandbox"
+              }
+            ],
+            "subscription": {
+              "planId": "5dc6f4d0-6ef8-4b61-9950-7b4b1e8a2001",
+              "status": "active",
+              "expiresAt": "2026-12-06T23:30:40.244366+00:00"
+            },
+            "deliveries": [
+              {
+                "state": "pending",
+                "invoiceId": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
+                "deliveryId": "b9c84a4d-9818-4b19-b933-75480766880e"
+              }
+            ]
+          },
+          {
+            "label": "fresh_pro",
+            "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+            "eligibility": {
+              "enabled": false,
+              "createdAt": "2026-11-06T23:28:19.120524+00:00",
+              "validUntil": "2026-11-07T05:28:19.120524+00:00"
+            },
+            "invoice_count": 0,
+            "paid_count": 0,
+            "invoices": [],
+            "subscription": null,
+            "deliveries": []
+          }
+        ]
+      },
+      {
+        "side": "stock",
+        "rows": [
+          {
+            "label": "additional_basic",
+            "company_id": "8215b025-e5b6-43d4-b2d1-3a4236178b6c",
+            "owner_profile": {
+              "role": "admin",
+              "active": false,
+              "revoked": false
+            },
+            "receipt_count": 0,
+            "receipts": []
+          },
+          {
+            "label": "existing_basic",
+            "company_id": "0c0b5c44-2af7-471e-8685-bd99438db48d",
+            "owner_profile": {
+              "role": "admin",
+              "active": false,
+              "revoked": false
+            },
+            "receipt_count": 0,
+            "receipts": []
+          },
+          {
+            "label": "fresh_pro",
+            "company_id": "d713ddba-3568-477b-af22-7dec7d7ec740",
+            "owner_profile": {
+              "role": "admin",
+              "active": false,
+              "revoked": false
+            },
+            "receipt_count": 0,
+            "receipts": []
+          }
+        ]
+      }
+    ]
+  },
+  "gateCRepairContinuation20261107": {
+    "status": "PROPOSED_NOT_AUTHORIZED_NOT_EXECUTED",
+    "proposal": "STOCK_GATE_C_REPAIR_CONTINUATION_20261107.md",
+    "payloads": [
+      {
+        "side": "stock",
+        "path": "docs/pricing/STOCK_V1_MEMBERSHIP_ACTIVATION_FORWARD.PROPOSED.sql",
+        "sha256": "216cb219852ef42738930e825c93115b6c8363d8cc8b980d3be2d52def4556d3"
+      },
+      {
+        "side": "stock",
+        "path": "docs/pricing/STOCK_V1_MEMBERSHIP_ACTIVATION_POSTCHECK_READONLY.sql",
+        "sha256": "988b0bee94d61ae210d475db591a5287d1f532491631da84195fcae6431cab24"
+      },
+      {
+        "side": "stock",
+        "path": "docs/pricing/STOCK_V1_MEMBERSHIP_ACTIVATION_RECOVERY.PROPOSED.sql",
+        "sha256": "0ae80641f49740d4d2371ad34facbb2ffb5098d547cf1648fd75eb29c42ab2cb"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_CONTINUATION_CLOSE.PROPOSED.sql",
+        "sha256": "b18fd8642dbcc0819d5c542bc58eceded00dd03ebfcb7cf9c762bf4772e859c9"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_CONTINUATION_FORWARD.PROPOSED.sql",
+        "sha256": "4d9afeffea895c30e3a1529102110a071d7ea7c28cb24f8c29c3e8e876f4b436"
+      },
+      {
+        "side": "core",
+        "path": "docs/pricing/STOCK_GATE_C_CONTINUATION_POSTCHECK_READONLY.sql",
+        "sha256": "2bb6fd12b3701bcec3cf7a433198f4eb6cc8fe2d71845076b9d28afcf6c85d49"
+      }
+    ],
+    "localSqlTests": "PASS 3/3",
+    "lint": "PASS exit 0",
+    "hostedCi": "PENDING_FINAL_SOURCE_PINS",
+    "applicationSourcesUnchanged": true,
+    "newManagedExecutions": 0,
+    "newRequestedCoreBuilds": 2,
+    "additionalSuccessfulSandboxFaceValueIdr": 508000,
+    "maximumNewInvoices": 2,
+    "oldCohortReopen": "PROHIBITED_AND_TRIGGER_DENIED",
+    "newLedger": "stock_billing_private.sandbox_continuations_20261107",
+    "newWindow": "One newly authorized maximum-six-hour window; original retired records unchanged"
   }
 }
