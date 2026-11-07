@@ -1,5 +1,15 @@
 # Stock self-payment implementation and acceptance
 
+## Login mobile touch targets verified locally — 8 November 2026
+
+Fresh hosted Stock login UAT at `https://webzoka-stock-platform.vercel.app/login` showed four visible links below the mobile 44 px target: password recovery, registration, demo, and WhatsApp help. The login page otherwise had no horizontal overflow at CSS390×844 or desktop CSS1600×1000, and zero browser console errors. No login or OAuth action was submitted.
+
+Stock source now gives those four links a minimum 44 px height and 14 px text. Fresh local Next.js browser verification at CSS390×844 measured each link at 44 px and the document at 385 px within the 390 px viewport; desktop CSS1600×1000 had no horizontal overflow. Local browser console had zero errors. Screenshots: `stock-login-css390-fixed-20261107.png` and `stock-login-desktop-fixed-20261107.png` in the Playwright output. `npm run typecheck`, scoped ESLint, and `git diff --check` pass. The Stock source commit is `931f7fb0a5c25c81ba3329890b6241af7f009123`; source CI `42394003425` and PDF CI `42394003413` both pass on that exact SHA. Source validation includes the disposable PostgreSQL unit matrix; no managed database was changed by this UI fix. This is source/local evidence only; the canonical Production deployment was not changed and still has the original small links.
+
+Fresh scoped Vercel CLI inspection on 8 November confirms the canonical Stock alias still resolves to Ready deployment `dpl_BocH7oTSPqfL3eMPKUJiiKdRkxo8` (`webzoka-stock-platform-pk65vlhpy-rigi26s-projects.vercel.app`). MCP deployment listing returned 403; the documented CLI fallback succeeded after exact project/team verification. The exact rollout proposal was refreshed and published in Stock commit `ff20ba7`; its application source input remains CI-verified SHA `931f7fb0a5c25c81ba3329890b6241af7f009123`. It remains unapproved for a Production build or promotion.
+
+No Supabase or Postgres operation was needed for this presentation-only fix. The exact Stock rollout proposal uses a frozen source SHA and is stale relative to current Stock HEAD `931f7fb0a5c25c81ba3329890b6241af7f009123`. Do not build or promote that proposal's old input. Any Production rollout must use a refreshed exact candidate and applicable Stock Production authority. Full Stock subscription acceptance remains open.
+
 ## Production multi-workspace uniqueness cause confirmed — 7 November 2026
 
 The approved Stock metadata read found `public.uq_user_profile_core_user_id` defined as a unique btree on `user_profile(core_user_id)` with predicate `core_user_id IS NOT NULL`. The frozen S3 Basic owner profile is pending with `core_user_id` null. The same Core identity already has an active Pro profile. Assigning that identity while activating the second Basic workspace violates the observed global uniqueness rule, matching the missing receipt and pending delivery. The Stock source migrations do not create this index.
