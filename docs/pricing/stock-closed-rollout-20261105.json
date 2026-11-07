@@ -1,5 +1,5 @@
 {
-  "status": "S1_ACTIVATION_RECOVERED_NATIVE_SSO_BLOCKED_MISSING_AUTH_HOOK_WIRING",
+  "status": "S1_NATIVE_PASS_CORE_STAGE_READY_PROTECTED_PREFLIGHT_PENDING",
   "preRequestRepair20261106": {
     "objectiveComplete": false,
     "rootCause": "Unpaid v1 prepared-owner receipt read falls through the public pre-request hook into closed active-access enforcement",
@@ -3399,7 +3399,7 @@
     ]
   },
   "gateCRepairContinuation20261107": {
-    "status": "S1_ACTIVATION_RECOVERED_NATIVE_SSO_BLOCKED_MISSING_AUTH_HOOK_WIRING",
+    "status": "S1_NATIVE_PASS_CORE_STAGE_READY_PROTECTED_PREFLIGHT_PENDING",
     "proposal": "STOCK_GATE_C_REPAIR_CONTINUATION_20261107.md",
     "payloads": [
       {
@@ -3467,26 +3467,62 @@
     "stockPostcheck": "PASS_ALL_12_TRUE",
     "stockRecovery": "NOT_EXECUTED_PROHIBITED_AFTER_PAID_RUNTIME",
     "coreApplicationCi": 42336877917,
-    "newCoreBuildsConsumed": 0,
+    "newCoreBuildsConsumed": 1,
     "continuationEnrollment": "NOT_EXECUTED",
     "remainingFinancialGrantRetained": true,
     "s1": {
       "invoiceId": "6ccbb714-3491-4b1f-b9cf-9410e7ba4f6f",
       "deliveryId": "b9c84a4d-9818-4b19-b933-75480766880e",
       "activation": "ACTIVE_RECEIPT_AND_CORE_ACK_MATCH",
-      "nativeSsoVerified": false,
+      "nativeSsoVerified": true,
       "recoveryStatus": "ORIGINAL_PAID_INVOICE_RECOVERED_NO_NEW_PAYMENT",
       "normalRecheckSubmittedAtUtc": "2026-11-07T04:14:33.090082+00:00",
       "stockReceiptCreatedAtUtc": "2026-11-07T04:14:32.815505+00:00",
       "normalSelectionAttempts": 1,
       "nativeSelectionOutcome": "HTTP403_BEFORE_OBSERVED_CORE_SELECT",
       "stockProfileActive": true,
-      "financialEvidence": "gate-c-s1-repaired-financial-20261107.json"
+      "financialEvidence": "gate-c-s1-repaired-financial-20261107.json",
+      "nativeSsoEvidence": {
+        "nativeDashboard": "PASS",
+        "stockCallbackStatus": 303,
+        "coreSelectStatus": 200,
+        "workspace": "Stock Sandbox Basic 20261102",
+        "stockDeploymentId": "dpl_GB2i8VoL3nwqpeBekiNFit4saK1a",
+        "desktop": [
+          1600,
+          1000,
+          1600,
+          1600
+        ],
+        "mobile": [
+          390,
+          844,
+          390,
+          390
+        ],
+        "teamFollowup": "ACCESS_DENIED_REQUIRES_DIAGNOSIS",
+        "sameSessionDashboardRetry": "DASHBOARD_RENDERED_WITHOUT_NEW_SSO",
+        "nativeAttempts": 1,
+        "newPayment": false,
+        "hookRecovery": "NOT_EXECUTED_AFTER_SUCCESSFUL_ACCESS"
+      },
+      "hubSeatEvidence": {
+        "additionalSeats": 0,
+        "inviteDisabled": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "clientWidth": 375,
+        "scrollWidth": 375,
+        "screenshot": "gate-c-s1-basic-seat-css390-20261107.png"
+      },
+      "teamFollowupClassification": "EARLY_DENIAL_OPEN; LATER_CHECK_OUTSIDE_ONE_HOUR_SELECTION_CEILING"
     },
     "hookWiringObservation": {
       "target": "oyyfcmlquqfrdoffkgsd",
       "configuredHookList": "EMPTY",
-      "providerConfigurationChanged": false,
+      "providerConfigurationChanged": true,
       "newMetadataRead": "EXECUTED_ONCE_ALL_FOUR_TRUE",
       "metadataSha256": "9dfba0b7a0efa835a1a5bc94a3f15309e927fd43b7a41b272bac550de5924140",
       "proposal": "https://github.com/RiGi26/webzoka-stock-platform/blob/eb9c43690f83b7d66b3aeffb3f7f2fe4961d03c7/docs/pricing/STOCK_AUTH_TOKEN_HOOK_WIRING_20261107.PROPOSED.md",
@@ -3499,11 +3535,31 @@
       "studioEditorReadOnly": true,
       "studioDraftDiscarded": true,
       "extensionProposal": "https://github.com/RiGi26/webzoka-stock-platform/blob/fd5ba02b5df66effe2af0ae37757940e8fcacf22/docs/pricing/STOCK_AUTH_TOKEN_HOOK_STUDIO_EXTENSION_20261107.PROPOSED.md",
-      "extensionStatus": "NOT_AUTHORIZED_NOT_EXECUTED",
+      "extensionStatus": "AUTHORIZED_EXECUTED_ONCE",
       "studioSqlSha256": "e73c8565f3c99f74cc2e16c59f9157541a038b015cefb1c2455d2eb7809c8259",
       "extensionSourceCi": 42340348345,
       "extensionPdfCi": 42340348338,
-      "extensionCiStatus": "PENDING"
+      "extensionCiStatus": "PASS_ALL_THREE",
+      "configurationReadback": {
+        "type": "Postgres function",
+        "schema": "public",
+        "function": "custom_access_token_hook",
+        "enabled": true
+      },
+      "precheck": {
+        "exact_installed_functions": true,
+        "auth_admin_schema_usage": true,
+        "auth_admin_wrapper_execute": true,
+        "exact_restricted_execution": true
+      },
+      "postcheck": {
+        "exact_installed_functions": true,
+        "auth_admin_schema_usage": true,
+        "auth_admin_wrapper_execute": true,
+        "exact_restricted_execution": true
+      },
+      "normalSsoAttempts": 1,
+      "hookDisableExecutions": 0
     },
     "selectionMetadata": {
       "windowUtc": [
@@ -3526,6 +3582,37 @@
       "currentPlan": "STOPPED_S1_NATIVE_SSO_REQUIRED",
       "providerAction": false,
       "originalThreeBuildLedgerUntouched": true
+    },
+    "coreOnStage": {
+      "submitted": true,
+      "deploymentId": "dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j",
+      "status": "READY",
+      "submittedAtUtc": "2026-11-07T10:13:52.550018+00:00",
+      "cliExitCode": 0,
+      "deploymentUrl": "https://ja-superadmin-platform-km0ehscue-rigi26s-projects.vercel.app",
+      "metadata": {
+        "id": "dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j",
+        "url": "ja-superadmin-platform-km0ehscue-rigi26s-projects.vercel.app",
+        "name": "ja-superadmin-platform",
+        "target": "production",
+        "readyState": "READY",
+        "contextName": "rigi26s-projects",
+        "approvedSourceSha": "0e8408b217c5e7be2c9c97f51e6fcebf6b53c283",
+        "gateCRepairSlot": "core_on",
+        "metadataEvidence": "provider_metadata_filtered_list"
+      },
+      "unaliasedBeforePromotion": true,
+      "closedPreflightPass": false,
+      "protectedPreflightStatus": "WAITING_FOR_PRIVATE_VERCEL_SESSION"
+    },
+    "freshProSession": "WAITING_FOR_PRIVATE_SIGN_IN_AFTER_BROWSER_RESET",
+    "stockOfflineIsolationCandidate": {
+      "source": "a267c6b35b1cfad59533f45ee6598edb7785d0f6",
+      "sourceCi": 42364109290,
+      "pdfCi": 42364109289,
+      "localNativeTests": "PASS_39_OF_39",
+      "deploymentAuthority": "NOT_GRANTED",
+      "managedBrowserIsolation": "NOT_EXECUTED"
     }
   },
   "latestRepairFinancialReadback": {
