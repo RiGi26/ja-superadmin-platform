@@ -1,5 +1,13 @@
 # Stock self-payment implementation and acceptance
 
+## Production multi-workspace uniqueness cause confirmed — 7 November 2026
+
+The approved Stock metadata read found `public.uq_user_profile_core_user_id` defined as a unique btree on `user_profile(core_user_id)` with predicate `core_user_id IS NOT NULL`. The frozen S3 Basic owner profile is pending with `core_user_id` null. The same Core identity already has an active Pro profile. Assigning that identity while activating the second Basic workspace violates the observed global uniqueness rule, matching the missing receipt and pending delivery. The Stock source migrations do not create this index.
+
+Stock commit `548eb925791ae00bd10f535c6bf3ff59e6e831bc` proposes dropping only that exact observed unique index and replacing it with a non-unique partial lookup index. Its preflight aborts if either index definition differs. The Gate C cohort test reproduces the activation rejection under the observed predicate, applies the migration twice, verifies non-unique replacement, and then activates the paid second workspace. Local test result is 3/3 passing. Stock source validation run `42388372893` and conditional PDF validation run `42388372885` both pass.
+
+The code migration is proposed only. It has not been applied to Production, and no paid-delivery retry or new purchase occurred. The promoted Stock app deployment remains `dpl_BocH7oTSPqfL3eMPKUJiiKdRkxo8`; its runtime source predates this migration. To recover S3, the exact reviewed index migration must be separately authorized for Stock, applied, and followed by the existing same-invoice delivery retry plus receipt/profile and isolation checks. Preserve the paid invoice and purchase shutdown.
+
 ## Pro Purchase Orders failure isolated further — 7 November 2026
 
 The retained Pro Owner session rendered the Supplier directory with its empty state and authorized add control. Its document returned HTTP200 in 22.8 seconds. Desktop CSS1600×1000 and CSS390×844 showed no horizontal overflow. A following independent Purchase Orders read in the same session returned HTTP200 in 22.7 seconds with `Gagal mengambil data purchase order.` and no purchase controls. This repeats the product failure while Supplier works. `listPurchaseOrders` maps that message to the embedded Data API read. The managed error code is still unknown.
