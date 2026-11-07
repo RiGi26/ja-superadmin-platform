@@ -3487,13 +3487,23 @@
       "target": "oyyfcmlquqfrdoffkgsd",
       "configuredHookList": "EMPTY",
       "providerConfigurationChanged": false,
-      "newMetadataRead": "NOT_AUTHORIZED_NOT_EXECUTED",
+      "newMetadataRead": "EXECUTED_ONCE_ALL_FOUR_TRUE",
       "metadataSha256": "9dfba0b7a0efa835a1a5bc94a3f15309e927fd43b7a41b272bac550de5924140",
       "proposal": "https://github.com/RiGi26/webzoka-stock-platform/blob/eb9c43690f83b7d66b3aeffb3f7f2fe4961d03c7/docs/pricing/STOCK_AUTH_TOKEN_HOOK_WIRING_20261107.PROPOSED.md",
       "sourceCommit": "eb9c43690f83b7d66b3aeffb3f7f2fe4961d03c7",
       "focusedCallbackHookTests": "PASS 2/2",
       "canonicalSecuritySql": "PASS 79/79",
-      "lint": "PASS exit 0"
+      "lint": "PASS exit 0",
+      "ownerAuthorization": "Authorize bounded Auth hook wiring (Recommended)",
+      "automaticStudioPermissionSql": true,
+      "studioEditorReadOnly": true,
+      "studioDraftDiscarded": true,
+      "extensionProposal": "https://github.com/RiGi26/webzoka-stock-platform/blob/fd5ba02b5df66effe2af0ae37757940e8fcacf22/docs/pricing/STOCK_AUTH_TOKEN_HOOK_STUDIO_EXTENSION_20261107.PROPOSED.md",
+      "extensionStatus": "NOT_AUTHORIZED_NOT_EXECUTED",
+      "studioSqlSha256": "e73c8565f3c99f74cc2e16c59f9157541a038b015cefb1c2455d2eb7809c8259",
+      "extensionSourceCi": 42340348345,
+      "extensionPdfCi": 42340348338,
+      "extensionCiStatus": "PENDING"
     },
     "selectionMetadata": {
       "windowUtc": [
@@ -3508,6 +3518,14 @@
       "duration": "NOT_ESTABLISHED",
       "rawMessagesRead": false,
       "source": "Authenticated Vercel dashboard, exact deployment/environment/requestPath filters"
+    },
+    "twoBuildController": {
+      "path": "scratchpad/gate-c-repair-build-control-20261107.py",
+      "unitGuardTests": "PASS 7/7",
+      "frozenExportBlobs": 530,
+      "currentPlan": "STOPPED_S1_NATIVE_SSO_REQUIRED",
+      "providerAction": false,
+      "originalThreeBuildLedgerUntouched": true
     }
   },
   "latestRepairFinancialReadback": {
