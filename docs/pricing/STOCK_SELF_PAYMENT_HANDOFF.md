@@ -1,5 +1,18 @@
 # Stock self-payment implementation and acceptance
 
+## Pending Basic activation diagnostic prepared — 7 November 2026
+
+Fresh Pro Owner HTTP still shows the Staff invitation waiting for recipient and no visible Produksi invitation. A separate normal Staff login rejected the supplied email/password combination. This observation does not establish whether the alias already has an account. No new login, recovery email, invitation or payment was submitted during this checkpoint.
+
+The disposable SQL suite now covers the managed payment order. It pays and acknowledges Pro, pays the same Owner's separate Basic workspace, retires both continuation rows, and recovers the original paid Basic invoice. A swapped Pro profile is denied. Separate receipts and one/three-seat entitlements survive replay. A synthetic global unique index on `user_profile.core_user_id` reproduces a second-workspace activation rollback with SQLSTATE `23505`. The diagnostic detects this index and the absent Basic receipt. The production presence of that index and the actual failure stage remain unknown. The test also checks the Core claim timestamp and bounded invitation-state projection. All three local Gate C cases passed.
+
+Two exact managed reads are prepared and require applicable authority before execution. Each uses a read-only transaction and returns one row of fixed booleans.
+
+- Core `hxhusfkrlafxdnyasmsu`, [`STOCK_GATE_C_PENDING_WORKSPACE_CORE_READONLY.sql`](STOCK_GATE_C_PENDING_WORKSPACE_CORE_READONLY.sql), SHA-256 `767f2789639b893f687851d0db98a036441254e1863655f91adcc1160b26a76b`. Determine whether Core recorded an S3 activation claim, whether its current paid tuple remains eligible, and whether the exact Produksi invitation was reserved, prepared for mail, or acknowledged. The current-Owner and paid-creation predicates are read-only and the projection contains no identity rows.
+- Stock `oyyfcmlquqfrdoffkgsd`, `docs/pricing/STOCK_GATE_C_PENDING_WORKSPACE_STOCK_READONLY.sql`, SHA-256 `6f17d6b5f26c19641c7c74b413d9dde84aec43106c82e841fd7b9f0012a8bc2a`. Check the frozen pending Basic and active Pro profiles, exact Basic receipt and the existence of relevant global or partial unique index shapes. A partial index result is a lead and does not establish a conflict.
+
+No diagnostic query, source deployment, production write or repeat purchase occurred. This source-only regression leaves managed S3 recovery and full UAT open. The purchase shutdown and existing paid evidence below remain applicable.
+
 ## Three sandbox payments verified and purchase shutdown complete — 7 November 2026
 
 The Owner restored the private Vercel and Fresh Pro browser sessions. Core protected preflight passed 10/10 on both exact unaliased builds. Checkout-on dpl_4vz4jqgCmAU7X2ABqQHnYAUxcg9j and checkout-off dpl_BmMzGsNpUeJhc8ZwQV3QtPLtAodi were each built and promoted once from 0e8408b217c5e7be2c9c97f51e6fcebf6b53c283. Each canonical target passed 11/11 closed HTTP checks. The checkout-off deployment is canonical. Both authorized build and promotion slots are consumed.
