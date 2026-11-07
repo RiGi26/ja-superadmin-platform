@@ -1,5 +1,17 @@
 # Stock self-payment implementation and acceptance
 
+## Pro post-shutdown SSO and route UAT — 7 November 2026
+
+On unchanged canonical Stock `dpl_GB2i8VoL3nwqpeBekiNFit4saK1a` after Core checkout shutdown, an old Pro session returned 307 with `authorization_unavailable`. One fresh normal launch from the existing authenticated Hub Pro billing card reached the correct Stock workspace without a second password. Stock selection start and callback each returned 303. An initial browser navigation observation timed out while the same launch was in flight. Its subsequent dashboard settled with the correct workspace.
+
+Independent authenticated HTTP then returned 200 with actual report content for Finance in 18.5 seconds and 200 with the Team heading in 23.4 seconds. Both routes subsequently rendered on desktop CSS1600×1000 and CSS390×844 without horizontal overflow. Team displayed the exact Pro Owner profile. The fixture's welcome tour was skipped through the normal UI for the screenshots.
+
+One earlier Team document returned HTTP200 but rendered `Gagal mengambil data profil tim.`. Source maps that message to the authenticated `user_profile` query before privileged enrichment. A later same-session request succeeded. The short independent HTTP observation timed out and the longer one passed. This is intermittent managed Team behavior, with the precise database error still unknown. Do not erase the failure or infer a role/RLS bypass from the later pass. No role or financial change was performed.
+
+The sanitized browser/HTTP record is `gate-c-pro-post-shutdown-uat-20261107.json` in the existing scratchpad. Team and Finance success screenshots use `gate-c-pro-team-post-shutdown-*` and `gate-c-pro-finance-post-shutdown-*`. The earlier Team error screenshots use `gate-c-pro-team-profile-error-*`. This advances Pro Owner HTTP/browser acceptance. Staff invitation login, Produksi confirmation, S3 activation, worker v5 and remaining managed isolation/revocation still require evidence.
+
+Next action is bounded authorization of the [combined Stock rollout and exact readbacks](https://github.com/RiGi26/webzoka-stock-platform/blob/fcb9f2fd5be558b9ce77f69190cbb1f5a51be0b7/docs/pricing/STOCK_GATE_C_INVITATION_AND_CACHE_ROLLOUT_20261107.PROPOSED.md). The new Pro evidence required no candidate deployment and does not authorize that rollout.
+
 ## Staff invitation browser blocker reproduced — 7 November 2026
 
 The original Staff invitation is visible in the correct mailbox. In an isolated Chrome CSS390 context, the normal invitation form returned Stock start HTTP303 and Stock Auth authorize HTTP302. Chromium then aborted Core OAuth authorize with a `form-action` violation and retained the invitation page. No Hub sign-in form or operator admission was reached. The earlier direct Hub credential rejection is a separate result. Pro Owner remained in its own session. The existing approved financial projections still show S3 paid with pending delivery, zero Stock receipt and inactive profile.
