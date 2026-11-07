@@ -1,5 +1,17 @@
 # Stock self-payment implementation and acceptance
 
+## Staff invitation browser blocker reproduced — 7 November 2026
+
+The original Staff invitation is visible in the correct mailbox. In an isolated Chrome CSS390 context, the normal invitation form returned Stock start HTTP303 and Stock Auth authorize HTTP302. Chromium then aborted Core OAuth authorize with a `form-action` violation and retained the invitation page. No Hub sign-in form or operator admission was reached. The earlier direct Hub credential rejection is a separate result. Pro Owner remained in its own session. The existing approved financial projections still show S3 paid with pending delivery, zero Stock receipt and inactive profile.
+
+Stock `fcb9f2fd5be558b9ce77f69190cbb1f5a51be0b7` serves a private same-origin handoff document for browser invitation POST success. A separate top-level navigation then starts the already validated OAuth path. The invite form CSP narrows to `self`, the handoff has no forms, and HTTP clients retain the existing 303. Exact proof, origin, provider, PKCE, callback, admission and authorization checks are preserved. The same candidate contains the previously tested worker v5 isolation repair.
+
+Fresh local HTTP tests pass 40/40. Scoped lint, typecheck and whitespace pass. Real Chrome over disposable loopback HTTP reproduces the legacy CSP block and verifies candidate navigation to simulated login at desktop CSS1600 and CSS390. The script-blocked fallback also navigates at CSS390 with a 44 px target and no horizontal overflow. The first interception-only harness could not observe redirected requests, so this evidence uses actual loopback responses. These checks do not establish hosted Auth admission or private-cache retirement.
+
+Evidence is `gate-c-staff-invitation-csp-evidence-20261107.json`, `gate-c-staff-invite-csp-css390-20261107.png` and `operator-invite-browser-fixture/replay-loopback.cjs` in the existing scratchpad. Canonical Stock is still `dpl_GB2i8VoL3nwqpeBekiNFit4saK1a`. The existing Core checkout-off deployment and retired purchase cohort remain applicable. The two diagnostic reads below have not executed.
+
+Next action is one bounded approval of the exact [combined Stock rollout and readback package](https://github.com/RiGi26/webzoka-stock-platform/blob/fcb9f2fd5be558b9ce77f69190cbb1f5a51be0b7/docs/pricing/STOCK_GATE_C_INVITATION_AND_CACHE_ROLLOUT_20261107.PROPOSED.md). It supersedes the worker-only proposal and uses one existing-project build/promotion with conditional recovery, one execution each of the exact Core and Stock boolean queries, and scoped fixture UAT. The retained grants do not cover this build or these reads.
+
 ## Pending Basic activation diagnostic prepared — 7 November 2026
 
 Fresh Pro Owner HTTP still shows the Staff invitation waiting for recipient and no visible Produksi invitation. A separate normal Staff login rejected the supplied email/password combination. This observation does not establish whether the alias already has an account. No new login, recovery email, invitation or payment was submitted during this checkpoint.
