@@ -62,7 +62,7 @@ export default async function StockOperatorTeamPage({ searchParams }: {
         {notice && <p className={styles.notice} role="status">{notice}</p>}
         <div className={styles.grid}><section className={styles.panel}><h2>Undang anggota</h2>
           <p>{workspace.availableSeats} kursi tersedia. Pro mencakup Owner dan paling banyak dua operator tambahan. Basic mencakup satu kursi Owner.</p>
-          <StockInvitationForm companyId={workspace.companyId} instanceId={workspace.instanceId} commandId={command} canInvite={workspace.canInvite || !!pending} initialEmail={pending?.email ?? ''} initialRole={pending?.role} />
+          <StockInvitationForm key={`${workspace.companyId}:${workspace.instanceId}:${command}`} companyId={workspace.companyId} instanceId={workspace.instanceId} commandId={command} canInvite={workspace.canInvite || !!pending} initialEmail={pending?.email ?? ''} initialRole={pending?.role} />
           <a className={styles.secondary} href={stockOperatorPath(company)}>Mulai undangan lain</a>
         </section><section className={styles.panel}><h2>Undangan terbaru</h2>
           {workspace.invitations.length === 0 ? <p>Belum ada undangan untuk workspace ini.</p> : <ul className={styles.list}>
