@@ -2862,5 +2862,19 @@
         "after": "      {view === 'support' && <><section className={styles.supportGrid}><article className={styles.supportPrimary}><span className={styles.supportIcon}><MessageCircle aria-hidden=\"true\" /></span><h2>WhatsApp Webzoka</h2><p>Sertakan nama usaha, sistem terkait, dan ringkasan kendala agar tim dapat memahami kebutuhan Anda.</p><a className={styles.secondaryButton} href=\"https://wa.me/6281296917963?text=Halo%20Webzoka%2C%20saya%20membutuhkan%20bantuan%20Customer%20Hub.\" target=\"_blank\" rel=\"noopener noreferrer\">Buka WhatsApp<span className={styles.srOnly}> — membuka tab baru</span></a></article><article className={styles.supportSecondary}><h2>Informasi untuk disertakan</h2><dl className={styles.supportFacts}><div><dt>Workspace</dt><dd>{ready ? title : 'Belum tersedia'}</dd></div><div><dt>Status sistem</dt><dd>{account.accessReady ? 'Belum ada keanggotaan sistem aktif' : 'Belum dapat diperiksa'}</dd></div><div><dt>Email akun</dt><dd>{account.email}</dd></div></dl><p>Jangan membagikan kata sandi atau kode verifikasi melalui percakapan.</p></article></section><section className={styles.sectionBlock}><h2>Pertanyaan umum</h2><div className={styles.faq}><details><summary>Apakah workspace berarti sudah berlangganan?</summary><p>Tidak. Pembuatan workspace tidak otomatis memulai trial, tagihan, atau pembayaran produk.</p></details><details><summary>Bagaimana bila sistem saya belum muncul?</summary><p>Hubungi bantuan untuk pemeriksaan akun dan keanggotaan sistem Anda.</p></details></div><p className={styles.guideNote}>Panduan terpusat dan pelacakan tiket belum tersedia.</p></section></>}\n"
       }
     ]
+  },
+  {
+    "file": "lib/hub-ui-test-harness.mjs",
+    "profile": "runtime",
+    "beforeHash": "1ab47c6cef8b74f56b440fd40cadf586c5c451208ebf6c65e1b7ed2afd4a0a14",
+    "afterHash": "c96943d1399c6247c2dbe62819d2636e2a7d523e24cf19cf1d0280adb89cde2b",
+    "edits": [
+      {
+        "beforeOffset": 1458,
+        "afterOffset": 1458,
+        "before": "",
+        "after": "      if (name === '@/lib/stock-invoice-display') return load(resolve(root, 'lib/stock-invoice-display.ts'))\n"
+      }
+    ]
   }
 ]
