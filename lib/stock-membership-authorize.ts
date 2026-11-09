@@ -11,11 +11,7 @@ const authorityKeys = ['bindingId', 'bindingRevision', 'companyId', 'companyRevi
   'profileId', 'membershipId', 'membershipRevision', 'selectionRevision', 'role',
   'ownerMembershipId', 'ownerMembershipRevision'].sort().join(',')
 
-/** Closed successor composition, not installed authority. No HTTP route calls
- * this adapter until its reviewed SQL, selected-session RLS and revocation
- * contract exist. The RPC must derive current membership/profile/Owner fields
- * and live Core-session authority; it must never echo caller authority.
- */
+/** Resolve the exact current v2 selection through Core's authoritative RPC. */
 export async function authorizeStockMembershipRequest(input: unknown, token: string): Promise<
   { status: 'authorized'; decision: StockMembershipDecision } | { status: 'blocked' | 'denied' }
 > {
@@ -27,14 +23,8 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
     const actor = await verifyStockIdentityForCoreBridge(token)
     if (actor.stockSubject !== request.stockSubject || actor.stockSessionId !== request.stockSessionId ||
         actor.until <= Date.now()) return { status: 'denied' }
-    const db = createAdminClient()
-    // Retained inactive/revoked history participates. Missing, unavailable or
-    // unmanaged classification cannot fall through to paid-v1, pilot or legacy.
-    const classified = await db.rpc('core_stock_membership_is_managed', {
-      p_core_subject: actor.coreSubject, p_stock_subject: actor.stockSubject,
-    }).abortSignal(AbortSignal.timeout(2500))
-    if (classified.error || classified.data !== true || actor.until <= Date.now()) return { status: 'denied' }
-    const result = await db.rpc('core_stock_membership_authorize_request', {
+    // The authority query requires the exact active identity pair and selection.
+    const result = await createAdminClient().rpc('core_stock_membership_authorize_request', {
       p_company: request.companyId, p_instance: request.instanceId,
       p_profile: request.profileId, p_membership: request.membershipId,
       p_membership_revision: request.membershipRevision,
