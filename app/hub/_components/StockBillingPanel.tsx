@@ -7,14 +7,12 @@ import { STOCK_OPERATOR_INVITATION_ENABLED } from '@/lib/stock-operator-protocol
 import { STOCK_MEMBER_LIFECYCLE_ENABLED } from '@/lib/stock-member-protocol'
 import { STOCK_MEMBERSHIP_RUNTIME_ENABLED } from '@/lib/stock-membership-protocol'
 import { stockCheckoutPath, stockOperatorPath } from '@/lib/stock-purchase-policy'
+import { formatStockBillingDate, stockInvoiceDetailRows, stockInvoiceDisplay } from '@/lib/stock-invoice-display'
 import styles from './stock-billing.module.css'
 import { refreshStockInvoiceAction } from '../checkout/stock/actions'
 import { StockActivationStatus } from './StockActivationStatus'
 
-const money = (value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(value)
-const date = (value: string) => new Intl.DateTimeFormat('id-ID', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Jakarta' }).format(new Date(value))
 const states = { not_started: 'Belum berlangganan', pending: 'Pembayaran diterima, aktivasi diproses', active: 'Stock aktif', suspended: 'Akses Stock belum aktif' }
-const invoiceStates = { unpaid: 'Belum dibayar', awaiting_payment: 'Menunggu pembayaran', paid: 'Lunas', failed: 'Pembayaran gagal', expired: 'Tagihan kedaluwarsa' }
 
 export function StockBillingPanel({ billing, systemsOnly = false }: { billing: StockBillingAccount; systemsOnly?: boolean }) {
   if (billing.status !== 'ready') return null
@@ -28,7 +26,7 @@ export function StockBillingPanel({ billing, systemsOnly = false }: { billing: S
         <div className={styles.title}><div><h2>{workspace.companyName}</h2><p>Webzoka Stock{offer ? ` · ${offer.name}` : ''}</p></div><span className={styles.status}>{states[workspace.activation]}</span></div>
         {workspace.activation === 'pending' && <><p className={styles.notice} role="status">Pembayaran sudah tercatat. Tidak perlu membayar lagi. Periksa kembali setelah aktivasi Stock selesai.</p>
           {workspace.invoices.find(invoice => invoice.status === 'paid') && <StockActivationStatus invoiceId={workspace.invoices.find(invoice => invoice.status === 'paid')!.id} className={styles.secondary} />}</>}
-        {workspace.subscription?.expiresAt && <p>Periode berbayar sampai {date(workspace.subscription.expiresAt)}.</p>}
+        {workspace.subscription?.expiresAt && <p>Periode berbayar sampai {formatStockBillingDate(workspace.subscription.expiresAt)}.</p>}
         <div className={styles.actions}>
           {canEnter ? <form method="post" action={`${STOCK_E1_APP_ORIGIN}${entryPath}`}>
             <input type="hidden" name="companyId" value={workspace.companyId} /><input type="hidden" name="reservationId" value={workspace.reservationId} /><input type="hidden" name="commandId" value={randomUUID()} />
@@ -40,11 +38,16 @@ export function StockBillingPanel({ billing, systemsOnly = false }: { billing: S
         </div>
         {!systemsOnly && <section aria-label={`Riwayat tagihan ${workspace.companyName}`} className={styles.history}><h3>Riwayat tagihan</h3>
           {workspace.invoices.length === 0 ? <p>Belum ada tagihan untuk usaha ini.</p> : <ul className={styles.invoices}>{workspace.invoices.map(invoice => {
-            const invoiceOffer = APPROVED_OFFERS.find(item => item.platform === 'stock' && item.id === invoice.planId)
-            return <li key={invoice.id}><div><strong>{invoiceOffer?.name ?? 'Paket Stock'}</strong><span>{date(invoice.createdAt)}</span></div><strong className={styles.amount}>{money(invoice.amount)}</strong><span>{invoiceStates[invoice.status]}</span>
-              <div className={styles.invoiceControls}>{['unpaid', 'awaiting_payment'].includes(invoice.status) && invoiceOffer && <Link className={styles.invoiceAction} href={stockCheckoutPath(invoiceOffer.id, workspace.companyId)}>Lanjutkan pembayaran</Link>}
+            const display = stockInvoiceDisplay(workspace.companyName, invoice)
+            return <li key={invoice.id}><div><strong>{display.plan}</strong><span>{display.createdAt}</span></div><strong className={styles.amount}>{display.amount}</strong><span>{display.status}</span>
+              <div className={styles.invoiceControls}>{['unpaid', 'awaiting_payment'].includes(invoice.status) && display.offer && <Link className={styles.invoiceAction} href={stockCheckoutPath(display.offer.id, workspace.companyId)}>Lanjutkan pembayaran</Link>}
               {['unpaid', 'awaiting_payment', 'paid'].includes(invoice.status) && <form action={refreshStockInvoiceAction}><input type="hidden" name="invoice" value={invoice.id} /><button className={styles.invoiceAction}>Periksa pembayaran</button></form>}
               </div>
+              <details className={styles.invoiceDetails}>
+                <summary>Lihat rincian tagihan</summary>
+                <dl>{stockInvoiceDetailRows(display).map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+                <a className={styles.invoiceAction} href={`/hub/stock/invoices/${workspace.companyId}/${invoice.id}`}>Unduh rincian (.txt)</a>
+              </details>
             </li>
           })}</ul>}
         </section>}

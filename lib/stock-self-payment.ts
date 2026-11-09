@@ -63,6 +63,17 @@ export async function readStockBillingAccount(): Promise<StockBillingAccount> {
   } catch { return { status: 'unavailable', workspaces: [] } }
 }
 
+export async function readStockBillingInvoice(company: string, invoiceId: string) {
+  const companyId = stockCompanyId(company)
+  const id = uuid.safeParse(invoiceId)
+  if (!companyId || !id.success) return null
+
+  const billing = await readStockBillingAccount()
+  const workspace = billing.workspaces.find(row => row.companyId === companyId)
+  const invoice = workspace?.invoices.find(row => row.id === id.data.toLowerCase())
+  return workspace && invoice ? { companyName: workspace.companyName, invoice } : null
+}
+
 export async function readStockPurchaseIntent(company?: string | null) {
   if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return null
   try {

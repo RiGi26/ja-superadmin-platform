@@ -2,3 +2,9 @@
 @media(max-width:680px){.panel{padding:22px 20px}.title{flex-direction:column;gap:12px}.status{max-width:100%}.actions{display:grid;grid-template-columns:minmax(0,1fr)}.actions form,.actions button,.primary,.secondary{width:100%}.invoices li{grid-template-columns:minmax(0,1fr) auto;gap:10px}.invoices li>span{grid-column:1}.invoiceAction{grid-column:1/-1;justify-self:start}.amount{text-align:right}}
 .invoices li .invoiceControls{display:flex;flex-wrap:wrap;gap:8px 16px}.invoiceAction{border:0;background:transparent;text-align:left}
 @media(max-width:680px){.invoiceControls{grid-column:1/-1}}
+.invoiceDetails{grid-column:1/-1;min-width:0;background:#f6f8fc;border-radius:8px;padding:0 12px}
+.invoiceDetails summary{min-height:44px;padding:12px 0;color:#165ac5;font-weight:600;cursor:pointer}
+.invoiceDetails summary:focus-visible{outline:3px solid #1762da;outline-offset:2px}
+.invoiceDetails dl{display:grid;gap:10px 24px;margin:8px 0}
+.invoiceDetails dt{color:#526278}.invoiceDetails dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+@media(min-width:681px){.invoiceDetails dl{grid-template-columns:repeat(2,minmax(0,1fr))}}
