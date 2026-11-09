@@ -38,18 +38,18 @@ async function withinActivationBudget<T>(work: () => PromiseLike<T>, deadline: n
 
 /** Only committed Core outbox state is signed. No caller supplies an activation
  * tuple, price, recipient URL, or entitlement. Delivery is safe to retry. */
-export async function deliverStockPaidActivation(tenantId: string): Promise<StockActivationDelivery> {
+export async function deliverStockPaidActivation(tenantId: string, expectedInvoiceId?: string): Promise<StockActivationDelivery> {
   // Retries read the same persisted invoice/outbox. They never create a payment.
   // Leave time for the caller's remaining work within the existing function budget.
   const deadline = Date.now() + 24_000
   for (let attempt = 0; attempt < 3 && Date.now() < deadline; attempt++) {
-    const result = await attemptStockPaidActivation(tenantId, deadline)
+    const result = await attemptStockPaidActivation(tenantId, deadline, expectedInvoiceId)
     if (result !== 'pending') return result
   }
   return 'pending'
 }
 
-async function attemptStockPaidActivation(tenantId: string, deadline: number): Promise<StockActivationDelivery> {
+async function attemptStockPaidActivation(tenantId: string, deadline: number, expectedInvoiceId?: string): Promise<StockActivationDelivery> {
   if (!STOCK_PAID_BILLING_RUNTIME_ENABLED) return 'closed'
   if (!uuid.safeParse(tenantId).success) return 'pending'
   const secret = process.env.BILLING_SYNC_SECRET
@@ -62,6 +62,8 @@ async function attemptStockPaidActivation(tenantId: string, deadline: number): P
     const parsed = payloadSchema.safeParse(claimed.data)
     if (!parsed.success) return 'pending'
     const payload = parsed.data
+    // The workspace outbox can advance between the invoice recheck and a claim.
+    if (expectedInvoiceId !== undefined && payload.invoiceId !== expectedInvoiceId) return 'not_applicable'
     const identity = await withinActivationBudget(() => admin.auth.admin.getUserById(payload.coreSubject), deadline)
     const user = identity.data.user as (typeof identity.data.user & { deleted_at?: string | null; banned_until?: string | null })
     if (identity.error || !user || user.id !== payload.coreSubject || user.is_anonymous !== false ||
@@ -107,7 +109,7 @@ export async function reconcileStockPaidActivations(): Promise<void> {
     if (pending.error || !rows.success) return
     // Keep a bounded number of HTTP/DB operations in flight.
     for (let index = 0; index < rows.data.length; index += 5) {
-      await Promise.all(rows.data.slice(index, index + 5).map(deliverStockPaidActivation))
+      await Promise.all(rows.data.slice(index, index + 5).map(tenantId => deliverStockPaidActivation(tenantId)))
     }
   } catch { /* A later lifecycle run retries the persisted outbox. */ }
 }

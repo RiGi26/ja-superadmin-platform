@@ -32,7 +32,7 @@ export async function refreshStockInvoice(invoiceId: unknown): Promise<void> {
     if (fresh.status !== 'ready' || !fresh.workspaces.some(row => row.companyId === workspace.companyId &&
         row.coreTenantId === workspace.coreTenantId && row.invoices.some(item => item.id === own.id))) return
     if (invoice.status === 'paid') {
-      after(() => deliverStockPaidActivation(workspace.coreTenantId).then(() => {}))
+      after(() => deliverStockPaidActivation(workspace.coreTenantId, own.id).then(() => {}))
       return
     }
     if (!['unpaid', 'awaiting_payment'].includes(invoice.status)) return
