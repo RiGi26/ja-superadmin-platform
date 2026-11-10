@@ -17,35 +17,38 @@ const messages = {
   expired: 'Undangan ini sudah kedaluwarsa. Buat undangan baru jika diperlukan.',
 }
 
-export function StockInvitationForm({ companyId, instanceId, commandId, canInvite, initialEmail = '', initialRole = 'staff' }: {
+export function StockInvitationForm({ companyId, instanceId, commandId, canInvite, initialEmail = '', initialRole }: {
   companyId: string; instanceId: string; commandId: string; canInvite: boolean; initialEmail?: string; initialRole?: 'admin' | 'staff' | 'produksi';
 }) {
   const [state, action, pending] = useActionState<StockOperatorFormState, FormData>(inviteStockOperatorAction, { status: 'idle' })
   const [submitted, setSubmitted] = useState<{ email: string; role: string } | null>(null)
   const retry = state.status === 'unconfirmed' ? submitted : null
+  const fixedRole = initialRole ?? retry?.role
+  const displayedEmail = initialEmail || retry?.email || ''
+  const emailLocked = Boolean(initialEmail || (retry && !initialRole))
   const disabled = pending || !canInvite || ['sent','activated','canceled','expired'].includes(state.status)
 
   function rememberSubmission(event: FormEvent<HTMLFormElement>) {
-    if (retry) return
+    if (emailLocked) return
     const form = new FormData(event.currentTarget)
     const email = form.get('email')
     const role = form.get('role')
     if (typeof email === 'string' && typeof role === 'string') setSubmitted({ email, role })
   }
 
-  return <form key={retry ? 'retry' : 'invite'} action={action} onSubmit={rememberSubmission} className={styles.form}>
+  return <form key={fixedRole ? `retry:${fixedRole}:${emailLocked}` : 'invite'} action={action} onSubmit={rememberSubmission} className={styles.form}>
     <input type="hidden" name="companyId" value={companyId} />
     <input type="hidden" name="instanceId" value={instanceId} />
     <input type="hidden" name="commandId" value={commandId} />
     <label htmlFor="operator-email">Email anggota</label>
-    <input id="operator-email" name="email" type="email" autoComplete="email" defaultValue={retry?.email ?? initialEmail} readOnly={pending || !!retry} maxLength={254} required aria-describedby="invitation-help" />
+    <input id="operator-email" name="email" type="email" autoComplete="email" defaultValue={displayedEmail} readOnly={pending || emailLocked} maxLength={254} required aria-describedby="invitation-help" />
     <label htmlFor="operator-role">Peran operasional</label>
-    {retry && <input type="hidden" name="role" value={retry.role} />}
-    <select id="operator-role" name={retry ? undefined : 'role'} defaultValue={retry?.role ?? initialRole} disabled={pending || !!retry}>
+    {fixedRole && <input type="hidden" name="role" value={fixedRole} />}
+    <select id="operator-role" name={fixedRole ? undefined : 'role'} defaultValue={fixedRole ?? 'staff'} disabled={pending || !!fixedRole}>
       <option value="staff">Staf</option><option value="produksi">Produksi</option><option value="admin">Admin operasional</option>
     </select>
     <p id="invitation-help">Undangan berlaku 24 jam dan mencadangkan satu kursi. Owner tetap mengelola tagihan dan langganan.</p>
     {state.status !== 'idle' && <p className={styles.notice} role="status" aria-live="polite">{messages[state.status]}</p>}
-    <button className={styles.primary} disabled={disabled}>{pending ? 'Mengirim undangan…' : retry ? 'Coba lagi' : 'Kirim undangan'}</button>
+    <button className={styles.primary} disabled={disabled}>{pending ? 'Mengirim undangan…' : fixedRole ? 'Coba lagi' : 'Kirim undangan'}</button>
   </form>
 }
