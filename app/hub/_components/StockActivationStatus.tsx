@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { checkStockActivationAction } from '../checkout/stock/actions'
 
 /** One mounted pending view gets five minutes, including slow or failed checks.
@@ -31,13 +31,27 @@ export function pollStockActivation(check: () => Promise<string>, active: () => 
 export function StockActivationStatus({ invoiceId, className }: { invoiceId: string; className: string }) {
   const [checking, setChecking] = useState(false)
   const [message, setMessage] = useState('Status diperiksa otomatis hingga lima menit. Anda tidak perlu membayar lagi.')
-  useEffect(() => pollStockActivation(() => checkStockActivationAction(invoiceId), () => window.location.reload()), [invoiceId])
+  const requests = useRef(new Map<string, ReturnType<typeof checkStockActivationAction>>())
+  const reloadRequested = useRef(false)
+  const checkStatus = useCallback(() => {
+    const pending = requests.current.get(invoiceId)
+    if (pending) return pending
+    const request = checkStockActivationAction(invoiceId).finally(() => { requests.current.delete(invoiceId) })
+    requests.current.set(invoiceId, request)
+    return request
+  }, [invoiceId])
+  const reload = useCallback(() => {
+    if (reloadRequested.current) return
+    reloadRequested.current = true
+    window.location.reload()
+  }, [])
+  useEffect(() => pollStockActivation(checkStatus, reload), [checkStatus, reload])
   async function check() {
     if (checking) return
     setChecking(true)
     try {
-      const result = await checkStockActivationAction(invoiceId)
-      if (result === 'active') window.location.reload()
+      const result = await checkStatus()
+      if (result === 'active') reload()
       else setMessage(result === 'pending' ? 'Aktivasi masih diproses. Anda tidak perlu membayar lagi.' : 'Status belum dapat diperiksa. Masuk kembali atau coba lagi nanti.')
     } catch { setMessage('Koneksi terputus. Coba periksa status kembali.') }
     finally { setChecking(false) }
