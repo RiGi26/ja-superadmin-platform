@@ -1,12 +1,12 @@
 import 'server-only'
 
-type Operation = 'core_prepare' | 'core_confirm' | 'stock_callback'
+type Operation = 'core_prepare' | 'core_confirm' | 'stock_callback' | 'core_authorize'
 type Stage = 'input' | 'native_identity' | 'saved_intent' | 'native_recheck' | 'origin_read'
   | 'account_prepare' | 'membership_prepare' | 'receipt_parse' | 'receipt_match'
   | 'stock_context_read' | 'core_acknowledge' | 'acknowledgement_result'
   | 'repeat_prepare' | 'peer_prepare' | 'stock_commit' | 'peer_confirm'
-  | 'confirmation_result' | 'final_native_recheck'
-type Status = 'blocked' | 'denied' | 'unconfirmed' | 'prepared' | 'confirmed'
+  | 'confirmation_result' | 'final_native_recheck' | 'membership_authority' | 'decision_parse'
+type Status = 'blocked' | 'denied' | 'unconfirmed' | 'prepared' | 'confirmed' | 'authorized'
 const codes = new Set(['23503', '23505', '42501', '55P03', '57014', 'P0001', 'PGRST202', 'PGRST301', 'PGRST302'])
 
 /** Request-local diagnostics only. Never accepts identity, URL, credential or

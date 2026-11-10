@@ -5,6 +5,7 @@ import { verifyStockIdentityForCoreBridge } from '@/lib/stock-active-identity'
 import { ACTIVE_CORE_REALM, ACTIVE_REQUEST_MAX_MS } from '@/lib/stock-active-protocol'
 import { STOCK_MEMBERSHIP_RUNTIME_ENABLED, parseStockMembershipRequest,
   parseStockMembershipDecision, type StockMembershipDecision } from '@/lib/stock-membership-protocol'
+import { stockPreparationDiagnostics } from '@/lib/stock-membership-preparation-diagnostics'
 
 const authorityKeys = ['bindingId', 'bindingRevision', 'companyId', 'companyRevision',
   'coreSessionId', 'coreSubject', 'coreTenantId', 'instanceId', 'stockTenantId',
@@ -15,15 +16,18 @@ const authorityKeys = ['bindingId', 'bindingRevision', 'companyId', 'companyRevi
 export async function authorizeStockMembershipRequest(input: unknown, token: string): Promise<
   { status: 'authorized'; decision: StockMembershipDecision } | { status: 'blocked' | 'denied' }
 > {
+  const diagnostic = stockPreparationDiagnostics('core_authorize')
   if (!STOCK_MEMBERSHIP_RUNTIME_ENABLED || process.env.NEXT_PUBLIC_SUPABASE_URL !== ACTIVE_CORE_REALM) {
-    return { status: 'blocked' }
+    return diagnostic.result({ status: 'blocked' })
   }
   try {
     const request = parseStockMembershipRequest(input)
+    diagnostic.at('native_identity')
     const actor = await verifyStockIdentityForCoreBridge(token)
     if (actor.stockSubject !== request.stockSubject || actor.stockSessionId !== request.stockSessionId ||
-        actor.until <= Date.now()) return { status: 'denied' }
+        actor.until <= Date.now()) return diagnostic.result({ status: 'denied' })
     // The authority query requires the exact active identity pair and selection.
+    diagnostic.at('membership_authority')
     const result = await createAdminClient().rpc('core_stock_membership_authorize_request', {
       p_company: request.companyId, p_instance: request.instanceId,
       p_profile: request.profileId, p_membership: request.membershipId,
@@ -32,10 +36,12 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
       p_stock_subject: actor.stockSubject, p_stock_session: actor.stockSessionId,
       p_core_subject: actor.coreSubject, p_verified_until: new Date(actor.until).toISOString(),
     }).abortSignal(AbortSignal.timeout(2500))
+    diagnostic.error(result.error)
     if (result.error || !result.data || typeof result.data !== 'object' || Array.isArray(result.data) ||
         Object.keys(result.data).sort().join(',') !== authorityKeys || actor.until <= Date.now()) {
-      return { status: 'denied' }
+      return diagnostic.result({ status: 'denied' })
     }
+    diagnostic.at('decision_parse')
     const issuedAt = Date.now()
     const decision = parseStockMembershipDecision({
       ...result.data, version: 2, stockSubject: actor.stockSubject, stockSessionId: actor.stockSessionId,
@@ -44,7 +50,10 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
       // compare the matching local selection before admitting the operation.
       issuedAt, expiresAt: Math.min(issuedAt + ACTIVE_REQUEST_MAX_MS, actor.until),
     }, request, issuedAt)
-    if (decision.coreSubject !== actor.coreSubject) return { status: 'denied' }
-    return { status: 'authorized', decision }
-  } catch { return { status: 'denied' } }
+    if (decision.coreSubject !== actor.coreSubject) return diagnostic.result({ status: 'denied' })
+    return diagnostic.result({ status: 'authorized', decision })
+  } catch (error) {
+    diagnostic.error(error)
+    return diagnostic.result({ status: 'denied' })
+  }
 }
