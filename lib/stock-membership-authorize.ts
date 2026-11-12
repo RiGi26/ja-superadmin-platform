@@ -21,10 +21,15 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
     return diagnostic.result({ status: 'blocked' })
   }
   try {
+    // One server budget fits inside Stock's existing three-second request.
+    // Native identity and authority reads cannot each restart that budget.
+    const deadline = Date.now() + 2500
+    const signal = AbortSignal.timeout(2500)
+    const current = () => !signal.aborted && Date.now() < deadline
     const request = parseStockMembershipRequest(input)
     diagnostic.at('native_identity')
-    const actor = await verifyStockIdentityForCoreBridge(token)
-    if (actor.stockSubject !== request.stockSubject || actor.stockSessionId !== request.stockSessionId ||
+    const actor = await verifyStockIdentityForCoreBridge(token, { signal })
+    if (!current() || actor.stockSubject !== request.stockSubject || actor.stockSessionId !== request.stockSessionId ||
         actor.until <= Date.now()) return diagnostic.result({ status: 'denied' })
     // The authority query requires the exact active identity pair and selection.
     diagnostic.at('membership_authority')
@@ -35,9 +40,9 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
       p_selection_revision: request.selectionRevision,
       p_stock_subject: actor.stockSubject, p_stock_session: actor.stockSessionId,
       p_core_subject: actor.coreSubject, p_verified_until: new Date(actor.until).toISOString(),
-    }).abortSignal(AbortSignal.timeout(2500))
+    }).abortSignal(signal)
     diagnostic.error(result.error)
-    if (result.error || !result.data || typeof result.data !== 'object' || Array.isArray(result.data) ||
+    if (!current() || result.error || !result.data || typeof result.data !== 'object' || Array.isArray(result.data) ||
         Object.keys(result.data).sort().join(',') !== authorityKeys || actor.until <= Date.now()) {
       return diagnostic.result({ status: 'denied' })
     }
@@ -50,7 +55,7 @@ export async function authorizeStockMembershipRequest(input: unknown, token: str
       // compare the matching local selection before admitting the operation.
       issuedAt, expiresAt: Math.min(issuedAt + ACTIVE_REQUEST_MAX_MS, actor.until),
     }, request, issuedAt)
-    if (decision.coreSubject !== actor.coreSubject) return diagnostic.result({ status: 'denied' })
+    if (!current() || decision.coreSubject !== actor.coreSubject) return diagnostic.result({ status: 'denied' })
     return diagnostic.result({ status: 'authorized', decision })
   } catch (error) {
     diagnostic.error(error)
