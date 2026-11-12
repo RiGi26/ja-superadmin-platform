@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { readSaleablePlans } from '@/lib/plan-catalog-server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifySuperadmin } from '@/lib/auth'
 import { Resend } from 'resend'
@@ -59,6 +60,9 @@ export async function POST(request: Request) {
     .select('id, platform, tier, tier_display_name, price_monthly')
     .eq('id', plan_id).single()
   if (!plan) return NextResponse.json({ error: 'Plan tidak ditemukan.' }, { status: 404 })
+  if (!(await readSaleablePlans(platform)).some((offer) => offer.id === plan.id)) {
+    return NextResponse.json({ error: 'Paket belum tersedia untuk akun baru.' }, { status: 409 })
+  }
   if (plan.platform !== platform) {
     return NextResponse.json({ error: 'Plan tidak sesuai dengan platform.' }, { status: 400 })
   }

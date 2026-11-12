@@ -1,0 +1,1152 @@
+{
+  "target": "hxhusfkrlafxdnyasmsu",
+  "querySha256": "0e59110ee066ada9c6cb8dfc01e34c20addbeef5d3c431c3ec5e34f4e37c274a",
+  "authorization": "Owner delegated the choice on the explicit read-only review question; the recommended approval option was selected on 1 November 2026.",
+  "providerWrites": false,
+  "contract": {
+    "tables": [
+      {
+        "rls": true,
+        "name": "active_stock_audit",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_registry_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "active_stock_bindings",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_registry_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "active_stock_sessions",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_registry_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "active_stock_settings",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_registry_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "audit",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_stock_pilot_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "authority",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_stock_pilot_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "cohort",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_stock_pilot_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "entitlements",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_stock_pilot_private",
+        "forceRls": true
+      },
+      {
+        "rls": true,
+        "name": "sessions",
+        "grants": "{postgres=arwdDxtm/postgres}",
+        "schema": "core_stock_pilot_private",
+        "forceRls": true
+      }
+    ],
+    "columns": [
+      {
+        "type": "uuid",
+        "table": "active_stock_audit",
+        "column": "id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "active_stock_audit",
+        "column": "event_type",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_audit",
+        "column": "binding_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_audit",
+        "column": "core_subject",
+        "schema": "core_registry_private",
+        "notNull": false
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_audit",
+        "column": "stock_subject",
+        "schema": "core_registry_private",
+        "notNull": false
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_audit",
+        "column": "stock_session_id",
+        "schema": "core_registry_private",
+        "notNull": false
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_audit",
+        "column": "created_at",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "company_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "instance_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "core_tenant_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "stock_tenant_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "control_subject_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "first_operator",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_bindings",
+        "column": "second_operator",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "active_stock_bindings",
+        "column": "proof_ref",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "active_stock_bindings",
+        "column": "proof_sha256",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_bindings",
+        "column": "approved_at",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "bigint",
+        "table": "active_stock_bindings",
+        "column": "revision",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "active_stock_bindings",
+        "column": "status",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_bindings",
+        "column": "revoked_at",
+        "schema": "core_registry_private",
+        "notNull": false
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_sessions",
+        "column": "stock_subject",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_sessions",
+        "column": "stock_session_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_sessions",
+        "column": "binding_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_sessions",
+        "column": "core_subject",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "active_stock_sessions",
+        "column": "core_session_id",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_sessions",
+        "column": "expires_at",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_sessions",
+        "column": "created_at",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "active_stock_sessions",
+        "column": "revoked_at",
+        "schema": "core_registry_private",
+        "notNull": false
+      },
+      {
+        "type": "boolean",
+        "table": "active_stock_settings",
+        "column": "singleton",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "boolean",
+        "table": "active_stock_settings",
+        "column": "runtime_enabled",
+        "schema": "core_registry_private",
+        "notNull": true
+      },
+      {
+        "type": "bigint",
+        "table": "audit",
+        "column": "id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "audit",
+        "column": "binding_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      },
+      {
+        "type": "text",
+        "table": "audit",
+        "column": "event",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "audit",
+        "column": "occurred_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "authority",
+        "column": "path",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "core_subject",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "company_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "instance_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "core_tenant_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "stock_tenant_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "stock_subject",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "profile_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "authority",
+        "column": "stock_birth_audit",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "authority",
+        "column": "cohort_email",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "authority",
+        "column": "state",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "bigint",
+        "table": "authority",
+        "column": "revision",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "authority",
+        "column": "created_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "authority",
+        "column": "confirmed_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "authority",
+        "column": "revoked_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      },
+      {
+        "type": "boolean",
+        "table": "cohort",
+        "column": "singleton",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "cohort",
+        "column": "email",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "cohort",
+        "column": "core_subject",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      },
+      {
+        "type": "uuid",
+        "table": "cohort",
+        "column": "admission_command",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "boolean",
+        "table": "cohort",
+        "column": "enabled",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "cohort",
+        "column": "failure_mode",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "cohort",
+        "column": "valid_until",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "entitlements",
+        "column": "binding_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "text",
+        "table": "entitlements",
+        "column": "purpose",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "numeric",
+        "table": "entitlements",
+        "column": "charge_amount",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "entitlements",
+        "column": "issued_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "entitlements",
+        "column": "expires_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "entitlements",
+        "column": "revoked_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      },
+      {
+        "type": "uuid",
+        "table": "sessions",
+        "column": "stock_session",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "sessions",
+        "column": "binding_id",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "uuid",
+        "table": "sessions",
+        "column": "core_session",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "sessions",
+        "column": "expires_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": true
+      },
+      {
+        "type": "timestamp with time zone",
+        "table": "sessions",
+        "column": "revoked_at",
+        "schema": "core_stock_pilot_private",
+        "notNull": false
+      }
+    ],
+    "triggers": [
+      {
+        "name": "active_stock_audit_change",
+        "table": "active_stock_audit",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_audit_change BEFORE DELETE OR UPDATE ON core_registry_private.active_stock_audit FOR EACH ROW EXECUTE FUNCTION core_registry_private.active_stock_audit_guard()"
+      },
+      {
+        "name": "active_stock_audit_truncate",
+        "table": "active_stock_audit",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_audit_truncate BEFORE TRUNCATE ON core_registry_private.active_stock_audit FOR EACH STATEMENT EXECUTE FUNCTION core_registry_private.active_stock_audit_guard()"
+      },
+      {
+        "name": "active_stock_binding_audit",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_binding_audit AFTER INSERT OR UPDATE ON core_registry_private.active_stock_bindings FOR EACH ROW EXECUTE FUNCTION core_registry_private.active_stock_binding_audit()"
+      },
+      {
+        "name": "active_stock_binding_guard",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_binding_guard BEFORE INSERT OR DELETE OR UPDATE ON core_registry_private.active_stock_bindings FOR EACH ROW EXECUTE FUNCTION core_registry_private.active_stock_binding_guard()"
+      },
+      {
+        "name": "active_stock_binding_truncate",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_binding_truncate BEFORE TRUNCATE ON core_registry_private.active_stock_bindings FOR EACH STATEMENT EXECUTE FUNCTION core_registry_private.active_stock_binding_guard()"
+      },
+      {
+        "name": "active_stock_session_audit",
+        "table": "active_stock_sessions",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_session_audit AFTER INSERT OR UPDATE ON core_registry_private.active_stock_sessions FOR EACH ROW EXECUTE FUNCTION core_registry_private.active_stock_session_audit()"
+      },
+      {
+        "name": "active_stock_session_change",
+        "table": "active_stock_sessions",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_session_change BEFORE DELETE OR UPDATE ON core_registry_private.active_stock_sessions FOR EACH ROW EXECUTE FUNCTION core_registry_private.active_stock_session_guard()"
+      },
+      {
+        "name": "active_stock_session_truncate",
+        "table": "active_stock_sessions",
+        "schema": "core_registry_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER active_stock_session_truncate BEFORE TRUNCATE ON core_registry_private.active_stock_sessions FOR EACH STATEMENT EXECUTE FUNCTION core_registry_private.active_stock_session_guard()"
+      },
+      {
+        "name": "pilot_audit_history",
+        "table": "audit",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_audit_history BEFORE DELETE OR UPDATE OR TRUNCATE ON core_stock_pilot_private.audit FOR EACH STATEMENT EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_authority_changes",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_authority_changes AFTER UPDATE ON core_stock_pilot_private.authority FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.record_change()"
+      },
+      {
+        "name": "pilot_authority_history",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_authority_history BEFORE DELETE OR UPDATE ON core_stock_pilot_private.authority FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_no_truncate",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_no_truncate BEFORE TRUNCATE ON core_stock_pilot_private.authority FOR EACH STATEMENT EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_cohort_changes",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_cohort_changes AFTER INSERT OR UPDATE ON core_stock_pilot_private.cohort FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.record_change()"
+      },
+      {
+        "name": "pilot_entitlement_changes",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_entitlement_changes AFTER UPDATE ON core_stock_pilot_private.entitlements FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.record_change()"
+      },
+      {
+        "name": "pilot_entitlement_history",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_entitlement_history BEFORE DELETE OR UPDATE ON core_stock_pilot_private.entitlements FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_no_truncate",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_no_truncate BEFORE TRUNCATE ON core_stock_pilot_private.entitlements FOR EACH STATEMENT EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_no_truncate",
+        "table": "sessions",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_no_truncate BEFORE TRUNCATE ON core_stock_pilot_private.sessions FOR EACH STATEMENT EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      },
+      {
+        "name": "pilot_session_changes",
+        "table": "sessions",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_session_changes AFTER UPDATE ON core_stock_pilot_private.sessions FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.record_change()"
+      },
+      {
+        "name": "pilot_session_history",
+        "table": "sessions",
+        "schema": "core_stock_pilot_private",
+        "enabled": "O",
+        "definition": "CREATE TRIGGER pilot_session_history BEFORE DELETE OR UPDATE ON core_stock_pilot_private.sessions FOR EACH ROW EXECUTE FUNCTION core_stock_pilot_private.guard_history()"
+      }
+    ],
+    "functions": [
+      {
+        "hash": "3c0abde49faf55f3438ee0a00d8c7084",
+        "name": "active_stock_audit_guard",
+        "schema": "core_registry_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_audit_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN RAISE EXCEPTION 'active_stock_audit_append_only'; END $function$\n"
+      },
+      {
+        "hash": "e170e7b7047662562f19f4cc0bd44b43",
+        "name": "active_stock_binding_audit",
+        "schema": "core_registry_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_binding_audit()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  INSERT INTO core_registry_private.active_stock_audit(event_type, binding_id, core_subject)\n    VALUES (CASE WHEN TG_OP = 'INSERT' THEN 'binding_registered' ELSE 'binding_revoked' END, NEW.id, NEW.control_subject_id);\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "5aa008bd0c6208eab15891f4040b20a2",
+        "name": "active_stock_binding_guard",
+        "schema": "core_registry_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_binding_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  IF TG_OP IN ('DELETE', 'TRUNCATE') THEN RAISE EXCEPTION 'active_binding_history_retained'; END IF;\n  IF TG_OP = 'INSERT' THEN\n    IF NOT EXISTS (SELECT 1 FROM public.company_portal_instances i JOIN public.companies c ON c.id = i.company_id\n      WHERE i.id = NEW.instance_id AND c.id = NEW.company_id AND c.status = 'active' AND i.portal_type = 'stock')\n      OR EXISTS (SELECT 1 FROM core_e1_resource_private.origins e WHERE e.reservation_id = NEW.instance_id)\n      OR NOT EXISTS (SELECT 1 FROM public.company_memberships m WHERE m.company_id = NEW.company_id\n        AND m.core_auth_user_id = NEW.control_subject_id AND m.status = 'active' AND m.role = 'owner')\n      OR (SELECT count(*) FROM core_registry_private.operators o\n          WHERE o.subject_id IN (NEW.first_operator, NEW.second_operator) AND o.active\n            AND o.valid_until > clock_timestamp()) <> 2\n      OR NEW.approved_at > clock_timestamp() OR NEW.status <> 'active' OR NEW.revision <> 0 THEN\n      RAISE EXCEPTION 'independent_existing_binding_control_required';\n    END IF;\n  ELSIF TG_OP = 'UPDATE' THEN\n    IF OLD.status <> 'active' OR NEW.status <> 'revoked' OR NEW.revision <> OLD.revision + 1\n      OR (to_jsonb(NEW) - 'status' - 'revision' - 'revoked_at') IS DISTINCT FROM\n         (to_jsonb(OLD) - 'status' - 'revision' - 'revoked_at') THEN\n      RAISE EXCEPTION 'active_binding_immutable';\n    END IF;\n    NEW.revoked_at := clock_timestamp();\n  END IF;\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "f4e62c2e0f8fb2d4151921662e75d28d",
+        "name": "active_stock_core_session_live",
+        "schema": "core_registry_private",
+        "arguments": "p_subject uuid, p_session uuid",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_core_session_live(p_subject uuid, p_session uuid)\n RETURNS boolean\n LANGUAGE sql\n STABLE SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\n  SELECT EXISTS (SELECT 1 FROM auth.sessions s JOIN auth.users u ON u.id = s.user_id\n    WHERE s.id = p_session AND s.user_id = p_subject AND u.deleted_at IS NULL\n      AND (u.banned_until IS NULL OR u.banned_until <= statement_timestamp())\n      AND (s.not_after IS NULL OR s.not_after > statement_timestamp()))\n    AND EXISTS (SELECT 1 FROM auth.oauth_consents c WHERE c.user_id = p_subject\n      AND c.client_id = 'fe3e0af9-2d84-4ec2-a750-b26bb4a81caf'::uuid AND c.revoked_at IS NULL);\n$function$\n"
+      },
+      {
+        "hash": "be07d02fd2edccf26e636ce5f80bdcb5",
+        "name": "active_stock_current_binding",
+        "schema": "core_registry_private",
+        "arguments": "p_binding uuid, p_subject uuid",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_current_binding(p_binding uuid, p_subject uuid)\n RETURNS jsonb\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE v_result jsonb;\nBEGIN\n  IF NOT coalesce((SELECT runtime_enabled FROM core_registry_private.active_stock_settings WHERE singleton), false) THEN\n    RAISE EXCEPTION 'active_stock_runtime_disabled';\n  END IF;\n  SELECT jsonb_build_object('bindingId', b.id, 'bindingRevision', b.revision,\n    'companyId', c.id, 'companyRevision', c.revision, 'instanceId', i.id,\n    'coreTenantId', b.core_tenant_id, 'stockTenantId', b.stock_tenant_id)\n  INTO STRICT v_result\n  FROM core_registry_private.active_stock_bindings b\n  JOIN public.companies c ON c.id = b.company_id\n  JOIN public.company_portal_instances i ON i.id = b.instance_id AND i.company_id = c.id\n  JOIN public.company_memberships m ON m.company_id = c.id AND m.core_auth_user_id = p_subject\n  WHERE b.id = p_binding AND b.status = 'active' AND b.revoked_at IS NULL AND c.status = 'active'\n    AND m.status = 'active' AND m.role IN ('owner', 'admin', 'member') AND i.portal_type = 'stock'\n    AND NOT EXISTS (SELECT 1 FROM core_e1_resource_private.origins e WHERE e.reservation_id = i.id);\n  RETURN v_result;\nEND $function$\n"
+      },
+      {
+        "hash": "bd2063616b873711bc33abbc497770d3",
+        "name": "active_stock_session_audit",
+        "schema": "core_registry_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_session_audit()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  INSERT INTO core_registry_private.active_stock_audit(event_type, binding_id, core_subject, stock_subject, stock_session_id)\n    VALUES (CASE WHEN TG_OP = 'INSERT' THEN 'session_enrolled' ELSE 'session_revoked' END,\n      NEW.binding_id, NEW.core_subject, NEW.stock_subject, NEW.stock_session_id);\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "fd4850e064766cf904cbad254dedad0d",
+        "name": "active_stock_session_guard",
+        "schema": "core_registry_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_registry_private.active_stock_session_guard()\n RETURNS trigger\n LANGUAGE plpgsql\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  IF TG_OP IN ('DELETE', 'TRUNCATE') THEN RAISE EXCEPTION 'active_stock_session_history_retained'; END IF;\n  IF OLD.revoked_at IS NOT NULL OR NEW.revoked_at IS NULL\n    OR (to_jsonb(NEW) - 'revoked_at') IS DISTINCT FROM (to_jsonb(OLD) - 'revoked_at') THEN\n    RAISE EXCEPTION 'active_stock_session_immutable';\n  END IF;\n  NEW.revoked_at := clock_timestamp();\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "4feeb985711b1252ebdd149b431aabcc",
+        "name": "authorize",
+        "schema": "core_stock_pilot_private",
+        "arguments": "p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_until timestamp with time zone",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.authorize(p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_until timestamp with time zone)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE a core_stock_pilot_private.authority%ROWTYPE; s core_stock_pilot_private.sessions%ROWTYPE;\nBEGIN\n  IF p_until IS NULL OR p_until<=clock_timestamp() OR p_until>clock_timestamp()+interval '30 seconds'\n  THEN RAISE EXCEPTION 'pilot_identity_denied'; END IF;\n  SELECT * INTO STRICT a FROM core_stock_pilot_private.authority WHERE stock_subject=p_stock_subject AND core_subject=p_core_subject;\n  SELECT * INTO STRICT s FROM core_stock_pilot_private.sessions WHERE stock_session=p_stock_session AND binding_id=a.id\n    AND revoked_at IS NULL AND expires_at>clock_timestamp();\n  IF NOT core_registry_private.active_stock_core_session_live(p_core_subject,s.core_session) THEN RAISE EXCEPTION 'pilot_core_revoked'; END IF;\n  RETURN core_stock_pilot_private.current_authority(a.id,p_core_subject)||jsonb_build_object('coreSubject',p_core_subject,'coreSessionId',s.core_session);\nEND $function$\n"
+      },
+      {
+        "hash": "36d7f14fa98bbb81832e490f765d38fc",
+        "name": "current_authority",
+        "schema": "core_stock_pilot_private",
+        "arguments": "p_binding uuid, p_subject uuid, p_pending boolean",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.current_authority(p_binding uuid, p_subject uuid, p_pending boolean DEFAULT false)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE a core_stock_pilot_private.authority%ROWTYPE; revision bigint; fault text;\nBEGIN\n  SELECT x.* INTO STRICT a FROM core_stock_pilot_private.authority x\n    JOIN core_stock_pilot_private.cohort c ON c.email=x.cohort_email AND c.core_subject=x.core_subject\n      AND c.enabled AND c.valid_until>clock_timestamp()\n    JOIN core_stock_pilot_private.entitlements e ON e.binding_id=x.id AND e.revoked_at IS NULL AND e.expires_at>clock_timestamp()\n    WHERE x.id=p_binding AND x.core_subject=p_subject AND x.revoked_at IS NULL\n      AND (x.state='confirmed' OR (p_pending AND x.state='prepared'));\n  SELECT failure_mode INTO STRICT fault FROM core_stock_pilot_private.cohort WHERE email=a.cohort_email;\n  IF fault='deny' THEN RAISE EXCEPTION 'pilot_injected_outage'; END IF;\n  IF fault='timeout' THEN PERFORM pg_sleep(4); RAISE EXCEPTION 'pilot_injected_timeout'; END IF;\n  SELECT c.revision INTO STRICT revision FROM core_e1_resource_private.origins o\n    JOIN core_e1_resource_private.stock_bindings b ON b.reservation_id=o.reservation_id\n    JOIN public.companies c ON c.id=o.company_id AND c.status='active'\n    JOIN public.company_memberships m ON m.id=o.membership_id AND m.company_id=c.id\n      AND m.core_auth_user_id=o.core_subject AND m.status='active' AND m.role='owner'\n    JOIN public.company_portal_instances i ON i.id=o.reservation_id AND i.company_id=c.id AND i.portal_type='stock'\n    WHERE o.company_id=a.company_id AND o.reservation_id=a.instance_id AND o.core_subject=a.core_subject\n      AND o.core_tenant_id=a.core_tenant_id AND o.source='core.e1.resource.v1'\n      AND b.stock_tenant_id=a.stock_tenant_id AND b.stock_subject=a.stock_subject AND b.profile_id=a.profile_id\n      AND b.stock_audit_event_id=a.stock_birth_audit\n      AND (SELECT count(*) FROM public.company_memberships WHERE core_auth_user_id=p_subject)=1;\n  RETURN jsonb_build_object('bindingId',a.id,'bindingRevision',a.revision,'companyId',a.company_id,\n    'companyRevision',revision,'instanceId',a.instance_id,'coreTenantId',a.core_tenant_id,'stockTenantId',a.stock_tenant_id);\nEND $function$\n"
+      },
+      {
+        "hash": "5da401fa9bcbb31b10c595ff3bf8a323",
+        "name": "existing_authorize_request",
+        "schema": "core_stock_pilot_private",
+        "arguments": "p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_verified_until timestamp with time zone",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.existing_authorize_request(p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_verified_until timestamp with time zone)\n RETURNS jsonb\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE v_session core_registry_private.active_stock_sessions%ROWTYPE; v_authority jsonb;\nBEGIN\n  IF p_verified_until IS NULL OR p_verified_until <= statement_timestamp()\n    OR p_verified_until > statement_timestamp() + interval '30 seconds' THEN RAISE EXCEPTION 'active_stock_identity_denied'; END IF;\n  SELECT * INTO STRICT v_session FROM core_registry_private.active_stock_sessions\n    WHERE stock_subject = p_stock_subject AND stock_session_id = p_stock_session\n      AND core_subject = p_core_subject AND revoked_at IS NULL AND expires_at > statement_timestamp();\n  IF NOT core_registry_private.active_stock_core_session_live(v_session.core_subject, v_session.core_session_id) THEN\n    RAISE EXCEPTION 'active_stock_core_session_revoked';\n  END IF;\n  v_authority := core_registry_private.active_stock_current_binding(v_session.binding_id, v_session.core_subject);\n  RETURN v_authority || jsonb_build_object('coreSubject', v_session.core_subject, 'coreSessionId', v_session.core_session_id);\nEND $function$\n"
+      },
+      {
+        "hash": "e4ee367259d379dccce6d48837faacda",
+        "name": "existing_enroll_session",
+        "schema": "core_stock_pilot_private",
+        "arguments": "p_company uuid, p_instance uuid, p_core_subject uuid, p_core_session uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone, p_core_token_expires timestamp with time zone",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.existing_enroll_session(p_company uuid, p_instance uuid, p_core_subject uuid, p_core_session uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone, p_core_token_expires timestamp with time zone)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nDECLARE v_binding uuid; v_authority jsonb; v_session core_registry_private.active_stock_sessions%ROWTYPE;\nBEGIN\n  IF p_core_subject IS NULL OR p_core_session IS NULL OR p_stock_subject IS NULL OR p_stock_session IS NULL\n    OR p_verified_until IS NULL OR p_verified_until <= clock_timestamp()\n    OR p_verified_until > clock_timestamp() + interval '30 seconds'\n    OR p_core_token_expires IS NULL OR p_core_token_expires <= clock_timestamp()\n    OR NOT core_registry_private.active_stock_core_session_live(p_core_subject, p_core_session) THEN\n    RAISE EXCEPTION 'active_stock_identity_denied';\n  END IF;\n  IF p_company IS NULL AND p_instance IS NULL THEN\n    -- The ordinary Stock sign-in entry supplies no Company/resource selector.\n    -- Current membership and the unique independently approved binding select\n    -- exactly one resource. Missing or ambiguous authority raises and denies.\n    SELECT b.id INTO STRICT v_binding FROM core_registry_private.active_stock_bindings b\n      JOIN public.company_memberships m ON m.company_id=b.company_id\n      WHERE m.core_auth_user_id=p_core_subject AND m.status='active'\n        AND m.role IN ('owner','admin','member') AND b.status='active' AND b.revoked_at IS NULL;\n  ELSE\n    SELECT id INTO STRICT v_binding FROM core_registry_private.active_stock_bindings\n      WHERE company_id = p_company AND instance_id = p_instance;\n  END IF;\n  v_authority := core_registry_private.active_stock_current_binding(v_binding, p_core_subject);\n  INSERT INTO core_registry_private.active_stock_sessions(stock_subject, stock_session_id, binding_id,\n    core_subject, core_session_id, expires_at)\n    VALUES (p_stock_subject, p_stock_session, v_binding, p_core_subject, p_core_session,\n      least(p_core_token_expires, clock_timestamp() + interval '1 hour'))\n    ON CONFLICT (stock_subject, stock_session_id) DO NOTHING;\n  SELECT * INTO STRICT v_session FROM core_registry_private.active_stock_sessions\n    WHERE stock_subject = p_stock_subject AND stock_session_id = p_stock_session FOR UPDATE;\n  IF v_session.binding_id <> v_binding OR v_session.core_subject <> p_core_subject\n    OR v_session.core_session_id <> p_core_session OR v_session.revoked_at IS NOT NULL\n    OR v_session.expires_at <= clock_timestamp() OR p_verified_until <= clock_timestamp() THEN\n    RAISE EXCEPTION 'active_stock_session_conflict';\n  END IF;\n  RETURN v_authority || jsonb_build_object('coreSubject', p_core_subject, 'coreSessionId', p_core_session);\nEND $function$\n"
+      },
+      {
+        "hash": "f2f52da0712b1c847ee404df7a012537",
+        "name": "guard_history",
+        "schema": "core_stock_pilot_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.guard_history()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  IF TG_OP IN ('DELETE','TRUNCATE') OR TG_TABLE_NAME='audit' THEN RAISE EXCEPTION 'pilot_history_retained'; END IF;\n  IF TG_TABLE_NAME='authority' THEN\n    IF OLD.state='revoked' OR NEW.revision<>OLD.revision+1\n      OR (to_jsonb(NEW)-'state'-'revision'-'confirmed_at'-'revoked_at') IS DISTINCT FROM\n         (to_jsonb(OLD)-'state'-'revision'-'confirmed_at'-'revoked_at')\n      OR NOT ((OLD.state='prepared' AND NEW.state='confirmed' AND NEW.confirmed_at IS NOT NULL AND NEW.revoked_at IS NULL)\n        OR (NEW.state='revoked' AND NEW.revoked_at IS NOT NULL AND NEW.confirmed_at IS NOT DISTINCT FROM OLD.confirmed_at))\n    THEN RAISE EXCEPTION 'pilot_authority_immutable'; END IF;\n  ELSE\n    IF OLD.revoked_at IS NOT NULL OR NEW.revoked_at IS NULL\n      OR to_jsonb(NEW)-'revoked_at' IS DISTINCT FROM to_jsonb(OLD)-'revoked_at'\n    THEN RAISE EXCEPTION 'pilot_record_immutable'; END IF;\n  END IF;\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "3437feedd4f5e33495a070d30fc6e344",
+        "name": "original_e1_create",
+        "schema": "core_stock_pilot_private",
+        "arguments": "p_actor uuid, p_session uuid, p_auth_until timestamp with time zone, p_command uuid, p_company_name text",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.original_e1_create(p_actor uuid, p_session uuid, p_auth_until timestamp with time zone, p_command uuid, p_company_name text)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO ''\n SET row_security TO 'on'\n SET lock_timeout TO '1ms'\n SET statement_timeout TO '10s'\nAS $function$\nDECLARE o core_e1_resource_private.origins%ROWTYPE; fingerprint text; result jsonb; target_origin text;\n  company uuid := gen_random_uuid(); membership uuid := gen_random_uuid(); instance uuid := gen_random_uuid();\nBEGIN\n  IF auth.role() IS DISTINCT FROM 'service_role' OR p_actor IS NULL OR p_session IS NULL OR p_command IS NULL\n    OR p_auth_until IS NULL OR p_auth_until <= clock_timestamp()\n    OR p_auth_until > clock_timestamp() + interval '30 seconds'\n    OR NOT EXISTS (SELECT 1 FROM core_e1_resource_private.settings WHERE singleton AND enabled AND stock_origin IS NOT NULL)\n    OR p_company_name IS NULL OR length(p_company_name) NOT BETWEEN 2 AND 100\n    OR p_company_name <> btrim(p_company_name) OR p_company_name ~ '[[:cntrl:]]' THEN\n    RAISE EXCEPTION 'E1_DENIED';\n  END IF;\n  -- Never wait on the Registry fence with a prior Auth observation. A caller\n  -- must reauthenticate before retrying this SAME idempotency key.\n  IF NOT pg_catalog.pg_try_advisory_xact_lock(pg_catalog.hashtextextended('core_registry_writes', 0)) THEN\n    RAISE EXCEPTION USING ERRCODE = '55P03', MESSAGE = 'E1_BUSY_REAUTHENTICATE';\n  END IF;\n  IF p_auth_until <= clock_timestamp() THEN RAISE EXCEPTION 'AUTH_EXPIRED_AFTER_WAIT'; END IF;\n  SELECT stock_origin INTO STRICT target_origin FROM core_e1_resource_private.settings\n    WHERE singleton AND enabled AND stock_origin IS NOT NULL FOR SHARE NOWAIT;\n  IF EXISTS (SELECT 1 FROM core_registry_private.operators WHERE subject_id = p_actor AND active) THEN\n    RAISE EXCEPTION 'CUSTOMER_ONLY';\n  END IF;\n  fingerprint := encode(sha256(convert_to('e1.stock.admit:' ||\n    jsonb_build_object('companyName', p_company_name, 'product', 'stock')::text, 'UTF8')), 'hex');\n  SELECT * INTO o FROM core_e1_resource_private.origins WHERE core_subject = p_actor;\n  IF FOUND THEN\n    IF o.command_id <> p_command OR o.request_digest <> fingerprint THEN RAISE EXCEPTION 'E1_REPLAY_CONFLICT'; END IF;\n    IF (SELECT count(*) FROM public.company_memberships WHERE core_auth_user_id = p_actor) <> 1\n      OR NOT EXISTS (SELECT 1 FROM public.company_memberships m JOIN public.companies c ON c.id = m.company_id\n        WHERE m.id = o.membership_id AND m.core_auth_user_id = p_actor AND m.company_id = o.company_id\n        AND m.role = 'owner' AND m.status = 'active' AND c.status = 'active') THEN\n      RAISE EXCEPTION 'CURRENT_OWNER_REQUIRED';\n    END IF;\n    SELECT e.result INTO STRICT result FROM core_registry_private.events e\n      WHERE e.actor_id = p_actor AND e.command_id = p_command AND e.company_id = o.company_id\n      AND e.action = 'e1.stock.admit' AND e.request_digest = fingerprint;\n  ELSE\n    IF EXISTS (SELECT 1 FROM public.company_memberships WHERE core_auth_user_id = p_actor)\n      OR EXISTS (SELECT 1 FROM core_registry_private.owner_claims WHERE target_user_id = p_actor AND status = 'pending') THEN\n      RAISE EXCEPTION 'EXISTING_OR_AMBIGUOUS_CANONICAL_COMPANY';\n    END IF;\n    INSERT INTO public.companies(id, display_name) VALUES (company, p_company_name);\n    INSERT INTO public.company_memberships(id, company_id, core_auth_user_id, role)\n      VALUES (membership, company, p_actor, 'owner');\n    INSERT INTO public.company_portal_instances(id, company_id, portal_type) VALUES (instance, company, 'stock');\n    INSERT INTO core_e1_resource_private.origins(company_id, membership_id, core_subject,\n      reservation_id, core_tenant_id, command_id, request_digest, stock_origin)\n      VALUES (company, membership, p_actor, instance, gen_random_uuid(), p_command, fingerprint, target_origin) RETURNING * INTO o;\n    -- Existing native audit, in the SAME transaction. Failure rolls back everything.\n    result := core_registry_private.append_event(company, p_actor, p_session, p_command, 'e1.stock.admit',\n      fingerprint, 'null'::jsonb, core_e1_resource_private.reservation_json(o), instance::text, '{}', NULL);\n  END IF;\n  IF p_auth_until <= clock_timestamp() THEN RAISE EXCEPTION 'AUTH_EXPIRED_BEFORE_RETURN'; END IF;\n  RETURN jsonb_build_object('reservation', core_e1_resource_private.reservation_json(o), 'receipt', result, 'modeledOnly', false);\nEND\n$function$\n"
+      },
+      {
+        "hash": "4b2590ac43f52729792429aff5781e2c",
+        "name": "record_change",
+        "schema": "core_stock_pilot_private",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION core_stock_pilot_private.record_change()\n RETURNS trigger\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n  INSERT INTO core_stock_pilot_private.audit(binding_id,event)\n  VALUES(CASE WHEN TG_TABLE_NAME='authority' THEN (to_jsonb(NEW)->>'id')::uuid\n    WHEN TG_TABLE_NAME IN ('entitlements','sessions') THEN (to_jsonb(NEW)->>'binding_id')::uuid END,\n    TG_TABLE_NAME||'_'||lower(TG_OP));\n  RETURN NEW;\nEND $function$\n"
+      },
+      {
+        "hash": "a1ca5fc1f0e7efc1fa587cebbf555786",
+        "name": "core_registry_session_is_live",
+        "schema": "public",
+        "arguments": "",
+        "definition": "CREATE OR REPLACE FUNCTION public.core_registry_session_is_live()\n RETURNS boolean\n LANGUAGE plpgsql\n STABLE SECURITY DEFINER\n SET search_path TO ''\n SET row_security TO 'on'\nAS $function$\nDECLARE subject uuid := auth.uid(); claims jsonb := auth.jwt(); sid uuid;\nBEGIN\n  IF auth.role() IS DISTINCT FROM 'authenticated' OR subject IS NULL\n    OR jsonb_typeof(claims->'session_id') IS DISTINCT FROM 'string'\n    OR (claims->>'session_id') !~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'\n    OR jsonb_typeof(claims->'exp') IS DISTINCT FROM 'number'\n    OR (claims->>'exp')::numeric <= extract(epoch FROM clock_timestamp()) THEN RETURN false; END IF;\n  sid := (claims->>'session_id')::uuid;\n  RETURN EXISTS (SELECT 1 FROM auth.sessions s JOIN auth.users u ON u.id=s.user_id\n    WHERE s.id=sid AND s.user_id=subject AND (s.not_after IS NULL OR s.not_after>clock_timestamp())\n      AND u.deleted_at IS NULL AND (u.banned_until IS NULL OR u.banned_until<=clock_timestamp()));\nEXCEPTION WHEN OTHERS THEN RETURN false;\nEND $function$\n"
+      },
+      {
+        "hash": "d2894e23f5f4d580bdb8c60bd46ed51d",
+        "name": "core_stock_active_authorize_request",
+        "schema": "public",
+        "arguments": "p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_verified_until timestamp with time zone",
+        "definition": "CREATE OR REPLACE FUNCTION public.core_stock_active_authorize_request(p_stock_subject uuid, p_stock_session uuid, p_core_subject uuid, p_verified_until timestamp with time zone)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n IF EXISTS(SELECT 1 FROM core_e1_resource_private.origins WHERE core_subject=p_core_subject)\n   OR EXISTS(SELECT 1 FROM core_stock_pilot_private.authority WHERE stock_subject=p_stock_subject OR core_subject=p_core_subject)\n THEN RETURN core_stock_pilot_private.authorize(p_stock_subject,p_stock_session,p_core_subject,p_verified_until); END IF;\n RETURN core_stock_pilot_private.existing_authorize_request(p_stock_subject,p_stock_session,p_core_subject,p_verified_until);\nEND $function$\n"
+      },
+      {
+        "hash": "0c712fa2c264f8648ca87521a69aaa65",
+        "name": "core_stock_active_enroll_session",
+        "schema": "public",
+        "arguments": "p_company uuid, p_instance uuid, p_core_subject uuid, p_core_session uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone, p_core_token_expires timestamp with time zone",
+        "definition": "CREATE OR REPLACE FUNCTION public.core_stock_active_enroll_session(p_company uuid, p_instance uuid, p_core_subject uuid, p_core_session uuid, p_stock_subject uuid, p_stock_session uuid, p_verified_until timestamp with time zone, p_core_token_expires timestamp with time zone)\n RETURNS jsonb\n LANGUAGE plpgsql\n SECURITY DEFINER\n SET search_path TO 'pg_catalog'\nAS $function$\nBEGIN\n IF EXISTS(SELECT 1 FROM core_e1_resource_private.origins WHERE core_subject=p_core_subject)\n   OR EXISTS(SELECT 1 FROM core_stock_pilot_private.authority WHERE stock_subject=p_stock_subject OR core_subject=p_core_subject)\n THEN RAISE EXCEPTION 'e1_requires_reciprocal_confirmation'; END IF;\n RETURN core_stock_pilot_private.existing_enroll_session(p_company,p_instance,p_core_subject,p_core_session,\n   p_stock_subject,p_stock_session,p_verified_until,p_core_token_expires);\nEND $function$\n"
+      }
+    ],
+    "constraints": [
+      {
+        "name": "active_stock_audit_binding_id_fkey",
+        "table": "active_stock_audit",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (binding_id) REFERENCES core_registry_private.active_stock_bindings(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_audit_event_type_check",
+        "table": "active_stock_audit",
+        "schema": "core_registry_private",
+        "definition": "CHECK ((event_type = ANY (ARRAY['binding_registered'::text, 'binding_revoked'::text, 'session_enrolled'::text, 'session_revoked'::text])))"
+      },
+      {
+        "name": "active_stock_audit_pkey",
+        "table": "active_stock_audit",
+        "schema": "core_registry_private",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "active_stock_bindings_check",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK (((first_operator <> second_operator) AND ((control_subject_id <> first_operator) AND (control_subject_id <> second_operator))))"
+      },
+      {
+        "name": "active_stock_bindings_check1",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK (((status = 'revoked'::text) = (revoked_at IS NOT NULL)))"
+      },
+      {
+        "name": "active_stock_bindings_company_id_fkey",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_bindings_company_id_key",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "UNIQUE (company_id)"
+      },
+      {
+        "name": "active_stock_bindings_core_tenant_id_key",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "UNIQUE (core_tenant_id)"
+      },
+      {
+        "name": "active_stock_bindings_first_operator_fkey",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (first_operator) REFERENCES core_registry_private.operators(subject_id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_bindings_instance_id_fkey",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (instance_id) REFERENCES company_portal_instances(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_bindings_instance_id_key",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "UNIQUE (instance_id)"
+      },
+      {
+        "name": "active_stock_bindings_pkey",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "active_stock_bindings_proof_ref_check",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK (((length(proof_ref) >= 1) AND (length(proof_ref) <= 200)))"
+      },
+      {
+        "name": "active_stock_bindings_proof_sha256_check",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK ((proof_sha256 ~ '^[a-f0-9]{64}$'::text))"
+      },
+      {
+        "name": "active_stock_bindings_revision_check",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK (((revision >= 0) AND (revision <= '9007199254740991'::bigint)))"
+      },
+      {
+        "name": "active_stock_bindings_second_operator_fkey",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (second_operator) REFERENCES core_registry_private.operators(subject_id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_bindings_status_check",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "CHECK ((status = ANY (ARRAY['active'::text, 'revoked'::text])))"
+      },
+      {
+        "name": "active_stock_bindings_stock_tenant_id_key",
+        "table": "active_stock_bindings",
+        "schema": "core_registry_private",
+        "definition": "UNIQUE (stock_tenant_id)"
+      },
+      {
+        "name": "active_stock_sessions_binding_id_fkey",
+        "table": "active_stock_sessions",
+        "schema": "core_registry_private",
+        "definition": "FOREIGN KEY (binding_id) REFERENCES core_registry_private.active_stock_bindings(id) ON DELETE RESTRICT"
+      },
+      {
+        "name": "active_stock_sessions_pkey",
+        "table": "active_stock_sessions",
+        "schema": "core_registry_private",
+        "definition": "PRIMARY KEY (stock_subject, stock_session_id)"
+      },
+      {
+        "name": "active_stock_settings_pkey",
+        "table": "active_stock_settings",
+        "schema": "core_registry_private",
+        "definition": "PRIMARY KEY (singleton)"
+      },
+      {
+        "name": "active_stock_settings_singleton_check",
+        "table": "active_stock_settings",
+        "schema": "core_registry_private",
+        "definition": "CHECK (singleton)"
+      },
+      {
+        "name": "audit_binding_id_fkey",
+        "table": "audit",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (binding_id) REFERENCES core_stock_pilot_private.authority(id)"
+      },
+      {
+        "name": "audit_pkey",
+        "table": "audit",
+        "schema": "core_stock_pilot_private",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "authority_check",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK (((state = 'revoked'::text) = (revoked_at IS NOT NULL)))"
+      },
+      {
+        "name": "authority_check1",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((((state = 'prepared'::text) = (confirmed_at IS NULL)) OR (state = 'revoked'::text)))"
+      },
+      {
+        "name": "authority_cohort_email_fkey",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (cohort_email) REFERENCES core_stock_pilot_private.cohort(email)"
+      },
+      {
+        "name": "authority_cohort_email_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (cohort_email)"
+      },
+      {
+        "name": "authority_company_id_fkey",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (company_id) REFERENCES core_e1_resource_private.origins(company_id)"
+      },
+      {
+        "name": "authority_company_id_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (company_id)"
+      },
+      {
+        "name": "authority_core_subject_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (core_subject)"
+      },
+      {
+        "name": "authority_core_tenant_id_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (core_tenant_id)"
+      },
+      {
+        "name": "authority_instance_id_fkey",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (instance_id) REFERENCES core_e1_resource_private.origins(reservation_id)"
+      },
+      {
+        "name": "authority_instance_id_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (instance_id)"
+      },
+      {
+        "name": "authority_path_check",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((path = 'e1_creation'::text))"
+      },
+      {
+        "name": "authority_pkey",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "PRIMARY KEY (id)"
+      },
+      {
+        "name": "authority_profile_id_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (profile_id)"
+      },
+      {
+        "name": "authority_state_check",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((state = ANY (ARRAY['prepared'::text, 'confirmed'::text, 'revoked'::text])))"
+      },
+      {
+        "name": "authority_stock_birth_audit_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (stock_birth_audit)"
+      },
+      {
+        "name": "authority_stock_subject_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (stock_subject)"
+      },
+      {
+        "name": "authority_stock_tenant_id_key",
+        "table": "authority",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (stock_tenant_id)"
+      },
+      {
+        "name": "cohort_admission_command_key",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (admission_command)"
+      },
+      {
+        "name": "cohort_core_subject_key",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (core_subject)"
+      },
+      {
+        "name": "cohort_email_check",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((email = lower(email)))"
+      },
+      {
+        "name": "cohort_failure_mode_check",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((failure_mode = ANY (ARRAY['none'::text, 'deny'::text, 'timeout'::text])))"
+      },
+      {
+        "name": "cohort_pkey",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "PRIMARY KEY (email)"
+      },
+      {
+        "name": "cohort_singleton_check",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK (singleton)"
+      },
+      {
+        "name": "cohort_singleton_key",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "UNIQUE (singleton)"
+      },
+      {
+        "name": "cohort_valid_until_check",
+        "table": "cohort",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((valid_until <= (clock_timestamp() + '24:00:00'::interval)))"
+      },
+      {
+        "name": "entitlements_binding_id_fkey",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (binding_id) REFERENCES core_stock_pilot_private.authority(id)"
+      },
+      {
+        "name": "entitlements_charge_amount_check",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((charge_amount = (0)::numeric))"
+      },
+      {
+        "name": "entitlements_check",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK (((expires_at > issued_at) AND (expires_at <= (issued_at + '24:00:00'::interval))))"
+      },
+      {
+        "name": "entitlements_pkey",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "definition": "PRIMARY KEY (binding_id)"
+      },
+      {
+        "name": "entitlements_purpose_check",
+        "table": "entitlements",
+        "schema": "core_stock_pilot_private",
+        "definition": "CHECK ((purpose = 'contained_production_sso_test'::text))"
+      },
+      {
+        "name": "sessions_binding_id_fkey",
+        "table": "sessions",
+        "schema": "core_stock_pilot_private",
+        "definition": "FOREIGN KEY (binding_id) REFERENCES core_stock_pilot_private.authority(id)"
+      },
+      {
+        "name": "sessions_pkey",
+        "table": "sessions",
+        "schema": "core_stock_pilot_private",
+        "definition": "PRIMARY KEY (stock_session)"
+      }
+    ]
+  }
+}

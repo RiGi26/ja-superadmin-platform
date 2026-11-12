@@ -6,6 +6,7 @@ import { useActionState, useEffect, useRef, useState, type FormEvent } from 'rea
 import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail, MailCheck, UserRound } from 'lucide-react'
 import { signupToHub } from './actions'
 import type { HubRegistrationState } from '@/lib/hub-registration'
+import { GoogleSocialEntry } from '../login/GoogleSocialEntry'
 import styles from '../login/login.module.css'
 import signup from './signup.module.css'
 
@@ -13,7 +14,7 @@ type Turnstile = { render: (element: HTMLElement, options: { sitekey: string; si
 const initial: HubRegistrationState = { status: 'idle', message: null }
 type FieldName = 'name' | 'email' | 'password' | 'password_confirmation'
 
-export function HubSignupForm({ verificationFailed = false }: { verificationFailed?: boolean }) {
+export function HubSignupForm({ verificationFailed = false, next = null }: { verificationFailed?: boolean; next?: string | null }) {
   const [state, action, pending] = useActionState(signupToHub, initial)
   const captcha = useRef<HTMLDivElement>(null)
   const widget = useRef<string | null>(null)
@@ -74,8 +75,8 @@ export function HubSignupForm({ verificationFailed = false }: { verificationFail
       <h1 id="signup-title" ref={successRef} tabIndex={-1}>Periksa email Anda</h1>
       <p>{state.message}</p>
       <div className={signup.emailGuide}><p>Gunakan browser yang sama dengan saat mendaftar. Setelah email terverifikasi, masuk untuk melanjutkan.</p></div>
-      <Link className={styles.primaryButton} href="/hub/login">Masuk setelah verifikasi</Link>
-      <a className={signup.link} href="/hub/signup">Gunakan email lain</a>
+      <Link className={styles.primaryButton} href={`/hub/login${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Masuk setelah verifikasi</Link>
+      <a className={signup.link} href={`/hub/signup${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Gunakan email lain</a>
     </div>
   )
 
@@ -84,7 +85,9 @@ export function HubSignupForm({ verificationFailed = false }: { verificationFail
       <p className={styles.context}><UserRound aria-hidden="true" /> Akun Webzoka</p>
       <h1 className={styles.title} id="signup-title">Buat akun<br />Webzoka</h1>
       <p className={`${styles.intro} ${signup.intro}`}>Gunakan email yang Anda kelola. Kami akan mengirimkan tautan verifikasi ke email tersebut.</p>
+      <GoogleSocialEntry signup />
     <form ref={formRef} action={action} onSubmit={handleSubmit} className={styles.form} aria-label="Buat akun Webzoka">
+      {next && <input type="hidden" name="next" value={next} />}
       <div className={signup.honeypot} aria-hidden="true">
         <label htmlFor="signup-website">Website</label>
         <input id="signup-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
@@ -115,7 +118,7 @@ export function HubSignupForm({ verificationFailed = false }: { verificationFail
       {(state.status === 'error' || verificationFailed) && <p ref={errorRef} tabIndex={-1} className={styles.formError} role="alert">{state.message ?? 'Tautan verifikasi tidak valid, sudah digunakan, atau dibuka di browser lain. Daftar kembali dengan email yang sama untuk meminta tautan baru.'}</p>}
       <button className={`${styles.primaryButton} ${signup.submitButton}`} type="submit" disabled={pending} aria-busy={pending}>{pending && <LoaderCircle className={styles.spinIcon} aria-hidden="true" />}{pending ? 'Memproses pendaftaran…' : 'Buat akun Webzoka'}</button>
     </form>
-      <p className={`${styles.signup} ${signup.loginLink}`}>Sudah punya akun? <Link href="/hub/login">Masuk</Link></p>
+      <p className={`${styles.signup} ${signup.loginLink}`}>Sudah punya akun? <Link href={`/hub/login${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Masuk</Link></p>
     </>
   )
 }

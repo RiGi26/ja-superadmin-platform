@@ -7,6 +7,7 @@ import { GOOGLE_DEV_PATH, googleDevConfig, googleDevLocalHeaders } from '@/lib/g
 import { createClient } from '@/lib/supabase/server'
 import { safeHubReturnPath } from '@/lib/hub-return-path'
 import { HubLoginForm } from './HubLoginForm'
+import { GoogleSocialEntry } from './GoogleSocialEntry'
 import styles from './login.module.css'
 
 export default async function HubLoginPage({
@@ -66,6 +67,12 @@ export default async function HubLoginPage({
                 Sesi belum dapat diverifikasi. Verifikasi email Anda atau masuk kembali.
               </p>
             ) : null}
+            {query.message === 'google_failed' ? (
+              <p className={styles.formError} role="alert">
+                Masuk dengan Google belum berhasil. Coba kembali atau gunakan email dan kata sandi.
+              </p>
+            ) : null}
+            <GoogleSocialEntry next={next} pilotEnabled={process.env.STOCK_SSO_PILOT_ENABLED === 'true'} />
             <HubLoginForm next={next} />
             {!next && googleDevConfig(process.env) && googleDevLocalHeaders(await headers()) ? (
               <form method="post" action={`${GOOGLE_DEV_PATH}/start`} className={styles.devForm}>
@@ -81,7 +88,7 @@ export default async function HubLoginPage({
               </p>
             ) : null}
             <p className={styles.signup}>
-              Belum punya akun? <Link href="/hub/signup">Buat akun</Link>
+              Belum punya akun? <Link href={`/hub/signup${next ? `?next=${encodeURIComponent(next)}` : ''}`}>Buat akun</Link>
             </p>
           </section>
 

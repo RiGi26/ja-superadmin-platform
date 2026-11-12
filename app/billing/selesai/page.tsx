@@ -1,6 +1,8 @@
 import { BillingResult } from './Result'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { portalDashboardUrl } from '@/lib/portal-urls'
+import { managedStockBilling } from '@/lib/stock-billing-authority'
+import { sandboxBillingReturnUrl } from '@/lib/billing-sandbox-uat'
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
@@ -18,6 +20,7 @@ export default async function BillingSelesaiPage({
   const { inv } = await searchParams
 
   let portalUrl: string | null = null
+  let stockPurchase = false
   if (inv && UUID_RE.test(inv)) {
     try {
       const db = createAdminClient()
@@ -33,6 +36,12 @@ export default async function BillingSelesaiPage({
         | undefined
       const platform = Array.isArray(tenants) ? tenants[0]?.platform : tenants?.platform
       portalUrl = portalDashboardUrl(platform)
+      if (platform === 'stock' && data?.tenant_id) {
+        const managed = await managedStockBilling(data.tenant_id)
+        stockPurchase = managed !== 'legacy'
+        if (stockPurchase) portalUrl = '/hub/account?view=billing'
+        else portalUrl = await sandboxBillingReturnUrl(data.tenant_id, portalUrl)
+      }
     } catch {
       // Lookup gagal → halaman tetap jalan tanpa tombol dashboard.
     }
@@ -41,7 +50,7 @@ export default async function BillingSelesaiPage({
   return (
     <main className="min-h-dvh flex items-center justify-center bg-background p-6">
       <div className="w-full max-w-md bg-card border border-border rounded-2xl p-8 shadow-sm">
-        <BillingResult invoiceId={inv ?? null} portalUrl={portalUrl} />
+        <BillingResult invoiceId={inv ?? null} portalUrl={portalUrl} stockPurchase={stockPurchase} />
       </div>
     </main>
   )

@@ -7,6 +7,7 @@ import { hubAppUrl } from '@/lib/hub-app-url'
 import { rateLimit } from '@/lib/rate-limit'
 import { createClient } from '@/lib/supabase/server'
 import { clearHubSessionCookies } from '@/lib/hub-session'
+import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'
 
 export type HubRegistrationState = {
   status: 'idle' | 'error' | 'success'
@@ -28,7 +29,7 @@ const schema = z.object({
   terms: z.literal(true),
 }).refine(value => value.password === value.confirmation)
 const required = ['name', 'email', 'password', 'password_confirmation', 'terms']
-const optional = ['website', 'cf-turnstile-response']
+const optional = ['website', 'cf-turnstile-response', 'next']
 
 function signupCallbackOrigin(requestOrigin?: string | null) {
   const configured = hubAppUrl()
@@ -53,6 +54,8 @@ export async function registerHubAccount(form: FormData, ip: string, requestOrig
     name: form.get('name'), email: form.get('email'), password: form.get('password'),
     confirmation: form.get('password_confirmation'), terms: form.get('terms') === 'on',
   })
+  const next = safeStockCheckoutPath(form.get('next'))
+  if (form.has('next') && !next) return { status: 'error', message: 'Pilihan paket tidak valid. Pilih kembali melalui Store.' }
   if (!parsed.success) return { status: 'error', message: 'Isi nama dan email yang valid, setujui pembuatan akun, dan gunakan kata sandi yang sama dengan minimal 12 karakter.' }
 
   const captchaToken = String(form.get('cf-turnstile-response') ?? '')
@@ -67,6 +70,7 @@ export async function registerHubAccount(form: FormData, ip: string, requestOrig
   try {
     const callback = new URL('/auth/callback', signupCallbackOrigin(requestOrigin))
     callback.searchParams.set('flow', 'signup')
+    if (next) callback.searchParams.set('next', next)
     const db = await createClient()
     const { data, error } = await db.auth.signUp({
       email: parsed.data.email,
@@ -98,15 +102,16 @@ export async function registerHubAccount(form: FormData, ip: string, requestOrig
 /** PKCE exchange and a fresh provider identity check precede the fixed return. */
 export async function finishHubRegistration(request: Request) {
   const url = new URL(request.url)
+  const next = safeStockCheckoutPath(url.searchParams.get('next'))
   const response = (path: string) => {
     const result = NextResponse.redirect(new URL(path, url.origin))
     result.headers.set('cache-control', 'no-store')
     result.headers.set('referrer-policy', 'no-referrer')
     return result
   }
-  const failed = () => response('/hub/signup?error=verification_failed')
+  const failed = () => response('/hub/signup?error=verification_failed' + (next ? `&next=${encodeURIComponent(next)}` : ''))
   const code = url.searchParams.get('code')
-  if (!code || code.length > 4096) return failed()
+  if (!code || code.length > 4096 || (url.searchParams.has('next') && !next)) return failed()
 
   let db: Awaited<ReturnType<typeof createClient>> | null = null
   let exchanged = false
@@ -123,7 +128,7 @@ export async function finishHubRegistration(request: Request) {
       await clearHubSessionCookies()
       return failed()
     }
-    return response('/hub/account')
+    return response(next ?? '/hub/account')
   } catch {
     if (exchanged && db) {
       try { await db.auth.signOut({ scope: 'local' }) } catch { /* Local cleanup still runs. */ }

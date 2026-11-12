@@ -13,12 +13,15 @@
 import { after } from 'next/server'
 import { addMonths, addYears } from 'date-fns'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getPlatformMidtrans } from '@/lib/midtrans'
+import { getPlatformMidtrans, getMidtransMode, normalizeOrderMode, midtransConfigForMode } from '@/lib/midtrans'
+import { prepareSandboxCheckoutPlan, sandboxNotificationHeaders } from '@/lib/billing-sandbox-uat'
 import { syncTenantPortal } from '@/lib/lms-sync'
 import { sendSubscriptionPaidEmail } from '@/lib/billing-email'
 import { getPromoCampaign, isCampaignActive, type AdminDb } from '@/lib/platform-settings'
 import { hubAppUrl } from '@/lib/hub-app-url'
 import type { InvoicePeriod } from '@/types/billing'
+import { isVersionedPlan, planPeriods } from '@/lib/plan-catalog'
+import { verifyPlanPurchase } from '@/lib/plan-catalog-server'
 
 // Peringkat tier (lintas-platform, by enum subscription_plans.tier). Dipakai
 // untuk membedakan upgrade (naik) vs downgrade (turun). Display name beda
@@ -98,6 +101,10 @@ export async function createSubscriptionCheckout(args: {
   // 'upgrade' = upgrade pro-rata di tengah periode → set tier, periode TAK ditambah.
   changeType?: 'renew' | 'upgrade'
   firstPurchaseOnly?: boolean
+  // Company checkout persists its order before contacting the provider. Existing
+  // legacy callers retain their reviewed lifecycle and contract behavior.
+  durableCheckout?: true
+  stockAuthority?: import('@/lib/stock-billing-authority').StockBillingAuthority
   // Nominal pro-rata dihitung pemanggil (selfServiceChange); bila ada, dipakai
   // sebagai harga invoice menggantikan harga penuh paket.
   amountOverride?: number
@@ -106,6 +113,9 @@ export async function createSubscriptionCheckout(args: {
   promoCode?: string
   promoDiscountPercent?: number
 }): Promise<CreateCheckoutResult> {
+  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')
+  const authorityError = await stockBillingOperationError(args.tenantId, args.planId, args.period, args.stockAuthority)
+  if (authorityError) return authorityError
   const db = createAdminClient()
   const { tenantId, planId, period, changeType = 'renew', amountOverride, promoCode, promoDiscountPercent } = args
 
@@ -118,12 +128,13 @@ export async function createSubscriptionCheckout(args: {
   if (!tenant) return { ok: false, status: 404, error: 'Tenant tidak ditemukan.' }
 
   // 2. Plan harus ada & aktif. Harga otoritatif dari sini.
-  const { data: plan } = await db
+  const { data: storedPlan } = await db
     .from('subscription_plans')
-    .select('id, name, platform, tier, price_monthly, price_yearly, is_active')
+    .select('*')
     .eq('id', planId)
     .maybeSingle()
-  if (!plan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+  if (!storedPlan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+  const { plan, sandboxUat } = await prepareSandboxCheckoutPlan(storedPlan, tenantId)
   if (!plan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
 
   const rawAmount =
@@ -148,7 +159,7 @@ export async function createSubscriptionCheckout(args: {
   let subscriptionId: string
   const { data: existingSub, error: existingSubError } = await db
     .from('tenant_subscriptions')
-    .select('id')
+    .select('id, plan_id')
     .eq('tenant_id', tenantId)
     .order('created_at', { ascending: false })
     .limit(1)
@@ -156,6 +167,14 @@ export async function createSubscriptionCheckout(args: {
   if (args.firstPurchaseOnly && (existingSubError || existingSub !== null)) {
     return { ok: false, status: 409, error: 'Muat ulang halaman Tagihan sebelum melanjutkan.' }
   }
+  if (existingSubError) return { ok: false, status: 503, error: 'Kontrak berjalan belum dapat diverifikasi.' }
+  const planError = await verifyPlanPurchase(plan, tenantId, existingSub?.plan_id ?? null, period)
+  if (planError) return { ok: false, status: 409, error: planError }
+  // A new Stock contract cannot leave a subscription stub when its dedicated
+  // mode reader or gateway configuration is unavailable. Issued invoices below
+  // retain their own mode and need no current-mode lookup to resume checkout.
+  const preparedStockConfig = !existingSub && isVersionedPlan(plan) && plan.platform === 'stock'
+    ? sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan) : undefined
   if (existingSub) {
     subscriptionId = existingSub.id
   } else {
@@ -164,16 +183,21 @@ export async function createSubscriptionCheckout(args: {
       .insert({ tenant_id: tenantId, plan_id: planId, status: 'unpaid' })
       .select('id')
       .single()
-    if (subErr || !newSub) {
+    if (args.durableCheckout && (subErr as { code?: string } | null)?.code === '23505') {
+      const raced = await db.from('tenant_subscriptions').select('id,plan_id').eq('tenant_id', tenantId).maybeSingle()
+      if (raced.error || !raced.data || raced.data.plan_id !== planId) return { ok: false, status: 409, error: 'Periksa kembali tagihan yang sedang diproses.' }
+      subscriptionId = raced.data.id
+    } else if (subErr || !newSub) {
       return { ok: false, status: 500, error: subErr?.message ?? 'Gagal membuat langganan.' }
+    } else {
+      subscriptionId = newSub.id
     }
-    subscriptionId = newSub.id
   }
 
   // 4. Idempotensi: pakai invoice hidup yang sudah punya link.
   const { data: live } = await db
     .from('subscription_invoices')
-    .select('id, redirect_url')
+    .select('id, redirect_url, amount, midtrans_mode')
     .eq('subscription_id', subscriptionId)
     .eq('plan_id', planId)
     .eq('period', period)
@@ -181,10 +205,18 @@ export async function createSubscriptionCheckout(args: {
     .in('status', ['unpaid', 'awaiting_payment'])
     .maybeSingle()
   if (live?.redirect_url) {
-    return { ok: true, invoiceId: live.id, redirectUrl: live.redirect_url, amount, reused: true }
+    const intendedMode = isVersionedPlan(plan) && plan.platform === 'stock'
+      ? live.midtrans_mode : sandboxUat ? 'sandbox' : await getMidtransMode(plan)
+    if (normalizeOrderMode(live.midtrans_mode) !== intendedMode) {
+      return { ok: false, status: 409, error: 'Tagihan sebelumnya memakai lingkungan pembayaran berbeda. Hubungi tim Webzoka.' }
+    }
+    return { ok: true, invoiceId: live.id, redirectUrl: live.redirect_url, amount: Number(live.amount), reused: true }
+  }
+  if (args.durableCheckout && live) {
+    return { ok: false, status: 409, error: 'Tagihan sedang diproses. Periksa status pembayaran sebelum mencoba kembali.' }
   }
 
-  const { serverKey, snapApiUrl, mode } = await getPlatformMidtrans()
+  const { serverKey, snapApiUrl, mode } = preparedStockConfig ?? (sandboxUat ? midtransConfigForMode('sandbox') : await getPlatformMidtrans(plan))
 
   // 5. Fase 1: insert (order_id null) untuk dapat id.
   const { data: inv, error: insErr } = await db
@@ -208,7 +240,7 @@ export async function createSubscriptionCheckout(args: {
     if ((insErr as { code?: string } | null)?.code === '23505') {
       const { data: existing } = await db
         .from('subscription_invoices')
-        .select('id, redirect_url')
+        .select('id, redirect_url, amount, midtrans_mode')
         .eq('subscription_id', subscriptionId)
         .eq('plan_id', planId)
         .eq('period', period)
@@ -216,11 +248,16 @@ export async function createSubscriptionCheckout(args: {
         .in('status', ['unpaid', 'awaiting_payment'])
         .maybeSingle()
       if (existing?.redirect_url) {
+        if (isVersionedPlan(plan) && plan.platform === 'stock'
+          ? !['sandbox', 'production'].includes(existing.midtrans_mode)
+          : normalizeOrderMode(existing.midtrans_mode) !== mode) {
+          return { ok: false, status: 409, error: 'Tagihan sebelumnya memakai lingkungan pembayaran berbeda. Hubungi tim Webzoka.' }
+        }
         return {
           ok: true,
           invoiceId: existing.id,
           redirectUrl: existing.redirect_url,
-          amount,
+          amount: Number(existing.amount),
           reused: true,
         }
       }
@@ -263,13 +300,28 @@ export async function createSubscriptionCheckout(args: {
   }
 
   const auth = Buffer.from(`${serverKey}:`).toString('base64')
-  const snapRes = await fetch(snapApiUrl, {
+  if (args.durableCheckout) {
+    const reserved = await db.from('subscription_invoices')
+      .update({ midtrans_order_id: midtransOrderId, status: 'awaiting_payment', updated_at: new Date().toISOString() })
+      .eq('id', inv.id).eq('status', 'unpaid').select('id').maybeSingle()
+    if (reserved.error || reserved.data?.id !== inv.id) return { ok: false, status: 503, error: 'Tagihan belum dapat disiapkan. Periksa kembali status pembayaran.' }
+  }
+  let snapRes: Response
+  let snapData: { token?: string; redirect_url?: string; error_messages?: string[] }
+  try {
+    snapRes = await fetch(snapApiUrl, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Basic ${auth}` },
+    headers: { 'Content-Type': 'application/json', Authorization: `Basic ${auth}`, ...sandboxNotificationHeaders(sandboxUat) },
+    redirect: 'error', signal: AbortSignal.timeout(10000), cache: 'no-store',
     body: JSON.stringify(snapPayload),
-  })
-  const snapData = await snapRes.json()
+    })
+    snapData = await snapRes.json()
+  } catch (error) {
+    if (!args.durableCheckout) throw error
+    return { ok: false, status: 503, error: 'Hasil pembayaran belum dapat dipastikan. Periksa Tagihan; jangan membuat pembayaran pengganti.' }
+  }
   if (!snapRes.ok) {
+    if (args.durableCheckout) return { ok: false, status: 503, error: 'Penyedia pembayaran belum mengonfirmasi tagihan. Periksa status sebelum mencoba kembali.' }
     await db
       .from('subscription_invoices')
       .update({ status: 'failed', updated_at: new Date().toISOString() })
@@ -281,7 +333,7 @@ export async function createSubscriptionCheckout(args: {
     }
   }
 
-  await db
+  const saved = await db
     .from('subscription_invoices')
     .update({
       midtrans_order_id: midtransOrderId,
@@ -292,7 +344,11 @@ export async function createSubscriptionCheckout(args: {
     })
     .eq('id', inv.id)
 
-  return { ok: true, invoiceId: inv.id, redirectUrl: snapData.redirect_url, amount, reused: false }
+  if (args.durableCheckout && (saved.error || typeof snapData.token !== 'string' || typeof snapData.redirect_url !== 'string')) {
+    return { ok: false, status: 503, error: 'Tautan pembayaran belum dapat dikonfirmasi. Periksa status tagihan.' }
+  }
+
+  return { ok: true, invoiceId: inv.id, redirectUrl: snapData.redirect_url!, amount, reused: false }
 }
 
 // ── Self-service change: renew / upgrade(pro-rata) / downgrade(scheduled) ─────
@@ -325,21 +381,27 @@ export async function selfServiceChange(args: {
   planId: string
   period: InvoicePeriod
   firstPurchaseOnly?: boolean
+  durableCheckout?: true
+  stockAuthority?: import('@/lib/stock-billing-authority').StockBillingAuthority
 }): Promise<SelfChangeResult> {
+  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')
+  const authorityError = await stockBillingOperationError(args.tenantId, args.planId, args.period, args.stockAuthority)
+  if (authorityError) return authorityError
   const db = createAdminClient()
   const { tenantId, planId, period } = args
 
-  const { data: selPlan } = await db
+  const { data: storedSelectedPlan } = await db
     .from('subscription_plans')
-    .select('id, tier, price_monthly, price_yearly, is_active')
+    .select('*')
     .eq('id', planId)
     .maybeSingle()
-  if (!selPlan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+  if (!storedSelectedPlan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
+  const { plan: selPlan } = await prepareSandboxCheckoutPlan(storedSelectedPlan, tenantId)
   if (!selPlan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
 
   // Promo kampanye (Fase 2) — dihitung sekali; hanya menempel di jalur RENEW
   // (aktivasi/perpanjangan penuh). Upgrade pro-rata TIDAK dapat promo.
-  const promo = await resolvePromoForCheckout({
+  const promo = isVersionedPlan(selPlan) ? null : await resolvePromoForCheckout({
     db,
     tenantId,
     tier: selPlan.tier,
@@ -358,6 +420,9 @@ export async function selfServiceChange(args: {
   if (args.firstPurchaseOnly && (subError || sub !== null)) {
     return { ok: false, status: 409, error: 'Muat ulang halaman Tagihan sebelum melanjutkan.' }
   }
+  if (subError) return { ok: false, status: 503, error: 'Kontrak berjalan belum dapat diverifikasi.' }
+  const purchaseIssue = await verifyPlanPurchase(selPlan, tenantId, sub?.plan_id ?? null, period)
+  if (purchaseIssue) return { ok: false, status: 409, error: purchaseIssue }
 
   const now = new Date()
   const periodEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
@@ -383,7 +448,9 @@ export async function selfServiceChange(args: {
   if (!isActiveRunning || !sub) {
     return asCheckout(
       await createSubscriptionCheckout({ tenantId, planId, period, changeType: 'renew', ...(promo ?? {}),
-        ...(args.firstPurchaseOnly ? { firstPurchaseOnly: true } : {}) }),
+        ...(args.firstPurchaseOnly ? { firstPurchaseOnly: true } : {}),
+        ...(args.durableCheckout ? { durableCheckout: true } : {}),
+        ...(args.stockAuthority ? { stockAuthority: args.stockAuthority } : {}) }),
       'renew',
     )
   }
@@ -430,7 +497,9 @@ export async function selfServiceChange(args: {
   const startMs = sub.current_period_start ? Date.parse(sub.current_period_start) : NaN
   const endMs = periodEnd.getTime()
   const totalMs = Number.isFinite(startMs) && endMs > startMs ? endMs - startMs : null
-  const isYearly = totalMs != null ? totalMs > 60 * DAY_MS : period === 'yearly'
+  // Approved versioned offers are monthly-only. A prepaid renewal can extend
+  // the remaining span beyond 60 days without changing its contract period.
+  const isYearly = isVersionedPlan(selPlan) ? false : totalMs != null ? totalMs > 60 * DAY_MS : period === 'yearly'
   const remMs = Math.max(0, endMs - now.getTime())
   const frac = totalMs != null ? Math.max(0, Math.min(1, remMs / totalMs)) : 0
   const oldPrice = Number((isYearly ? curPlan?.price_yearly : curPlan?.price_monthly) ?? 0)
@@ -475,6 +544,9 @@ export async function selfServiceChange(args: {
 export async function cancelScheduledChange(
   tenantId: string,
 ): Promise<{ ok: boolean; error?: string }> {
+  const { stockBillingOperationError } = await import('@/lib/stock-billing-authority')
+  const authorityError = await stockBillingOperationError(tenantId)
+  if (authorityError) return { ok: false, error: authorityError.error }
   const db = createAdminClient()
   const { data: sub } = await db
     .from('tenant_subscriptions')
@@ -702,6 +774,12 @@ export async function applyLifecycleAction(args: {
       if (period !== 'monthly' && period !== 'yearly') {
         return { ok: false, status: 400, error: "period harus 'monthly' atau 'yearly'." }
       }
+      if (sub?.plan_id) {
+        const { data: contract } = await db.from('subscription_plans').select('*').eq('id', sub.plan_id).maybeSingle()
+        if (!contract || !planPeriods(contract).includes(period)) {
+          return { ok: false, status: 409, error: 'Periode tersebut belum tersedia untuk kontrak ini.' }
+        }
+      }
       const prevEnd = sub?.current_period_end ? new Date(sub.current_period_end) : null
       // activate = periode baru dari sekarang; extend = tumpuk di atas periode berjalan.
       const base = action === 'extend' && prevEnd && prevEnd > now ? prevEnd : now
@@ -744,11 +822,13 @@ export async function applyLifecycleAction(args: {
       if (!planId) return { ok: false, status: 400, error: 'plan_id wajib untuk ganti paket.' }
       const { data: plan } = await db
         .from('subscription_plans')
-        .select('id, tier, is_active')
+        .select('*')
         .eq('id', planId)
         .maybeSingle()
       if (!plan) return { ok: false, status: 404, error: 'Paket tidak ditemukan.' }
       if (!plan.is_active) return { ok: false, status: 400, error: 'Paket tidak aktif.' }
+      const contractIssue = await verifyPlanPurchase(plan, tenantId, sub?.plan_id ?? null, 'monthly')
+      if (contractIssue) return { ok: false, status: 409, error: contractIssue }
       subUpdate.plan_id = planId
       tenantUpdate.plan_tier = plan.tier
       payload.plan_id = planId

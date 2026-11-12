@@ -10,6 +10,9 @@
 // ============================================================
 import crypto from 'crypto'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { approvedOffer, isVersionedPlan } from '@/lib/plan-catalog'
+import { deliverStockPaidActivation } from '@/lib/stock-paid-activation'
+import { sandboxSyncReplayProbeAllowed } from '@/lib/billing-sandbox-uat'
 
 // Core enum tier → Stock plan_tier. Stock REJECTS 'enterprise' (only
 // starter/growth/pro), so enterprise → pro and pro → growth.
@@ -24,6 +27,9 @@ function stockBaseUrl(): string {
 }
 
 export async function syncStockTenant(tenantId: string, event = 'core_sync'): Promise<void> {
+  // Payment delivery has its own persisted retry state and cannot depend on the
+  // availability of the legacy entitlement mirror request below.
+  await deliverStockPaidActivation(tenantId)
   const secret = process.env.BILLING_SYNC_SECRET
   if (!secret) {
     console.error('[stock-sync] BILLING_SYNC_SECRET belum di-set')
@@ -33,43 +39,54 @@ export async function syncStockTenant(tenantId: string, event = 'core_sync'): Pr
   try {
     const db = createAdminClient()
 
-    const { data: tenant } = await db
+    const { data: tenant, error: tenantError } = await db
       .from('tenants')
       .select('id, slug, platform, status, plan_tier')
       .eq('id', tenantId)
       .maybeSingle()
-    if (!tenant || tenant.platform !== 'stock') return // only stock tenants
+    if (tenantError || !tenant || tenant.id !== tenantId || tenant.platform !== 'stock') return
 
-    const { data: sub } = await db
+    const { data: sub, error: subscriptionError } = await db
       .from('tenant_subscriptions')
       .select('status, plan_id, current_period_end, trial_ends_at')
       .eq('tenant_id', tenantId)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle()
+    if (subscriptionError) return
 
     // Resolve the authoritative enum tier + seat limit from the plan when possible.
     let coreTier = tenant.plan_tier as string
     let maxUsers: number | null = null
+    let offer: ReturnType<typeof approvedOffer> = null
     if (sub?.plan_id) {
-      const { data: plan } = await db
+      const { data: plan, error: planError } = await db
         .from('subscription_plans')
-        .select('tier, max_users')
+        .select('*')
         .eq('id', sub.plan_id)
         .maybeSingle()
+      if (planError || !plan || plan.id !== sub.plan_id || plan.platform !== 'stock') return
       if (plan?.tier) coreTier = plan.tier
       maxUsers = plan?.max_users ?? null
+      if (plan && isVersionedPlan(plan)) {
+        offer = approvedOffer(plan)
+        if (!offer) return
+        maxUsers = offer.contract.max_active_users
+      }
     } else {
-      const { data: plan } = await db
+      const { data: candidates, error: planError } = await db
         .from('subscription_plans')
-        .select('max_users')
+        .select('*')
         .eq('platform', 'stock')
         .eq('tier', coreTier)
-        .maybeSingle()
-      maxUsers = plan?.max_users ?? null
+        .eq('is_active', true)
+      // No plan ID means a legacy contract. Never infer a version from row order.
+      const legacyPlans = (candidates ?? []).filter((plan) => plan.platform === 'stock' && plan.tier === coreTier && plan.is_active === true && !isVersionedPlan(plan))
+      if (planError || legacyPlans.length !== 1) return
+      maxUsers = legacyPlans[0].max_users ?? null
     }
 
-    const stockTier = CORE_TO_STOCK_TIER[coreTier] ?? 'starter'
+    const stockTier = offer?.contract.portal_tier ?? CORE_TO_STOCK_TIER[coreTier] ?? 'starter'
     const status = sub?.status ?? (tenant.status === 'active' ? 'active' : 'trial')
     const expiresAt = sub?.current_period_end ?? sub?.trial_ends_at ?? null
 
@@ -78,6 +95,8 @@ export async function syncStockTenant(tenantId: string, event = 'core_sync'): Pr
       linked_tenant_id: tenant.id,
       plan_tier: stockTier,
       max_active_users: maxUsers,
+      ...(offer ? { offer_version: 'basic-pro-2026-10-v1', plan_id: offer.id, public_tier: offer.publicTier,
+        plan_display_name: offer.name, entitlements: offer.contract.features } : {}),
       status,
       expires_at: expiresAt,
       event,
@@ -100,6 +119,19 @@ export async function syncStockTenant(tenantId: string, event = 'core_sync'): Pr
     })
     if (!res.ok) {
       console.error('[stock-sync] sync failed:', res.status, await res.text().catch(() => ''))
+    }
+    if (event === 'payment_reconciled' && await sandboxSyncReplayProbeAllowed(tenantId)) {
+      const replay = await fetch(`${stockBaseUrl()}/api/billing/sync`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-ja-timestamp': ts, 'x-ja-nonce': nonce, 'x-ja-signature': sig },
+        body, signal: AbortSignal.timeout(8000),
+      })
+      // Status codes only: signed envelopes and shared credentials stay on the servers.
+      console.info(`[billing-uat-replay] first=${res.status} replay=${replay.status}`)
+      await db.from('subscription_events').insert({
+        tenant_id: tenantId, event_type: 'billing_uat_sync_replay_check',
+        payload: { first_status: res.status, replay_status: replay.status },
+      })
     }
   } catch (err) {
     console.error('[stock-sync] error:', err instanceof Error ? err.message : err)

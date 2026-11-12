@@ -6,14 +6,16 @@ import { ShieldCheck } from 'lucide-react'
 import { HubSignupForm } from './HubSignupForm'
 import styles from '../login/login.module.css'
 import signup from './signup.module.css'
+import { safeStockCheckoutPath } from '@/lib/stock-purchase-policy'
 
 export const metadata = { title: 'Buat Akun | Webzoka Customer Hub', referrer: 'no-referrer' as const, robots: { index: false, follow: false } }
 
-export default async function HubSignupPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+export default async function HubSignupPage({ searchParams }: { searchParams: Promise<{ error?: string; next?: string }> }) {
   const query = await searchParams
+  const next = safeStockCheckoutPath(query.next)
   const db = await createClient()
   const { data } = await db.auth.getClaims()
-  if (data?.claims?.sub) redirect('/hub/account')
+  if (data?.claims?.sub) redirect(next ?? '/hub/account')
 
   return (
     <div className={`${styles.page} ${signup.page}`} lang="id">
@@ -28,7 +30,7 @@ export default async function HubSignupPage({ searchParams }: { searchParams: Pr
       <main className={styles.main}>
         <div className={styles.layout}>
           <section className={`${styles.formPanel} ${signup.formPanel}`} aria-labelledby="signup-title">
-            <HubSignupForm verificationFailed={query.error === 'verification_failed'} />
+            <HubSignupForm verificationFailed={query.error === 'verification_failed'} next={next} />
           </section>
           <aside className={styles.storyPanel} aria-labelledby="signup-story-title">
             <p className={styles.storyContext}><span aria-hidden="true" />Ruang pelanggan Webzoka</p>

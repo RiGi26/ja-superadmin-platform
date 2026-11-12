@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyMidtransSignature, normalizeOrderMode } from '@/lib/midtrans'
-import { markInvoicePaid, markInvoiceStatus } from '@/lib/billing'
+import { readVerifiedMidtransPayment } from '@/lib/midtrans-payment'
+import { markInvoiceStatus } from '@/lib/billing'
+import { markVerifiedInvoicePaid } from '@/lib/verified-subscription-payment'
 
 /**
  * POST /api/billing/webhook — notifikasi Midtrans untuk invoice langganan.
- * Selalu return 200 (non-200 memicu retry Midtrans). Signature diverifikasi
- * terhadap environment invoice (money-safety); yang invalid di-log & diabaikan.
+ * Invalid/unknown notifications are ignored. Transient verification failures
+ * return 503 so Midtrans can retry; payment state comes from the Status API.
  */
 export async function POST(request: Request) {
   try {
@@ -16,21 +18,22 @@ export async function POST(request: Request) {
       status_code,
       gross_amount,
       signature_key,
-      transaction_status,
-      fraud_status,
-      payment_type,
     } = body
 
-    if (!order_id || typeof order_id !== 'string') {
+    if (!order_id || typeof order_id !== 'string' || order_id.length > 100 ||
+        typeof status_code !== 'string' || typeof gross_amount !== 'string' ||
+        typeof signature_key !== 'string') {
       return NextResponse.json({ received: true, note: 'missing_order_id' })
     }
 
     const db = createAdminClient()
-    const { data: row } = await db
+    const { data: row, error } = await db
       .from('subscription_invoices')
-      .select('midtrans_mode')
+      .select('midtrans_order_id, midtrans_mode, amount')
       .eq('midtrans_order_id', order_id)
       .maybeSingle()
+    if (error) throw new Error('MIDTRANS_INVOICE_LOOKUP_FAILED')
+    if (!row) return NextResponse.json({ received: true, note: 'unknown_order' })
     const mode = normalizeOrderMode(row?.midtrans_mode)
 
     if (
@@ -42,40 +45,34 @@ export async function POST(request: Request) {
         mode,
       })
     ) {
-      console.warn('[billing/webhook] invalid signature:', order_id)
       return NextResponse.json({ received: true, note: 'signature_mismatch' })
     }
 
-    const isPaid =
-      (transaction_status === 'capture' && fraud_status === 'accept') ||
-      transaction_status === 'settlement'
-    const isPending = transaction_status === 'pending'
-    const isFailed = ['deny', 'cancel', 'expire'].includes(transaction_status)
+    const verified = await readVerifiedMidtransPayment(row)
 
-    if (isPaid) {
+    if (verified.paid) {
       // markInvoicePaid triggers the Stock entitlement sync on first transition
       // (centralized there so the confirm-poll path also covers it).
-      await markInvoicePaid({ midtransOrderId: order_id, paymentType: payment_type, raw: body })
-    } else if (isPending) {
+      await markVerifiedInvoicePaid({ midtransOrderId: order_id, mode: verified.mode, amount: verified.amount, raw: verified.data })
+    } else if (verified.pending) {
       await markInvoiceStatus({
         midtransOrderId: order_id,
         status: 'awaiting_payment',
-        paymentType: payment_type,
-        raw: body,
+        paymentType: verified.paymentType,
+        raw: verified.data,
       })
-    } else if (isFailed) {
+    } else if (verified.failed) {
       await markInvoiceStatus({
         midtransOrderId: order_id,
-        status: transaction_status === 'expire' ? 'expired' : 'failed',
-        paymentType: payment_type,
-        raw: body,
+        status: verified.status === 'expire' ? 'expired' : 'failed',
+        paymentType: verified.paymentType,
+        raw: verified.data,
       })
     }
 
     return NextResponse.json({ received: true })
   } catch (err) {
-    const message = err instanceof Error ? err.message : 'unknown'
-    console.error('[billing/webhook]', message)
-    return NextResponse.json({ received: true, error: message }) // tetap 200
+    console.error('[billing/webhook] verification or persistence unavailable', err instanceof Error ? err.name : 'unknown')
+    return NextResponse.json({ received: false, error: 'payment_verification_unavailable' }, { status: 503 })
   }
 }
